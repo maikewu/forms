@@ -1,0 +1,939 @@
+{
+  "general": {
+    "name": {
+      "en": "Service Report General",
+      "de": "Servicebericht"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreiben Sie den Servicebericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Daten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customercontactperson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse Auftraggeber / Kunde",
+            "en": "Shipping Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customercontactperson": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Ansprechpartner (Auftraggeber)",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": true,
+          "width": 0.5,
+          "required": false
+        },
+        "customerContactText": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Falls der Kontakt oben nicht auffindbar ist, bitte folgend manuell eintippen:",
+            "en": "In case the contact is not to be found above, please enter it manually below:"
+          }
+        },
+        "contactPersons_customer_freetext": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner (Auftraggeber)",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "customerContactPersonPhone": {
+          "fieldType": "REMBERG_PHONE",
+          "label": {
+            "de": "Telefonnummer des Ansprechpartners (Auftraggeber)",
+            "en": "Phone number"
+          },
+          "width": 0.3,
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "deliveryTexts": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Falls abweichend vom Auftraggeber, bitte folgende Daten zum Anlagenstandort ausfüllen:",
+            "en": "In case the contact is not to be found above, please enter it manually below:"
+          }
+        },
+        "sameDeliveryAddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Einsatzort",
+            "en": "Mission address"
+          },
+          "width": 0.3,
+          "required": false,
+          "checked": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "11-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "sameDeliveryAddress",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "11-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "sameDeliveryAddress",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "deliveryContactPersons_customer_freetext": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner (Anlagenstandort)",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "deliveryContactPersonPhone": {
+          "fieldType": "REMBERG_PHONE",
+          "label": {
+            "de": "Telefonnummer des Ansprechpartners (Anlagenstandort)",
+            "en": "Phone number"
+          },
+          "width": 0.3,
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Anlagennummer",
+            "en": "Machine number"
+          }
+        },
+        "assetHeader": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Weitere Anlagen",
+            "en": "Additional assets"
+          }
+        },
+        "machine_repeater": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "disableTabularView": true,
+          "children": {
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": true,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "label": {
+                "de": "Weitere Anlage",
+                "en": "Additional asset"
+              }
+            }
+          }
+        },
+        "emptyRow10": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "technicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Monteur",
+            "en": "Technician"
+          },
+          "width": 1,
+          "required": true,
+          "autofillCurrentUser": true,
+          "printEmailAddress": true
+        },
+        "serviceTechnicians": {
+          "fieldType": "REMBERG_PERSONS",
+          "label": {
+            "de": "Weitere Servicetechniker",
+            "en": "Additional service technicians"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customercontactperson",
+                    "_propertyName": "account"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "sameDeliveryAddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "01_1_reisezeiten": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Travel and Work Times",
+        "de": "Reise- und Arbeitszeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Reise- und Arbeitszeiten",
+            "en": "Travel and Working Times"
+          },
+          "unbreakable": true,
+          "required": true
+        },
+        "travelBackTimesComment": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Rückreisezeit kann erst nach Beendigung der Rückreise eingetragen werden.",
+            "en": "Return time can only be entered after the return journey has ended."
+          }
+        }
+      }
+    },
+    "02_mission_infos": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Service-Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "works": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Bezeichnung der Arbeiten",
+            "en": "Reason"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "maintenance1",
+              "text": {
+                "de": "Wartung an einer Filteranlage",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "maintenance2",
+              "text": {
+                "de": "Wartung an Filteranlagen",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "repair1",
+              "text": {
+                "de": "Reparatur an einer Filteranlage",
+                "en": "Assembly"
+              }
+            },
+            {
+              "value": "repair2",
+              "text": {
+                "de": "Reparatur an Filteranlagen",
+                "en": "Commissioning"
+              }
+            },
+            {
+              "value": "check1",
+              "text": {
+                "de": "Überprüfung an einer Filteranlage",
+                "en": "Assembly & Commissioning"
+              }
+            },
+            {
+              "value": "check2",
+              "text": {
+                "de": "Überprüfung an Filteranlagen",
+                "en": "Assembly & Commissioning"
+              }
+            },
+            {
+              "value": "maintenancerepair1",
+              "text": {
+                "de": "Wartung u. Reparatur an einer Filteranlage",
+                "en": "Assembly & Commissioning"
+              }
+            },
+            {
+              "value": "maintenancerepair2",
+              "text": {
+                "de": "Wartung u. Reparatur an Filteranlagen",
+                "en": "Assembly & Commissioning"
+              }
+            },
+            {
+              "value": "maintenancecheck1",
+              "text": {
+                "de": "Wartung u. Überprüfung an einer Filteranlage",
+                "en": "Assembly & Commissioning"
+              }
+            },
+            {
+              "value": "maintenancecheck2",
+              "text": {
+                "de": "Wartung u. Überprüfung an Filteranlagen",
+                "en": "Assembly & Commissioning"
+              }
+            },
+            {
+              "value": "other",
+              "text": {
+                "de": "Sonstiges",
+                "en": "Assembly & Commissioning"
+              }
+            }
+          ]
+        },
+        "commentFieldRichText": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Weitere Angaben",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        },
+        "emptyRow11": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "services": {
+          "fieldType": "H3",
+          "width": 1,
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Erbrachte Leistungen",
+            "en": "Disposal"
+          }
+        },
+        "check1": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Wartung durchgeführt",
+            "en": "Exchange oil filter"
+          }
+        },
+        "check2": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Filter gewechselt",
+            "en": "Exchange oil filter"
+          }
+        },
+        "check3": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Volumenstrom gemessen",
+            "en": "Exchange oil filter"
+          }
+        },
+        "check4": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Differenzdruck gemessen",
+            "en": "Exchange oil filter"
+          }
+        },
+        "check5": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Anlage elektrisch geprüft DGUV-V3",
+            "en": "Exchange oil filter"
+          }
+        },
+        "check6": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Erdungsverbindungen Rohrleit. u. Gehäuse gemess.",
+            "en": "Exchange oil filter"
+          }
+        },
+        "check7": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Anlagen elektisch geprüft DGUV-V3",
+            "en": "Exchange oil filter"
+          }
+        },
+        "commentFieldRichTextServices": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Weitere Angaben",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        },
+        "emptyRow12": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Geliefertes Material",
+            "en": "Spare Parts"
+          },
+          "required": false,
+          "unbreakable": true,
+          "hideWarrantyField": true,
+          "descriptionRequired": true,
+          "invoiceFields": false
+        },
+        "openPoints": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "07-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "08-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Kundenausfertigung als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "ULT Servicebericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Servicebericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tavelAndWorkingTimes2": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Rückreisezeiten & Korrekturen",
+            "en": "Backward journey times & corrections"
+          },
+          "unbreakable": true,
+          "hideInPdfIfEmpty": true,
+          "required": false
+        },
+        "commentAddendum": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen & Hinweise",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "filesHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Dokumentenanhang",
+            "en": "Documents Attachment"
+          },
+          "required": false,
+          "hiddenInPdf": true
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          }
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht mit internem Nachtrag als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Servicebericht - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
