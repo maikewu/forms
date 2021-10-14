@@ -1,0 +1,594 @@
+{
+  "general": {
+    "name": {
+      "en": "Factory Acceptance Test (FAT)",
+      "de": "Maschinen Werksabnahme (FAT)"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the customer service report.",
+        "de": "Bitte unterschreiben Sie den Kundendienstbericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": " ",
+        "de": " "
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsbestätigung Nr",
+            "en": "Order Confirmation No"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum des FAT",
+            "en": "Date of FAT"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": false
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "header_Assets": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Weitere Maschinen",
+            "en": "Additional machines"
+          }
+        },
+        "additionalAssets": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "disableTabularView": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "width": 0.5,
+              "label": {
+                "de": "Weitere Maschine",
+                "en": "Additional machine"
+              }
+            }
+          }
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": false,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "locationSahm": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "text": {
+            "de": "Ort der Werksabnahme:\nGeorg Sahm GmbH & Co. KG\nSudetenlandstr. 33\n37269 Eschwege\nDeutschland",
+            "en": "Place of FAT:\nGeorg Sahm GmbH & Co. KG\nSudetenlandstr. 33\n37269 Eschwege\nGermany"
+          }
+        },
+        "customerorderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Bestell-Nr des Kunden",
+            "en": "Customer PO No"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "customerPerson": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Vertreter des Kunden",
+            "en": "Customer's Participants"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5,
+          "minRows": 1
+        },
+        "sahmPersons": {
+          "fieldType": "REMBERG_PERSONS",
+          "label": {
+            "de": "Vertreter von Sahm",
+            "en": "SAHM Participants"
+          },
+          "hiddenInPdf": false,
+          "printEmailAddress": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "\nEs wird bestätigt, dass die oben genannte(n) Maschine(n) während der Werksabnahme erfolgreich abgenommen wurde und der mechanische, elektrische und Produktionstestlauf den Anforderungen der Auftragsbestätigung und Spezifikation entspricht.\n ",
+            "en": "\nThis is to certify that the above machine(s) are accepted during the FAT at site of manufacturer. The mechanical, electrical and production trial run has proved satisfactory in every respect according to the order confirmation and specification.\n "
+          }
+        },
+        "comments": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1,
+          "minRows": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "07-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Georg Sahm GmbH",
+        "de": "Unterschrift Georg Sahm GmbH"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Georg Sahm GmbH",
+            "en": "Georg Sahm GmbH"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "08-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Maschinen Werksabnahme (FAT)",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen FAT-Bericht als PDF.\n\nMit freundlichen Grüßen,\nGeorg Sahm GmbH & Co. KG",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10_openPoints": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Open Points",
+        "de": "Offene Punkte zum FAT"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "creator": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Ersteller",
+            "en": "Creator"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "date2": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": false
+        },
+        "tobedonetill": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Alle Punkte sind zu erledigen bis",
+            "en": "All items are to be completed by"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "autofillCurrentDate": false,
+          "required": false
+        },
+        "taskList": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "tasks_repeater": {
+              "fieldType": "TEXTAREA",
+              "label": {
+                "de": "Beschreibung",
+                "en": "Description"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "responsiblePerson": {
+              "fieldType": "REMBERG_USER_SELECT",
+              "label": {
+                "de": "Verantwortlich",
+                "en": "Responsibility"
+              },
+              "hiddenInPdf": false,
+              "width": 0.5,
+              "autofillCurrentUser": false,
+              "printEmailAddress": false,
+              "required": false
+            },
+            "doneDate": {
+              "fieldType": "REMBERG_DATE",
+              "label": {
+                "de": "Erledigt am",
+                "en": "Completed on"
+              },
+              "hiddenInPdf": false,
+              "width": 1,
+              "autofillCurrentDate": false,
+              "required": false
+            },
+            "doneBy": {
+              "fieldType": "REMBERG_USER_SELECT",
+              "label": {
+                "de": "Erledigt durch",
+                "en": "Completed by"
+              },
+              "hiddenInPdf": false,
+              "width": 0.5,
+              "autofillCurrentUser": false,
+              "printEmailAddress": false,
+              "required": false
+            }
+          }
+        },
+        "attention": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Achtung",
+            "en": "Attention"
+          }
+        },
+        "helptext2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Diese Liste sendet der Ersteller an alle verantwortlichen Abteilungsleiter, Mitarbeiter und MRE.\nNach Erledigung aller Punkte ist der Ersteller (zuständiger VT) durch MRE umgehend zu informieren! Weiterhin gibt MRE diese Liste an den Ersteller zurück!",
+            "en": "The creator sends this list to all responsible department heads, employees and MRE.\nAfter completion of all points, the creator (responsible VT) must be informed immediately by MRE! Furthermore, MRE returns this list to the creator!"
+          }
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Maschinen Werksabnahme (FAT) - Offene Punkte",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

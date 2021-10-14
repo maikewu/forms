@@ -1,0 +1,698 @@
+{
+  "general": {
+    "name": {
+      "en": "Site Acceptance Test (SAT) Certificate",
+      "de": "Site Acceptance Test (SAT) Certificate"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the customer service report.",
+        "de": "Bitte unterschreiben Sie den Kundendienstbericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Completion of mechanical and electrical erection, commissioning of the line and trial run.",
+        "de": "Fertigstellung der mechanischen und elektrischen Montage, Inbetriebnahme der Anlage und Probelauf."
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Bestell-Nr",
+            "en": "Order No"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset2",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "header_Assets": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Weitere Maschinen",
+            "en": "Additional machines"
+          }
+        },
+        "additionalAssets": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "disableTabularView": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "width": 0.5,
+              "label": {
+                "de": "Weitere Maschine",
+                "en": "Additional machine"
+              }
+            }
+          }
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": false,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "space1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Liefertermin",
+            "en": "Delivery date"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "autofillCurrentDate": false,
+          "required": false
+        },
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "In Anwesenheit des Servicetechnikers",
+            "en": "In the presence of Service Technician"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "customerPerson": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "In Beisein vom Kundenpersonal ",
+            "en": "In the presence of customer personnel"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "space2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "dropdown1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Der maschinelle und produktionstechnische Probelauf hat sich in jeder Hinsicht als zufriedenstellend für die Auftragsbestätigung erwiesen",
+            "en": "The mechanical and production trial run has proved satisfactory in every respect to the order confirmation"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "Yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "No",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "dropdown2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Während der Installationszeit wurden Fehler oder Mängel in Material, Konstruktion und Ausführung festgestellt und / oder notwendige Änderungen / Ersatzteile vorgenommen",
+            "en": "Faults or defects were found in material, design and workmanship during the installation time and / or necessary modifications/replacements have been made."
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "Yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "No",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "space3": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "helptext1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Die Maschine wurde nach der Sepzifikation der folgende Materialart eingerichtet:",
+            "en": "The machine has been set up according to material type specification:"
+          }
+        },
+        "header1": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Material für Maschinentypen 400 bis 700:",
+            "en": "Meterial for machine types 400 to 700:"
+          }
+        },
+        "materialList1": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "materialTyp_repeater1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Material",
+                "en": "Material Type"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "breite_repeater1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Breite (mm)",
+                "en": "Width (mm)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "hub_repeater1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Hub (mm)",
+                "en": "Traverse (mm)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "speed_repeater1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Geschwindigkeit (m/min)",
+                "en": "Speed (m/min)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "winkel_repeater1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Winkel (°)",
+                "en": "Angle (°)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "verlegeabstand_repeater1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Verlegeabstand (mm)",
+                "en": "Layout spacing (mm)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            }
+          }
+        },
+        "header2": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Material für alle anderen Maschinentypen:",
+            "en": "Meterial for all other machine types:"
+          }
+        },
+        "materialList2": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "materialTyp_repeater1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Material",
+                "en": "Material Type"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "fadenspannung_repeater2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Fadenspannung (bar)",
+                "en": "Yarn tension (bar)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "anspressdruck_repeater2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anpressdruck (bar)",
+                "en": "Bail pressure (bar)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "speed_repeater2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Geschwindigkeit (m/min)",
+                "en": "Speed (m/min)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "spulenverhaltnis_repeater2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Spulenverhältnis (Nennverhältnis)",
+                "en": "Winding ratio (nominal ratio)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            },
+            "verlegeabstand_repeater2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Verlegeabstand (mm)",
+                "en": "Layout spacing (mm)"
+              },
+              "hiddenInPdf": false,
+              "required": false
+            }
+          }
+        },
+        "comment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen des Kunden",
+            "en": "Customer notes"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1
+        },
+        "space4": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "disclaimer": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Hinweis zur Gewährleistung und Produkthaftung:\nJegliche Änderungen und/oder bauliche Veränderungen an der Maschine oder Teilen ohne ausdrückliche Zustimmung der Georg Sahm GmbH & Co. KG führt zum Verlust der Gewährleistung und Produkthaftung.",
+            "en": "Note to warranty and product liability:\nAny changes and/or structural modification of the machine or parts thereof without the explicit consent of Georg Sahm GmbH & Co. KG causes the loss of warranty and product liability."
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "07-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Georg Sahm GmbH",
+        "de": "Unterschrift Georg Sahm GmbH"
+      },
+      "stateIndicator": true,
+      "unbreakable": true,
+      "width": 1,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Georg Sahm GmbH",
+            "en": "Georg Sahm GmbH"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "width": 0.5,
+          "required": true
+        },
+        "signature_technician_2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Georg Sahm GmbH",
+            "en": "Georg Sahm GmbH"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "width": 0.5,
+          "required": false
+        }
+      }
+    },
+    "08-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "unbreakable": true,
+      "width": 1,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        },
+        "signature_customer_2": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": false
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Site Acceptance Test (SAT) Certificate",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
