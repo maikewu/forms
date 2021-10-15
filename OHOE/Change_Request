@@ -1,0 +1,945 @@
+{
+  "general": {
+    "name": {
+      "en": "Acceptance Protocol: Change Request",
+      "de": "Abnahmeprotokoll: Change Request"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the change request.",
+        "de": "Bitte unterschreiben Sie die Change Request."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "currentDateAndTime": {
+          "fieldType": "REMBERG_DATETIME",
+          "required": true,
+          "hiddenInPdf": false,
+          "autofillCurrentDate": true,
+          "width": 1,
+          "label": {
+            "de": "Datum & Uhrzeit",
+            "en": "Date & Time"
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Halle / Bau",
+            "en": "Asset"
+          },
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "width": 0.5,
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer": {
+          "width": 0.5,
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "06-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "header_demontage": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Demontage",
+            "en": "Disassembly"
+          },
+          "hiddenInPdf": false
+        },
+        "demontage": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "",
+            "de": ""
+          },
+          "children": {
+            "demontage_quantity": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "readonly": false,
+              "required": true,
+              "validators": []
+            },
+            "demontage_typ": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Leuchtentyp",
+                "en": "Light Type"
+              },
+              "required": true,
+              "hiddenInPdf": false,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "demontage-1",
+                  "text": {
+                    "de": "ASTRA LED 7300lm 840 IP66 II kl. PRZEWÓD 0,7M WTYK/GN SP10kV 53W",
+                    "en": "ASTRA LED 7300lm 840 IP66 II kl. PRZEWÓD 0,7M WTYK/GN SP10kV 53W"
+                  }
+                },
+                {
+                  "value": "demontage-2",
+                  "text": {
+                    "de": "COMPACT LED EVO P 3950lm PRM II kl. IP44/ IP20 620x620 840 (32W) (DE) ",
+                    "en": "COMPACT LED EVO P 3950lm PRM II kl. IP44/ IP20 620x620 840 (32W) (DE) "
+                  }
+                },
+                {
+                  "value": "demontage-3",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1150mm 4500lm 840 (26W) RAPID-E LS2",
+                    "en": "INDUSTRY IP66 LED 1150mm 4500lm 840 (26W) RAPID-E LS2"
+                  }
+                },
+                {
+                  "value": "demontage-4",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1150mm 7600lm 840 (46W) RAPID-E LS2",
+                    "en": "INDUSTRY IP66 LED 1150mm 7600lm 840 (46W) RAPID-E LS2"
+                  }
+                },
+                {
+                  "value": "demontage-5",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1150mm 7600lm 840 LS2 (46W) ",
+                    "en": "INDUSTRY IP66 LED 1150mm 7600lm 840 LS2 (46W) "
+                  }
+                },
+                {
+                  "value": "demontage-6",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1450mm 17000lm 840 (106W) RAPID-E LS2 ",
+                    "en": "INDUSTRY IP66 LED 1450mm 17000lm 840 (106W) RAPID-E LS2 "
+                  }
+                },
+                {
+                  "value": "demontage-7",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1450mm 7500lm 840 (46W) RAPID-E LS2",
+                    "en": "INDUSTRY IP66 LED 1450mm 7500lm 840 (46W) RAPID-E LS2"
+                  }
+                },
+                {
+                  "value": "demontage-8",
+                  "text": {
+                    "de": "Industry retrofit LED 36W IP20 4000K LS2 90st. Wide beam 1530mm type A ",
+                    "en": "Industry retrofit LED 36W IP20 4000K LS2 90st. Wide beam 1530mm type A "
+                  }
+                },
+                {
+                  "value": "demontage-9",
+                  "text": {
+                    "de": "LINEA 2 LED RETROFIT 1480mm 6760lm IP20 840 90D type A (24W)",
+                    "en": "LINEA 2 LED RETROFIT 1480mm 6760lm IP20 840 90D type A (24W)"
+                  }
+                },
+                {
+                  "value": "demontage-10",
+                  "text": {
+                    "de": "LINEA 2 LED RETROFIT 1480mm 6760lm IP20 840 90D type A (40W)",
+                    "en": "LINEA 2 LED RETROFIT 1480mm 6760lm IP20 840 90D type A (40W)"
+                  }
+                },
+                {
+                  "value": "demontage-11",
+                  "text": {
+                    "de": "LINEA 2 LED RETROFIT 1530mm 4040lm IP20 840 90D type A (24W)",
+                    "en": "LINEA 2 LED RETROFIT 1530mm 4040lm IP20 840 90D type A (24W)"
+                  }
+                },
+                {
+                  "value": "demontage-12",
+                  "text": {
+                    "de": "OCULUS LED 19000lm 840 IP66 I kl. 105D SP10kV 104W",
+                    "en": "OCULUS LED 19000lm 840 IP66 I kl. 105D SP10kV 104W"
+                  }
+                },
+                {
+                  "value": "demontage-13",
+                  "text": {
+                    "de": "QUEST PLUS LED HB 14000lm I kl. IP66 840 SP10kV (96W)",
+                    "en": "QUEST PLUS LED HB 14000lm I kl. IP66 840 SP10kV (96W)"
+                  }
+                },
+                {
+                  "value": "demontage-14",
+                  "text": {
+                    "de": "QUEST PLUS LED M 7000lm I kl. IP66 840 SP10kV (48W)",
+                    "en": "QUEST PLUS LED M 7000lm I kl. IP66 840 SP10kV (48W)"
+                  }
+                },
+                {
+                  "value": "demontage-15",
+                  "text": {
+                    "de": "SHORT LED 660mm 2300lm 15W PC IP66 840 + klips inox",
+                    "en": "SHORT LED 660mm 2300lm 15W PC IP66 840 + klips inox"
+                  }
+                },
+                {
+                  "value": "demontage-16",
+                  "text": {
+                    "de": "TIARA LED M 2300lm 740 RM3 IP66 I kl. DALI SP10kV (18W)",
+                    "en": "TIARA LED M 2300lm 740 RM3 IP66 I kl. DALI SP10kV (18W)"
+                  }
+                },
+                {
+                  "value": "demontage-17",
+                  "text": {
+                    "de": "TIARA LED M PRO 15600lm 740 RM3 IP66 II kl. DALI (126W) ",
+                    "en": "TIARA LED M PRO 15600lm 740 RM3 IP66 II kl. DALI (126W) "
+                  }
+                },
+                {
+                  "value": "demontage-18",
+                  "text": {
+                    "de": "TIARA LED M PRO 4800lm 740 RW2 IP66 II kl. DALI (38W)",
+                    "en": "TIARA LED M PRO 4800lm 740 RW2 IP66 II kl. DALI (38W)"
+                  }
+                },
+                {
+                  "value": "demontage-19",
+                  "text": {
+                    "de": "TYPE 110 LED 1200mm 4500lm 840 IP66 MAT (33W) ",
+                    "en": "TYPE 110 LED 1200mm 4500lm 840 IP66 MAT (33W) "
+                  }
+                },
+                {
+                  "value": "demontage-20",
+                  "text": {
+                    "de": "TYPE 110 LED 1200mm 7400lm 840 IP66 MAT (51W)",
+                    "en": "TYPE 110 LED 1200mm 7400lm 840 IP66 MAT (51W)"
+                  }
+                },
+                {
+                  "value": "demontage-21",
+                  "text": {
+                    "de": "TYPE 110 LED 2500mm 11000lm 840 IP66 MAT (73W)",
+                    "en": "TYPE 110 LED 2500mm 11000lm 840 IP66 MAT (73W)"
+                  }
+                },
+                {
+                  "value": "demontage-22",
+                  "text": {
+                    "de": "TYPE 110 LED 600mm 4000lm 840 IP66 MAT (28W)",
+                    "en": "TYPE 110 LED 600mm 4000lm 840 IP66 MAT (28W)"
+                  }
+                },
+                {
+                  "value": "demontage-23",
+                  "text": {
+                    "de": "TYTAN 2 LED HALL 1150mm 7300lm 840 IP66 LS2 (50W) ",
+                    "en": "TYTAN 2 LED HALL 1150mm 7300lm 840 IP66 LS2 (50W) "
+                  }
+                },
+                {
+                  "value": "demontage-24",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 2500lm IP66 840 (16W)",
+                    "en": "TYTAN LED 1150mm 2500lm IP66 840 (16W)"
+                  }
+                },
+                {
+                  "value": "demontage-25",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 4500lm IP66 840 (29W)",
+                    "en": "TYTAN LED 1150mm 4500lm IP66 840 (29W)"
+                  }
+                },
+                {
+                  "value": "demontage-26",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 7400lm IP66 840 (46W)",
+                    "en": "TYTAN LED 1150mm 7400lm IP66 840 (46W)"
+                  }
+                },
+                {
+                  "value": "demontage-27",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 7400lm IP66 DALI 840 (46W)",
+                    "en": "TYTAN LED 1150mm 7400lm IP66 DALI 840 (46W)"
+                  }
+                },
+                {
+                  "value": "demontage-28",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 7400lm IP66 LS2 840 (46W) Copolyester",
+                    "en": "TYTAN LED 1150mm 7400lm IP66 LS2 840 (46W) Copolyester"
+                  }
+                },
+                {
+                  "value": "demontage-29",
+                  "text": {
+                    "de": "TYTAN LED 1450mm 10900lm IP66 840 (70W)",
+                    "en": "TYTAN LED 1450mm 10900lm IP66 840 (70W)"
+                  }
+                },
+                {
+                  "value": "demontage-30",
+                  "text": {
+                    "de": "TYTAN LED 1450mm 5500lm IP66 840 (35W)",
+                    "en": "TYTAN LED 1450mm 5500lm IP66 840 (35W)"
+                  }
+                },
+                {
+                  "value": "demontage-31",
+                  "text": {
+                    "de": "TYTAN LED 1450mm 7000lm IP66 DALI (corr) RCR 840 (43W)",
+                    "en": "TYTAN LED 1450mm 7000lm IP66 DALI (corr) RCR 840 (43W)"
+                  }
+                },
+                {
+                  "value": "demontage-32",
+                  "text": {
+                    "de": "TYTAN LED PRO 1150mm 4350lm 840 IP67 (24W)",
+                    "en": "TYTAN LED PRO 1150mm 4350lm 840 IP67 (24W)"
+                  }
+                },
+                {
+                  "value": "demontage-33",
+                  "text": {
+                    "de": "TYTAN LED PRO 1150mm 7500lm 840 IP67 (40W) ",
+                    "en": "TYTAN LED PRO 1150mm 7500lm 840 IP67 (40W) "
+                  }
+                },
+                {
+                  "value": "demontage-34",
+                  "text": {
+                    "de": "TYTAN LED PRO 1450mm 12000lm 840 IP67 (70W)",
+                    "en": "TYTAN LED PRO 1450mm 12000lm 840 IP67 (70W)"
+                  }
+                },
+                {
+                  "value": "demontage-35",
+                  "text": {
+                    "de": "TYTAN LED PRO 1450mm 2500lm 840 IP67 (13W)",
+                    "en": "TYTAN LED PRO 1450mm 2500lm 840 IP67 (13W)"
+                  }
+                },
+                {
+                  "value": "demontage-36",
+                  "text": {
+                    "de": "TYTAN LED PRO 1450mm 4350lm 840 IP67 (24W)",
+                    "en": "TYTAN LED PRO 1450mm 4350lm 840 IP67 (24W)"
+                  }
+                },
+                {
+                  "value": "demontage-37",
+                  "text": {
+                    "de": "VESPO LED 1161mm 3500lm PRM MAT IP44 840 (27W)",
+                    "en": "VESPO LED 1161mm 3500lm PRM MAT IP44 840 (27W)"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_installation": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Montage",
+            "en": "Installation"
+          },
+          "hiddenInPdf": false
+        },
+        "installation": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "",
+            "de": ""
+          },
+          "children": {
+            "installation_quantity": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "readonly": false,
+              "required": true,
+              "validators": []
+            },
+            "installation_typ": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Leuchtentyp",
+                "en": "Light Type"
+              },
+              "required": true,
+              "hiddenInPdf": false,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "installation-1",
+                  "text": {
+                    "de": "ASTRA LED 7300lm 840 IP66 II kl. PRZEWÓD 0,7M WTYK/GN SP10kV 53W",
+                    "en": "ASTRA LED 7300lm 840 IP66 II kl. PRZEWÓD 0,7M WTYK/GN SP10kV 53W"
+                  }
+                },
+                {
+                  "value": "installation-2",
+                  "text": {
+                    "de": "COMPACT LED EVO P 3950lm PRM II kl. IP44/ IP20 620x620 840 (32W) (DE) ",
+                    "en": "COMPACT LED EVO P 3950lm PRM II kl. IP44/ IP20 620x620 840 (32W) (DE) "
+                  }
+                },
+                {
+                  "value": "installation-3",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1150mm 4500lm 840 (26W) RAPID-E LS2",
+                    "en": "INDUSTRY IP66 LED 1150mm 4500lm 840 (26W) RAPID-E LS2"
+                  }
+                },
+                {
+                  "value": "installation-4",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1150mm 7600lm 840 (46W) RAPID-E LS2",
+                    "en": "INDUSTRY IP66 LED 1150mm 7600lm 840 (46W) RAPID-E LS2"
+                  }
+                },
+                {
+                  "value": "installation-5",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1150mm 7600lm 840 LS2 (46W) ",
+                    "en": "INDUSTRY IP66 LED 1150mm 7600lm 840 LS2 (46W) "
+                  }
+                },
+                {
+                  "value": "installation-6",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1450mm 17000lm 840 (106W) RAPID-E LS2 ",
+                    "en": "INDUSTRY IP66 LED 1450mm 17000lm 840 (106W) RAPID-E LS2 "
+                  }
+                },
+                {
+                  "value": "installation-7",
+                  "text": {
+                    "de": "INDUSTRY IP66 LED 1450mm 7500lm 840 (46W) RAPID-E LS2",
+                    "en": "INDUSTRY IP66 LED 1450mm 7500lm 840 (46W) RAPID-E LS2"
+                  }
+                },
+                {
+                  "value": "installation-8",
+                  "text": {
+                    "de": "Industry retrofit LED 36W IP20 4000K LS2 90st. Wide beam 1530mm type A ",
+                    "en": "Industry retrofit LED 36W IP20 4000K LS2 90st. Wide beam 1530mm type A "
+                  }
+                },
+                {
+                  "value": "installation-9",
+                  "text": {
+                    "de": "LINEA 2 LED RETROFIT 1480mm 6760lm IP20 840 90D type A (24W)",
+                    "en": "LINEA 2 LED RETROFIT 1480mm 6760lm IP20 840 90D type A (24W)"
+                  }
+                },
+                {
+                  "value": "installation-10",
+                  "text": {
+                    "de": "LINEA 2 LED RETROFIT 1480mm 6760lm IP20 840 90D type A (40W)",
+                    "en": "LINEA 2 LED RETROFIT 1480mm 6760lm IP20 840 90D type A (40W)"
+                  }
+                },
+                {
+                  "value": "installation-11",
+                  "text": {
+                    "de": "LINEA 2 LED RETROFIT 1530mm 4040lm IP20 840 90D type A (24W)",
+                    "en": "LINEA 2 LED RETROFIT 1530mm 4040lm IP20 840 90D type A (24W)"
+                  }
+                },
+                {
+                  "value": "installation-12",
+                  "text": {
+                    "de": "OCULUS LED 19000lm 840 IP66 I kl. 105D SP10kV 104W",
+                    "en": "OCULUS LED 19000lm 840 IP66 I kl. 105D SP10kV 104W"
+                  }
+                },
+                {
+                  "value": "installation-13",
+                  "text": {
+                    "de": "QUEST PLUS LED HB 14000lm I kl. IP66 840 SP10kV (96W)",
+                    "en": "QUEST PLUS LED HB 14000lm I kl. IP66 840 SP10kV (96W)"
+                  }
+                },
+                {
+                  "value": "installation-14",
+                  "text": {
+                    "de": "QUEST PLUS LED M 7000lm I kl. IP66 840 SP10kV (48W)",
+                    "en": "QUEST PLUS LED M 7000lm I kl. IP66 840 SP10kV (48W)"
+                  }
+                },
+                {
+                  "value": "installation-15",
+                  "text": {
+                    "de": "SHORT LED 660mm 2300lm 15W PC IP66 840 + klips inox",
+                    "en": "SHORT LED 660mm 2300lm 15W PC IP66 840 + klips inox"
+                  }
+                },
+                {
+                  "value": "installation-16",
+                  "text": {
+                    "de": "TIARA LED M 2300lm 740 RM3 IP66 I kl. DALI SP10kV (18W)",
+                    "en": "TIARA LED M 2300lm 740 RM3 IP66 I kl. DALI SP10kV (18W)"
+                  }
+                },
+                {
+                  "value": "installation-17",
+                  "text": {
+                    "de": "TIARA LED M PRO 15600lm 740 RM3 IP66 II kl. DALI (126W) ",
+                    "en": "TIARA LED M PRO 15600lm 740 RM3 IP66 II kl. DALI (126W) "
+                  }
+                },
+                {
+                  "value": "installation-18",
+                  "text": {
+                    "de": "TIARA LED M PRO 4800lm 740 RW2 IP66 II kl. DALI (38W)",
+                    "en": "TIARA LED M PRO 4800lm 740 RW2 IP66 II kl. DALI (38W)"
+                  }
+                },
+                {
+                  "value": "installation-19",
+                  "text": {
+                    "de": "TYPE 110 LED 1200mm 4500lm 840 IP66 MAT (33W) ",
+                    "en": "TYPE 110 LED 1200mm 4500lm 840 IP66 MAT (33W) "
+                  }
+                },
+                {
+                  "value": "installation-20",
+                  "text": {
+                    "de": "TYPE 110 LED 1200mm 7400lm 840 IP66 MAT (51W)",
+                    "en": "TYPE 110 LED 1200mm 7400lm 840 IP66 MAT (51W)"
+                  }
+                },
+                {
+                  "value": "installation-21",
+                  "text": {
+                    "de": "TYPE 110 LED 2500mm 11000lm 840 IP66 MAT (73W)",
+                    "en": "TYPE 110 LED 2500mm 11000lm 840 IP66 MAT (73W)"
+                  }
+                },
+                {
+                  "value": "installation-22",
+                  "text": {
+                    "de": "TYPE 110 LED 600mm 4000lm 840 IP66 MAT (28W)",
+                    "en": "TYPE 110 LED 600mm 4000lm 840 IP66 MAT (28W)"
+                  }
+                },
+                {
+                  "value": "installation-23",
+                  "text": {
+                    "de": "TYTAN 2 LED HALL 1150mm 7300lm 840 IP66 LS2 (50W) ",
+                    "en": "TYTAN 2 LED HALL 1150mm 7300lm 840 IP66 LS2 (50W) "
+                  }
+                },
+                {
+                  "value": "installation-24",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 2500lm IP66 840 (16W)",
+                    "en": "TYTAN LED 1150mm 2500lm IP66 840 (16W)"
+                  }
+                },
+                {
+                  "value": "installation-25",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 4500lm IP66 840 (29W)",
+                    "en": "TYTAN LED 1150mm 4500lm IP66 840 (29W)"
+                  }
+                },
+                {
+                  "value": "installation-26",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 7400lm IP66 840 (46W)",
+                    "en": "TYTAN LED 1150mm 7400lm IP66 840 (46W)"
+                  }
+                },
+                {
+                  "value": "installation-27",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 7400lm IP66 DALI 840 (46W)",
+                    "en": "TYTAN LED 1150mm 7400lm IP66 DALI 840 (46W)"
+                  }
+                },
+                {
+                  "value": "installation-28",
+                  "text": {
+                    "de": "TYTAN LED 1150mm 7400lm IP66 LS2 840 (46W) Copolyester",
+                    "en": "TYTAN LED 1150mm 7400lm IP66 LS2 840 (46W) Copolyester"
+                  }
+                },
+                {
+                  "value": "installation-29",
+                  "text": {
+                    "de": "TYTAN LED 1450mm 10900lm IP66 840 (70W)",
+                    "en": "TYTAN LED 1450mm 10900lm IP66 840 (70W)"
+                  }
+                },
+                {
+                  "value": "installation-30",
+                  "text": {
+                    "de": "TYTAN LED 1450mm 5500lm IP66 840 (35W)",
+                    "en": "TYTAN LED 1450mm 5500lm IP66 840 (35W)"
+                  }
+                },
+                {
+                  "value": "installation-31",
+                  "text": {
+                    "de": "TYTAN LED 1450mm 7000lm IP66 DALI (corr) RCR 840 (43W)",
+                    "en": "TYTAN LED 1450mm 7000lm IP66 DALI (corr) RCR 840 (43W)"
+                  }
+                },
+                {
+                  "value": "installation-32",
+                  "text": {
+                    "de": "TYTAN LED PRO 1150mm 4350lm 840 IP67 (24W)",
+                    "en": "TYTAN LED PRO 1150mm 4350lm 840 IP67 (24W)"
+                  }
+                },
+                {
+                  "value": "installation-33",
+                  "text": {
+                    "de": "TYTAN LED PRO 1150mm 7500lm 840 IP67 (40W) ",
+                    "en": "TYTAN LED PRO 1150mm 7500lm 840 IP67 (40W) "
+                  }
+                },
+                {
+                  "value": "installation-34",
+                  "text": {
+                    "de": "TYTAN LED PRO 1450mm 12000lm 840 IP67 (70W)",
+                    "en": "TYTAN LED PRO 1450mm 12000lm 840 IP67 (70W)"
+                  }
+                },
+                {
+                  "value": "installation-35",
+                  "text": {
+                    "de": "TYTAN LED PRO 1450mm 2500lm 840 IP67 (13W)",
+                    "en": "TYTAN LED PRO 1450mm 2500lm 840 IP67 (13W)"
+                  }
+                },
+                {
+                  "value": "installation-36",
+                  "text": {
+                    "de": "TYTAN LED PRO 1450mm 4350lm 840 IP67 (24W)",
+                    "en": "TYTAN LED PRO 1450mm 4350lm 840 IP67 (24W)"
+                  }
+                },
+                {
+                  "value": "installation-37",
+                  "text": {
+                    "de": "VESPO LED 1161mm 3500lm PRM MAT IP44 840 (27W)",
+                    "en": "VESPO LED 1161mm 3500lm PRM MAT IP44 840 (27W)"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "verbrauchtes_material": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verbrauchtes Material",
+            "en": "Used Material"
+          },
+          "required": false,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "panel_switch": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Licht schaltbar über Tableau",
+            "en": "Light switchable via panel"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "checked": false
+        },
+        "external_switch": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Licht schaltbar über separaten Schalter",
+            "en": "Light switchable via separate switch"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "checked": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "06-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service Partner",
+        "de": "Unterschrift Servicepartner"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicepartner",
+            "en": "Service Partner"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "07-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "08-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Change Request Bericht - Open House of Energy GmbH",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false,
+              "others": [
+                "t.lehner@ohoe.eu"
+              ]
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

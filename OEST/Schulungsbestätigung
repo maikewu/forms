@@ -1,0 +1,609 @@
+{
+  "general": {
+    "name": {
+      "en": "Training Certificate",
+      "de": "Schulungsbestätigung"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Training Certificate",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the training certificate report.",
+        "de": "Bitte unterschreiben Sie die Schulungsbestätigung."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Daten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "trainingType": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Art der Schulung",
+            "en": "Training Type"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "operation",
+              "text": {
+                "de": "Bedienungsschulung",
+                "en": "Operation training"
+              }
+            },
+            {
+              "value": "maintenance",
+              "text": {
+                "de": "Instandhaltungsschulung",
+                "en": "Maintenance training"
+              }
+            },
+            {
+              "value": "cleaning",
+              "text": {
+                "de": "Reinigungsschulung",
+                "en": "Cleaning training"
+              }
+            }
+          ]
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 1,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customercontactperson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer",
+            "en": "Service Order Number"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Maschinennummer",
+            "en": "Machine number"
+          }
+        },
+        "topic": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Thema der Schulung",
+            "en": "Training topic"
+          },
+          "width": 1,
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "06-signatureParticipantsAckn": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Hinweise",
+        "de": "''Durch die Unterschrift bestätige ich, dass ich teilgenommen und den Inhalt der Schulung verstanden habe.''"
+      },
+      "stateIndicator": true,
+      "width": 1,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "acknowledgement33": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Das gewonnene Wissen wurde stichprobenartig von unserem Techniker abgefragt und geprüft. Zur Ergänzung der vermittelten Inhalte sind die Teilnehmer aufgefordert, sich mit den Inhalten der technischen Dokumentation vertraut zu machen.",
+            "en": "Documents Attachment"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        }
+      }
+    },
+    "08-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 1"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": true
+        }
+      }
+    },
+    "09-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 2"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "10-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 3"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant3": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "11-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 4"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant4": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "12-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 5"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant5": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "13-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 6"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant6": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "14-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 7"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant7": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "15-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 8"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant8": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "16-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 9"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant9": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "17-signatureParticipants": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Teilnehmer-Unterschrift 10"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant10": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teilnehmer",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": false
+        }
+      }
+    },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Kundenausfertigung als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "OEST Maschinenbau Schulungsbestätigung",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie die abgeschlossene Schulungsbestätigung als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true,
+              "others": [
+                "Juri.Biegler@oest.de"
+              ]
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "commentAddendum": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen & Hinweise",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "filesHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Dokumentenanhang",
+            "en": "Documents Attachment"
+          },
+          "required": false,
+          "hiddenInPdf": true
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          }
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Schulungsbestätigung mit internem Nachtrag als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Schulungsbestätigung - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "Juri.Biegler@oest.de"
+              ]
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

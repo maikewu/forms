@@ -1,0 +1,869 @@
+{
+  "general": {
+    "name": {
+      "en": "Customer Service Report For Inspection And Maintenance Of Chlorination Systems",
+      "de": "Kundendienstbericht zur Prüfung und Wartung von Chlorungsanlagen"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the customer service report.",
+        "de": "Bitte unterschreiben Sie den Kundendienstbericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": true
+        },
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "missionNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Montagenummer",
+            "en": "Assembly Number"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer",
+            "en": "Service Order Number"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Einsatzort",
+            "en": "Mission Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_work_times": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Travel and Working Times",
+        "de": "Reise- und Arbeitszeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Reise- und Arbeitszeiten",
+            "en": "Travel and Working Times"
+          },
+          "unbreakable": true,
+          "required": true
+        }
+      }
+    },
+    "03_mission_info": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Mission Information",
+        "de": "Auftragsinformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "header_asset": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "1. Anlage",
+            "en": "1. Asset"
+          }
+        },
+        "checkbox_asset_1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Prüfung der Dosieranlage nach DGUV Regel 107-001 - Betrieb von Bädern einschließlich Dichtheitsprüfung.",
+            "en": "Testing of dosing system according to DGUV regulation 107-001 - operation of baths including leak test."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Wartung der Dosieranlage einschließlich Reinigung und Erneuerung der Verschleißteile.",
+            "en": "Maintenance of dosing system including cleaning and renewal of expendable parts."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Vakuum-Sicherheitsventil im Chlorgasraum vorhanden und geprüft.",
+            "en": "Vacuum safety valve present and tested in chlorine gas compartment."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Strömungswächter in der Umwälzleitung mit Abschaltung der Chlorung geprüft.",
+            "en": "Checked flow monitor in circulation line with chlorination shutdown."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Aktivkohle des Filters in der Abblaseleitung erneuert (Standzeit 1 Jahr).",
+            "en": "Activated carbon of the filter in the blow-off line renewed (service life 1 year)."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Manuelle Chlorung für Filterspülung vorhanden.",
+            "en": "Manual chlorination for filter flushing available."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Pro Bediensteten ist eine funktionsbereite Atemschutzmaske mit Kombinationsersatzfilter vorhanden. Die Filter werden bei Erstverwendung mit dem Öffnungsdatum versehen und spätestens nach 6 Monaten ersetzt, bzw. bei Ablauf des Haltbarkeitsdatums.",
+            "en": "One functional respirator with combination replacement filter is provided for each staff member. The filters are marked with the opening date when first used and replaced after 6 months at the latest, or when the expiration date has passed."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Notfallausrüstung für den Ventilbereich der Chlorgasflasche vorhanden und im Chlorgasraum deponiert.",
+            "en": "Emergency equipment for the valve area of the chlorine gas cylinder available and deposited in the chlorine gas room."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Messwasserüberwachung vorhanden und auf Funktion geprüft (Abschaltung der Dosierung).",
+            "en": "Sample water monitoring present and checked for function (shutdown of dosing)."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kennzeichnung der Dosierleitungen nach Fließrichtung und Inhalt vorhanden.",
+            "en": "Marking of the dosing lines according to flow direction and content available."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Auffangwannen für die Liefergebinde vorhanden.",
+            "en": "Drip pans available for the delivery containers."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Impfstellen auf Funktion geprüft und ggf. gereinigt.",
+            "en": "Inoculation points checked for function and cleaned if necessary."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Flexible Vakuum-Chlorgasleitungen auf Dichtigkeit geprüft und für in Ordnung befunden.",
+            "en": "Flexible vacuum chlorine gas lines tested for leaks and found to be OK."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_13_comment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Erforderliche Erneuerung",
+            "en": "Required renewal"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_asset_14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Für die Chlorgasanlage ist ein aktueller Chlorgasalarmplan und Betriebsanleitung laut Betreiber vorhanden.",
+            "en": "Chlorine gas alarm plan and operating instructions are available for the chlorine gas system according to the operator."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "header_room": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "2. Chlorgasräume und bauliche Sicherheitseinrichtungen",
+            "en": "2. Chlorine gas rooms and structural safety equipment"
+          }
+        },
+        "checkbox_room_1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Automatische und manuelle Wassersprühanlage mit Abfluss (Gully mit Wasservorlage) geprüft.",
+            "en": "Automatic and manual water spray system with drain (gully with water seal) tested."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_room_2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Natriumthiosulfatanlage vorhanden und auf Funktion geprüft.",
+            "en": "Sodium thiosulfate plant present and tested for function."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_room_3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Alarmweiterleitung Chlorgaswarngerät an ständig besetzte Stelle vorhanden und mit Hauptalarm des Chlorgaswarngerätes gekoppelt. Funktionsprüfung durchgeführt.",
+            "en": "Alarm forwarding of chlorine gas warning device to permanently manned location present and coupled with main alarm of chlorine gas warning device. Functional test performed."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_room_4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Akustische und optische Warneinrichtung für Chlorgaswarngerät vorhanden und geprüft.",
+            "en": "Acoustic and optical warning device for chlorine gas warning device present and tested."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_room_5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Chlorraumbeschilderung vorhanden und auf Vollständigkeit geprüft.",
+            "en": "Chlorine room signage in place and checked for completeness."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_room_6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Chlorgasflaschen Markierung „Behälter voll“ „Behälter leer“ vorhanden und angebracht.",
+            "en": "Chlorine gas cylinder „Container full“ „Container empty“ marking present and attached."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "header_intro": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "3. Einweisung und Betrieb",
+            "en": "3. Instruction and Operation"
+          }
+        },
+        "checkbox_intro_1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Das anwesende Bedienungspersonal wurde nochmals an der Anlagentechnik eingewiesen und alle offenen Fragen geklärt.",
+            "en": "Operating personnel present were again instructed on the system technology and all open questions were clarified."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox_intro_2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Anlage in Betrieb genommen und an das Bedienungspersonal übergeben, alle offenen Fragen abgeklärt. Kunden darauf hingewiesen, dass die Mess- und Regeltechnik nach 24h nachkalibriert werden muss.",
+            "en": "System commissioned and handed over to operating personnel, all open questions clarified. Customers advised that the measurement and control technology must be recalibrated after 24h."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "space": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "commentText": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Comments"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "04_spare_parts": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Spare Parts",
+        "de": "Materialverbrauch"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Materialverbrauch",
+            "en": "Spare Parts"
+          },
+          "required": false,
+          "unbreakable": true,
+          "hideWarrantyField": true,
+          "invoiceFields": false
+        },
+        "disclaimer1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Die beauftragten Arbeiten wurden wie vereinbart durchgeführt und die Anlage in einwandfreien Zustand übernommen. Sollten sich trotzdem versteckte, nicht aufgetretene Fehler zeigen, reklamieren Sie bitte innerhalb von 8 Tagen. Ausgetauschte Teile sind Eigentum des Kunden, sie wurden wunschgemäß ausgehändigt. Eine Bedienungsanleitung für die Anlage liegt dem Betreiber/Bedienungspersonal vor.",
+            "en": "The commissioned work was carried out as agreed and the system was taken over in perfect condition. If, despite this, hidden defects appear, please complain within 8 days. Replaced parts are the property of the customer, they were handed over as requested. Operating instructions for the system are available to the operator/operating personnel."
+          }
+        },
+        "disclaimer2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Mit der Unterschrift werden die allgemeinen Montagebedingungen anerkannt.",
+            "en": "With the signature, the general assembly conditions are accepted."
+          }
+        }
+      }
+    },
+    "07-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "08-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "disclaimer3": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Die beauftragten Arbeiten wurden wie vereinbart durchgeführt und die Anlage in einwandfreien Zustand übernommen. Sollten sich trotzdem versteckte, nicht aufgetretene Fehler zeigen, reklamieren Sie bitte innerhalb von 8 Tagen. Ausgetauschte Teile sind Eigentum des Kunden, sie wurden wunschgemäß ausgehändigt. Eine Bedienungsanleitung für die Anlage liegt dem Betreiber/Bedienungspersonal vor.",
+            "en": "The commissioned work was carried out as agreed and the system was taken over in perfect condition. If, despite this, hidden defects appear, please complain within 8 days. Replaced parts are the property of the customer, they were handed over as requested. Operating instructions for the system are available to the operator/operating personnel."
+          }
+        },
+        "disclaimer4": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Mit der Unterschrift werden die allgemeinen Montagebedingungen anerkannt.",
+            "en": "With the signature, the general assembly conditions are accepted."
+          }
+        },
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Wilhelm Dosiertechnik - Kundendienstbericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Kundendienstbericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "kundendienstbericht@wilhelm-dosiertechnik.de"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "commentAddendum": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen & Hinweise",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "upload": {
+          "width": 1,
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Fotos",
+            "en": "Photos"
+          }
+        },
+        "tavelAndWorkingTimes2": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Reise- und Arbeitszeiten",
+            "en": "Travel and Working Times"
+          },
+          "unbreakable": true,
+          "hideInPdfIfEmpty": true,
+          "required": false
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Kundendienstbericht - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "kundendienstbericht@wilhelm-dosiertechnik.de"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

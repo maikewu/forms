@@ -1,0 +1,1065 @@
+{
+  "general": {
+    "name": {
+      "en": "Service Report",
+      "de": "Servicebericht"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreibe den Service Report."
+      }
+    }
+  },
+  "formStructure": {
+    "02_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Kundeninformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "02_customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "02_customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "contactPersons",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "03_assetInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Warenempfänger",
+            "en": "Invoicing Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5,
+          "messages": {
+            "onChange": [
+              {
+                "to": "09-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "10-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "03_assetInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03_assetInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Asset Information",
+        "de": "Geräte-Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "registerAssetChange": true,
+          "required": false,
+          "label": {
+            "de": "Gerät",
+            "en": "Maschine"
+          },
+          "width": 1
+        },
+        "fabr-no": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Fabr.-Nr.",
+            "en": "Serial Number"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        },
+        "operatingHours": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Betriebsstunden",
+            "en": "Operating Hours"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        },
+        "workHours": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Arbeitszeit für die Maschine",
+            "en": "Work time"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "assetHeader": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Weitere Geräte",
+            "en": "Additional equipment"
+          }
+        },
+        "machine_repeater": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine weiteren Geräte hinzugefügt."
+          },
+          "disableTabularView": true,
+          "children": {
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "label": {
+                "de": "Weiteres Gerät",
+                "en": "Additional equipment"
+              }
+            },
+            "fabr-no2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Fabr.-Nr.",
+                "en": "Serial Number"
+              },
+              "required": false,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5
+            },
+            "operatingHours2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Betriebsstunden",
+                "en": "Operating Hours"
+              },
+              "required": true,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5
+            },
+            "workHours2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Arbeitszeit für die Maschine",
+                "en": "Work time"
+              },
+              "required": false,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5
+            }
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "04_performedTasksInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "04_performedTasksInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Performed Tasks",
+        "de": "Durchgeführte Arbeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Art der Arbeit",
+            "en": "Type of work"
+          },
+          "required": false
+        },
+        "tasks2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Art der Arbeit",
+            "en": "Type of work"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "05_sparePartsInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "05_sparePartsInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Spare Parts",
+        "de": "Ersatzteile"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Ersatzteile",
+            "en": "Spare Parts"
+          },
+          "required": false,
+          "invoiceFields": false,
+          "hideWarrantyField": true
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "06_travelAndWorkingTimeInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "06_travelAndWorkingTimeInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Travel and Working Times",
+        "de": "Reise- und Arbeitszeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "fahrtkostenCheck": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Fahrtkostenpauschale",
+            "en": "Lump-sum Agreement for Travel Expenses"
+          }
+        },
+        "tavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Reise- und Arbeitszeiten",
+            "en": "Travel and Working Times"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "08_notesInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "08_notesInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Notes",
+        "de": "Bemerkungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "assetOK": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gerätzustand",
+            "en": "Asset state"
+          },
+          "required": false,
+          "width": 0.3,
+          "options": [
+            {
+              "value": "OK",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "Not OK",
+              "text": {
+                "de": "Nicht i. O.",
+                "en": "Not OK"
+              }
+            }
+          ]
+        },
+        "reason": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Grund (falls n.i.O.)",
+            "en": "Reason (if not OK)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "testdriveCheck": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Testfahrt durchgeführt",
+            "en": "Test drive conducted"
+          }
+        },
+        "offersCheck": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Angebot über weiteren Service durch Kunden erwünscht",
+            "en": "Offer for additional service wanted"
+          }
+        },
+        "offerInfos": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Angebotsinformationen",
+            "en": "Offer information"
+          },
+          "required": false
+        },
+        "documents-notes": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "label": {
+            "de": "Anhänge",
+            "en": "Attachments"
+          }
+        },
+        "timesNote": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Die ordnungsgemäße Ausführung des Auftrags wird bestätigt, geschriebene Zeiten, Kilometer und Teile sind genehmigt.",
+            "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+          },
+          "width": 1
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "09-signature_technician",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "09-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Monteur"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "10-signature_customer",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "10-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Unterschrift Auftraggeber"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "11-send",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send filled out form to customer",
+        "de": "Ausgefüllten Servicebericht an Kunden senden"
+      },
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false,
+          "prefillConfig": {
+            "subject": "Genkinger Servicebericht (Kundenausfertigung)",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Genkinger GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen | Best regards",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "12-Addendum",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "12-Addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Internal Addendum by the Technician",
+        "de": "Interner Nachtrag durch den Monteur"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "AdditionalTavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Zusätzliche Reise- und Arbeitszeiten",
+            "en": "Additional Travel and Working Times"
+          },
+          "required": true
+        },
+        "spareParts2": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Zusätzliche Ersatzteile",
+            "en": "Additional Spare Parts"
+          },
+          "required": false,
+          "invoiceFields": false
+        },
+        "additionalExpenses": {
+          "fieldType": "REMBERG_EXPENSES",
+          "label": {
+            "de": "Ausgaben",
+            "en": "Expenses"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "required": false
+        },
+        "documents-notes": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "label": {
+            "de": "Anhänge",
+            "en": "Attachments"
+          }
+        },
+        "generalNotesX": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Allgemeine Bemerkungen & Hinweise",
+            "en": "General Notes"
+          },
+          "required": false,
+          "minRows": 1
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "13-Addendum-backoffice",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "13-Addendum-backoffice": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Internal Addendum by Backoffice",
+        "de": "Interner Nachtrag durch den Innendienst"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "serviceNumber": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Bericht-Typ",
+            "en": "Type"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "kd",
+              "text": {
+                "de": "Kundendienst",
+                "en": "Customer Service"
+              }
+            },
+            {
+              "value": "wv",
+              "text": {
+                "de": "Wartungsvertrag",
+                "en": "Maintenance Contract"
+              }
+            },
+            {
+              "value": "g",
+              "text": {
+                "de": "Garantie",
+                "en": "Warranty"
+              }
+            },
+            {
+              "value": "fs",
+              "text": {
+                "de": "Full-Service",
+                "en": "Full Service"
+              }
+            },
+            {
+              "value": "k",
+              "text": {
+                "de": "Kulanz",
+                "en": "Goodwill"
+              }
+            }
+          ]
+        },
+        "maintenanceLumpSum": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Wartungspauschale",
+            "en": "Maintenance Lump-Sum"
+          },
+          "required": false
+        },
+        "travelLumpSum": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Fahrtkostenpauschale",
+            "en": "Travel Costs Lump-Sum"
+          },
+          "required": false
+        },
+        "smallParts": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Kleinteile",
+            "en": "Small Parts"
+          },
+          "required": false
+        },
+        "generalComments2": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Allgemeine Bemerkungen & Hinweise",
+            "en": "General Comments"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "width": 1,
+          "readonly": false,
+          "validators": []
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "14-Addendum-backoffice2",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "14-Addendum-backoffice2": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Internal Addendum by Accounting",
+        "de": "Interner Nachtrag durch die Abrechnungsabteilung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "oinvoice": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "SAP-Beleg",
+            "en": "SAP Document"
+          },
+          "required": false
+        },
+        "customerOrder": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Kundenbestellnummer",
+            "en": "Customer Order Number"
+          },
+          "required": false
+        },
+        "generalNotes3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Allgemeine Bemerkungen & Hinweise",
+            "en": "General Notes"
+          },
+          "required": false,
+          "minRows": 1
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

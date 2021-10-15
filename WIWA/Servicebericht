@@ -1,0 +1,498 @@
+{
+  "general": {
+    "name": {
+      "en": "Service Report",
+      "de": "Servicebericht"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreiben Sie den Servicebericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_general_Information": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "serviceauftrag": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Serviceauftrag",
+            "en": "Service Order"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false
+        },
+        "techniker": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_general_Information",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_general_Information",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "phone"
+                      },
+                      "output": {
+                        "_field": "customer_phone"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_general_Information",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": {
+                                  "_field": "asset",
+                                  "_propertyName": "product"
+                                },
+                                "_functionName": "GET_PRODUCT"
+                              },
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation",
+                        "_default": {
+                          "city": "",
+                          "company": "",
+                          "country": "",
+                          "countryProvince": "",
+                          "latitude": "",
+                          "longitude": "",
+                          "street": "",
+                          "streetNumber": "",
+                          "zipPostCode": ""
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "name_orderer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Name des Bestellers",
+            "en": "Name of Orderer"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "05-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "06-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "requester": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anforderung von",
+            "en": "Requested by"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "customer_phone": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Telefonnummer",
+            "en": "Telephone Number"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "order_number": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftrag / Bestellnummer",
+            "en": "Order Number"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        }
+      }
+    },
+    "02_work_times": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Travel and Working Times",
+        "de": "Reise- und Arbeitszeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Reise- und Arbeitszeiten",
+            "en": "Travel and Working Times"
+          },
+          "unbreakable": true,
+          "required": false
+        },
+        "comment_times": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "03_performed_tasks": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Type of Work",
+        "de": "Art der Arbeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Durchgeführte Arbeiten",
+            "en": "Performed Tasks"
+          },
+          "unbreakable": true,
+          "hideInPdfIfEmpty": true,
+          "required": false
+        },
+        "comment_tasks": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        },
+        "customer_remarks": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kundenwünsche",
+            "en": "Customer Remarks"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "04_spare_parts": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Articles / Services",
+        "de": "Artikel / Dienstleistungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Ersatzteile",
+            "en": "Spare Parts"
+          },
+          "required": false,
+          "unbreakable": true,
+          "hideWarrantyField": true,
+          "invoiceFields": false
+        },
+        "sparePartsComment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Die vorstehend aufgeführten Leistungen und die aufgezeichneten Arbeitszeiten wurden in meinem/unseren Auftrag zu den bekannten Geschäfts-, Liefer- und Montagebedingungen der Firma WIWA Wilhelm Wagner GmbH & Co. KG ausgeführt, was nach eingehender Überprüfung hierdurch unterschriftlich bestätigt wird. Auf nachträgliche Spezifikation der oben aufgeführten Montagearbeiten und sonstigen Leistungen wird ausdrücklich verzichtet. Die aufgeführten Arbeitsstunden werden als Abrechnungsgrundlage anerkannt.",
+            "en": "The services and recorded working hours listed above were carried out on my/our behalf according to the known business, delivery and assembly conditions of the company WIWA Wilhelm Wagner GmbH & Co. KG, which is hereby confirmed by signature after thorough inspection. Subsequent specification of the assembly work and other services listed above is expressly waived. The listed working hours are accepted as the basis for invoicing."
+          }
+        }
+      }
+    },
+    "05-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Monteur"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Monteur",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "06-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "08-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

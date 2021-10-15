@@ -1,0 +1,729 @@
+{
+  "general": {
+    "name": {
+      "en": "Inspection & Repair Report",
+      "de": "Bericht: Inspektion & Reparatur"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreibe den Service Report."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Rahmendaten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": false,
+      "isListForm": false,
+      "listFormNoDataHint": {
+        "en": "No asset added yet.",
+        "de": "Es wurde noch kein Asset hinzugefügt."
+      },
+      "children": {
+        "currentDateAndTime": {
+          "fieldType": "REMBERG_DATETIME",
+          "required": true,
+          "hiddenInPdf": false,
+          "autofillCurrentDate": true,
+          "width": 0.5,
+          "label": {
+            "de": "Datum & Uhrzeit",
+            "en": "Date & Time"
+          }
+        },
+        "companyTechnician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Name des Durchführenden",
+            "en": "Performing User"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "required": false,
+          "autofillCurrentUser": true
+        },
+        "serviceCompanyName": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Durchführende Firma",
+            "en": "Performing Company"
+          },
+          "required": true,
+          "width": 0.5
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Halle / Bau",
+            "en": "Asset"
+          },
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": {
+                                  "_field": "asset",
+                                  "_propertyName": "product"
+                                },
+                                "_functionName": "GET_PRODUCT"
+                              },
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerDestination"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "contactPersons",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer": {
+          "width": 1,
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          }
+        },
+        "contactPerson": {
+          "width": 0.5,
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner (Kunde)",
+            "en": "Contact Person (Customer)"
+          },
+          "required": false
+        },
+        "customerDestination": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "02_checkAndRepair",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_checkAndRepair": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Visual inspection and troubleshooting",
+        "de": "Sichtprüfung und Störungsbehebung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "usageArea": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Nutzungsbereich",
+            "en": "Area of usage"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "production",
+              "text": {
+                "de": "Produktion",
+                "en": "Production"
+              }
+            },
+            {
+              "value": "storage",
+              "text": {
+                "de": "Lagerplatz",
+                "en": "Storage area"
+              }
+            },
+            {
+              "value": "driveway",
+              "text": {
+                "de": "Fahrweg",
+                "en": "Driveway"
+              }
+            },
+            {
+              "value": "Stairway",
+              "text": {
+                "de": "Treppenhaus",
+                "en": "Stairway"
+              }
+            },
+            {
+              "value": "tunnel",
+              "text": {
+                "de": "Tunnel",
+                "en": "Tunnel"
+              }
+            },
+            {
+              "value": "Walkway",
+              "text": {
+                "de": "Gehweg",
+                "en": "Walkway"
+              }
+            },
+            {
+              "value": "workshop",
+              "text": {
+                "de": "Werkstatt",
+                "en": "Workshop"
+              }
+            },
+            {
+              "value": "storageroom",
+              "text": {
+                "de": "Lagerraum",
+                "en": "Storage Room"
+              }
+            },
+            {
+              "value": "breakroom",
+              "text": {
+                "de": "Pausenraum",
+                "en": "Break Room"
+              }
+            },
+            {
+              "value": "measuringroom",
+              "text": {
+                "de": "Messraum",
+                "en": "Measuring Room"
+              }
+            },
+            {
+              "value": "testlaboratory",
+              "text": {
+                "de": "Prüflabor",
+                "en": "Test Laboratory"
+              }
+            },
+            {
+              "value": "office",
+              "text": {
+                "de": "Büro",
+                "en": "Office"
+              }
+            },
+            {
+              "value": "meetingroom",
+              "text": {
+                "de": "Besprechungsraum",
+                "en": "Meeting Room"
+              }
+            },
+            {
+              "value": "changingroom",
+              "text": {
+                "de": "Umkleide",
+                "en": "Changing Room"
+              }
+            },
+            {
+              "value": "showerroom",
+              "text": {
+                "de": "Duschraum/Waschraum",
+                "en": "Shower / Washing Room"
+              }
+            },
+            {
+              "value": "restroom",
+              "text": {
+                "de": "WC",
+                "en": "Restroom"
+              }
+            }
+          ]
+        },
+        "damage": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Schadensbild",
+            "en": "Damage Pattern"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "lightOut",
+              "text": {
+                "de": "Leuchte brennt nicht",
+                "en": "Lamp does not burn"
+              }
+            },
+            {
+              "value": "oil",
+              "text": {
+                "de": "Öl oder Schmutz ist in die Leuchte eingedrungen",
+                "en": "Oil or dirt has penetrated the lamp"
+              }
+            },
+            {
+              "value": "housingbroken",
+              "text": {
+                "de": "Gehäuse der Leuchte beschädigt",
+                "en": "Lamp housing damaged"
+              }
+            },
+            {
+              "value": "difusorbroken",
+              "text": {
+                "de": "Abdeckung / Difusor der Leuchte beschädigt",
+                "en": "Cover / Difusor of the lamp damaged"
+              }
+            },
+            {
+              "value": "lampbrokenthirdparty",
+              "text": {
+                "de": "Leuchte Beschädigung durch Dritte",
+                "en": "Lamp damaged by third party"
+              }
+            },
+            {
+              "value": "shortcircuit",
+              "text": {
+                "de": "Kurzschluss Leuchte",
+                "en": "Short circuit lamp"
+              }
+            },
+            {
+              "value": "shortcircuitcable",
+              "text": {
+                "de": "Kurzschluss Kabelverbindung",
+                "en": "Short circuit cable connection"
+              }
+            },
+            {
+              "value": "fuseout",
+              "text": {
+                "de": "Sicherung / FI ausgelöst",
+                "en": "Fuse active"
+              }
+            },
+            {
+              "value": "controller",
+              "text": {
+                "de": "Steuerung Licht defekt",
+                "en": "Light controller defective"
+              }
+            },
+            {
+              "value": "tableaulight",
+              "text": {
+                "de": "Tableau Licht defekt",
+                "en": "Tableau light defective"
+              }
+            },
+            {
+              "value": "switchbroken",
+              "text": {
+                "de": "Schalter Licht defekt",
+                "en": "Light switch defective"
+              }
+            },
+            {
+              "value": "movementsensor",
+              "text": {
+                "de": "Bewegungssensor Licht defekt",
+                "en": "Movement sensor light defective"
+              }
+            },
+            {
+              "value": "notidentified",
+              "text": {
+                "de": "Vor Ort nicht zu identifizieren",
+                "en": "Not identifiable on site"
+              }
+            }
+          ]
+        },
+        "description1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Description"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "width": 1,
+          "label": {
+            "de": "Foto(s)",
+            "en": "Photos"
+          }
+        },
+        "results": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Ergebnis und Maßnahmen",
+            "en": "Results and Measures"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "allgood",
+              "text": {
+                "de": "In Ordnung",
+                "en": "All Good"
+              }
+            },
+            {
+              "value": "immediaterepair",
+              "text": {
+                "de": "Lampe leuchtet nicht, Reparatur sofort",
+                "en": "Lamp does not but, immediate repair"
+              }
+            },
+            {
+              "value": "faultsubdistribution",
+              "text": {
+                "de": "Störung Unterverteilung. Reparatur sofort.",
+                "en": "Malfunction subdistribution. Immediate repair."
+              }
+            },
+            {
+              "value": "faultcontroller",
+              "text": {
+                "de": "Störung Steuerung Licht / Tableau Licht. Reparatur sofrt.",
+                "en": "Malfunction light / tableau light controller. Immediate repair."
+              }
+            },
+            {
+              "value": "damagerepair",
+              "text": {
+                "de": "Lampe (Gehäuse oder Difusor) beschädigt. Reparatur zeitnah.",
+                "en": "Lamp (housing or difusor) damaged. Timely repair."
+              }
+            },
+            {
+              "value": "cleanup",
+              "text": {
+                "de": "Reinigung der Lampe erforderlich.",
+                "en": "Lamp cleaning needed."
+              }
+            },
+            {
+              "value": "maintenance",
+              "text": {
+                "de": "Wartung / Reinigung Unterverteilung erfordlich.",
+                "en": "Maintenance / Cleaning of subdistributor needed."
+              }
+            },
+            {
+              "value": "faultresolved",
+              "text": {
+                "de": "Störung behoben. Reparatur durchgeführt.",
+                "en": "Malfunction fixed. Repair completed."
+              }
+            }
+          ]
+        },
+        "comment1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        },
+        "rating1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Bewertung Zustand Leuchte / Unterverteiler",
+            "en": "Rating Condition Lamp / Subdistributor"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "verygood",
+              "text": {
+                "de": "5 - sehr gut",
+                "en": "5 - very good"
+              }
+            },
+            {
+              "value": "good",
+              "text": {
+                "de": "4 - gut",
+                "en": "4 - good"
+              }
+            },
+            {
+              "value": "ok",
+              "text": {
+                "de": "3 - Ok",
+                "en": "3 - OK"
+              }
+            },
+            {
+              "value": "bad",
+              "text": {
+                "de": "2 - mangelhaft",
+                "en": "2 - poor"
+              }
+            },
+            {
+              "value": "verybad",
+              "text": {
+                "de": "1 - schlecht",
+                "en": "1 - very poor"
+              }
+            }
+          ]
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "3_signatureTech",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "3_signatureTech": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signatur",
+        "de": "Unterschrift"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Durchführender",
+            "en": "Performing Technician"
+          },
+          "required": true
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "4-send",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "4-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "hasNextStep": false,
+      "children": {
+        "test44": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

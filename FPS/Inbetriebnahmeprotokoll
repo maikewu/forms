@@ -1,0 +1,859 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Commissioning & Acceptance report",
+      "de": "Inbetriebnahme & Abnahmeprotokoll"
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "reportId": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Service-Auftragsnummer",
+            "en": "Service Order Number"
+          },
+          "readonly": false,
+          "required": true,
+          "validators": []
+        },
+        "technicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "width": 0.5,
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "required": true,
+          "autofillCurrentUser": true
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          },
+          "required": true,
+          "width": 0.5,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customerContactPerson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset_manual_helptext": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Wenn die Maschine noch nicht im System ist, bitte Seriennummer hier eintragen:",
+            "en": "If the machine is not in the system, please add serial number here:"
+          },
+          "hiddenInPdf": true
+        },
+        "asset_manual": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Maschine (manueller Eintrag)",
+            "en": "Machine (manual entry)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "control": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Steuerung",
+            "en": "Control"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "nc": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Software NC",
+            "en": "Software NC"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "plc": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Software PLC",
+            "en": "Software PLC"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "machineHours": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Maschinenstunden",
+            "en": "Machine hours"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "spindleHours": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Spindelstunden",
+            "en": "Spindle hours"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "3-signature_commissioner",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "4-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer_manual_helptext": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Wenn der Kunde noch nicht im System ist, bitte Firmennamen hier eintragen:",
+            "en": "If the customer is not in the system, please add customer name here:"
+          },
+          "hiddenInPdf": true
+        },
+        "customer_manual": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Kunde (manueller Eintrag)",
+            "en": "Customer (manual entry)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "customerContactPerson": {
+          "width": 0.5,
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Kontaktpersonen",
+            "en": "Contact persons"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "contact_manual_helptext": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Wenn die Kontaktperson noch nicht im System ist, bitte Namen und E-Mail Adresse hier eintragen:",
+            "en": "If the contact person is not in the system, please add name and email here:"
+          },
+          "hiddenInPdf": true
+        },
+        "contact_manual": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Kontaktperson (manueller Eintrag)",
+            "en": "Contact Person (manual entry)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "2-acceptance": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Commissioning Tasks",
+        "de": "Inbetriebnahmeaufgaben"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "viewControllHeadline": {
+          "hiddenInPdf": false,
+          "width": 1,
+          "fieldType": "H3",
+          "text": {
+            "de": "1. Sichtkontrolle der Maschine:",
+            "en": "1. Visual inspection of the machine:"
+          }
+        },
+        "viewControll1": {
+          "fieldType": "CHECKBOX",
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Transportschäden",
+            "en": "Transport damage"
+          },
+          "required": false,
+          "checked": true
+        },
+        "filesHeadline": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Ggf. Anhang zur Dokumentation der Schäden",
+            "en": "Attachment to document the damages, if applicable"
+          },
+          "required": false,
+          "hiddenInPdf": true
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          }
+        },
+        "viewControll2": {
+          "fieldType": "CHECKBOX",
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Lieferung nach Lieferschein komplett",
+            "en": "Delivery according to delivery bill complete"
+          },
+          "required": false,
+          "checked": true
+        },
+        "viewControll3": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Anschlussbedingungen elektrisch erfüllt (Kein FI und Rechtsdrehfeld)",
+            "en": "Connection conditions electrically fulfilled (no FI and clockwise rotating field)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "viewControll4": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Betriebsmittel (Öle) aufgefüllt",
+            "en": "Operating resources (oils) refilled"
+          },
+          "required": false,
+          "checked": true
+        },
+        "viewControll5": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine ausgerichtet",
+            "en": "Machine aligned"
+          },
+          "required": false,
+          "checked": true
+        },
+        "viewControll6": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kabine (wenn vorhanden)",
+            "en": "Cabin (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunctionHeadline": {
+          "hiddenInPdf": false,
+          "width": 1,
+          "fieldType": "H3",
+          "text": {
+            "de": "2. Maschinenfunktionen:",
+            "en": "2. Machine functions:"
+          }
+        },
+        "machineFunction1": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Steuerung EIN",
+            "en": "Control ON"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction2": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Not-Aus-Funktion",
+            "en": "Emergency stop function"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction4": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Referenzpunkte fahren",
+            "en": "Check reference points"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction5": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Vorschub in allen Achsen",
+            "en": "Feed in all axes"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction6": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Verfahrwege prüfen / Softwareendschalter",
+            "en": "Check travel path / software limit switch"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction7": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Drehzahl rechts/links",
+            "en": "Rotational speed right/left"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction8": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Kühlmittelpumpe",
+            "en": "Coolant pump"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction9": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Schmierung",
+            "en": "Lubrication"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction3": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Kabinentürschalterfunktion (wenn vorhanden)",
+            "en": "Cabin door switch function (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "machineFunction10": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Schiebeelemente der Kabine ausgerichtet (wenn vorhanden)",
+            "en": "Sliding elements of the cabin aligned (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "briefingHeadline": {
+          "hiddenInPdf": false,
+          "width": 1,
+          "fieldType": "H3",
+          "text": {
+            "de": "3. Einweisung:",
+            "en": "3. Briefing:"
+          }
+        },
+        "briefing1": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Bearbeitung manueller Betrieb",
+            "en": "Processing manual operation"
+          },
+          "required": false,
+          "checked": true
+        },
+        "briefing2": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Referenzpunkt fahren",
+            "en": "Check reference points"
+          },
+          "required": false,
+          "checked": true
+        },
+        "briefing8": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Wartungsarbeiten laut Bedienungsanleitung",
+            "en": "Maintenance work according to operating instructions"
+          },
+          "required": false,
+          "checked": true
+        },
+        "briefing3": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Programmeingabe (wenn vorhanden)",
+            "en": "Program input (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "briefing4": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Bearbeitung automatischer Betrieb (wenn vorhanden)",
+            "en": "Processing automatic operation (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "briefing5": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Elektrisches Handrad (wenn vorhanden)",
+            "en": "Electric hand wheel (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "briefing6": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Messtaster (wenn vorhanden)",
+            "en": "Probes (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "briefing7": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Messdose (wenn vorhanden)",
+            "en": "Junction box (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "documentationHeadline": {
+          "hiddenInPdf": false,
+          "width": 1,
+          "fieldType": "H3",
+          "text": {
+            "de": "4. Dokumentation:",
+            "en": "4. Dokumentation:"
+          }
+        },
+        "documentation1": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Bedienerhandbuch",
+            "en": "User Manual"
+          },
+          "required": false,
+          "checked": true
+        },
+        "documentation2": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Programmierhandbuch",
+            "en": "Programmer's manual"
+          },
+          "required": false,
+          "checked": true
+        },
+        "documentation3": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Schaltplan",
+            "en": "Circuit diagram"
+          },
+          "required": false,
+          "checked": true
+        },
+        "documentation4": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Ersatzteilplan",
+            "en": "Spare parts plan"
+          },
+          "required": false,
+          "checked": true
+        },
+        "documentation5": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Abnahmeprotokoll",
+            "en": "Acceptance certificate"
+          },
+          "required": false,
+          "checked": true
+        },
+        "documentation6": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Datensicherung (wenn vorhanden)",
+            "en": "Data backup (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "documentation7": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "USB-Stick (wenn vorhanden)",
+            "en": "USB-stick (if available)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "defectsHeadline": {
+          "hiddenInPdf": false,
+          "width": 1,
+          "fieldType": "H3",
+          "text": {
+            "de": "Mängelauflistung",
+            "en": "List of defects"
+          }
+        },
+        "defects": {
+          "fieldType": "TEXTAREA",
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Mängelauflistung",
+            "en": "List of defects"
+          }
+        },
+        "note": {
+          "hiddenInPdf": false,
+          "width": 1,
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "\nDie Inbetriebnahme wurde nach den Punkten 1 bis 4 durchgeführt. Die Maschine wurde vom Unterzeichner abgenommen.",
+            "en": "\nThe commissioning was carried out according to points 1 to 4. The machine was accepted by the signee."
+          }
+        }
+      }
+    },
+    "3-signature_commissioner": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Signature commissioner",
+        "de": "Unterschrift Inbetriebnehmer"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "showTime": true,
+          "label": {
+            "de": "Inbetriebnehmer",
+            "en": "Commissioner"
+          },
+          "required": false,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "4-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Unterschrift Kunde"
+      },
+      "width": 0.5,
+      "unbreakable": true,
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "showTime": true,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": false
+        }
+      }
+    },
+    "5-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send filled form",
+        "de": "Ausgefülltes Formular absenden"
+      },
+      "hasNextStep": false,
+      "hiddenInPdf": true,
+      "children": {
+        "test45": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Inbetriebnahme & Abnahmeprotokoll",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": true,
+              "others": [
+                "servicebericht@fps-germany.com"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

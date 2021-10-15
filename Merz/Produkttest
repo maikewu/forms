@@ -1,0 +1,743 @@
+{
+  "general": {
+    "name": {
+      "en": "Weight Protocol",
+      "de": "Gewichtsprotokoll"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the weight protocol.",
+        "de": "Bitte unterschreiben Sie das Gewichtsprotokoll."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "date1": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": false
+        },
+        "tester": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Prüfer",
+            "en": "Tester"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "required": false
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "phone"
+                      },
+                      "output": {
+                        "_field": "customer_phone"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Product"
+          }
+        },
+        "format": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Format",
+            "en": "Format"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "bagLength": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Beutellänge",
+            "en": "Bag Length"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "film": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Folie",
+            "en": "Film"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "targetWeight": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Sollgewicht",
+            "en": "Target Weight"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_measurement": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Measurement",
+        "de": "Messung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "bulkVolumeHeader": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Ausgelitertes Schüttvolumen",
+            "en": "Determined Bulk Volume"
+          }
+        },
+        "GinML": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "10g in ml",
+            "en": "10g in ml"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.5,
+          "required": false
+        },
+        "MLinG": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "10ml in g",
+            "en": "10ml in g"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.5,
+          "required": false
+        },
+        "unit_dropdown": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Einheit",
+            "en": "Unit"
+          },
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "unbreakable": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "ml",
+              "text": {
+                "de": "ml",
+                "en": "ml"
+              }
+            },
+            {
+              "value": "g",
+              "text": {
+                "de": "g",
+                "en": "g"
+              }
+            },
+            {
+              "value": "mg",
+              "text": {
+                "de": "mg",
+                "en": "mg"
+              }
+            }
+          ]
+        },
+        "valueHeader": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Messwerte",
+            "en": "Measurement Values"
+          }
+        },
+        "measurementValues": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No values added yet.",
+            "de": "Es wurden noch keine Werte hinzugefügt."
+          },
+          "children": {
+            "value": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Messung [#]",
+                "en": "Measurement [#]"
+              },
+              "readonly": false,
+              "required": false,
+              "validators": []
+            },
+            "value2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Messwerte",
+                "en": "Measurement Values"
+              },
+              "readonly": false,
+              "required": false,
+              "validators": []
+            }
+          }
+        }
+      }
+    },
+    "03_measurementInfo": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Measurement Details ",
+        "de": "Weitere Angaben"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "dosing_dropdown": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Dosierung/Pumpe",
+            "en": "Dosing/Pump"
+          },
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true,
+          "hiddenInPdf": false,
+          "unbreakable": true,
+          "multiple": true,
+          "options": [
+            {
+              "value": "SD550",
+              "text": {
+                "de": "SD550",
+                "en": "SD550"
+              }
+            },
+            {
+              "value": "SD330",
+              "text": {
+                "de": "SD330",
+                "en": "SD330"
+              }
+            },
+            {
+              "value": "SD230",
+              "text": {
+                "de": "SD230",
+                "en": "SD230"
+              }
+            },
+            {
+              "value": "slide",
+              "text": {
+                "de": "Schieberdosierung",
+                "en": "Slide Dosing"
+              }
+            },
+            {
+              "value": "flap",
+              "text": {
+                "de": "Klappendosierung",
+                "en": "Flap Dosing"
+              }
+            },
+            {
+              "value": "hibar",
+              "text": {
+                "de": "Hibar Pumpe",
+                "en": "Hibar Pump"
+              }
+            },
+            {
+              "value": "auger",
+              "text": {
+                "de": "Schneckenpumpe",
+                "en": "Auger Pump"
+              }
+            },
+            {
+              "value": "hose",
+              "text": {
+                "de": "Schlauchpumpe",
+                "en": "Hose Pump"
+              }
+            }
+          ]
+        },
+        "comment1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Sonstiges",
+            "en": "Miscellaneous"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "mainDosing": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Inkremente Hauptdosierung",
+            "en": "Increments Main Dosing Unit"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "secondDosing": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Inkremente Nebendosierung",
+            "en": "Increments Second Dosing Unit"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "dosingSpeed": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Dosierungsgeschwindigkeit",
+            "en": "Dosing Speed"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "machineSpeed": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Maschinengeschwindigkeit",
+            "en": "Machine Speed"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "nozzle": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verschlussdüse",
+            "en": "Shut of Nuzzle"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "hopperdimensions": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Abmaße Glocke [mm]",
+            "en": "Dimensions Hopper [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "hopperdiameter": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Durchmesser Glockenausgang [mm]",
+            "en": "Hopper Outlet Diameter [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "distanceDiscAuger": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Abstand Wurfteller zum Schneckenende [mm]",
+            "en": "Distance End Cut-Off Disc To Auger End [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "discDiameter": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Durchmesser Wurfteller [mm]",
+            "en": "Diameter End Cut-Off Disc [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "hoseDiameter": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Schlauchdurchmesser [mm]",
+            "en": "Hose Diameter [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "accelerationRamp": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Beschleunigungsrampe [s]",
+            "en": "Acceleration Ramp [s]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "decelerationRamp": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Bremsrampe [s]",
+            "en": "Deceleration Ramp [s]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "miscellaneous2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Sonstiges",
+            "en": "Miscellaneous"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "augerParameterHeader": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "\nSchneckenparameter",
+            "en": "\nAuger Parameters"
+          }
+        },
+        "partNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Teilenummer",
+            "en": "Part Number"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "coreDiameter": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Seelendurchmesser [mm]",
+            "en": "Core Diameter [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "outerDiameter": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Außendurchmesser [mm]",
+            "en": "Outer Diameter [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "gradient": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Steigung [mm]",
+            "en": "Gradient [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "flankWidth": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Flügeldicke [mm]",
+            "en": "Flank Width [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "totalLength": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gesamt Länge [mm]",
+            "en": "Total Length [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "threadSize": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gewindegröße Schneckenende [mm]",
+            "en": "Thread Size Auger End [mm]"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "miscellaneous": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Sonstiges",
+            "en": "Miscellaneous"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        }
+      }
+    },
+    "04_signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature",
+        "de": "Unterschrift"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "05-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

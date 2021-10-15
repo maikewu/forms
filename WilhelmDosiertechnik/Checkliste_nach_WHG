@@ -1,0 +1,602 @@
+{
+  "general": {
+    "name": {
+      "en": "Checklist for the inspection of dosing systems according to WHG",
+      "de": "Checkliste zur Überprüfung von Dosieranlagen nach WHG"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the assembly report.",
+        "de": "Bitte unterschreiben Sie den Montagebericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "mission_number": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Montage-Nummer",
+            "en": "Assembly Number"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "required": false
+        },
+        "date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": false
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "06-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "06-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_checklist": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Checklist",
+        "de": "Checkliste"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "checkbox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dosierpumpen zerlegt, geprüft, Verschleißteile erneuert und wieder in Betrieb genommen.",
+            "en": "Dosing pumps disassembled, inspected, wear parts replaced and put back into operation."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Pumpenleistungen der Dosierpumpen geprüft.",
+            "en": "Pump capacities of the dosing pumps tested."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Pumpe ausgelitert. Bei Einstellung:",
+            "en": "Pump balanced, with setting:"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "input1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "%",
+            "en": "%"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "input2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "l/h",
+            "en": "l/h"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "checkbox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Schaltschrankfunktionen geprüft.",
+            "en": "Control cabinet functions tested."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Lampentest am Schaltschrank vorhanden und geprüft.",
+            "en": "Lamp test available and checked on the control cabinet."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Überfüllsicherung mit Warneinrichtungen geprüft.",
+            "en": "Overfill protection with warning devices tested."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Leckagesonden geprüft.",
+            "en": "Leakage probes tested."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sicherheitsarmatur gegen Durchhebern vorhanden und geprüft.",
+            "en": "Safety fitting against lifting available and tested."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dichtigkeits- und Sichtprüfung der kompletten Anlage.",
+            "en": "Leakage and visual inspection of the complete system."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Die Dosieranlage wurde in Betrieb übergeben.",
+            "en": "The dosing system was handed over for operation."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Eine Betriebsanleitung für die Anlage liegt dem Betreiber vor.",
+            "en": "Operating instructions for the system are available to the operator."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "helptext1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "",
+            "en": ""
+          }
+        },
+        "helptext2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "",
+            "en": ""
+          }
+        },
+        "helptext3": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Die vorstehenden Arbeiten wurden ordentlich erledigt.",
+            "en": "The above work was completed in an orderly manner."
+          }
+        },
+        "comment": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "06-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Fachbetrieb"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Fachbetrieb",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "07-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "10-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Wilhelm Dosiertechnik - Checkliste",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie die Checkliste als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "kundendienstbericht@wilhelm-dosiertechnik.de"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

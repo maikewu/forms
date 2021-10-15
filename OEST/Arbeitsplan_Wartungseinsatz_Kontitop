@@ -1,0 +1,1655 @@
+{
+  "general": {
+    "name": {
+      "en": "Acceptance Protocol",
+      "de": "Arbeitsplan für Wartungseinsatz Kontitop"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Acceptance Protocol",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the acceptance protocol.",
+        "de": "Bitte unterschreiben Sie den Arbeitsplan für Wartungseinsatz Kontitop."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Daten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 1,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer",
+            "en": "Service Order Number"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Maschinennummer",
+            "en": "Machine number"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_glueData": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Klebstoffdaten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "manufacturer": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Hersteller",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "dynea",
+              "text": {
+                "de": "Dynea",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "jowat",
+              "text": {
+                "de": "Jowat",
+                "en": "Jowat"
+              }
+            },
+            {
+              "value": "henkel",
+              "text": {
+                "de": "Henkel",
+                "en": "Henkel"
+              }
+            },
+            {
+              "value": "akzo",
+              "text": {
+                "de": "Akzo Nobel",
+                "en": "Akzo Nobel"
+              }
+            },
+            {
+              "value": "basf",
+              "text": {
+                "de": "BASF Türmerleim",
+                "en": "BASF Türmerleim"
+              }
+            },
+            {
+              "value": "kilto",
+              "text": {
+                "de": "Kilto",
+                "en": "Kilto"
+              }
+            },
+            {
+              "value": "sika",
+              "text": {
+                "de": "Sika",
+                "en": "Sika"
+              }
+            },
+            {
+              "value": "other",
+              "text": {
+                "de": "Sonstiger",
+                "en": "Other"
+              }
+            }
+          ]
+        },
+        "manufacturerOther": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Falls sonstiger Hersteller, bitte angeben",
+            "en": "Other manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "connection": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gebinde",
+            "en": "Connection"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ibc",
+              "text": {
+                "de": "IBC Container",
+                "en": "IBC Container"
+              }
+            },
+            {
+              "value": "fluidBag",
+              "text": {
+                "de": "Fluid Bag",
+                "en": "Fluid Bag"
+              }
+            },
+            {
+              "value": "fass",
+              "text": {
+                "de": "Fass",
+                "en": "Fass"
+              }
+            },
+            {
+              "value": "otherConn",
+              "text": {
+                "de": "Sonstiges",
+                "en": "Other"
+              }
+            }
+          ]
+        },
+        "connectionOther": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Falls sonstiges Gebinde, bitte angeben",
+            "en": "Other connection"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "naming": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Bezeichnung",
+            "en": "Naming"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "commentComponentA": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "03_inspection": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Inspektion der Anlage"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "leimprepHeadline": {
+          "fieldType": "H2",
+          "width": 1,
+          "text": {
+            "de": "Materialversorgung",
+            "en": "Component A"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "generalHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Allgemein",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "visualInspection": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sichtprüfung",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "kugelhaehne": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Alle Kugelhähne gängig?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "commentGeneral": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen (bitte unbedingt ausfüllen, wenn irgendwo oben ''nicht i. O.'' selektiert wurde) ",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "componentTestsHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Gebindeanschlüsse",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "mixerFunctionalA": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anschluss dicht?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 0.5,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "fillLevelFunctionalA": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Schlauch steif/defekt?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 0.5,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "filterCleanlinessA": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Silikatgelfilter trocken?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 0.5,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "commentComponentsAll": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen (bitte unbedingt ausfüllen, wenn irgendwo oben ''nicht i. O.'' selektiert wurde) ",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "mixedFunnelHeadline": {
+          "fieldType": "H2",
+          "width": 1,
+          "text": {
+            "de": "Klebstoff-Dosieranlage",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "controlUtensilsHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Kontrollgefäße",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "controlFunctional1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sichtprüfung",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "controlFunctional2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefäß dicht?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "mixerLevelControlFunctional": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Entlüftungshahn frei?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "correctSpacing": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sensor prüfen?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "controlFunctional3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Nachfüllventil",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "commentMixingFunnel": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen (bitte unbedingt ausfüllen, wenn irgendwo oben ''nicht i. O.'' selektiert wurde) ",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "componentTestsHeadline1": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Dosierpumpe",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "componentTests1": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "unbreakable": false,
+          "listFormNoDataHint": {
+            "en": "No time added yet.",
+            "de": "Es wurden noch keine Angaben zu den Dosierpumpen hinzugefügt."
+          },
+          "children": {
+            "componentChoice21": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Dosierpumpe",
+                "en": "Connection"
+              },
+              "required": true,
+              "width": 0.5,
+              "options": [
+                {
+                  "value": "componentA",
+                  "text": {
+                    "de": "Dosierpumpe 1",
+                    "en": "IBC Container"
+                  }
+                },
+                {
+                  "value": "componentB",
+                  "text": {
+                    "de": "Dosierpumpe 2",
+                    "en": "Fluid Bag"
+                  }
+                },
+                {
+                  "value": "componentC",
+                  "text": {
+                    "de": "Dosierpumpe 3",
+                    "en": "Fluid Bag"
+                  }
+                },
+                {
+                  "value": "componentD",
+                  "text": {
+                    "de": "Dosierpumpe 4",
+                    "en": "Fluid Bag"
+                  }
+                },
+                {
+                  "value": "componentE",
+                  "text": {
+                    "de": "Dosierpumpe 5",
+                    "en": "Fluid Bag"
+                  }
+                },
+                {
+                  "value": "componentF",
+                  "text": {
+                    "de": "Dosierpumpe 6",
+                    "en": "Fluid Bag"
+                  }
+                },
+                {
+                  "value": "componentG",
+                  "text": {
+                    "de": "Dosierpumpe 7",
+                    "en": "Fluid Bag"
+                  }
+                },
+                {
+                  "value": "componentH",
+                  "text": {
+                    "de": "Dosierpumpe 8",
+                    "en": "Fluid Bag"
+                  }
+                }
+              ]
+            },
+            "mixerFunctionalA1": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Klebstoffaustritt im Kupplungsgehäuse?",
+                "en": "Manufacturer"
+              },
+              "required": false,
+              "width": 0.5,
+              "options": [
+                {
+                  "value": "ok",
+                  "text": {
+                    "de": "i. O.",
+                    "en": "Dynea"
+                  }
+                },
+                {
+                  "value": "nok",
+                  "text": {
+                    "de": "nicht i. O.",
+                    "en": "Jowat"
+                  }
+                }
+              ]
+            },
+            "fillLevelFunctionalA1": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Klebstoff im Schlauch zum Öler?",
+                "en": "Manufacturer"
+              },
+              "required": false,
+              "width": 0.5,
+              "options": [
+                {
+                  "value": "ok",
+                  "text": {
+                    "de": "i. O.",
+                    "en": "Dynea"
+                  }
+                },
+                {
+                  "value": "nok",
+                  "text": {
+                    "de": "nicht i. O.",
+                    "en": "Jowat"
+                  }
+                }
+              ]
+            },
+            "filterCleanlinessA1": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Ölstand im Öler?",
+                "en": "Manufacturer"
+              },
+              "required": false,
+              "width": 0.5,
+              "options": [
+                {
+                  "value": "ok",
+                  "text": {
+                    "de": "i. O.",
+                    "en": "Dynea"
+                  }
+                },
+                {
+                  "value": "nok",
+                  "text": {
+                    "de": "nicht i. O.",
+                    "en": "Jowat"
+                  }
+                }
+              ]
+            },
+            "cleanlinessHoldersA1": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Letzter Pumpenwechsel?",
+                "en": "Manufacturer"
+              },
+              "required": false,
+              "width": 0.5,
+              "options": [
+                {
+                  "value": "ok",
+                  "text": {
+                    "de": "i. O.",
+                    "en": "Dynea"
+                  }
+                },
+                {
+                  "value": "nok",
+                  "text": {
+                    "de": "nicht i. O.",
+                    "en": "Jowat"
+                  }
+                }
+              ]
+            },
+            "cleanlinessHoldersA2": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Näherungsschalter an Geberrad? Funktion? Abstand zum Geberrad?",
+                "en": "Manufacturer"
+              },
+              "required": false,
+              "width": 0.5,
+              "options": [
+                {
+                  "value": "ok",
+                  "text": {
+                    "de": "i. O.",
+                    "en": "Dynea"
+                  }
+                },
+                {
+                  "value": "nok",
+                  "text": {
+                    "de": "nicht i. O.",
+                    "en": "Jowat"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "commentComponentsAll1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen (bitte unbedingt ausfüllen, wenn irgendwo oben ''nicht i. O.'' selektiert wurde) ",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "emptyRow10": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "circuitBoardHeadline": {
+          "fieldType": "H2",
+          "width": 1,
+          "text": {
+            "de": "Dosierleitung",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "schlauchHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Dosierleitung",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "circuitBoardCleanliness": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sichtprüfung (Leckage?)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "circuitPlan": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Schlauchleitungen prüfen (Alter, ggf. ersetzen)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "circuitPlan2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Plan für den Tausch der Schlauchleitungen im Schlepp besprechen (Wechselintervall)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "commentSchlauchleitung": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen (bitte unbedingt ausfüllen, wenn irgendwo oben ''nicht i. O.'' selektiert wurde) ",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "emptyRow11": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "componentTestsDruckHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Druckfilter",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "mixerFunctionalA31": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sichtprüfung",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 0.5,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "mixerFunctionalA32": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anschlüsse dicht?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 0.5,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "mixerFunctionalA33": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Kugelhahn gängig?",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 0.5,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "mixerFunctionalA3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Filterelement prüfen, ggf. tauschen",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 0.5,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "commentComponentsAll2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen (bitte unbedingt ausfüllen, wenn irgendwo oben ''nicht i. O.'' selektiert wurde) ",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "emptyRow50": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        }
+      }
+    },
+    "03_Portal": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Portal für Klebstoffauftrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "parametersHeadlineA1": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Klebstoffauftrag via GX Kopf",
+            "en": "Component A"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "motorsA1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sichtprüfung",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "motorsCheck": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Handfunktionen durchtesten (Sperrventile, Druckentlastung, usw.)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "motorsCheck1A1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Pneumatisches Vorsteuerventil prüfen (Anschlüsse dicht, Funktion einwandfrei?)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "motorsCheck1A2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "PPV-Klebstoffventil prüfen (Klebstoffaustritt an Dichtpackung o.RSV, schaltet Ventil richtig,Öffnung über vollen Weg)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "motorsCheck1A3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Düsenleiste / Gießleiste prüfen (verstopft?)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "motorsCheck1A4": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Start- und Stopp-Punkte auf der Lamelle prüfen",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "motorsCheck1A5": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Drucksensor prüfen, ggf. neu referenzieren (abnullen)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "commentDosagemonitoringTest2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen (bitte unbedingt ausfüllen, wenn irgendwo oben ''nicht i. O.'' selektiert wurde) ",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "emptyRow51": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        }
+      }
+    },
+    "04_functionalTest": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Funktionsprüfung der Anlage"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "parametersHeadline": {
+          "fieldType": "H2",
+          "width": 1,
+          "text": {
+            "de": "Funktionen/Parameter",
+            "en": "Component A"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "motors": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Überdruck auslösen",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "motorsCheck": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Handfunktionen durchtesten (Sperrventile, Druckentlastung, usw.)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "motorsCheck1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Kontrollmessung für Klebstoff durchführen",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "datenuebernahme": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Datenübernahme von Partneranlage prüfen (Dimter)",
+            "en": "Manufacturer"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Dynea"
+              }
+            },
+            {
+              "value": "nok",
+              "text": {
+                "de": "nicht i. O.",
+                "en": "Jowat"
+              }
+            }
+          ]
+        },
+        "commentDosagemonitoringTest": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen (bitte unbedingt ausfüllen, wenn irgendwo oben ''nicht i. O.'' selektiert wurde) ",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "08-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Participant signatures",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_participant1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Participant"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Kundenausfertigung als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "OEST Maschinenbau Wartungseinsatz Kontitop",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Arbeitsplan für Wartungseinsatz Kontitop als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true,
+              "others": [
+                "Juri.Biegler@oest.de"
+              ]
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "commentAddendum": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen & Hinweise",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "filesHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Dokumentenanhang",
+            "en": "Documents Attachment"
+          },
+          "required": false,
+          "hiddenInPdf": true
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          }
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Wartungseinsatz Kontitop mit internem Nachtrag als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Wartungseinsatz Kontitop - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "Juri.Biegler@oest.de"
+              ]
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

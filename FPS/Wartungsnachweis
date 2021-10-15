@@ -1,0 +1,746 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Service Report",
+      "de": "Wartungsnachweis"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Wartungsnachweis unterschreiben"
+      },
+      "popupDescription": {
+        "en": "In order to finalize the report, please sign one after another it in the field below.",
+        "de": "Um den Bericht fertigzustellen, unterschreibe bitte nacheinander im untenstehenden Feld."
+      }
+    }
+  },
+  "formStructure": {
+    "2-maschine": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          },
+          "required": false,
+          "width": 0.5,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "3-customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset_manual_helptext": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Wenn die Maschine noch nicht im System ist, bitte Seriennummer hier eintragen:",
+            "en": "If the machine is not in the system, please add serial number here:"
+          },
+          "hiddenInPdf": true
+        },
+        "asset_manual": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Maschine (manueller Eintrag)",
+            "en": "Machine (manual entry)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "constructionYear": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Baujahr",
+            "en": "Spindle hours"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "control": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Steuerung",
+            "en": "Control"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "nc": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Software NC",
+            "en": "Software NC"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "plc": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Software PLC",
+            "en": "Software PLC"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "machineHours": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Maschinenstunden",
+            "en": "Machine hours"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "spindleHours": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Spindelstunden",
+            "en": "Spindle hours"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "equipment": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Ausstattung",
+            "en": "Spindle hours"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "technicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "width": 0.5,
+          "label": {
+            "de": "Maschinendaten erfasst von FPS-Servicetechniker",
+            "en": "Machine data collected by FPS technician"
+          },
+          "required": true,
+          "autofillCurrentUser": true
+        },
+        "dataCollectionDate": {
+          "fieldType": "REMBERG_DATE",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Maschinendaten erfasst am",
+            "en": "Machine data collected on"
+          },
+          "readonly": false,
+          "autofillCurrentDate": true,
+          "validators": []
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "3-customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Kunden-Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "3-customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation",
+                        "_default": {
+                          "city": "",
+                          "company": "",
+                          "country": "",
+                          "countryProvince": "",
+                          "latitude": "",
+                          "longitude": "",
+                          "street": "",
+                          "streetNumber": "",
+                          "zipPostCode": ""
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer_manual_helptext": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Wenn der Kunde noch nicht im System ist, bitte Firmennamen hier eintragen:",
+            "en": "If the customer is not in the system, please add customer name here:"
+          },
+          "hiddenInPdf": true
+        },
+        "customer_manual": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Kunde (manueller Eintrag)",
+            "en": "Customer (manual entry)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "11-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "11-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "nextService": {
+          "fieldType": "REMBERG_DATE",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Nächster Service",
+            "en": "Next service"
+          },
+          "readonly": false,
+          "validators": []
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer",
+                    "_functionName": "GET_ACCOUNT"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "5-serviceAufgaben": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Service Tasks",
+        "de": "Durchgeführte Arbeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "maintenanceCheckbox1": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Führungen geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox2": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Abstreifer getauscht",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox3": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Achsspindeln geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox4": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Keilleisten eingestellt",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox5": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Achsenschmierung geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox6": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Frässpindel/Werkzeugspanner geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox7": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Drehzahlen geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox8": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Getriebeschalten geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox9": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Fräskopfschmierung geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox10": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Hydraulik geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox11": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Akkus geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox12": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Isolationsmessung bei Motor durchgeführt X, Y, Z, C",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox13": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Tacho geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox14": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Betriebsspannungen geprüft",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox15": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Sollwertsymmetrie geprüft bzw. eingestellt",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox16": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Offset eingestellt",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "maintenanceCheckbox17": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Geschwindigkeitsabgleich durchgeführt",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "performedTasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "10-comments": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Festgestellte Defekte - Empfohlene Reparaturen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "generalComments": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Festgestellte Defekte - Empfohlene Reparaturen",
+            "en": "General Comments"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "width": 1,
+          "readonly": false,
+          "validators": []
+        }
+      }
+    },
+    "11-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "showTime": true,
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "required": true,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "11-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Unterschrift Kunde"
+      },
+      "width": 0.5,
+      "unbreakable": true,
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "note": {
+          "hiddenInPdf": true,
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Weisen Sie bitte den Kunden darauf hin, dass die E-Mail im Spamordner landen kann!",
+            "en": "Please inform the customer that the e-mail may end up in the spam folder"
+          }
+        },
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "showTime": true,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "14-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send filled form with addendum",
+        "de": "Ausgefüllten Wartungsnachweis absenden"
+      },
+      "hasNextStep": false,
+      "hiddenInPdf": true,
+      "children": {
+        "test45": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "FPS Wartungsnachweis",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma FPS Werkzeugmaschinen GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Wartungsnachweis als PDF.\n\nMit freundlichen Grüßen | Best regards",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

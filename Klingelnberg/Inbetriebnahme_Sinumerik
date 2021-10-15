@@ -1,0 +1,713 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Inbetriebnahme - Sinumerik Edge",
+      "de": "Inbetriebnahme - Sinumerik Edge"
+    },
+    "showComments": false,
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign",
+        "de": "Unterschreiben"
+      },
+      "popupDescription": {
+        "en": "In order to finalize the report, please sign it one after another in the field below.",
+        "de": "Um den Bericht fertigzustellen, unterschreibe bitte nacheinander im untenstehenden Feld."
+      }
+    }
+  },
+  "formStructure": {
+    "1-maschine": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Maschine",
+        "en": "Machine"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Maschine",
+            "en": "Select Asset"
+          },
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "2-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "2-allgmeineInformationen",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "2-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "edgeBoxSer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "EDGE Box Ser.",
+            "en": "EDGE Box Ser."
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "softwareVersion": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Software Stand",
+            "en": "Software Stand"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "cfCardSerNr": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "CF-Card Ser.Nr.",
+            "en": "CF-Card Ser.Nr."
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "Ser": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ser",
+            "en": "Ser"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "ausgestelltDurch": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Ausgestellt durch",
+            "en": "Ausgestellt durch"
+          }
+        },
+        "ausstellungsDatum": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "en": "Ausstellungsdatum",
+            "de": "Ausstellungsdatum"
+          }
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "label": {
+            "de": "Kundenauswahl (Firma)",
+            "en": "Select Customer (Company)"
+          },
+          "required": true
+        },
+        "generalComment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "readonly": false,
+          "validators": []
+        },
+        "instructions": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Benötigte CNC Software-Optionen:\nBASE: Sinumerik Operate/NCU (6FC5800-0AS00-0YB0)\nBASE: SINUMERIK 840Dsl Run MyHMI /3GL' (6FC5800-0AP60-0YB0)\n\n- EDGE Compile Zyklus (min.02.00.03 'HF- Probe' ist für 'APP Trochoidal' nicht zwingend.\n- Eingabe der CF-Card Seriennummer ist obligatorisch! (MD 18030[0])\n  HF -Probe V2.0.03 / EDGE FS V4.0 (Datei: 'ncu_linux_4.1.1-055.zip')\n\n(Referenz für diese Anleitung ist 'industrialedge-system-manual_2.1.2.pdf')",
+            "en": "Required CNC software options: \nBASE: Sinumerik Operate / NCU (6FC5800-0AS00-0YB0)\nBASE: SINUMERIK 840Dsl Run MyHMI / 3GL '(6FC5800-0AP60-0YB0)\n\n- EDGE Compile cycle (min.02.00.03 'HF-Probe' is not mandatory for 'APP Trochoidal'.\n- Entry of the CF card serial number is mandatory (MD 18030 [0]) \n  HF -Probe V2.0.03 / EDGE FS V4.0 (file: 'ncu_linux_4 .1.1-055.zip')\n\n(Reference for these instructions is 'industrialedge-system-manual_2.1.2.pdf')"
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "3-checklist-1",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "3-checklist-1": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "IPC - Einstellungen/Installation",
+        "en": "IPC - Einstellungen/Installation"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "checkbox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "BIOS Version Prüfen, ggf. Update (>=V20.01.12) --> SCU --> wenn n. i. O. --> BIOS Update (Stick erstellen)",
+            "en": "BIOS Version Prüfen, ggf. Update (>=V20.01.12) --> SCU --> wenn n. i. O. --> BIOS Update (Stick erstellen)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox1text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Vorherige BIOS-Einstellungen mit BIOS-Update löschen:\nUm den BIOS-Update-Vorgang zum Löschen früherer BIOS-Flash-Einstellungen durchzuführen,\nändern Sie bitte den Inhalt der heruntergeladenen Dateien wie unten angegeben. \n1. Suchen Sie nach der Extraktion die Datei update.afc. \n2. Suchen Sie die Zeile beginnend mit -f V200112.bin -fm-fd -a -n -Ra. \n3. Entfernen Sie Option-n. \n4. Speichern Sie die Änderungen und beenden Sie sie. \n5. Fahren Sie mit den Schritten des BIOS-Updates fort.",
+            "en": "Erase previous BIOS settings with BIOS update:\nIn order to make BIOS update process to erase previous BIOS flash settings,\nplease modify contents of downloaded files as specified below.\n1. Find update.afc file after extraction.\n2. Find the line starting with-f V200112.bin -fm-fd -a -n -Ra.\n3. Remove option-n.\n4. Save changes and exit.\n5. Continue following steps from BIOS update."
+          }
+        },
+        "checkbox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "BIOS Datum, Uhrzeit prüfen = muss auf GMT/UTC eingestellt werden (= MESZ - 2h, = MEZ - 1h)",
+            "en": "BIOS Datum, Uhrzeit prüfen = muss auf GMT/UTC eingestellt werden (= MESZ - 2h, = MEZ - 1h)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "BIOS Einstellungen - SCU - anpassen/prüfen",
+            "en": "BIOS Einstellungen - SCU - anpassen/prüfen"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox3text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "[Advanced] USB Configuration → xHCI Mode=disable,\n[Security] TPM Availability = available, TPM Operation = enable\n[Boot] Boot Type = UEFI Boot Type, USB Boot = enabled, Timeout(optional) = 10",
+            "en": "[Advanced] USB Configuration → xHCI Mode=disable,\n[Security] TPM Availability = available, TPM Operation = enable\n[Boot] Boot Type = UEFI Boot Type, USB Boot = enabled, Timeout(optional) = 10"
+          }
+        },
+        "checkbox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "BIOS Einstellungen - Secure Boot Option - anpassen/prüfen",
+            "en": "BIOS Einstellungen - Secure Boot Option - anpassen/prüfen"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox4text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Secure Boot Database = Installed and locked\nSecure Boot Status = enable (vergleichen)\nErase all Secure Boot Settings = enable\nRestore Secure Boot to Factory Settings = enable\nEnforce Secure Boot = Disabled (erst nach dem installieren des Linux Systems möglich)",
+            "en": "Secure Boot Database = Installed and locked\nSecure Boot Status = enable (vergleichen)\nErase all Secure Boot Settings = enable\nRestore Secure Boot to Factory Settings = enable\nEnforce Secure Boot = Disabled (erst nach dem installieren des Linux Systems möglich)"
+          }
+        },
+        "checkbox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Service Stick erstellen Datei: (mit z.B. dem Programm 'Balena Etcher')",
+            "en": "Service Stick erstellen Datei: (mit z.B. dem Programm 'Balena Etcher')"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox5text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "'indedge.ipc.200E_servicestick_v2.1.2-2.img.gz' - entpacken als IMG dann Stick erstellen.(Datei wird normalerweise von SISW mitgeliefert)",
+            "en": "'indedge.ipc.200E_servicestick_v2.1.2-2.img.gz' - unpack as IMG then create a stick (file is usually supplied by SISW) "
+          }
+        },
+        "checkbox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Linux System installieren / Image intern: V2.x...bundle (aktuell 2.1.2) (~.5min)",
+            "en": "Linux System installieren / Image intern: V2.x...bundle (aktuell 2.1.2) (~.5min)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox6text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "mit BIOS Boot Manager Auswahl UEFI Boot Device = USB Stick",
+            "en": "with BIOS Boot Manager Auswahl UEFI Boot Device = USB Stick "
+          }
+        },
+        "checkbox7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Internet an Box anschließen an USB X1P1(neben DP), X2P1 noch nicht verwenden!",
+            "en": "Internet an Box anschließen an USB X1P1(neben DP), X2P1 noch nicht verwenden!"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Internet Verbindung prüfen, ggf. Passwort ändern für erstes anmelden(default: User=edge / Passwort=siehe Stick)",
+            "en": "Internet Verbindung prüfen, ggf. Passwort ändern für erstes anmelden(default: User=edge / Passwort=siehe Stick)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox8text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "'ip a' zeigt die IP.Konfiguration an\ncurl www.web.de' prüft den Zugang zum Internet\nHinweis: Nur bei Netzwerkverbindung via DHCP möglich!",
+            "en": "'ip a' shows the IP configuration \ncurl www.web.de 'checks access to the Internet \nNote: Only possible with a network connection via DHCP!"
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "3-checklist-2",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "3-checklist-2": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Mindsphere Tennant Einstellungen",
+        "en": "Mindsphere Tennant Einstellungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "checkbox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Asset Manager öffnen",
+            "en": "Asset Manager öffnen"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Asset im Mindsphere Tenant anlegen",
+            "en": "Asset im Mindsphere Tenant anlegen"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Asset Onboarding durchführen",
+            "en": "Asset Onboarding durchführen"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Zu [App Management] wechseln",
+            "en": "Zu [App Management] wechseln"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Edge Basis Apps herunterladen (sinumerikadapter 4.1.1-055, sambaserver 2.2.0, adapterframework 3.3.1-062)",
+            "en": "Edge Basis Apps herunterladen (sinumerikadapter 4.1.1-055, sambaserver 2.2.0, adapterframework 3.3.1-062)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Edge Basis Apps installieren (sinumerikadapter, sambaserver, adapterframework)",
+            "en": "Edge Basis Apps installieren (sinumerikadapter, sambaserver, adapterframework)"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Edge Basis App sinumerikadapter konfigurieren IP-Adresse, evtl. HF-Probe Variablen hinzufügen(AMM/C V1.x), SN der CF-Card einfügen. MD18030[0] $MN_HW_SERIAL_NUMBER",
+            "en": "Edge Basis App sinumerikadapter konfigurieren IP-Adresse, evtl. HF-Probe Variablen hinzufügen(AMM/C V1.x), SN der CF-Card einfügen. MD18030[0] $MN_HW_SERIAL_NUMBER"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Edge Basis Apps aktivieren (sinumerikadapter, sambaserver, adapterframework)",
+            "en": "Edge Basis Apps aktivieren (sinumerikadapter, sambaserver, adapterframework)"
+          },
+          "required": false,
+          "checked": true
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "3-checklist-3",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "3-checklist-3": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Sinumerik Einstellungen",
+        "en": "Sinumerik Einstellungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "checkbox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "SINUMERIK - EDGE Maschinendaten prüfen",
+            "en": "SINUMERIK - EDGE Maschinendaten prüfen"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox31text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "MD19240 $ON_USER_MEME_DYNAMIC <-- falls $MN_INFO_FREE_MEM_DYNAMIC < 1.5MB diesen Wert vergrößern\nMD18050 $MN_INFO_FREE_MEM_DYNAMIC <--  >= 1,5MB\nMD10062 $MN_POSCTRL_CYCLE_DELAY <-- soll = 0 (Vorsicht, wenn <0 mit OEM klären!)\nMD10061 $MN_POSCTRL_CYCLE_TIME <-- Anzeige des Lageregler Taktes\nMD10063[2] $MN_POSCTRL_CYCLE_DIAGNOSIS <--  <50% von $MN_POSCTRL_CYCLE_TIME",
+            "en": "MD19240 $ON_USER_MEME_DYNAMIC <-- if $MN_INFO_FREE_MEM_DYNAMIC < 1.5MB increase this value \nMD18050 $MN_INFO_FREE_MEM_DYNAMIC <--  >= 1.5MB \nMD10062 $MN_POSCTRL_CYCLE_DELAY <-- should be = 0 (caution if <0 clarify with OEM!)\nMD10061 $MN_POSCTRL_CYCLE_TIME <-- display of the position controller cycle \nMD10063 [2] $MN_POSCTRL_CYCLE_DIAGNOSIS <-- <50% of $MN_POSCTRL_CYCLE_TIME "
+          }
+        },
+        "checkbox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "SINUMERIK - EDGE FS V 4.x installieren",
+            "en": "SINUMERIK - EDGE FS V 4.x installieren"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox32text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "(industrialedge-system-manual_2.1.2.pdf - Seite 47)\nNCU: kopiere edgefs.cfs nach [CF Card]/oem/common/edge (Ordner erstellen falls nicht vorhanden!)\nNCU neu starten, oder “sc start edgefs”\nEinstellungen anpassen / kontrollieren [CF Card]/oem/common/edgefs/edgefsrc\nPortnummer = 8999 // IP = [EDGE-BOX an X120] z.B. 192.168.214.249 (falls ändern dann im OEMVerzeichnis anlegen)",
+            "en": "(industrialedge-system-manual_2.1.2.pdf - page 47) \nNCU: copy edgefs.cfs to [CF Card]/oem/common/edge (create folder if not available!) \nNCU restart, or “sc start edgefs ”\nAdjust settings / check [CF Card]/oem/common/edgefs/edgefsrc \nPort number = 8999 // IP = [EDGE-BOX on X120] e.g. 192.168.214.249 (if change, then create in the OEM directory)"
+          }
+        },
+        "checkbox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "SINUMERIK - HF Probe V2.0 Installation",
+            "en": "SINUMERIK - HF Probe V2.0 Installation"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox33text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "min V2.0.3 (industrialedge-manual-v200.pdf - Seite 123)\nKopiere die „hfprobe.elf“ nach „/NC data/Compile cycles“ (WinSCP: /card/oem/sinumerik/data/cc)",
+            "en": "min V2.0.3 (industrialedge-manual-v200.pdf - Page 123)\nCopy „hfprobe.elf“ to „/NC data/Compile cycles“ (WinSCP: /card/oem/sinumerik/data/cc)"
+          }
+        },
+        "checkbox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "SINUMERIK - HF-Probe Visualisierung einfügen",
+            "en": "SINUMERIK - HF-Probe Visualisierung einfügen"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox34text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "(industrialedge-manual.pdf - Seite 124)\nHMI@NCU<installdir> = /card\nHMI@Win7 <installdir> = C:/ProgramData/Siemens/MotionControl\nHMI@WinXP <installdir> = F:/hmi_sl\n\nfalls Files vorhanden sind, nicht überschreiben <-- merge!\n<installdir>/addon/sinumerik/hmi/cfg/slcap.xml\n<installdir>/addon/sinumerik/hmi/cfg/hfprobe.nsp\n<installdir>/oem/sinumerik/hmi/template/variables/hfprobeBtssVarDescr.xml",
+            "en": "(industrialedge-manual.pdf - Page 124)\nHMI@NCU<installdir> = /card\nHMI@Win7 <installdir> = C:/ProgramData/Siemens/MotionControl\nHMI@WinXP <installdir> = F:/hmi_sl\n\nif Files exist, don't override <-- merge!\n<installdir>/addon/sinumerik/hmi/cfg/slcap.xml\n<installdir>/addon/sinumerik/hmi/cfg/hfprobe.nsp\n<installdir>/oem/sinumerik/hmi/template/variables/hfprobeBtssVarDescr.xml"
+          }
+        },
+        "checkbox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Ethernet Verbindung zur SINUMERIK herstellen Port X2P1 verwenden",
+            "en": "Ethernet Verbindung zur SINUMERIK herstellen Port X2P1 verwenden"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "NCK Reset durchführen!",
+            "en": "Carry out NCK Reset!"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "SINUMERIK - HF-Probe Visualisierung Variablen prüfen.",
+            "en": "SINUMERIK - HF-Probe Visualisierung Variablen prüfen."
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox37text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "(hfprobeBtssVarDescr.xml) Werte ≠ 0",
+            "en": "(hfprobeBtssVarDescr.xml) Values ≠ 0"
+          }
+        },
+        "checkbox8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "SINUMERIK - Logisches Laufwerk einrichten",
+            "en": "SINUMERIK - Logisches Laufwerk einrichten"
+          },
+          "required": false,
+          "checked": true
+        },
+        "checkbox38text": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "(Type, NW Windows, Rechnername: 192.168.214.249, Freigabename: share, Benutzername: ncu, Passwort: 123456)",
+            "en": "(Type, NW Windows, computer name: 192.168.214.249, share name: share, user name: ncu, password: 123456)"
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "4-Bemerkungen",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "4-Bemerkungen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Bemerkungen",
+        "en": "Notes"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "generalComments": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Allgemeine Bemerkungen & Hinweise",
+            "en": "General Comments"
+          },
+          "readonly": false,
+          "validators": []
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "5-send",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "5-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send filled form",
+        "de": "Ausgefülltes Formular absenden"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "test44": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

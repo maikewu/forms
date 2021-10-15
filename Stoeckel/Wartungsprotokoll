@@ -1,0 +1,2954 @@
+{
+  "general": {
+    "name": {
+      "en": "Maintenance Protocol",
+      "de": "Wartungsprotokoll"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the Maintenance Protocol.",
+        "de": "Bitte unterschreiben Sie das Wartungsprotokoll."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "unbreakable": false,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "06-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          },
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "width": 0.5
+        },
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Monteur",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_general_inspection": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "General Inspection of the machine",
+        "de": "Allgemeine Durchsicht der Maschine"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "control_sichtscheiben": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Kontrolle der Sichtscheiben",
+            "en": "Checking the viewing windows"
+          }
+        },
+        "iO-1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_leckagen": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Kontrolle auf Leckagen",
+            "en": "Check of leaks"
+          }
+        },
+        "iO-2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "function_emergency_off": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Funktionskontrolle Not-Aus",
+            "en": "Emergency stop function check"
+          }
+        },
+        "iO-3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_safety": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Kontrolle Sicherheitseinrichtungen",
+            "en": "Control safety devices"
+          }
+        },
+        "iO-4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "enschalter_achsen": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Anfahren der Enschalter aller Achsen",
+            "en": "Approach the limit switches of all axles"
+          }
+        },
+        "iO-5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_switches": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Überprüfung der Schalter und Taster am Bedienpult",
+            "en": "Checking the switches and buttons on the control panel"
+          }
+        },
+        "iO-6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment1": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "03_inspection_guiding": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Guideways inspection",
+        "de": "Kontrolle von Führungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "control_axes_X": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle X-Achse",
+            "en": "Visual inspection X-axis"
+          }
+        },
+        "iO-7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_axes_Y": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Y-Achse",
+            "en": "Visual inspection Y-axis"
+          }
+        },
+        "iO-8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_axes_Z": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Z-Achse",
+            "en": "Visual inspection Z-axis"
+          }
+        },
+        "iO-9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment2": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "04_inspection_lubrication": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Lubrication system inspection",
+        "de": "Kontrolle Schmierung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "axes_X": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "X-Achse",
+            "en": "X-Axis"
+          }
+        },
+        "iO-10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "axes_Y": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Y-Achse",
+            "en": "Y-Axis"
+          }
+        },
+        "iO-11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "axes_Z": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Z-Achse",
+            "en": "Z-Axis"
+          }
+        },
+        "iO-12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checking_return_flow": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Überprüfung Rückläufe",
+            "en": "Checking the return flow channels"
+          }
+        },
+        "iO-13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checking_lubrication_amount": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Überprüfung Schmiermenge ggfls. einstellen",
+            "en": "Checking lubrication quantity, adjust if necessary"
+          }
+        },
+        "iO-14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment3": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "05_inspection_engine": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Drives inspection",
+        "de": "Kontrolle von Antrieben"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "control_axes_X_2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle X-Achse",
+            "en": "Visual inspection X-axis"
+          }
+        },
+        "iO-15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_axes_Y_2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Y-Achse",
+            "en": "Visual inspection Y-axis"
+          }
+        },
+        "iO-16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_axes_Z_2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Z-Achse",
+            "en": "Visual inspection Z-axis"
+          }
+        },
+        "iO-17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment4": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "06_inspection_bellows": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Bellows inspection",
+        "de": "Kontrolle von Faltenbälgen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "control_axes_X_3": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle X-Achse",
+            "en": "Visual inspection X-axis"
+          }
+        },
+        "iO-18": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-18": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-18": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-18": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_axes_Y_3": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Y-Achse",
+            "en": "Visual inspection Y-axis"
+          }
+        },
+        "iO-19": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-19": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-19": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-19": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_axes_Z_3": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Z-Achse",
+            "en": "Visual inspection Z-axis"
+          }
+        },
+        "iO-20": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-20": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-20": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-20": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment5": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "07_inspection_geometrie": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Checking of machine geometry",
+        "de": "Überprüfung der Maschinengeometrie"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "control_grinding_patter": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Schliffbild",
+            "en": "Visual inspection surface finish"
+          }
+        },
+        "iO-21": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-21": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-21": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-21": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_ausrichtung": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Kontrolle Maschinenausrichtung/stand",
+            "en": "Machine alignment inspection"
+          }
+        },
+        "iO-22": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-22": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-22": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-22": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "contol_dial_gauge_1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Tisch mit Messuhr abfahren: X-Achse",
+            "en": "Checking table with micron gauge: X-Axis"
+          }
+        },
+        "iO-23": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-23": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-23": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-23": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "contol_dial_gauge_2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Tisch mit Messuhr abfahren: Z-Achse",
+            "en": "Checking table with micron gauge: Z-Axis"
+          }
+        },
+        "iO-24": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-24": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-24": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-24": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "area_measurement": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Flächenmessung mit Wyler",
+            "en": "Flatness measurement with wyler"
+          }
+        },
+        "iO-25": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-25": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-25": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-25": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment6": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "08_inspection_grinding_spindle": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Grinding spindle inspection",
+        "de": "Überprüfung Schleifspindel"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "control_spindle_cone": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Spindelkonus",
+            "en": "Visual inspection of spindle cone"
+          }
+        },
+        "iO-26": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-26": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-26": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-26": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_radial_runout": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Überprüfung Rundlauf",
+            "en": "Runout inspection"
+          }
+        },
+        "iO-27": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-27": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-27": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-27": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_running_noise": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Kontrolle Laufgeräusche",
+            "en": "Running noises inspection"
+          }
+        },
+        "iO-28": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-28": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-28": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-28": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checking_seat_intake": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Überprüfung des Sitzes der Aufnahme",
+            "en": "Seat of the flangee inspection"
+          }
+        },
+        "iO-29": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-29": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-29": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-29": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment7": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "09_inspection_belt_filter": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Visual inspection of the belt filter system",
+        "de": "Sichtkontrolle Bandfilteranlage"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "control_magnetic_separator": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Magnetabscheider",
+            "en": "Visual inspection magnetic separator"
+          }
+        },
+        "iO-30": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-30": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-30": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-30": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_pump_engine": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sichtkontrolle Pumpenmotoren",
+            "en": "Visual inspection of pumps"
+          }
+        },
+        "iO-31": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-31": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-31": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-31": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment8": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "10_change_lubricant": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Change of operation fluids and lubricants",
+        "de": "Wechsel der Betriebs- und Schmierstoffe"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "change_hydraulik_oil": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Hydrauliköl",
+            "en": "Change hydraulic oil"
+          }
+        },
+        "iO-32": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-32": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-32": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "change_lubricating_oil": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Schmieröl",
+            "en": "Change lubricating oil"
+          }
+        },
+        "iO-33": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-33": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-33": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "change_oil_filter_supply": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Ölfilter Vorlauf",
+            "en": "Change feed oil filter"
+          }
+        },
+        "iO-34": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-34": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-34": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "change_oil_filter_return": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Ölfilter Rücklauf",
+            "en": "Change return oil filter"
+          }
+        },
+        "iO-35": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-35": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-35": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "change_lubricating_oil_filter": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Schmierölfilter",
+            "en": "Change lubricating oil filter"
+          }
+        },
+        "iO-36": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-36": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-36": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "change_lubricating_grease": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Schmierfett",
+            "en": "Change lubricating grease"
+          }
+        },
+        "iO-37": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-37": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-37": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "change_lubricating_grease_cartridge": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Schmierfettpatrone",
+            "en": "Change grease cartridge"
+          }
+        },
+        "iO-38": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-38": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-38": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment9": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "11_change_pneumatic_filter": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Change of pneumatic filters",
+        "de": "Wechsel der Pneumatikfilter"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "change_hydraulik_oil": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Filter Wartungseinheit",
+            "en": "Change filter maintenance unit"
+          }
+        },
+        "iO-39": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-39": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-39": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "change_filter_scales": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Filter Maßstäbe",
+            "en": "Change filter for scales"
+          }
+        },
+        "iO-40": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-40": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-40": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "control_pressure": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Kontrolle Druck",
+            "en": "Checking pressure"
+          }
+        },
+        "iO-41": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-41": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-41": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-41": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment10": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "12_change_filter_grinding_mist_suction": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Change filters of grinding mist extraction",
+        "de": "Wechsel der Filter Schleifnebelabsaugung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "change_filter_suction": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Filtersatz Absaugung",
+            "en": "Change filter set"
+          }
+        },
+        "iO-42": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-42": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-42": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "change_machine_room_filter": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wechsel Filter Maschinenraum",
+            "en": "Change filter on machine housing"
+          }
+        },
+        "iO-43": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-43": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-43": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment11": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "121_kuehlaggregat": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Cooling unit inspection",
+        "de": "Kontrolle Kühlaggregat"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "cooling_unit_function": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Funktion",
+            "en": "Function"
+          }
+        },
+        "iO-421": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-421": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-421": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-421": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "cooling_unit_filling": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Füllstand",
+            "en": "Filling Level"
+          }
+        },
+        "iO-422": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-422": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O.",
+            "en": "n.i.O."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "behoben-422": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "behoben/durchgeführt",
+            "en": "fixed/performed"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-422": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment11": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "13_change_filter_hydrostatic": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Change filter in hydrostatic system",
+        "de": "Wechsel der Filter Hydrostatik"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "iO-44": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Getauscht",
+            "en": "Exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "niO-44": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nicht getauscht",
+            "en": "Not exchanged"
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "nV-44": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.v.",
+            "en": "n.v."
+          },
+          "required": false,
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment12": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "14_sonstiges": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Miscellaneous",
+        "de": "Sonstiges"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "comment13": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": " ",
+            "en": " "
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "06-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Monteur",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "08-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Wartungsprotokoll",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

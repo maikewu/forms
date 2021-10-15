@@ -1,0 +1,589 @@
+{
+  "general": {
+    "name": {
+      "en": "8D-Report-Customer Complaint Recording",
+      "de": "8D-Report-Erfassung Kundenreklamationen"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the report.",
+        "de": "Bitte unterschreiben Sie den Bericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "unbreakable": false,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "06-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "reclamation_number": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Reklamation-Nr.",
+            "en": "Complaint No."
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "reclamation_Date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum Reklamationseingang",
+            "en": "Date complaint receipt"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        },
+        "article_name": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Artikelname",
+            "en": "Article name"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "article_number": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Artikel-Nr.",
+            "en": "Article No."
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "quantity_delivered": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Liefermenge",
+            "en": "Quantity delivered"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "claimed_quantity": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Beanstandete Menge",
+            "en": "Quantity claimed"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "1-abteilung": {
+          "fieldType": "H3",
+          "text": {
+            "de": "1. Abteilung",
+            "en": "1. Department"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "processor": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Bearbeiter",
+            "en": "Processor"
+          },
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": false,
+          "autofillCurrentUser": true,
+          "width": 0.5,
+          "required": true
+        },
+        "department": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Abteilung",
+            "en": "Department"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "2-problem": {
+          "fieldType": "H3",
+          "text": {
+            "de": "2. Problembeschreibung",
+            "en": "2. Problem description"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "problem_description": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Description"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": true,
+          "width": 1
+        },
+        "3-measure": {
+          "fieldType": "H3",
+          "text": {
+            "de": "3. Sofortmaßnahmen",
+            "en": "3. Immediate measures"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "immediate_measures": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No values added yet.",
+            "de": "Es wurden noch keine Werte hinzugefügt."
+          },
+          "children": {
+            "text1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Maßnahme",
+                "en": "Measure"
+              },
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "required": false,
+              "width": 0.5
+            },
+            "value2": {
+              "fieldType": "REMBERG_DATE",
+              "label": {
+                "de": "Einführungsdatum",
+                "en": "Introduction date"
+              },
+              "required": false,
+              "autofillCurrentDate": false,
+              "width": 0.5
+            }
+          }
+        },
+        "4-causes": {
+          "fieldType": "H3",
+          "text": {
+            "de": "4. Fehlerursachen",
+            "en": "4. Error causes"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "error_causes": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Description"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5
+        },
+        "5-measure": {
+          "fieldType": "H3",
+          "text": {
+            "de": "5. Gewählte dauerhafte Abstellmaßnahmen",
+            "en": "5. Selected permanent measures"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "permanent_measures": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No values added yet.",
+            "de": "Es wurden noch keine Werte hinzugefügt."
+          },
+          "children": {
+            "text5-1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Maßnahme",
+                "en": "Measure"
+              },
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "required": false,
+              "width": 0.5
+            },
+            "value5-2": {
+              "fieldType": "REMBERG_DATE",
+              "label": {
+                "de": "Geplantes Einführungsdatum",
+                "en": "Planned introduction date"
+              },
+              "required": false,
+              "autofillCurrentDate": false,
+              "width": 0.5
+            }
+          }
+        },
+        "6-measure": {
+          "fieldType": "H3",
+          "text": {
+            "de": "6. Durchgeführte dauerhafte Abstellmaßnahmen",
+            "en": "6. Performed permanent measures"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "performed_permanent_measures": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No values added yet.",
+            "de": "Es wurden noch keine Werte hinzugefügt."
+          },
+          "children": {
+            "text6-1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Maßnahme",
+                "en": "Measure"
+              },
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "required": false,
+              "width": 0.5
+            },
+            "value6-2": {
+              "fieldType": "REMBERG_DATE",
+              "label": {
+                "de": "Einführungsdatum",
+                "en": "Introduction date"
+              },
+              "required": false,
+              "autofillCurrentDate": false,
+              "width": 0.5
+            }
+          }
+        },
+        "7-measure": {
+          "fieldType": "H3",
+          "text": {
+            "de": "7. Maßnahmen gegen Wiederholfehler",
+            "en": "5. Measures preventing repeat errors"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "measures_repeat_errors": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No values added yet.",
+            "de": "Es wurden noch keine Werte hinzugefügt."
+          },
+          "children": {
+            "text7-1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Maßnahme",
+                "en": "Measure"
+              },
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "required": false,
+              "width": 0.5
+            },
+            "value7-2": {
+              "fieldType": "REMBERG_DATE",
+              "label": {
+                "de": "Einführungsdatum",
+                "en": "Introduction date"
+              },
+              "required": false,
+              "autofillCurrentDate": false,
+              "width": 0.5
+            }
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "06-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Teamleader After-Sales",
+        "de": "Unterschrift Teamleiter After-Sales"
+      },
+      "stateIndicator": true,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "freigabe_Kunde": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Freigabe Kunde",
+            "en": "Customer approval"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "approved",
+              "text": {
+                "de": "Freigegeben",
+                "en": "Approved"
+              }
+            },
+            {
+              "value": "notapproved",
+              "text": {
+                "de": "Nicht freigegeben",
+                "en": "Not approved"
+              }
+            }
+          ]
+        },
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teamleiter After-Sales",
+            "en": "Teamlead After-Sales"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "10-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Kundenreklamation",
+            "content": "Sehr geehrte Damen und Herren,\n\nes ist eine Reklamation von unseren Kunden eingegangen.\nBitte veranlassen Sie weitere Maßnhamen, dass dieses Problem schnellstmöglich behoben wird.\n\nMit freundlichen Grüßen,",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "aftersales@merz-system.de"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false,
+              "others": [
+                "qmm@merz-system.de"
+              ]
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

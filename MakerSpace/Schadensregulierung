@@ -1,0 +1,551 @@
+{
+  "general": {
+    "name": {
+      "en": "Report on damage / soiling of machines in the MakerSpace workshop",
+      "de": "Bericht über Beschädigungen / Verschmutzungen an Maschinen in der MakerSpace Werkstatt"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreibe den Service Report."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "date_time": {
+          "fieldType": "REMBERG_DATETIME",
+          "label": {
+            "de": "Datum & Uhrzeit",
+            "en": "Date & Time"
+          },
+          "hiddenInPdf": false,
+          "autofillCurrentDate": true,
+          "width": 1,
+          "required": true
+        },
+        "crew_member": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Crew-Mitglied",
+            "en": "Crew Member"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "autofillCurrentUser": true,
+          "required": true
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Maschine / Werkzeug",
+            "en": "Maschine / Tool"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_causer-of-damage": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Information of damage causer",
+        "de": "Daten des Schadenverursachers"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "name_person": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Name (Person)",
+            "en": "Name (Person)"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "required": true
+        },
+        "name_team": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Name (Team)",
+            "en": "Name (Team)"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "email": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "E-Mail",
+            "en": "Email"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "required": true,
+          "validators": [
+            {
+              "type": "EMAIL"
+            }
+          ]
+        },
+        "phonenumber": {
+          "fieldType": "REMBERG_PHONE",
+          "required": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Telefonnummer",
+            "en": "Phone Number"
+          }
+        },
+        "address": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "required": true
+        }
+      }
+    },
+    "03_damage": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Information of damage",
+        "de": "Schadensinformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "course-of-action": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Schilderung des Schadenhergangs / Verschmutzung",
+            "en": "Description of the cause of damage / pollution"
+          },
+          "hiddenInPdf": false,
+          "required": true,
+          "width": 1
+        },
+        "images": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Fotos",
+            "en": "Photos"
+          }
+        },
+        "damage-amount": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Schadenssumme",
+            "en": "Cost of damage"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "damage-amount-pending": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Schadenssumme noch unbekannt",
+            "en": "Cost estimate yet unknown"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "hiddenInPdf": false
+        },
+        "payment": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zahlungsart",
+            "en": "Method of Payment"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "Bar",
+              "text": {
+                "de": "Bar",
+                "en": "Cash"
+              }
+            },
+            {
+              "value": "EC",
+              "text": {
+                "de": "EC",
+                "en": "Debit Card"
+              }
+            },
+            {
+              "value": "Invoice",
+              "text": {
+                "de": "Auf Rechnung",
+                "en": "Invoice"
+              }
+            }
+          ]
+        },
+        "estimate": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kostenvoranschlag wird nachgereicht",
+            "en": "Cost estimate will be submitted afterwards"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "hiddenInPdf": false
+        },
+        "solved": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Konnte der Schaden direkt behoben werden?",
+            "en": "Was the damage fixed immediately?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "Ja",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "No",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "technician-informed": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Wurde ein Techniker informiert?",
+            "en": "Has a technician been informed?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "Ja",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "No",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Sonstiges",
+            "en": "Additional Comments"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "04-signatureCauser": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Causer of Damage",
+        "de": "Unterschrift Schadenverursacher"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillLocation": "Garching",
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Schadenverursacher",
+            "en": "Causer of Damage"
+          },
+          "required": true
+        }
+      }
+    },
+    "05-signatureCrew": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Witness (Crew)",
+        "de": "Unterschrift Zeuge (Crew)"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "autofillLocation": "Garching",
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Zeuge (Crew)",
+            "en": "Witness (Crew)"
+          },
+          "required": true
+        }
+      }
+    },
+    "06-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "07_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "date_time2": {
+          "fieldType": "REMBERG_DATETIME",
+          "label": {
+            "de": "Datum & Uhrzeit",
+            "en": "Date & Time"
+          },
+          "hiddenInPdf": false,
+          "autofillCurrentDate": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "required": false
+        },
+        "damage-amount2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Schadenssumme",
+            "en": "Cost of damage"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "technician-informed2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Wurde ein Techniker informiert?",
+            "en": "Has a technician been informed?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "Ja",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "No",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Sonstiges",
+            "en": "Additional Comments"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        },
+        "documents-addendum": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Document(s)"
+          }
+        }
+      }
+    },
+    "08-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
