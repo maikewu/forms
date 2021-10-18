@@ -1,0 +1,2203 @@
+{
+  "general": {
+    "name": {
+      "en": "Service - Report - Commissioning",
+      "de": "Service - Besuchsbericht - Inbetriebnahme"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the customer service report.",
+        "de": "Bitte unterschreiben Sie den Kundendienstbericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "text1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Der Besuchsbericht ist nur für intern. Herausgabe an den Kunden nur nach Rücksprache.",
+            "en": "This Report is only for internal use. Costumer version to be requested."
+          }
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "header_Assets": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Weitere Maschinen",
+            "en": "Additional machines"
+          }
+        },
+        "additionalAssets": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "disableTabularView": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "width": 0.5,
+              "label": {
+                "de": "Weitere Maschine",
+                "en": "Additional machine"
+              }
+            }
+          }
+        },
+        "customerLocation": {
+          "width": 1,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": false,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "space1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "contactPerson": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Gesprächspartner",
+            "en": "Contact person"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "position": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Position",
+            "en": "Position"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Berichterstatter",
+            "en": "Reporter"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "attendee": {
+          "fieldType": "REMBERG_PERSONS",
+          "label": {
+            "de": "SAHM Begleiter",
+            "en": "SAHM-Accompanist"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum des Besuchs (Start)",
+            "en": "Visit Date (Start)"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": false,
+          "hideInPdfIfEmpty": true,
+          "required": false
+        },
+        "date2": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum des Besuchs (Ende)",
+            "en": "Visit Date (End)"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": false,
+          "hideInPdfIfEmpty": true,
+          "required": false
+        },
+        "dropdown1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlass des Besuchs",
+            "en": "Visit reason"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Vorführmaschine",
+                "en": "Demo machine"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Inbetriebnahme",
+                "en": "Commissioning"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "After Sales Service",
+                "en": "After sales service"
+              }
+            },
+            {
+              "value": "4",
+              "text": {
+                "de": "Fehlersuche/-behebung",
+                "en": "Troubleshooting"
+              }
+            },
+            {
+              "value": "5",
+              "text": {
+                "de": "Reklamationsbeseitigung",
+                "en": "Complaint resolution"
+              }
+            },
+            {
+              "value": "6",
+              "text": {
+                "de": "Entwicklung",
+                "en": "Development"
+              }
+            },
+            {
+              "value": "7",
+              "text": {
+                "de": "Spulversuche",
+                "en": "Winding tests"
+              }
+            },
+            {
+              "value": "8",
+              "text": {
+                "de": "Vertriebsunterstützung",
+                "en": "Sales support"
+              }
+            },
+            {
+              "value": "9",
+              "text": {
+                "de": "Sonstiges",
+                "en": "Other"
+              }
+            }
+          ]
+        },
+        "text21": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Bei Auswahl von 'Sonstiges' als Anlass des Besuchs:",
+            "en": "If 'Other' selected as visit reason:"
+          }
+        },
+        "other": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Sonstiges",
+            "en": "Other"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "dropdown2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Reiseberechnung",
+            "en": "Travel charges"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "11",
+              "text": {
+                "de": "ohne Berechnung",
+                "en": "No charge"
+              }
+            },
+            {
+              "value": "12",
+              "text": {
+                "de": "gegen Berechnung",
+                "en": "Charge"
+              }
+            },
+            {
+              "value": "13",
+              "text": {
+                "de": "Klärung durch",
+                "en": "Clarification by"
+              }
+            }
+          ]
+        },
+        "text32": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Bei Auswahl von 'Klärung durch' als Reiseberechnung:",
+            "en": "If 'clarification by' selected as travel charge type:"
+          }
+        },
+        "Klarung": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Klärung durch",
+            "en": "Clarification by"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "besuchsprotokoll": {
+          "fieldType": "H2",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Besuchsprotokoll",
+            "en": "Minutes"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03_1_general": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "1. General",
+        "de": "1. Allgemein"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "freitext": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Freitext",
+            "en": "Text area"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "locationCorrect": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Aufstellungsort stimmt mit dem Kundendienstauftrag überein",
+            "en": "Place of installion squares with Service-Order"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "customerLocation2": {
+          "width": 1,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Abweichender Aufstellungsort",
+            "en": "Deviating location"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false
+        },
+        "1_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "04_2_commissioning": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "2. Commissioning",
+        "de": "2. Inbetriebnahme"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "machineSetup": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Maschine wurde aufgestellt und ausgerichtet",
+            "en": "Machine is in position"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "airSupply": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Druckluftversorgung wurde gemäß Pneumatikplan eingestellt",
+            "en": "Air supply is adjusted like in the pneumatic plan"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header21": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Folgende Spannungen wurden gemessen:",
+            "en": "Following voltage is measured:"
+          }
+        },
+        "measurementValues": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "value1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "L1 - L2 [V]",
+                "en": "L1 - L2 [V]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "L2 - L3 [V]",
+                "en": "L2 - L3 [V]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value3": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "L1 - L3 [V]",
+                "en": "L1 - L3 [V]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value4": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "L1 - PE [V]",
+                "en": "L1 - PE [V]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value5": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "L2 - PE [V]",
+                "en": "L2 - PE [V]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value6": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "L3 - PE [V]",
+                "en": "L3 - PE [V]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value7": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "PE - N [V]",
+                "en": "PE - N [V]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            }
+          }
+        },
+        "header22": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Aktuelle Software:",
+            "en": "Actual software version:"
+          }
+        },
+        "softwareValues": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "value21": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "HMI",
+                "en": "HMI"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value22": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Gateway",
+                "en": "Gateway"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value23": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Spulkopf",
+                "en": "Winding head"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true
+            },
+            "value24": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "FU",
+                "en": "FI"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            }
+          }
+        },
+        "dataExport": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "„Daten Export“ wurde durchgeführt und ein Backup wurde im Auftragsordner abgelegt",
+            "en": "„Data Export“ has been done and saved in the order folder"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header23": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Folgende Dokumente wurden vom Kunden unterzeichnet:",
+            "en": "Following documents has been signed:"
+          }
+        },
+        "checkbox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kundendienstauftrag",
+            "en": "Service order"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "checkbox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sicherheitsunterweisung",
+            "en": "Safety instruction"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "checkbox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "SAT-Protokoll",
+            "en": "SAT-Document"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "checkbox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "LC-Dokument",
+            "en": "LC-Document"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "checkbox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dokument Spulenverhältnisberechnung",
+            "en": "Document winding ratio"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "trainingDone": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Unterweisung wurde durchgeführt",
+            "en": "Training has been done"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment4": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "videoHandover": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Wartungsvideos wurden überreicht",
+            "en": "Maintenance videos have been handed over"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment5": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "videoSaved": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Bilder / Videos der Maschine, Spule usw. wurden im Auftragsordner abgelegt",
+            "en": "Pictures / video’s of machine, bobbin etc. have been saved in the order folder"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment6": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header24": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Folgendes Geschwindigkeitssignal wurde angeschlossen:",
+            "en": "Following speed signal has been connected:"
+          }
+        },
+        "speedSignal": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "value31": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Maschinenstatus",
+                "en": "Machine State"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "Lokal",
+                    "en": "Lokal"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "0-10V",
+                    "en": "0-10V"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "0-20mA",
+                    "en": "0-20mA"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "4-20mA",
+                    "en": "4-20mA"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "ext. Encoder",
+                    "en": "ext. Encoder"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "OPC",
+                    "en": "OPC"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "ETH",
+                    "en": "ETH"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "Frequency",
+                    "en": "Frequency"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "STAREX",
+                    "en": "STAREX"
+                  }
+                }
+              ]
+            },
+            "value32": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Geschwindigkeit bei 100%",
+                "en": "Speed 100%"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            }
+          }
+        },
+        "header25": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Vorgelagerter Prozess:",
+            "en": "Upstream process:"
+          }
+        },
+        "preProcesses": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "value41": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Nr.",
+                "en": "No."
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value42": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Prozess",
+                "en": "Process"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value43": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Firma",
+                "en": "Company"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            }
+          }
+        },
+        "competitorAssets": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Mitbewerber Maschinen",
+            "en": "Competitor machines"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header26": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Nachgelagerter Prozess:",
+            "en": "Downstream process:"
+          }
+        },
+        "postProcesses": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "value51": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Nr.",
+                "en": "No."
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value52": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Prozess",
+                "en": "Process"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value53": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Firma",
+                "en": "Company"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            }
+          }
+        },
+        "sparePartPackage": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Das Ersatzteilpaket wurde auf Vollständigkeit geprüft",
+            "en": "Spare parts has been checked"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment7": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "2_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "05_3_machine-head": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "3. Machine parameter winding head",
+        "de": "3. Maschinen-Parameter - Spulkopf"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "header3-1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Kehrgewindewelle",
+            "en": "Cam"
+          }
+        },
+        "turns": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Windung",
+            "en": "Turns"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "slope": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Steigung",
+            "en": "Slope"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header3-2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Übersetzung",
+            "en": "Transmission"
+          }
+        },
+        "spindle": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Getriebe - Spindel",
+            "en": "Gearing - spindle"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "kgw": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Getriebe - KGW",
+            "en": "Gearing - cam"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header3-3": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "hublaenge": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Hublänge",
+            "en": "Winding length"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "remarks3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Remarks"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "3_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-3": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "06_4_winding-trials": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "4. Winding trials",
+        "de": "4. Spulversuch"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "header4-1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Hülse",
+            "en": "Tube"
+          }
+        },
+        "material": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Material/Form",
+            "en": "Material/form"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "innen": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Durchmesser Innen [mm]",
+            "en": "Diameter inside [mm]"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "aussen": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Durchmesser Außen [mm]",
+            "en": "Diameter outside [mm]"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "length1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Länge [mm]",
+            "en": "Length [mm]"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "space-4-1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "material2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Material",
+            "en": "Material"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "titer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Titer",
+            "en": "Titer"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "space-4-2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "4-speed": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Geschwindigkeit [m/min]",
+            "en": "Speed [m/min]"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "anlegeverhalten": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anlegeverhalten",
+            "en": "Thread up"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "runnin_length": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Lauflänge [m]",
+            "en": "Running length [m]"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "bobbin": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Durchmesser Spule [mm]",
+            "en": "Diameter bobbin [mm]"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header4-2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Fadenspannung",
+            "en": "Yarn tension"
+          }
+        },
+        "anlegen": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anlegen [bar]",
+            "en": "Start up [bar]"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header4-2-1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Durchmesser:",
+            "en": "Diameter:"
+          }
+        },
+        "diameter": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "value4-1-1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "mm",
+                "en": "mm"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value4-1-2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "bar",
+                "en": "bar"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value4-1-3": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "cN",
+                "en": "cN"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            }
+          }
+        },
+        "header4-3": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Anpressdruck",
+            "en": "Bail pressure"
+          }
+        },
+        "anpressdruck": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "value4-2-1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anlegen [bar]",
+                "en": "Start up [bar]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value4-2-2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Durchmesser [mm]",
+                "en": "Diameter [mm]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value4-2-3": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Durchmesser [bar]",
+                "en": "Diameter [bar]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            }
+          }
+        },
+        "header4-3-1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Spulverhältnis",
+            "en": "Winding ratio"
+          }
+        },
+        "spulverhaeltnis": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "value4-3-1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Durchmesser [mm]",
+                "en": "Diameter [mm]"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value4-3-2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Spulverhältnis",
+                "en": "Winding ratio"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value4-3-3": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Abstand",
+                "en": "Distance"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true
+            },
+            "value4-3-4": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Factor SV",
+                "en": "Factor SV"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "value4-3-5": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Incremente",
+                "en": "Increment"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            }
+          }
+        },
+        "remarks4": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkung / Bilder",
+            "en": "Remarks / Pictures"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        },
+        "4_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-4": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "07_5_spare-parts": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "5. Spare parts",
+        "de": "5. Ersatzteile"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "spareparts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Ersatzteile",
+            "en": "Spare Parts"
+          },
+          "partNumberRequired": false,
+          "descriptionRequired": false,
+          "amountRequired": false,
+          "deliveryRequired": false,
+          "invoice": false,
+          "invoiceFields": false,
+          "hideWarrantyField": true,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        },
+        "5_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-5": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "08_6_problems": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "6. Problems during travel",
+        "de": "6. Probleme während der Reise"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "6_comment": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Freitext",
+            "en": "Text area"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "6_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-6": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "09_7_problems": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "7. Customer requests",
+        "de": "7. Kundenwünsche"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "7_comment": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Freitext",
+            "en": "Text area"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "7_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-7": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "10_8_problems": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "8. Customer satisfaction / summary",
+        "de": "8. Kundenzufriedenheit / Zusammenfassung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "8_comment": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Freitext",
+            "en": "Text area"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "8_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-8": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "11_9_improvements": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "9. Suggestions for improvement",
+        "de": "9. Verbesserungsvorschläge"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "9_comment": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Freitext",
+            "en": "Text area"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "9_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-9": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "12_10_points": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "10. Open points",
+        "de": "10. Offene Punkte"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "10_comment": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Freitext",
+            "en": "Text area"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "10_responsible_duedate": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zuständig / zu erledigen bis",
+            "en": "Action by / Deadline"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "helptext-textarea-10": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "E = Erledigung - I = Information - S = Stellungnahme - R = Rücksprache - N = Nachverfolgung",
+            "en": "E = Execution - I = Information - S = Statement - R = Consultation - N = Follow up"
+          }
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Service - Besuchsbericht - Inbetriebnahme",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
