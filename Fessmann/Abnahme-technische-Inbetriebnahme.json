@@ -1,0 +1,1001 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Acceptance for technical commissioning",
+      "de": "Abnahme zur technischen Inbetriebnahme"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Servicebericht unterschreiben"
+      },
+      "popupDescription": {
+        "en": "In order to finalize the report, please sign one after another it in the field below.",
+        "de": "Um den Bericht fertigzustellen, unterschreibe bitte nacheinander im untenstehenden Feld."
+      }
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Auftragnehmer",
+        "en": "Contractor"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": false,
+      "children": {
+        "technicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "autofillCurrentUser": true,
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service Technicians"
+          },
+          "required": true
+        },
+        "ausgestelltDurch": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "autofillCurrentUser": true,
+          "label": {
+            "de": "Ausgestellt durch",
+            "en": "Issued by"
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "2-maschine",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "2-customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Kunden-Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": false,
+          "width": 1,
+          "messages": {
+            "onChange": [
+              {
+                "to": "2-customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "required": false,
+          "width": 1,
+          "messages": {
+            "onChange": [
+              {
+                "to": "11-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "11-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerContactPerson": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Ansprechpartner",
+            "en": "Customer contact"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "hiddenInPdf": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer",
+                    "_functionName": "GET_ACCOUNT"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "3-maschine": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "1. Anlagenumfang",
+        "en": "1. asset scope"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": false,
+      "children": {
+        "assets": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "asset": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "width": 0.3,
+              "label": {
+                "de": "Anlage",
+                "en": "Machine"
+              }
+            },
+            "checkbox_asset_1": {
+              "fieldType": "CHECKBOX",
+              "label": {
+                "de": "Anlage eingeschränkt in Ordnung",
+                "en": "Machine limited okay"
+              },
+              "required": false,
+              "width": 0.3,
+              "hiddenInPdf": false
+            },
+            "checkbox_asset_2": {
+              "fieldType": "CHECKBOX",
+              "label": {
+                "de": "Anlage in Ordnung",
+                "en": "Machine okay"
+              },
+              "required": false,
+              "width": 0.3,
+              "hiddenInPdf": false
+            }
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "3-checklist-1": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "2. Einweisung",
+        "en": "2. instruction"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "checkbox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "en": "Controler",
+            "de": "Steuerung"
+          },
+          "required": false,
+          "checked": false
+        },
+        "tasksComment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Comment"
+          },
+          "required": false,
+          "minRows": 1
+        },
+        "checkbox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "en": "Fessmann Asset",
+            "de": "Fessmann Anlage"
+          },
+          "required": false,
+          "checked": false
+        },
+        "tasksComment2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Comment"
+          },
+          "required": false,
+          "minRows": 1
+        },
+        "checkbox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "en": "smoke generator",
+            "de": "Raucherzeuger"
+          },
+          "required": false,
+          "checked": false
+        },
+        "tasksComment3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Comment"
+          },
+          "required": false,
+          "minRows": 1
+        },
+        "checkbox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "en": "Control Cabinet",
+            "de": "Schaltschrank"
+          },
+          "required": false,
+          "checked": false
+        },
+        "tasksComment4": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Comment"
+          },
+          "required": false,
+          "minRows": 1
+        }
+      }
+    },
+    "9-Bemerkungen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "3. Bemerkungen",
+        "en": "3. Notes"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "generalComments": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Allgemeine Bemerkungen & Hinweise",
+            "en": "General Comments"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "readonly": false,
+          "width": 1,
+          "validators": []
+        },
+        "customerRequests": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kundenwünsche",
+            "en": "Customer Requests"
+          },
+          "readonly": false,
+          "hideInPdfIfEmpty": true,
+          "validators": []
+        },
+        "filesComments": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          }
+        }
+      }
+    },
+    "3-checklist-2": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "4. Dokumentation",
+        "en": "4. Ducumetation"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "dropdown_4_1_1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Adressen- und Telefonverzeichnis für Störfälle / Service-Hotline",
+            "en": "Address and telephone directory for malfunctions / service hotline"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "vorhanden",
+                "en": "available"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "fehlt",
+                "en": "missing"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "nicht erforderlich",
+                "en": "not applicable"
+              }
+            }
+          ]
+        },
+        "tasksComment4-1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "dropdown_4_1_2": {
+          "fieldType": "SELECT",
+          "label": {
+            "en": "plans / technical data sheets / schemes of the realized plant",
+            "de": "Pläne / technische Datenblätter / Schemata der realisierten Anlage"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "vorhanden",
+                "en": "available"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "fehlt",
+                "en": "missing"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "nicht erforderlich",
+                "en": "not applicable"
+              }
+            }
+          ]
+        },
+        "tasksComment4-2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "dropdown_4_1_3": {
+          "fieldType": "SELECT",
+          "label": {
+            "en": "Operating instructions and behavior in case of malfunctions",
+            "de": "Betriebsanleitungen und Verhalten bei Störfällen"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "vorhanden",
+                "en": "available"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "fehlt",
+                "en": "missing"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "nicht erforderlich",
+                "en": "not applicable"
+              }
+            }
+          ]
+        },
+        "tasksComment4-3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "dropdown_4_1_4": {
+          "fieldType": "SELECT",
+          "label": {
+            "en": "Schematics of the measuring and control equipment incl. wiring diagrams",
+            "de": "Schemata der Mess- und Regeltechnik inkl. Verdrahtungspläne"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "vorhanden",
+                "en": "available"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "fehlt",
+                "en": "missing"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "nicht erforderlich",
+                "en": "not applicable"
+              }
+            }
+          ]
+        },
+        "tasksComment4-4": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "dropdown_4_1_5": {
+          "fieldType": "SELECT",
+          "label": {
+            "en": "Declarations of conformity, confirmation of proper and professional execution",
+            "de": "Konformitätserklärungen, Bestätigung der sach- und fachgerechten Ausführung"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "vorhanden",
+                "en": "available"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "fehlt",
+                "en": "missing"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "nicht erforderlich",
+                "en": "not applicable"
+              }
+            }
+          ]
+        },
+        "tasksComment4-5": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "tasksComment4-6": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Weitere",
+            "en": "More"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "dropdown_4_1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Die Dokumentation wurde",
+            "en": "Documentation was"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "vollständig vorgelegt",
+                "en": "submitted in full"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "unvollständig vorgelegt",
+                "en": "submitted incompletely"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "3-checklist-3": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "5. Technische Abnahme",
+        "en": "5. technical acceptance"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "h1": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Die rechtsgeschäftliche technische Abnahme erreicht bei Unterzeichnung des Abnahmeprotokolls durch den Kunden und Auftragnehmer ihre Gültigkeit. Unwesentliche Mängel berechtigen den Kunden nicht zur Verweigerung der technischen Abnahme. Es wird bestätigt, dass die unter 1. genannten Anlagen geprüft und getestet wurden und in technisch einwandfreiem Zustand sind. Falls Restmängel unter Punkt 3. vermerkt sind, müssen diese vom Auftragnehmer kurzfristig beseitigt werden. Unabhängig dieser schriftlichen Abnahmebestätigung gilt die Abnahme spätestens 2 Wochen nach Beginn der Benutzung der Lieferung durch den Kunden als erfolgt. Bestandteil dieser Abnahme sind die Technischen Inbetriebnahmeprotokolle. Der Kunde bestätigt, dass er in die Bedienung, Wartung und zu beachtende Gefahren der Anlage(n) eingewiesen wurde. Oberhalb der Anlagen darf die Umgebungstemperatur 40 °C nicht überschreiten. Bei Schäden durch Temperaturüberschreitungen besteht kein Garantieanspruch.",
+            "en": "The legal technical acceptance becomes valid when the acceptance protocol is signed by the customer and the contractor. Insignificant defects do not entitle the customer to refuse the technical acceptance. It is confirmed that the equipment mentioned under 1. has been inspected and tested and is in perfect technical condition. If residual defects are noted under point 3, these must be eliminated by the contractor at short notice.Irrespective of this written confirmation of acceptance, acceptance shall be deemed to have taken place no later than 2 weeks after the customer has started to use the delivery. Part of this acceptance are the technical commissioning protocols. The customer confirms that he has been instructed in the operation, maintenance and hazards of the system(s) to be observed. The ambient temperature above the equipment must not exceed 40 °C. There is no warranty claim in case of damage caused by exceeding the temperature."
+          }
+        },
+        "checkbox_5_1":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Anlagen sind mängelfrei (Punkt 6 entfällt)",
+            "en": "Machines are free of defects (point 6 omitted)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "checkbox_5_2":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Die unter Punkt 3 beschriebenen Mängel sind kurzfristig zu beheben",
+            "en": "The deficiencies described in point 3 are to be remedied in the short term"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        }
+      }
+    },
+    "3-checklist-4": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "6. Technische Abnahme der Mängelbeseitigung",
+        "en": "6. Technical acceptance of the defect removal"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "checkbox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "en": "all defects have been eliminated",
+            "de": "alle Mängel wurden beseitigt"
+          },
+          "required": false,
+          "width": 0.5,
+          "checked": false
+        },
+        "checkbox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "en": "those newly noted under point 3 are to be rectified in the short term",
+            "de": "alle unter Punkt 3 neu vermerkten sind kurzfristig zu beheben"
+          },
+          "required": false,
+          "width": 0.5,
+          "checked": false
+        },
+        "tasksComment2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        }
+      }
+    },
+    "11-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "autofillCurrentUser": true,
+          "disableDateAutofill": false,
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "required": true
+        }
+      }
+    },
+    "11-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "disableDateAutofill": false,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "12-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send filled form",
+        "de": "Ausgefülltes Formular absenden"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "remberg Servicebericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Servicebericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": true,
+              "others": [
+                "beispiel@remberg.com"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "13-addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Internal addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "infoCS": {
+          "fieldType": "TEXTAREA",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Informationen für den Kundendienst",
+            "en": "Information for the customer service"
+          },
+          "readonly": false,
+          "validators": []
+        },
+        "infoVertrieb": {
+          "fieldType": "TEXTAREA",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Informationen für Vertrieb",
+            "en": "Information for Distribution"
+          },
+          "readonly": false,
+          "validators": []
+        },
+        "returnJourneyTime": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Rückreisezeit",
+            "en": "Return journey time"
+          },
+          "readonly": false,
+          "validators": []
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          }
+        }
+      }
+    },
+    "14-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "hasNextStep": false,
+      "children": {
+        "test45": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Interne Rückmeldung",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": true
+            },
+            "cc": {
+              "currentUser": false,
+              "others": []
+            },
+            "bcc": {
+              "currentUser": false
+            },
+            "domainLimitations": [
+              "remberg.de"
+            ]
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
