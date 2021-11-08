@@ -1,0 +1,909 @@
+{
+  "general": {
+    "name": {
+      "en": "Customer Service Report",
+      "de": "Kundendienstbericht"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the customer service report.",
+        "de": "Bitte unterschreiben Sie den Kundendienstbericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": true
+        },
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "missionNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Montagenummer",
+            "en": "Assembly Number"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer",
+            "en": "Service Order Number"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Einsatzort",
+            "en": "Mission Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03_performed_tasks": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Performed Tasks",
+        "de": "Ausgeführte Arbeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Ausgeführte Arbeiten",
+            "en": "Performed Tasks"
+          },
+          "unbreakable": true,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "04_work_times": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Travel and Working Times",
+        "de": "Reise- und Arbeitszeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "regie": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Regie",
+            "en": "Directing"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "flatrate": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Pauschal",
+            "en": "Flat-Rate"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "tavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Reise- und Arbeitszeiten",
+            "en": "Travel and Working Times"
+          },
+          "unbreakable": true,
+          "required": true
+        }
+      }
+    },
+    "05_spare_parts": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Spare Parts",
+        "de": "Materialverbrauch"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "header_spare_parts_1": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Jesco Teile:",
+            "en": "Jesco Parts:"
+          }
+        },
+        "Jesco_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "jesco_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "38619B - WS Einlassventil C22123/C2214",
+                    "en": "38619B - WS Einlassventil C22123/C2214"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "35686 - WS Sicherheits-Sperrventil",
+                    "en": "35686 - WS Sicherheits-Sperrventil"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "33390C - WS Sicherheits-Abblaseventil m. Feder",
+                    "en": "33390C - WS Sicherheits-Abblaseventil m. Feder"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "35057 - Akrivkohlefüllung Jesco",
+                    "en": "35057 - Akrivkohlefüllung Jesco"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "28552 - Aktivkohlefüllung groß",
+                    "en": "28552 - Aktivkohlefüllung groß"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "34690 - WS Regelventil",
+                    "en": "34690 - WS Regelventil"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "29717B - WS Messglas",
+                    "en": "29717B - WS Messglas"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "80587B - WS Injektorrückschlag m. Membran HDR",
+                    "en": "80587B - WS Injektorrückschlag m. Membran HDR"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "80587C - WS Injektorrückschlag ohne HDR",
+                    "en": "80587C - WS Injektorrückschlag ohne HDR"
+                  }
+                },
+                {
+                  "value": "10",
+                  "text": {
+                    "de": "35561 - WS Messzelle PM01",
+                    "en": "35561 - WS Messzelle PM01"
+                  }
+                },
+                {
+                  "value": "11",
+                  "text": {
+                    "de": "33601B - WS Vakuumbrecher",
+                    "en": "33601B - WS Vakuumbrecher"
+                  }
+                },
+                {
+                  "value": "12",
+                  "text": {
+                    "de": "33390 B - WS Sicherheitsventil Plus",
+                    "en": "33390 B - WS Sicherheitsventil Plus"
+                  }
+                },
+                {
+                  "value": "13",
+                  "text": {
+                    "de": "35062 - WS Rücklaufsperre",
+                    "en": "35062 - WS Rücklaufsperre"
+                  }
+                },
+                {
+                  "value": "14",
+                  "text": {
+                    "de": "41100060 - Bezugselektrode Chlor",
+                    "en": "41100060 - Bezugselektrode Chlor"
+                  }
+                },
+                {
+                  "value": "15",
+                  "text": {
+                    "de": "41100004 - PH Elektrode",
+                    "en": "41100004 - PH Elektrode"
+                  }
+                },
+                {
+                  "value": "16",
+                  "text": {
+                    "de": "41100011 - Redoxelektrode",
+                    "en": "41100011 - Redoxelektrode"
+                  }
+                },
+                {
+                  "value": "17",
+                  "text": {
+                    "de": "78073 B - Satz Pufferlösungen 2xpH 1 1x Redox",
+                    "en": "78073 B - Satz Pufferlösungen 2xpH 1 1x Redox"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_spare_parts_2": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Evoqua Teile:",
+            "en": "Evoqua Parts:"
+          }
+        },
+        "evoqua_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_2": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "evoqua_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "W3T-330841 - Ersatzteilsatz V-Regler",
+                    "en": "W3T-330841 - Ersatzteilsatz V-Regler"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "W3T-477401 - Ersatzteilsatz V-Regler mit RDS",
+                    "en": "W3T-477401 - Ersatzteilsatz V-Regler mit RDS"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "WT-00138 - WS Sicherheitsventil",
+                    "en": "WT-00138 - WS Sicherheitsventil"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "WT-00150 - WS Sperrventil",
+                    "en": "WT-00150 - WS Sperrventil"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "W3T-167494 - WS Regelventil",
+                    "en": "W3T-167494 - WS Regelventil"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "W3T-161729 - Aktivkohlefüllung W&T",
+                    "en": "W3T-161729 - Aktivkohlefüllung W&T"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "WT-00130 - WS  3/4'' Injektor",
+                    "en": "WT-00130 - WS  3/4'' Injektor"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "WT-00170 - WS Depolox 4 Messzelle",
+                    "en": "WT-00170 - WS Depolox 4 Messzelle"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "WT-00175 - WS Depolox 5 Messzelle",
+                    "en": "WT-00175 - WS Depolox 5 Messzelle"
+                  }
+                },
+                {
+                  "value": "10",
+                  "text": {
+                    "de": "W3T173163 - Elektrolyt 20 ml",
+                    "en": "W3T173163 - Elektrolyt 20 ml"
+                  }
+                },
+                {
+                  "value": "11",
+                  "text": {
+                    "de": "W3T160652 - Chlorelektrode POOL",
+                    "en": "W3T160652 - Chlorelektrode POOL"
+                  }
+                },
+                {
+                  "value": "12",
+                  "text": {
+                    "de": "41100004 - PH Elektrode",
+                    "en": "41100004 - PH Elektrode"
+                  }
+                },
+                {
+                  "value": "13",
+                  "text": {
+                    "de": "41100011 - Redoxelektrode",
+                    "en": "41100011 - Redoxelektrode"
+                  }
+                },
+                {
+                  "value": "14",
+                  "text": {
+                    "de": "78073 B - Satz Pufferlösungen 2xpH 1 1x Redox",
+                    "en": "78073 B - Satz Pufferlösungen 2xpH 1 1x Redox"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Weiterer Materialverbrauch",
+            "en": "Additional Spare Parts"
+          },
+          "required": false,
+          "hideWarrantyField": true,
+          "unbreakable": false,
+          "invoiceFields": false
+        },
+        "disclaimer1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Die beauftragten Arbeiten wurden wie vereinbart durchgeführt und die Anlage in einwandfreien Zustand übernommen. Sollten sich trotzdem versteckte, nicht aufgetretene Fehler zeigen, reklamieren Sie bitte innerhalb von 8 Tagen. Ausgetauschte Teile sind Eigentum des Kunden, sie wurden wunschgemäß ausgehändigt. Eine Bedienungsanleitung für die Anlage liegt dem Betreiber/Bedienungspersonal vor.",
+            "en": "The commissioned work was carried out as agreed and the system was taken over in perfect condition. If, despite this, hidden defects appear, please complain within 8 days. Replaced parts are the property of the customer, they were handed over as requested. Operating instructions for the system are available to the operator/operating personnel."
+          }
+        },
+        "disclaimer2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Mit der Unterschrift werden die allgemeinen Montagebedingungen anerkannt.",
+            "en": "With the signature, the general assembly conditions are accepted."
+          }
+        }
+      }
+    },
+    "07-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "08-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "disclaimer3": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Die beauftragten Arbeiten wurden wie vereinbart durchgeführt und die Anlage in einwandfreien Zustand übernommen. Sollten sich trotzdem versteckte, nicht aufgetretene Fehler zeigen, reklamieren Sie bitte innerhalb von 8 Tagen. Ausgetauschte Teile sind Eigentum des Kunden, sie wurden wunschgemäß ausgehändigt. Eine Bedienungsanleitung für die Anlage liegt dem Betreiber/Bedienungspersonal vor.",
+            "en": "The commissioned work was carried out as agreed and the system was taken over in perfect condition. If, despite this, hidden defects appear, please complain within 8 days. Replaced parts are the property of the customer, they were handed over as requested. Operating instructions for the system are available to the operator/operating personnel."
+          }
+        },
+        "disclaimer4": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Mit der Unterschrift werden die allgemeinen Montagebedingungen anerkannt.",
+            "en": "With the signature, the general assembly conditions are accepted."
+          }
+        },
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Wilhelm Dosiertechnik - Kundendienstbericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Kundendienstbericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "kundendienstbericht@wilhelm-dosiertechnik.de"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "commentAddendum": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen & Hinweise",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "upload": {
+          "width": 1,
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Fotos",
+            "en": "Photos"
+          }
+        },
+        "tavelAndWorkingTimes2": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Reise- und Arbeitszeiten",
+            "en": "Travel and Working Times"
+          },
+          "unbreakable": true,
+          "hideInPdfIfEmpty": true,
+          "required": false
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Kundendienstbericht - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "kundendienstbericht@wilhelm-dosiertechnik.de"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
