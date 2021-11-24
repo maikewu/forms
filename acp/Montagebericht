@@ -23,7 +23,7 @@
             "de": "Auftrag",
             "en": "Work Order"
           },
-          "required": false,
+          "required": true,
           "width": 0.5,
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": false,
@@ -40,7 +40,7 @@
           "width": 0.5,
           "autofillCurrentUser": true,
           "printEmailAddress": false,
-          "required": false
+          "required": true
         },
         "customer": {
           "fieldType": "REMBERG_CUSTOMER_SELECT",
@@ -71,7 +71,7 @@
                 ]
               },
               {
-                "to": "07-signatureTechnician",
+                "to": "01_generalInformation",
                 "actions": [
                   {
                     "name": "PATCH_DATA",
@@ -80,16 +80,44 @@
                         "_field": {
                           "_field": {
                             "_field": {
-                              "_field": {
-                                "_field": "customer",
-                                "_propertyName": "customer"
-                              },
-                              "_functionName": "GET_ACCOUNT"
+                              "_field": "customer",
+                              "_propertyName": "customer"
                             },
-                            "_propertyName": "company"
+                            "_functionName": "GET_ACCOUNT"
                           },
-                          "_propertyName": "billingAddress"
+                          "_propertyName": "company"
                         },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
                         "_propertyName": "city"
                       },
                       "output": {
@@ -108,19 +136,7 @@
                     "name": "PATCH_DATA",
                     "_dynamicData": {
                       "input": {
-                        "_field": {
-                          "_field": {
-                            "_field": {
-                              "_field": {
-                                "_field": "customer",
-                                "_propertyName": "customer"
-                              },
-                              "_functionName": "GET_ACCOUNT"
-                            },
-                            "_propertyName": "company"
-                          },
-                          "_propertyName": "billingAddress"
-                        },
+                        "_field": "customerLocation",
                         "_propertyName": "city"
                       },
                       "output": {
@@ -135,6 +151,15 @@
             ]
           }
         },
+        "space1": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
         "customercontactperson_freetext": {
           "fieldType": "INPUT_TEXT",
           "label": {
@@ -142,7 +167,7 @@
             "en": "Contact Person"
           },
           "required": false,
-          "width": 0.5,
+          "width": 1,
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true,
           "disabled": false
@@ -174,13 +199,76 @@
           "hideInPdfIfEmpty": false,
           "disabled": false
         }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     "02_performed_tasks": {
       "isForm": true,
       "ui": "CARD",
       "initialExpand": true,
-      "unbreakable": true,
       "cardHeadline": {
         "en": "Performed Tasks",
         "de": "Durchgeführte Tätigkeiten"
@@ -194,7 +282,6 @@
             "de": "Durchgeführte Tätigkeiten",
             "en": "Performed Tasks"
           },
-          "unbreakable": false,
           "required": false
         }
       },
@@ -226,7 +313,6 @@
       "isForm": true,
       "ui": "CARD",
       "initialExpand": true,
-      "unbreakable": true,
       "cardHeadline": {
         "en": "Travel and Working Times",
         "de": "Reise- und Arbeitszeiten"
@@ -240,8 +326,39 @@
             "de": "Reise- und Arbeitszeiten",
             "en": "Travel and Working Times"
           },
-          "unbreakable": true,
           "required": true
+        }
+      }
+    },
+    "05_sparePartsInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Spare Parts",
+        "de": "Material"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Material",
+            "en": "Spare Parts"
+          },
+          "required": false,
+          "invoiceFields": false
+        },
+        "sparePartsComment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
         }
       }
     },
@@ -249,7 +366,6 @@
       "isForm": true,
       "ui": "CARD",
       "initialExpand": true,
-      "unbreakable": true,
       "cardHeadline": {
         "en": "Comments",
         "de": "Bemerkungen"
@@ -291,15 +407,6 @@
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true
         },
-        "disclaimer_Material":{
-          "fieldType": "HELP_TEXT",
-          "hiddenInPdf": false,
-          "width": 1,
-          "text": {
-            "de": "\nGgf. benötigtes Material wird in einem separaten Materialnachweis ausgewiesen. Die Abrechnung erfolgt gemäß unseren Service-Verrechnungssätzen zum jeweils aktuellsten Stand.\n",
-            "en": "\nAny material required will be shown in a separate material certificate. Invoicing will be carried out in accordance with our service charge rates at the most current level.\n"
-          }
-        },
         "disclaimer_header":{
           "fieldType": "H3",
           "hiddenInPdf": false,
@@ -318,7 +425,6 @@
             "en": "We are satisfied with the execution of the work. The machine has been accepted ready for operation.\nWe certify the correctness of the above information.\nThis assembly report signed by you is the incontestable basis for invoicing in accordance with our assembly rates and assembly conditions.\nOnly the supplier company decides on warranty issues."
           }
         }
-
       }
     },
     "07-signatureTechnician": {
@@ -372,6 +478,72 @@
         }
       }
     },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "prefillConfig": {
+            "subject": "Montagebericht - acp systems AG",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Montagebericht als PDF.\n\nMit freundlichen Grüßen,",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10-Addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "AdditionalTavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Zusätzliche Reise- und Arbeitszeiten",
+            "en": "Additional Travel and Working Times"
+          },
+          "required": false
+        },
+        "generalNotes": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentare",
+            "en": "Notes"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        }
+      }
+    },
     "11-send": {
       "isForm": true,
       "ui": "CARD",
@@ -391,8 +563,8 @@
             "en": "Sent to"
           },
           "prefillConfig": {
-            "subject": "Montagebericht - acp systems AG",
-            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Montagebericht als PDF.\n\nMit freundlichen Grüßen,",
+            "subject": "Montagebericht - Interne Ausführung",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n",
             "to": {
               "currentUser": false
             },
