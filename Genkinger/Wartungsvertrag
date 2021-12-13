@@ -1,0 +1,943 @@
+{
+  "general": {
+    "name": {
+      "en": "Service Report",
+      "de": "Wartungsvertrag"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreibe den Wartungsvertrag."
+      }
+    }
+  },
+  "formStructure": {
+    "01_customerInformation": {
+        "isForm": true,
+        "ui": "CARD",
+        "unbreakable": true,
+        "initialExpand": false,
+        "cardHeadline": {
+          "en": "Customer Information",
+          "de": "Kundeninformationen"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "children": {
+          "customer": {
+            "fieldType": "REMBERG_CUSTOMER_SELECT",
+            "required": true,
+            "width": 0.5,
+            "label": {
+              "de": "Kunde",
+              "en": "Customer"
+            },
+            "messages": {
+              "onChange": [
+                {
+                  "to": "01_customerInformation",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "output": {
+                          "_field": "customerLocation"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "to": "01_customerInformation",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "customer",
+                          "_propertyName": "customer"
+                        },
+                        "output": {
+                          "_field": "contactPersons",
+                          "_propertyName": "account"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "to": "03_assetInformation",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "customer",
+                          "_propertyName": "customer"
+                        },
+                        "output": {
+                          "_field": "asset",
+                          "_propertyName": "customerFilter"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "customerLocation": {
+            "fieldType": "REMBERG_ADDRESS",
+            "label": {
+              "de": "Adresse",
+              "en": "Invoicing Address"
+            },
+            "hideInPdfIfEmpty": true,
+            "required": false,
+            "width": 0.5,
+            "messages": {
+              "onChange": [
+                {
+                  "to": "09-signature_technician",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "customerLocation",
+                          "_propertyName": "city"
+                        },
+                        "output": {
+                          "_formArray": "signature1",
+                          "_formArrayIndex": 0,
+                          "_propertyName": "location"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "to": "10-signature_customer",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "customerLocation",
+                          "_propertyName": "city"
+                        },
+                        "output": {
+                          "_formArray": "signature2",
+                          "_formArrayIndex": 0,
+                          "_propertyName": "location"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "messages": {
+          "onLoaded": [
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": {
+                        "_field": "ARGS",
+                        "_propertyName": "asset",
+                        "_functionName": "GET_PRODUCT"
+                      },
+                      "_propertyName": "customer"
+                    },
+                    "output": {
+                      "_field": "customer",
+                      "_propertyName": "customer"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "address",
+                      "_functionName": "GET_ADDRESS"
+                    },
+                    "output": {
+                      "_field": "customerLocation",
+                      "_propertyName": ""
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "onFinish": [
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "SAVE_TO_BACKEND"
+                }
+              ]
+            },
+            {
+              "to": "03_assetInformation",
+              "actions": [
+                {
+                  "name": "PANEL_EXPAND"
+                }
+              ]
+            }
+          ]
+        }
+      },
+    "02_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Wartungsvertrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "wartungsvertrag-ueberschrift": {
+            "fieldType": "H3",
+            "width": 1,
+            "text": {
+              "de": "Wartungsvertrag",
+              "en": "Documents Attachment"
+            },
+            "required": false,
+            "hiddenInPdf": true
+        },
+        "customer1": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          }
+        },
+        "wv-text1": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Unter Zugrundelegung unserer Allgemeinen Geschäftsbedingungen und den nachstehenden Vertragsbedingungen wird folgender Wartungsvertrag zwischen der Genkinger GmbH und dem o. g. Kunden geschlossen.",
+              "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+            },
+            "width": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "03_assetInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03_assetInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Asset Information",
+        "de": "Service-Gegenstand und Servicerate"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "serviceproduct": {
+            "fieldType": "SELECT",
+            "label": {
+              "de": "Servicegegenstand",
+              "en": "Asset state"
+            },
+            "required": false,
+            "width": 0.3,
+            "options": [
+              {
+                "value": "wpfkp",
+                "text": {
+                  "de": "Wartungspauschale inkl. Fahrtkostenpauschale(n) für die An- und Abreise",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "wpfkpueb",
+                "text": {
+                  "de": "Wartungspauschale zzgl. Fahrtkostenpauschale (FKP) für die An- und Abreise sowie evtl. Übernachtung und Kleinteile",
+                  "en": "Not OK"
+                }
+              }
+            ]
+        },
+        "serviceproduct_repeater": {
+            "isForm": true,
+            "isListForm": true,
+            "displayButtons": true,
+            "listFormNoDataHint": {
+              "en": "No entries added yet.",
+              "de": "Es wurden noch keine Servicegegenstandsangaben gemacht."
+            },
+            "disableTabularView": true,
+            "children": {
+              "fabr-no2": {
+                "fieldType": "INPUT_TEXT",
+                "label": {
+                  "de": "Servicegegenstand und Anzahl",
+                  "en": "Serial Number"
+                },
+                "required": true,
+                "hideInPdfIfEmpty": true,
+                "width": 0.5
+              },
+              "asset2": {
+                "fieldType": "REMBERG_ASSET_SELECT",
+                "required": true,
+                "disableSelection": false,
+                "hidePreselection": false,
+                "showUnassigned": true,
+                "editShowInput": true,
+                "registerAssetChange": true,
+                "hiddenInPdf": false,
+                "label": {
+                  "de": "Seriennummer",
+                  "en": "Additional equipment"
+                }
+              },
+              "operatingHours2": {
+                "fieldType": "INPUT_TEXT",
+                "label": {
+                  "de": "Servicerate (in € je Gerät, zzgl. MwSt)",
+                  "en": "Operating Hours"
+                },
+                "required": true,
+                "hideInPdfIfEmpty": true,
+                "width": 0.5
+              },
+              "workHours2": {
+                "fieldType": "INPUT_TEXT",
+                "label": {
+                  "de": "Empfohlene Durchführung",
+                  "en": "Work time"
+                },
+                "required": false,
+                "hideInPdfIfEmpty": true,
+                "width": 0.5
+              }
+            }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "04_performedTasksInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "04_performedTasksInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Performed Tasks",
+        "de": "Vertragszeitraum"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {        
+        "contractStart": {
+            "fieldType": "REMBERG_DATE",
+            "label": {
+              "de": "Vertragsbeginn",
+              "en": "Date"
+            },
+            "readonly": false,
+            "required": true,
+            "validators": []
+        },
+        "offerInfos": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Angebotsinformationen",
+            "en": "Offer information"
+          },
+          "required": false
+        },
+        "maintenanceMonth": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Wartungstermin",
+              "en": "Offer information"
+            },
+            "required": false
+        },
+        "offerValidity": {
+            "fieldType": "REMBERG_DATE",
+            "label": {
+              "de": "Angebotsgültigkeit",
+              "en": "Date"
+            },
+            "readonly": false,
+            "required": true,
+            "validators": []
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "05_sparePartsInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "05_sparePartsInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Spare Parts",
+        "de": "Einsatzort"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer3": {
+            "fieldType": "REMBERG_CUSTOMER_SELECT",
+            "required": true,
+            "width": 0.5,
+            "label": {
+              "de": "Firma",
+              "en": "Customer"
+            },
+            "messages": {
+              "onChange": [
+                {
+                  "to": "01_customerInformation",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "output": {
+                          "_field": "customerLocation"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "to": "01_customerInformation",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "customer",
+                          "_propertyName": "customer"
+                        },
+                        "output": {
+                          "_field": "contactPersons",
+                          "_propertyName": "account"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "to": "03_assetInformation",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "customer",
+                          "_propertyName": "customer"
+                        },
+                        "output": {
+                          "_field": "asset",
+                          "_propertyName": "customerFilter"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "customerLocation3": {
+            "fieldType": "REMBERG_ADDRESS",
+            "label": {
+              "de": "Anschrift",
+              "en": "Invoicing Address"
+            },
+            "hideInPdfIfEmpty": true,
+            "required": false,
+            "width": 0.5,
+            "messages": {
+              "onChange": [
+                {
+                  "to": "09-signature_technician",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "customerLocation",
+                          "_propertyName": "city"
+                        },
+                        "output": {
+                          "_formArray": "signature1",
+                          "_formArrayIndex": 0,
+                          "_propertyName": "location"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "to": "10-signature_customer",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "customerLocation",
+                          "_propertyName": "city"
+                        },
+                        "output": {
+                          "_formArray": "signature2",
+                          "_formArrayIndex": 0,
+                          "_propertyName": "location"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "06_travelAndWorkingTimeInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "08_notesInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Notes",
+        "de": "Zahlungsbedingungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "zahlbed": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Die vereinbarte Wartungsrate zuzüglich gesetzlicher Mehrwertsteuer ist innerhalb 30 Tagen nach Rechnungserhalt netto zahlbar.",
+              "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+            },
+            "width": 1
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "09-signature_technician",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "09_service_scope": {
+        "isForm": true,
+        "ui": "CARD",
+        "initialExpand": false,
+        "unbreakable": true,
+        "cardHeadline": {
+          "en": "Notes",
+          "de": "Leistungsumfang"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "children": {
+          "leistungsumfang": {
+              "fieldType": "HELP_TEXT",
+              "text": {
+                "de": "Der Wartungsvertrag umfasst folgende Leistungen, die während der normalen Geschäftszeiten zwischen 7.00 – 16.00 Uhr (Montag – Freitag) zu erbringen sind:",
+                "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+              },
+              "width": 1
+          },
+          "leistungsumfang2": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Für Serviceeinsätze, die aufgrund der letztgenannten Bedingungen erforderlich werden, werden die jeweils geltenden Verrechnungssätze für Zeit und Aufwand berechnet.",
+              "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+            },
+            "width": 1
+          },
+          "leistungsumfang3": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Sollten Reparaturen mit Materialien oder Hilfsmitteln notwendig sein können wir diese nach Ihrer Genehmigung sofort erledigen.",
+              "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+            },
+            "width": 1
+          }
+        },
+        "messages": {
+          "onFinish": [
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "SAVE_TO_BACKEND"
+                }
+              ]
+            },
+            {
+              "to": "09-signature_technician",
+              "actions": [
+                {
+                  "name": "PANEL_EXPAND"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      
+    "09-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Monteur"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "10-signature_customer",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "10-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Servicelieferant"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicekunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "11-send",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send filled out form to customer",
+        "de": "Ausgefüllten Servicebericht an Kunden senden"
+      },
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false,
+          "prefillConfig": {
+            "subject": "Genkinger Servicebericht (Kundenausfertigung)",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Genkinger GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen | Best regards",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "12-Addendum",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
