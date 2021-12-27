@@ -1,0 +1,5038 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Maintenance Protocol C-Machines 8-Year-Review",
+      "de": "Wartungsprotokoll C-Maschinen 8-Jahre-Durchsicht"
+    },
+    "showComments": false,
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign maintenance protocol",
+        "de": "Wartungsprotokoll unterschreiben"
+      },
+      "popupDescription": {
+        "en": "In order to finalize the report, please sign one after another it in the field below. After signing your report, you will only be able to change the return time.",
+        "de": "Um den Bericht fertigzustellen, unterschreibe bitte nacheinander im untenstehenden Feld. Nach der Unterzeichnung des Berichts kannst nur noch die Rückreisezeit ändern."
+      }
+    }
+  },
+  "formStructure": {
+    "1-maschine": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Maschine",
+            "en": "Select Asset"
+          },
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "1-maschine",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": {
+                                  "_field": "asset",
+                                  "_propertyName": "product"
+                                },
+                                "_functionName": "GET_PRODUCT"
+                              },
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerDestination"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "1-maschine",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "contactPersons",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "1-maschine",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "reportId": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Service-Auftragsnummer",
+            "en": "Service Order Number"
+          },
+          "readonly": false,
+          "required": true,
+          "validators": []
+        },
+        "headlineTechnician": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Servicetechniker",
+            "en": "Service technician"
+          }
+        },
+        "technicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service technician"
+          },
+          "required": true,
+          "autofillCurrentUser": true
+        },
+        "headlineCustomer": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Kunde",
+            "en": "Customer"
+          }
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "label": {
+            "de": "Kunde (Firma)",
+            "en": "Customer (Company)"
+          },
+          "required": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "4-anlassUndAusfallInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "4 - Instandhaltungsmassnahmen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Instandhaltungsmaßnahmen",
+        "en": "Maintenance measures"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "headlineSichtkontrolle": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Sichtkontrolle von Faltenbälgen, Abdichtungen Kabine und Energieleitungen auf mechanische Beschädigungen; falls nötig ersetzen",
+            "en": "Visual inspection of bellows, seals, cabin and power lines for mechanical damage; replace if necessary"
+          }
+        },
+        "Sichtkontrolle": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Sichtkontrolle von Faltenbälgen, Abdichtungen Kabine und Energieleitungen auf mechanische Beschädigungen; falls nötig ersetzen",
+            "en": "Visual inspection of bellows, seals, cabin and power lines for mechanical damage; replace if necessary"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "sichtkontrolleNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "headlineSchmierungPneumatik": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Schmierung, Pneumatik",
+            "en": "Lubrication, pneumatics"
+          }
+        },
+        "kontrolleSchmieranlage": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Kontrolle der Schmieranlage auf Beschädigung, Funktionskontrolle aller Ventile und Druckschalter",
+            "en": "Check of the lubrication system for damage, function check of all valves and pressure switches"
+          }
+        },
+        "kontrolleSchmieranlage2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "kontrollederSchmieranlage": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Kontrolle der Schmieranlage auf Beschädigung, Funktionskontrolle aller Ventile und Druckschalter",
+            "en": "Check of the lubrication system for damage, function check of all valves and pressure switches"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "schmieranlageNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "oelwechsel": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Ölwechsel Schmierung und Hydraulik (2000 Betriebsstunde), prüfen der Ölstände Schmierung und Hydraulik",
+            "en": "Oil change lubrication and hydraulics (2000 operating hours), check oil levels lubrication and hydraulics"
+          }
+        },
+        "oelwechselSchmierungHydraulik": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Ölwechsel Schmierung und Hydraulik (2000 Betriebsstunde), prüfen der Ölstände Schmierung und Hydraulik",
+            "en": "Oil change lubrication and hydraulics (2000 operating hours), check oil levels lubrication and hydraulics"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "oelwechselNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "filterAendern": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Die Filter der Schmierung, Hydraulik- und Pneumatik-System ändern",
+            "en": "The filters of lubrication, hydraulic and pneumatic system change"
+          }
+        },
+        "filterAendernDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Die Filter der Schmierung, Hydraulik- und Pneumatik-System ändern",
+            "en": "The filters of lubrication, hydraulic and pneumatic system change"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "filterNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine3": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "druckPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Überprüfen und falls nötig den eingestellten Druck korrigieren",
+            "en": "Check and if necessary correct the set pressure"
+          }
+        },
+        "druckPruefungDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Überprüfen und falls nötig den eingestellten Druck korrigieren",
+            "en": "Check and if necessary correct the set pressure"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "druckNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine4": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "leitungenSchlaeuchePruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Überprüfen Sie alle Leitungen und Schläuche für die Schmierung und Hydraulikölversorgung und Druckluftsystem auf Dichtheit und mechanische Beschädigungen",
+            "en": "Check all lines and hoses for lubrication and hydraulic oil supply and compressed air system for leaks and mechanical damage"
+          }
+        },
+        "leitungenSchlaeucheDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Überprüfung aller Leitungen und Schläuche für die Schmierung und Hydraulikölversorgung und Druckluftsystem auf Dichtheit und mechanische Beschädigungen",
+            "en": "Check all lines and hoses for lubrication and hydraulic oil supply and compressed air system for leaks and mechanical damage"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "leitungenSchlaeucheNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine5": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "notauskreisPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Funktionsprüfung des Notauskreises",
+            "en": "Functional test of the emergency stop circuit"
+          }
+        },
+        "notauskreisDropdown": {
+          "fieldType": "SELECT",
+          "width": 1,
+          "multiple": true,
+          "label": {
+            "de": "Funktionsprüfung des Notauskreises",
+            "en": "Functional test of the emergency stop circuit"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "notauskreisNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine7": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "quadringPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Inspektion der Spannzylinder-Dichtungen (Quadringe)",
+            "en": "Inspection of the clamping cylinder seals (quad rings)"
+          }
+        },
+        "quadringDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Inspektion der Spannzylinder-Dichtungen (Quadringe)",
+            "en": "Inspection of the clamping cylinder seals (quad rings)"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "quadringNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine12": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "schneidoelPruefung": {
+            "fieldType": "H3",
+            "hiddenInPdf": false,
+            "text": {
+              "de": "Schneidölversorgung",
+              "en": "Cutting oil supply"
+            }
+          },
+          "dichtfilterPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Prüfung der Anlage auf Dichtheit, korrekte Einstellung der Drücke",
+              "en": "Checking the system for leaks, correct setting of pressures"
+            }
+          },
+          "dichtfilterDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Prüfung der Anlage auf Dichtheit, korrekte Einstellung der Drücke",
+              "en": "Checking the system for leaks, correct setting of pressures"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "dichtfilterNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "width": 1,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine59": {
+              "fieldType": "HELP_TEXT",
+              "hiddenInPdf": false,
+              "text": {
+                "de": " ",
+                "en": " "
+              }
+          },
+          "dirtyfilterPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Prüfung des Schneidöls/Behälter auf Verschmutzung",
+              "en": "Checking the cutting oil/container for contamination"
+            }
+          },
+          "dirtyfilterDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Prüfung des Schneidöls/Behälter auf Verschmutzung",
+              "en": "Checking the cutting oil/container for contamination"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "dirtyfilterNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "width": 1,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine60": {
+              "fieldType": "HELP_TEXT",
+              "hiddenInPdf": false,
+              "text": {
+                "de": " ",
+                "en": " "
+              }
+          },
+          "durchflussPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Funktionsprüfung der Durchflusswächter und Niveauschalter",
+              "en": "Functional test of the flow monitors and level switches"
+            }
+          },
+          "durchflussDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Funktionsprüfung der Durchflusswächter und Niveauschalter",
+              "en": "Functional test of the flow monitors and level switches"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "durchflussNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "width": 1,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine61": {
+              "fieldType": "HELP_TEXT",
+              "hiddenInPdf": false,
+              "text": {
+                "de": " ",
+                "en": " "
+              }
+          },
+          "leitungenPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Dichtheitskontrolle der Leitungen zur Schneidölversorgung",
+              "en": "Leakage check of the cutting oil supply lines"
+            }
+          },
+          "leitungenDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Dichtheitskontrolle der Leitungen zur Schneidölversorgung",
+              "en": "Leakage check of the cutting oil supply lines"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "leitungenNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "width": 1,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine62": {
+              "fieldType": "HELP_TEXT",
+              "hiddenInPdf": false,
+              "text": {
+                "de": " ",
+                "en": " "
+              }
+          },
+          "emptyLine58": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          },
+        "oelnebelabsaugungPruefung": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Ölnebelabsaugungsanlage",
+            "en": "Oil mist extraction system"
+          }
+        },
+        "oelnebelabsaugungsfilterPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Ölnebelabsaugungsfilter überprüfen, wenn nötig reinigen",
+            "en": "Check oil mist extraction filter, clean if necessary"
+          }
+        },
+        "oelnebelabsaugungsfilterDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Ölnebelabsaugungsfilter überprüfen, wenn nötig reinigen",
+            "en": "Check oil mist extraction filter, clean if necessary"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "oelnebelabsaugungsfilterNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine122": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+        },
+        "drehzahlPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Prüfung der Drehzahlumschaltung",
+              "en": "Checking the speed changeover"
+            }
+          },
+          "drehzahlDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Prüfung der Drehzahlumschaltung",
+              "en": "Checking the speed changeover"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "drehzahlNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "width": 1,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine123": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+        },
+        "fehanzeigePruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Fehleranzeige bei Störung überprüfen",
+              "en": "Check error display in case of malfunction"
+            }
+          },
+          "fehanzeigeDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Fehleranzeige bei Störung überprüfen",
+              "en": "Check error display in case of malfunction"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "fehanzeigeNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "width": 1,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine124": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+        },
+        "zufuhrPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Prüfung der Zuführung auf Dichtigkeit",
+              "en": "Checking the feed for leaks"
+            }
+          },
+          "zufuhrDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Prüfung der Zuführung auf Dichtigkeit",
+              "en": "Checking the feed for leaks"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "zufuhrNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "width": 1,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "required": false,
+            "validators": []
+          }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "6-meldungenDesKundenInformation",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "10-Mechanisch": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Instandhaltungsmaßnahmen - Mechanisch",
+        "en": "Maintenance measures - Mechanical"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "achsenPruefung": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Achsen",
+            "en": "Axes"
+          }
+        },
+        "kugelrollspindelPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Sichtkontrolle der Kugelrollspindel und Riementrieben",
+            "en": "Visual inspection of the ball screw and belt drives"
+          }
+        },
+        "kugelrollspindelDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Sichtkontrolle der Kugelrollspindel und Riementrieben",
+            "en": "Visual inspection of the ball screw and belt drives"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "kugelrollspindelNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine13": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "xachsePruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Inspektion der X-Achsen Bremse",
+            "en": "Inspection of the X-axis brake"
+          }
+        },
+        "xachseDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Inspektion der X-Achsen Bremse",
+            "en": "Inspection of the X-axis brake"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Checked"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "xachseNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine28": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "linearPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Sichtprüfung der Linearprüfungen auf Verschleiß und Beschädigung",
+            "en": "Visual inspection of the linear tests for wear and damage"
+          }
+        },
+        "linearPrDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Sichtprüfung der Linearprüfungen auf Verschleiß und Beschädigung",
+            "en": "Visual inspection of the linear tests for wear and damage"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Checked"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "linearPrNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine29": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "testPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Geometrische Prüfung nach Testprotokoll (separat zu prüfen)",
+            "en": "Geometric check according to test protocol (to be checked separately)"
+          }
+        },
+        "testDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Geometrische Prüfung nach Testprotokoll (separat zu prüfen)",
+            "en": "Geometric check according to test protocol (to be checked separately)"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Checked"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "testNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine30": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "allaxesPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Prüfung aller Achsen mittels Servotrace im Vergleich zu Vorgabe: X-, Y-, Z-, C-, A- und B-Achse",
+            "en": "Checking of all axes by means of servo trace compared to default: X, Y, Z, C and B axes"
+          }
+        },
+        "allaxesDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Prüfung aller Achsen mittels Servotrace im Vergleich zu Vorgabe: X-, Y-, Z-, C-, A- und B-Achse",
+            "en": "Checking of all axes by means of servo trace compared to default: X, Y, Z, C and B axes"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Checked"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "allaxesNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine31": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "zahnriPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Kontrolle und ggf. Korrektur der Vorspannung von Zahnriemen und Lagerung der Kugelrollspindeln der Linearachsen",
+            "en": "Checking and, if necessary, correcting the pretension of toothed belts and bearings of the ball screws of the linear axes"
+          }
+        },
+        "zahnriDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Kontrolle und ggf. Korrektur der Vorspannung von Zahnriemen und Lagerung der Kugelrollspindeln der Linearachsen",
+            "en": "Checking and, if necessary, correcting the pretension of toothed belts and bearings of the ball screws of the linear axes"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Checked"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "zahnriNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine125": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          },
+          "ycPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Prüfung der Endlagen Y- und C-Achse",
+              "en": "Checking the Y- and C-axis end positions"
+            }
+          },
+          "ycDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Prüfung der Endlagen Y- und C-Achse",
+              "en": "Checking the Y- and C-axis end positions"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Checked"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "ycNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "width": 1,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine126": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          },
+          "abspindelPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Sichtkontrolle der A-, B- Spindel (aller relevanten Bezugsflächen und Konen)",
+              "en": "Visual inspection of the A, B spindle (all relevant reference surfaces and cones)"
+            }
+          },
+          "abspindelDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Sichtkontrolle der A-, B- Spindel (aller relevanten Bezugsflächen und Konen)",
+              "en": "Visual inspection of the A, B spindle (all relevant reference surfaces and cones)"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Checked"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "abspindelNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "width": 1,
+            "required": false,
+            "validators": []
+          },
+        "messsystemPruefung": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Messsysteme",
+            "en": "Measuring systems"
+          }
+        },
+        "linearmPr": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Prüfung der Sperrluftzufuhr für Linearmesssysteme",
+            "en": "Checking the sealing air supply for linear measuring systems"
+          }
+        },
+        "linearmDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Prüfung der Sperrluftzufuhr für Linearmesssysteme",
+            "en": "Checking the sealing air supply for linear measuring systems"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "linearmNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        },
+        "emptyLine47": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "cbmPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Messsystem C- und B-Achse mit Heidenhain Messgerät prüfen, ggf. reinigen",
+            "en": "Check the C and B axis measuring system with a Heidenhain tool, clean if necessary"
+          }
+        },
+        "cbmDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Messsystem C- und B-Achse mit Heidenhain Messgerät prüfen, ggf. reinigen",
+            "en": "Check the C and B axis measuring system with a Heidenhain tool, clean if necessary"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Checked"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "cbmNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine43": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "lmPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Prüfung aller Längenmesssysteme mit Heidenhain Messgerät",
+            "en": "Testing of all length measuring systems with Heidenhain tool"
+          }
+        },
+        "lmDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Prüfung aller Längenmesssysteme mit Heidenhain Messgerät",
+            "en": "Testing of all length measuring systems with Heidenhain tool"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Checked"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "lmNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "11-signature_technician",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "11-Elektrisch": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Instandhaltungsmaßnahmen - Elektrisch",
+        "en": "Maintenance measures - Electrical"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "electricalPruefung": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Elektrische Geräte",
+            "en": "Electrical equipment"
+          }
+        },
+        "safteyHT": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Prüfen der NOT-AUS Funktion",
+            "en": "Checking the EMERGENCY STOP function"
+          }
+        },
+        "safteyDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Prüfen der NOT-AUS Funktion",
+            "en": "Checking the EMERGENCY STOP function"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "safteyNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        },
+        "emptyLine44": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "safteyHT2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Prüfen der Sicherheitsschaltleisten",
+            "en": "Checking the safety rails"
+          }
+        },
+        "safteyDropdown2": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Prüfen der Sicherheitsschaltleisten",
+            "en": "Checking the safety rails"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "safteyNotizen2": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        },
+        "emptyLine45": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "axeEndposPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Funktionsprüfung Fehlermeldung (Stichproben)",
+            "en": "Functional test Error message (random samples)"
+          }
+        },
+        "axeEndposDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Funktionsprüfung Fehlermeldung (Stichproben)",
+            "en": "Functional test Error message (random samples)"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "axeEndposNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine32": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "axeEndposPruefung2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Funktionsprüfung aller Endschalter einschließlich Endlagen Achsen",
+            "en": "Function test of all limit switches including end positions axes"
+          }
+        },
+        "axeEndposDropdown2": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Funktionsprüfung aller Endschalter einschließlich Endlagen Achsen",
+            "en": "Function test of all limit switches including end positions axes"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "axeEndposNotizen2": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "controlCabPruefung": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Schaltschrank",
+            "en": "Control cabinet"
+          }
+        },
+        "controlCoolPr": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Leistungstest Schaltschrankkühler",
+            "en": "Performance test switch cabinet cooler"
+          }
+        },
+        "controlCoolDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Leistungstest Schaltschrankkühler",
+            "en": "Performance test switch cabinet cooler"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "controlCoolNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        },
+        "emptyLine17": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "filterCoolPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Filtermatte im Schaltschrankkühler ggf. ersetzen",
+            "en": "Replace filter mat in switch cabinet cooler if necessary"
+          }
+        },
+        "filterCoolDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Filtermatte im Schaltschrankkühler ggf. ersetzen",
+            "en": "Replace filter mat in switch cabinet cooler if necessary"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "filterCoolNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine18": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "bedienfeldPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Bedienfeld: Leistungsprüfung aller Knöpfe, Lampen, Tastatur, Fußschalter und Zweihandbedienung",
+            "en": "Control panel: power test of all buttons, lamps, keyboard, foot switch and two-hand control"
+          }
+        },
+        "bedienfeldDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Bedienfeld: Leistungsprüfung aller Knöpfe, Lampen, Tastatur, Fußschalter und Zweihandbedienung",
+            "en": "Control panel: power test of all buttons, lamps, keyboard, foot switch and two-hand control"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "bedienfeldNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine19": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "visualCoolPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Sichtprüfung des Schaltschrankes",
+            "en": "Visual inspection of the switch cabinet"
+          }
+        },
+        "visualCoolDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Sichtprüfung des Schaltschrankes",
+            "en": "Visual inspection of the switch cabinet"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "visualCoolNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine20": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "akkuPruefung": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Festplatte mit „chkdsk“ Kommando prüfen",
+            "en": "Check hard disk with chkdsk command"
+          }
+        },
+        "akkuDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Festplatte mit „chkdsk“ Kommando prüfen",
+            "en": "Check hard disk with chkdsk command"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "akkuNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "width": 1,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine126": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          },
+          "complabPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Kennzeichnung aller Komponenten im Schaltschrank prüfen",
+              "en": "Check labeling of all components in the control cabinet"
+            }
+          },
+          "complabDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Kennzeichnung aller Komponenten im Schaltschrank prüfen",
+              "en": "Check labeling of all components in the control cabinet"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "complabNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "width": 1,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine127": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          },
+          "algzuPruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Allgemeiner Zustand Schaltschrank (Ordnung, Sicherheitsabdeckungen etc.)",
+              "en": "General condition of control cabinet (tidiness, safety covers, etc.)"
+            }
+          },
+          "algzuDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Allgemeiner Zustand Schaltschrank (Ordnung, Sicherheitsabdeckungen etc.)",
+              "en": "General condition of control cabinet (tidiness, safety covers, etc.)"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "algzuNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "width": 1,
+            "required": false,
+            "validators": []
+          },
+          "emptyLine128": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          },
+          "imagePruefung": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": true,
+            "text": {
+              "de": "Sicherheitskopie (Image) erstellen",
+              "en": "Create backup copy (image)"
+            }
+          },
+          "imageDropdown": {
+            "fieldType": "SELECT",
+            "multiple": true,
+            "width": 1,
+            "label": {
+              "de": "Sicherheitskopie (Image) erstellen",
+              "en": "Create backup copy (image)"
+            },
+            "required": true,
+            "options": [
+              {
+                "value": "Gereinigt/Ersetzt",
+                "text": {
+                  "de": "Gereinigt/Ersetzt",
+                  "en": "Cleaned/Replaced"
+                }
+              },
+              {
+                "value": "Geprueft",
+                "text": {
+                  "de": "Geprüft",
+                  "en": "Audited"
+                }
+              },
+              {
+                "value": "OK",
+                "text": {
+                  "de": "OK",
+                  "en": "OK"
+                }
+              },
+              {
+                "value": "reparaturErforderlich",
+                "text": {
+                  "de": "Reparatur erforderlich",
+                  "en": "Repair required"
+                }
+              },
+              {
+                "value": "maengelRepariert",
+                "text": {
+                  "de": "Mängel repariert",
+                  "en": "Defects repaired"
+                }
+              },
+              {
+                "value": "maengelNichtRepariert",
+                "text": {
+                  "de": "Mängel nicht repariert",
+                  "en": "Defects not repaired"
+                }
+              },
+              {
+                "value": "zusAufwand",
+                "text": {
+                  "de": "Zusätzlicher Zeitaufwand",
+                  "en": "Additional time required"
+                }
+              },
+              {
+                "value": "nichtAnwendbar",
+                "text": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            ]
+          },
+          "imageNotizen": {
+            "fieldType": "INPUT_TEXT",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Notizen",
+              "en": "Notes"
+            },
+            "readonly": false,
+            "width": 1,
+            "required": false,
+            "validators": []
+          },
+        "elUsagePruefung": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Stromverbrauch",
+            "en": "Power consumption"
+          }
+        },
+        "elAxesPr": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Überprüfen des Stromverbrauches der Achsenmotoren",
+            "en": "Check the current consumption of the axis motors"
+          }
+        },
+        "elAxesDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Überprüfen des Stromverbrauches der Achsenmotoren",
+            "en": "Check the current consumption of the axis motors"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "elAxesNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        },
+        "emptyLine21": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "documPruefung": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Protokolle und Dokumentation",
+            "en": "Protocols and documentation"
+          }
+        },
+        "currencyPr": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Überprüfen der Dokumentation auf Aktualität und Vollständigkeit",
+            "en": "Check the documentation for topicality and completeness"
+          }
+        },
+        "currencyDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Überprüfen der Dokumentation auf Aktualität und Vollständigkeit",
+            "en": "Check the documentation for topicality and completeness"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "currencyNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        },
+        "emptyLine22": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "recMarPr": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Aufzeichnung der Messergebnisse OC und Testprotokolle",
+            "en": "Recording of measurement results OC and test protocols"
+          }
+        },
+        "recMarDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Aufzeichnung der Messergebnisse OC und Testprotokolle",
+            "en": "Recording of measurement results OC and test protocols"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "recMarNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        },
+        "emptyLine25": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "saveNewestPr": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Sicherung der neusten Software Version und Dokumentation",
+            "en": "Backup of the latest software version and documentation"
+          }
+        },
+        "saveNewestDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Sicherung der neusten Software Version und Dokumentation",
+            "en": "Backup of the latest software version and documentation"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "saveNewestNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        },
+        "emptyLine24": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "wrongEntryPr": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Überprüfung des Logbuches/Funktion",
+            "en": "Review of the logbook/function"
+          }
+        },
+        "wrongEntryDropdown": {
+          "fieldType": "SELECT",
+          "multiple": true,
+          "width": 1,
+          "label": {
+            "de": "Überprüfung des Logbuches/Funktion",
+            "en": "Review of the logbook/function"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "Gereinigt/Ersetzt",
+              "text": {
+                "de": "Gereinigt/Ersetzt",
+                "en": "Cleaned/Replaced"
+              }
+            },
+            {
+              "value": "Geprueft",
+              "text": {
+                "de": "Geprüft",
+                "en": "Audited"
+              }
+            },
+            {
+              "value": "OK",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "reparaturErforderlich",
+              "text": {
+                "de": "Reparatur erforderlich",
+                "en": "Repair required"
+              }
+            },
+            {
+              "value": "maengelRepariert",
+              "text": {
+                "de": "Mängel repariert",
+                "en": "Defects repaired"
+              }
+            },
+            {
+              "value": "maengelNichtRepariert",
+              "text": {
+                "de": "Mängel nicht repariert",
+                "en": "Defects not repaired"
+              }
+            },
+            {
+              "value": "zusAufwand",
+              "text": {
+                "de": "Zusätzlicher Zeitaufwand",
+                "en": "Additional time required"
+              }
+            },
+            {
+              "value": "nichtAnwendbar",
+              "text": {
+                "de": "Nicht anwendbar",
+                "en": "Not applicable"
+              }
+            }
+          ]
+        },
+        "wrongEntryNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "width": 1,
+          "validators": []
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "11-signature_technician",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "11-SonstigeAnmerkungen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Sonstige Anmerkungen",
+        "en": "Other remarks"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": false,
+      "children": {
+        "Sonstige Anmerkungen": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Anmerkungen",
+            "en": "Remarks"
+          },
+          "width": 1,
+          "readonly": false,
+          "required": false,
+          "validators": []
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "11-signature_technician",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "12-Ersatzteile": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "unbreakable": true,
+      "cardHeadline": {
+        "de": "Ersatzteile",
+        "en": "Maintenance parts"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": false,
+      "children": {
+        "headlineErsatzteile": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Hinweis: Verschleiß- und Ersatzteile werden nur zur Wartung eingesetzt",
+            "en": "Note: Wear and spare parts are used for maintenance only"
+          }
+        },
+        "headlineErsatzteile1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Ersatzteile",
+            "en": "Maintenance parts"
+          }
+        },
+        "checkPneumaticsFilter": {
+          "width": 0.5,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Pneumatikfilter gewechselt",
+            "en": "Replaced pneumatic filter"
+          }
+        },
+        "checkGreiffinger": {
+            "width": 0.5,
+            "fieldType": "CHECKBOX",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Pufferbatterie wechseln",
+              "en": "Change buffer battery"
+            }
+          },
+        "checkCogdrive": {
+          "width": 0.5,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Zahnriemen der X-,-Y,Z- Achse  und Werkstückbeladung wechseln",
+            "en": "Change toothed belt of X-,Y-,Z-axis and workpiece loading"
+          }
+        },
+        "checkJointHead": {
+          "width": 0.5,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Kugelgewindetrieb der X-,Y-,Z-Achse und des Entgrater inkl. Lagerung und Dichtung wechseln",
+            "en": "Change the ball screw of the X-,Y-,Z-axis and the deburrer incl. bearing and seal"
+          }
+        },
+        "checkGasTension": {
+            "width": 0.5,
+            "fieldType": "CHECKBOX",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Führung der Haupttür wechseln",
+              "en": "Change the guide of the main door"
+            }
+          },
+          "checkBufferBattery": {
+            "width": 0.5,
+            "fieldType": "CHECKBOX",
+            "hideInPdfIfEmpty": true,
+            "label": {
+              "de": "Sicherheitsbremse wechseln",
+              "en": "Change safety brake"
+            }
+          },
+        "checkBallDisc": {
+          "width": 0.5,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Sicherheitsscheibe tauschen",
+            "en": "Replace safety glass"
+          }
+        },
+        "checkBallScrew": {
+          "width": 0.5,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Sicherheitsschaltleiste wechseln",
+            "en": "Change safety rail"
+          }
+        },
+        "checkPermMagnBreak": {
+          "width": 0.5,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Membranenspeicher an der Hydraulik wechseln",
+            "en": "Change diaphragm accumulator on hydraulics"
+          }
+        },
+        "spareparts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Weitere Ersatzteile",
+            "en": "Other maintenance parts"
+          },
+          "readonly": false,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "invoiceFields": false,
+          "hideWarrantyField": true
+        },
+        "emptyLine49": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "ersatzteileNotizen": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Notizen",
+            "en": "Notes"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "emptyLine50": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "endHinweis": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Arbeiten wurden wie vorstehend aufgeführt erledigt",
+            "en": "Work was done as listed below"
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "11-signature_technician",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "11-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Klingelnberg-Mitarbeiter"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Klingelnberg-Mitarbeiter",
+            "en": "Klingelnberg employee"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "11-signature_customer",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "11-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "12-send",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "12-send": {
+      "isForm": true,
+      "hiddenInPdf": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Protokoll als E-Mail senden/gesendet"
+      },
+      "hasNextStep": true,
+      "children": {
+        "test44": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Wartungsprotokoll B-Maschinen Durchsicht / Maintenance Protocol B-Machines Review",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Klingelnberg GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihr zugehöriges Wartungsprotokoll als PDF.",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "tsm-h@klingelnberg.com"
+              ]
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "13-addendum",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "13-addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Internal addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "generalComments": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Allgemeine Bemerkungen & Hinweise",
+            "en": "General Comments"
+          },
+          "readonly": false,
+          "validators": []
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          },
+          {
+            "to": "14-send",
+            "actions": [
+              {
+                "name": "PANEL_EXPAND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "14-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form with internal addendum as e-mail",
+        "de": "Wartungsprotokoll mit internem Nachtrag als E-Mail senden/gesendet"
+      },
+      "hasNextStep": false,
+      "children": {
+        "test44": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Wartungsprotokoll an den Innendienst",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "tsm-h@klingelnberg.com"
+              ]
+            },
+            "cc": {
+              "currentUser": true
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
