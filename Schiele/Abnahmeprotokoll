@@ -1,0 +1,456 @@
+{
+    "general": {
+      "type": "service_report",
+      "list_path": "service_report",
+      "name": {
+        "en": "Machine Acceptance Protocol",
+        "de": "Maschinen-Abnahmeprotokoll"
+      }
+    },
+    "formStructure": {
+      "1-Informationen": {
+        "isForm": true,
+        "ui": "CARD",
+        "initialExpand": true,
+        "cardHeadline": {
+          "de": "Kundeninformationen",
+          "en": "Customer Information"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "required": true,
+        "children": {
+            "customer": {
+                "fieldType": "REMBERG_CUSTOMER_SELECT",
+                "label": {
+                    "de": "Kunde",
+                    "en": "Customer"
+                    },
+                "hiddenInPdf": false,
+                "width": 0.3,
+                "required": false,
+                "messages": {
+                    "onChange":[
+                      {
+                      "to": "1-Informationen",
+                        "actions": [
+                          {
+                            "name": "PATCH_DATA",
+                            "_dynamicData": {
+                              "input": {
+                                "_field": {
+                                  "_field": {
+                                    "_field": {
+                                      "_field": "customer",
+                                      "_propertyName": "customer"
+                                    },
+                                    "_functionName": "GET_ACCOUNT"
+                                  },
+                                  "_propertyName": "company"
+                                },
+                                "_propertyName": "billingAddress"
+                              },
+                              "output": {
+                                "_field": "customerLocation"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                      "to": "2-Informationen",
+                        "actions": [
+                          {
+                            "name": "PATCH_DATA",
+                            "_dynamicData": {
+                              "input": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "output": {
+                                "_field": "asset",
+                                "_propertyName": "customerFilter"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }    
+            },
+            "customerLocation": {
+                "width": 0.3,
+                "fieldType": "REMBERG_ADDRESS",
+                "label": {
+                  "de": "Kundenadresse:",
+                  "en": "Customer Address:"
+                },
+                "hideInPdfIfEmpty": true,
+                "required": false,
+                "messages": {
+                  "onChange": [
+                    {
+                      "to": "10-signature_technician",
+                      "actions": [
+                        {
+                          "name": "PATCH_DATA",
+                          "_dynamicData": {
+                            "input": {
+                              "_field": "customerLocation",
+                              "_propertyName": "city"
+                            },
+                            "output": {
+                              "_formArray": "signature1",
+                              "_formArrayIndex": 0,
+                              "_propertyName": "location"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "to": "11-signature_customer",
+                      "actions": [
+                        {
+                          "name": "PATCH_DATA",
+                          "_dynamicData": {
+                            "input": {
+                              "_field": "customerLocation",
+                              "_propertyName": "city"
+                            },
+                            "output": {
+                              "_formArray": "signature2",
+                              "_formArrayIndex": 0,
+                              "_propertyName": "location"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+            "text_1": {
+                "fieldType": "INPUT_TEXT",
+                "label": {
+                    "de": "zuständig",
+                    "en": "responsible"
+                },
+                "required": false,
+                "width": 0.3,
+                "hiddenInPdf": false,
+                "disabled": false
+            }
+        },
+            "messages": {
+                "onLoaded": [
+                  {
+                  "to": "ROOT",
+                    "actions": [
+                      {
+                        "name": "PATCH_DATA",
+                        "_dynamicData": {
+                          "input": {
+                            "_field": {
+                              "_field": "ARGS",
+                              "_propertyName": "asset",
+                              "_functionName": "GET_PRODUCT"
+                            },
+                            "_propertyName": "customer"
+                          },
+                          "output": {
+                            "_field": "customer",
+                            "_propertyName": "customer"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                  "to": "ROOT",
+                    "actions": [
+                      {
+                        "name": "PATCH_DATA",
+                        "_dynamicData": {
+                          "input": {
+                            "_field": "ARGS",
+                            "_propertyName": "address"
+                          },
+                          "output": {
+                            "_field": "customerLocation",
+                            "_propertyName": ""
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+        },
+      "2-Informationen": {
+        "isForm": true,
+        "ui": "CARD",
+        "initialExpand": true,
+        "cardHeadline": {
+          "de": "Anlagen- und Abnahmeinformationen",
+          "en": "Asset and Acceptance Information"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "required": true,
+        "children": {
+            "asset": {
+                "fieldType": "REMBERG_ASSET_SELECT",
+                "required": false,
+                "disableSelection": false,
+                "hidePreselection": false,
+                "showUnassigned": true,
+                "editShowInput": true,
+                "registerAssetChange": true,
+                "hiddenInPdf": false,
+                "width": 0.5,
+                "label": {
+                    "de": "Anlage",
+                    "en": "Asset"
+                }},
+            "date_1": {
+                "fieldType": "REMBERG_DATE",
+                "label": {
+                    "de": "Abnahmedatum",
+                    "en": "Acceptance Date"
+                },
+                "hiddenInPdf": false,
+                "width": 0.5,
+                "autofillCurrentDate": true,
+                "required": false
+            },
+            "text_2": {
+                "fieldType": "HELP_TEXT",
+                "hiddenInPdf": false,
+                "width": 0.3,
+                "text": {
+                    "de": "Die Lieferung erfolgte gemäß:",
+                    "en": "The delivery was made according to:"
+                }
+            }, 
+            "text_3": {
+                "fieldType": "INPUT_TEXT",
+                "label": {
+                    "de": "Bestellnummer",
+                    "en": "Order Number"
+                },
+                "required": false,
+                "width": 0.3,
+                "hiddenInPdf": false,
+                "disabled": false
+            },
+            "date_2": {
+                "fieldType": "REMBERG_DATE",
+                "label": {
+                    "de": "vom",
+                    "en": "from"
+                },
+                "hiddenInPdf": false,
+                "width": 0.3,
+                "autofillCurrentDate": false,
+                "required": false
+            },
+            "text_4": {
+                "fieldType": "INPUT_TEXT",
+                "label": {
+                    "de": "Auftragsbestätigungsnummer",
+                    "en": "Order Confirmation Number"
+                },
+                "required": false,
+                "width": 0.5,
+                "hiddenInPdf": false,
+                "disabled": false
+            },
+            "date_3": {
+                "fieldType": "REMBERG_DATE",
+                "label": {
+                    "de": "vom",
+                    "en": "from"
+                },
+                "hiddenInPdf": false,
+                "width": 0.5,
+                "autofillCurrentDate": false,
+                "required": false
+            },
+            "helptext_1": {
+                "fieldType": "HELP_TEXT",
+                "hiddenInPdf": false,
+                "width": 1,
+                "text": {
+                    "de": "Die oben genannte Anlage wurde zum genannten Abnahmedatum von dem Unterzeichneten abgenommen. Im Beisein des Kunden wurde die Anlage probegefahren und in Betrieb genommen. Die Anlage arbeitet ordnungsgemäß und gilt als übernommen.",
+                    "en": "The above-mentioned asset was accepted by the undersigned on the above-mentioned acceptance date. In the presence of the customer, the asset was test-driven and commissioned. The asset is operating properly and is considered to have been taken over."
+                }
+            }
+            },
+            "messages": {
+            "onLoaded": [
+                {
+                  "to": "ROOT",
+                  "actions": [
+                    {
+                      "name": "PATCH_DATA",
+                      "_dynamicData": {
+                        "input": {
+                          "_field": "ARGS",
+                          "_propertyName": "asset",
+                          "_functionName": "GET_PRODUCT"
+                        },
+                        "output": {
+                          "_field": "asset",
+                          "_propertyName": "product"
+                        }
+                      }
+                    }
+                  ]
+                }
+            ]
+            }
+            },
+            "3-Informationen": {
+                "isForm": true,
+                "ui": "CARD",
+                "initialExpand": true,
+                "cardHeadline": {
+                  "de": "Weitere Informationen",
+                  "en": "Further Information"
+                },
+                "stateIndicator": true,
+                "hasNextStep": true,
+                "required": true,
+                "children": {
+                    "text_5": {
+                    "fieldType": "HELP_TEXT",
+                        "hiddenInPdf": false,
+                        "width": 1,
+                        "text": {
+                            "de": "Folgende Details, die den ordnungsgemäßen Betrieb der Anlage nicht stören, werden auf schnellstem Wege noch erledigt.",
+                            "en": "The following details, which do not interfere with the proper operation of the asset, are still being taken care of in the fastest way possible."
+                        }},
+                        "furtherinformation": {
+                            "fieldType": "REMBERG_RICH_TEXTAREA",
+                            "label": {
+                                "de": "Details und voraussichtlicher Erledigungstermin bitte vermerken",
+                                "en": "Please note details and expected date of completion"
+                            },
+                            "placeholder": {
+                                "de": "Hier tippen...",
+                                "en": "Type here...."
+                            },
+                            "hiddenInPdf": false,
+                            "required": false,
+                            "width": 0.5
+                        }
+                    }
+                },
+      "10-signature_technician": {
+        "width": 0.5,
+        "unbreakable": true,
+        "isForm": true,
+        "ui": "CARD",
+        "initialExpand": false,
+        "cardHeadline": {
+          "en": "Signature Delivery Plant",
+          "de": "Unterschrift Lieferwerk"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "children": {
+          "signature1": {
+            "showTime": false,
+            "fieldType": "REMBERG_SIGNATURE",
+            "label": {
+              "de": "Lieferwerk",
+              "en": "Delivery Plant"
+            },
+            "required": true,
+            "autofillCurrentUser": true
+          }
+        }
+      },
+      "11-signature_customer": {
+        "isForm": true,
+        "width": 0.5,
+        "unbreakable": true,
+        "ui": "CARD",
+        "initialExpand": false,
+        "cardHeadline": {
+          "en": "Signature Customer",
+          "de": "Unterschrift Kunde"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "children": {
+          "signature2": {
+            "width": 0.5,
+            "fieldType": "REMBERG_SIGNATURE",
+            "label": {
+              "de": "Kunde",
+              "en": "Customer"
+            },
+            "required": true,
+            "autofillCurrentUser": false
+          }
+        }
+      },
+      "12-send": {
+        "isForm": true,
+        "ui": "CARD",
+        "initialExpand": false,
+        "hiddenInPdf": true,
+        "cardHeadline": {
+          "en": "Send filled form",
+          "de": "Ausgefülltes Formular absenden"
+        },
+        "stateIndicator": true,
+        "hasNextStep": false,
+        "children": {
+          "send1": {
+            "fieldType": "REMBERG_SEND",
+            "prefillConfig": {
+              "subject": "Maschinen-Abnahmeprotokoll",
+              "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+              "to": {
+                "currentUser": false
+              },
+              "cc": {
+                "currentUser": false
+              },
+              "bcc": {
+                "currentUser": true
+              }
+            },
+            "label": {
+              "de": "Gesendet an",
+              "en": "Sent to"
+            },
+            "required": false
+          }
+        },
+        "messages": {
+          "onFinish": [
+            {
+              "to": "12-send",
+              "actions": [
+                {
+                  "name": "PANEL_EXPAND"
+                },
+                {
+                  "to": "12-send",
+                  "actions": [
+                    {
+                      "name": "PANEL_EXPAND"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+     }
+    }
+}
