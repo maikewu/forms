@@ -1,0 +1,403 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Employee Training",
+      "de": "Mitarbeiterschulung"
+    }
+  },
+  "formStructure": {
+    "1-Informationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange":[
+              {
+                "to": "1-Informationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "1-Informationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "width": 0.3,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+            },
+            "hideInPdfIfEmpty": true,
+            "required": false,
+            "hideInPDFIfEmpty": false,
+            "messages": {
+              "onChange": [
+                {
+                  "to": "03-signature_technician",
+                    "actions": [
+                      {
+                      "name": "PATCH_DATA",
+                        "_dynamicData": {
+                          "input": {
+                            "_field": "customerLocation",
+                              "_propertyName": "city"
+                          },
+                          "output": {
+                            "_formArray": "signature1",
+                              "_formArrayIndex": 0,
+                                "_propertyName": "location"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                  "to": "04-signature_customer",
+                    "actions": [
+                      {
+                        "name": "PATCH_DATA",
+                          "_dynamicData": {
+                            "input": {
+                              "_field": "customerLocation",
+                                "_propertyName": "city"
+                            },
+                            "output": {
+                              "_formArray": "signature2",
+                                "_formArrayIndex": 0,
+                                  "_propertyName": "location"
+                            }
+                          }
+                      }
+                    ]
+                  }
+              ]
+            }
+          },
+          "asset": {
+            "fieldType": "REMBERG_ASSET_SELECT",
+            "required": false,
+            "disableSelection": false,
+            "hidePreselection": false,
+            "showUnassigned": true,
+            "editShowInput": true,
+            "registerAssetChange": true,
+            "hideInPdfIfEmpty": true,
+            "hiddenInPdf": false,
+            "width": 0.5,
+            "label": {
+              "de": "Maschine",
+              "en": "Machine"
+            }
+          },
+          "header_Assets": {
+            "fieldType": "H3",
+            "hiddenInPdf": true,
+            "width": 1,
+            "text": {
+              "de": "Weitere Maschinen",
+              "en": "Additional Machines"
+            }
+          },
+        "additionalAssets": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "disableTabularView": true,
+          "listFormNoDataHint": {
+            "en": "No other machines were added yet.",
+            "de": "Es wurden noch keine weiteren Maschinen hinzugefügt."
+          },
+          "children": {
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5,
+              "label": {
+                "de": "Weitere Maschine",
+                "en": "Additional machine"
+              }
+            }
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+          "actions": [
+            {
+              "name": "PATCH_DATA",
+              "_dynamicData": {
+                "input": {
+                  "_field": "ARGS",
+                  "_propertyName": "address"
+                },
+                "output": {
+                  "_field": "customerLocation",
+                  "_propertyName": ""
+                }
+              }
+            }
+          ]
+          },
+          {
+          "to": "ROOT",
+          "actions": [
+            {
+              "name": "PATCH_DATA",
+              "_dynamicData": {
+                "input": {
+                  "_field": "ARGS",
+                  "_propertyName": "asset",
+                  "_functionName": "GET_PRODUCT"
+                },
+                "output": {
+                  "_field": "asset",
+                  "_propertyName": "product"
+                }
+              }
+            }
+          ]
+          } 
+        ]
+      }
+    },
+    "02_trainingInformation": {
+      "isForm": true,
+        "ui": "CARD",
+        "initialExpand": true,
+        "cardHeadline": {
+          "en": "Training Information",
+          "de": "Schulungsinformationen"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "children": {
+          "text1": {
+            "fieldType": "HELP_TEXT",
+            "hiddenInPdf": false,
+            "width": 1,
+            "text": {
+              "de": "Die folgenden Mitarbeiter haben an der Einweisung der oben genannte(n) Maschine(n) teilgenommen.",
+              "en": "The following employees have participated in the instruction of the above mentioned machine(s)."
+          }
+        },
+        "teilnehmer": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Mitarbeiter",
+            "en": "Employees"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1,
+          "minRows": 1
+        },
+        "anmerkungen": {
+            "fieldType": "TEXTAREA",
+            "label": {
+              "de": "Anmerkungen",
+              "en": "Remarks"
+            },
+            "hiddenInPdf": false,
+            "hideInPdfIfEmpty": true,
+            "required": false,
+            "width": 1
+        }
+      }
+    },
+      "03-signature_technician": {
+        "width": 0.5,
+        "unbreakable": true,
+        "isForm": true,
+        "ui": "CARD",
+        "initialExpand": false,
+        "cardHeadline": {
+          "en": "Signature Schiele-Assembler",
+          "de": "Unterschrift Schiele-Monteur"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "children": {
+          "signature1": {
+            "showTime": false,
+            "fieldType": "REMBERG_SIGNATURE",
+            "label": {
+              "de": "Schiele Maschinenbau GmbH",
+              "en": "Schiele Maschinenbau GmbH"
+            },
+            "required": true,
+            "autofillCurrentUser": true
+          }
+        }
+      },
+      "04-signature_customer": {
+        "isForm": true,
+        "width": 0.5,
+        "unbreakable": true,
+        "ui": "CARD",
+        "initialExpand": false,
+        "cardHeadline": {
+          "en": "Signature Customer",
+          "de": "Unterschrift Kunde"
+        },
+        "stateIndicator": true,
+        "hasNextStep": true,
+        "children": {
+          "signature2": {
+            "width": 0.5,
+            "fieldType": "REMBERG_SIGNATURE",
+            "label": {
+              "de": "Kunde",
+              "en": "Customer"
+            },
+            "required": true,
+            "autofillCurrentUser": false
+          }
+        }
+      },
+      "05-send": {
+        "isForm": true,
+        "ui": "CARD",
+        "initialExpand": false,
+        "hiddenInPdf": true,
+        "cardHeadline": {
+          "en": "Send filled form",
+          "de": "Ausgefülltes Formular absenden"
+        },
+        "stateIndicator": true,
+        "hasNextStep": false,
+        "children": {
+          "send1": {
+            "fieldType": "REMBERG_SEND",
+            "prefillConfig": {
+              "subject": "Mitarbeiterschulung",
+              "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+              "to": {
+                "currentUser": false
+              },
+              "cc": {
+                "currentUser": false
+              },
+              "bcc": {
+                "currentUser": true
+              }
+            },
+            "label": {
+              "de": "Gesendet an",
+              "en": "Sent to"
+            },
+            "required": false
+          }
+        },
+        "messages": {
+          "onFinish": [
+            {
+              "to": "12-send",
+              "actions": [
+                {
+                  "name": "PANEL_EXPAND"
+                },
+                {
+                "to": "12-send",
+                "actions": [
+                  {
+                    "name": "PANEL_EXPAND"
+                  }
+                ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
