@@ -1,0 +1,2425 @@
+{
+  "general": {
+    "name": {
+      "en": "Service Report General",
+      "de": "Prüfbericht für Absaug- und Filteranlagen"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreiben Sie den Prüfbericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Daten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customercontactperson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse Auftraggeber / Kunde",
+            "en": "Shipping Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customercontactperson": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Ansprechpartner (Auftraggeber)",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": true,
+          "width": 0.5,
+          "required": false
+        },
+        "customerContactText": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Falls der Kontakt oben nicht auffindbar ist, bitte folgend manuell eintippen:",
+            "en": "In case the contact is not to be found above, please enter it manually below:"
+          }
+        },
+        "contactPersons_customer_freetext": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner (Auftraggeber)",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "customerContactPersonPhone": {
+          "fieldType": "REMBERG_PHONE",
+          "label": {
+            "de": "Telefonnummer des Ansprechpartners (Auftraggeber)",
+            "en": "Phone number"
+          },
+          "width": 0.3,
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "deliveryTexts": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Falls abweichend vom Auftraggeber, bitte folgende Daten zum Anlagenstandort ausfüllen:",
+            "en": "In case the contact is not to be found above, please enter it manually below:"
+          }
+        },
+        "sameDeliveryAddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Einsatzort",
+            "en": "Mission address"
+          },
+          "width": 0.3,
+          "required": false,
+          "checked": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "11-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "sameDeliveryAddress",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "11-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "sameDeliveryAddress",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "deliveryContactPersons_customer_freetext": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner (Anlagenstandort)",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "deliveryContactPersonPhone": {
+          "fieldType": "REMBERG_PHONE",
+          "label": {
+            "de": "Telefonnummer des Ansprechpartners (Anlagenstandort)",
+            "en": "Phone number"
+          },
+          "width": 0.3,
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "emptyRow10": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": "General"
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "technicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Prüfer",
+            "en": "Technician"
+          },
+          "width": 1,
+          "required": true,
+          "autofillCurrentUser": true,
+          "printEmailAddress": true
+        },
+        "vorgang": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Vorgangnummer",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "required": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Anlagennummer",
+            "en": "Machine number"
+          }
+        },
+        "assetDescription": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Anlagenbeschreibung",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customercontactperson",
+                    "_propertyName": "account"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "sameDeliveryAddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_mission_infos": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Sichtprüfung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "housing": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gehäuse",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "staubkuebel": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Dichtung Staubkübel",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "staubkuebelhub": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Staubkübelhub",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "filterraumtuer": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Dichtung Filterraumtür",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "abreinigung": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Abreinigungssystem",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "druckluft": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Druckluftanlage",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "fan": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Ventilator",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "riemen": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Keilriemen",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "mainFilter": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Hauptfilter",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "safetyFilter": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sicherheitsfilter",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "cell": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zellradschleuße",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "reingas": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Reingasraum",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "turbine": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Turbine",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "schaltschrank": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Schaltschrank",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "openPoints1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_functionCheck": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Funktionsprüfung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "fan1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Ventilator",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "motor": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Motorschutzschalter",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "schaltschrank1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Schaltschrank",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "abreinigung1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Abreinigungssystem",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "mainPlug": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Hauptschalter",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "staubkuebelhub1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Staubkübelhub",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "filtermeldunghf": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Filtermeldung HF",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "filtermeldungSF": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Filtermeldung SF",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "betriebsmeldung": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Betriebsmeldung",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "bypass": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Bypassklappe",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "volumeregler": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Volumenstromreglung",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "turbine1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Turbine",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "schnittstelle": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Schnittstelle",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "nA",
+              "text": {
+                "de": "nicht vorhanden",
+                "en": "nicht vorhanden"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "openPoints2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03_mission_infos": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Messergebnisse"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "mess_repeater": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "disableTabularView": true,
+          "children": {
+            "messpunkt": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Messpunkt",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "description": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Beschreibung",
+                "en": "Reason"
+              },
+              "required": false,
+              "hideInPdfIfEmpty": true,
+              "options": [
+                {
+                  "value": "rohr",
+                  "text": {
+                    "de": "Rohr",
+                    "en": "Repair"
+                  }
+                },
+                {
+                  "value": "kanal",
+                  "text": {
+                    "de": "Kanal",
+                    "en": "Maintenance"
+                  }
+                },
+                {
+                  "value": "leitung",
+                  "text": {
+                    "de": "Leitung",
+                    "en": "Maintenance"
+                  }
+                }
+              ]
+            },
+            "nennvolumen": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Nennvolumenstrom [in m3/h]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "volumenstrom": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Volumenstrom [in m3/h]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "rohrdurchschnitt": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Rohr Ø [in cm]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "kanalbreite": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Kanalbreite [in cm]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "kanalhoehe": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Kanalhöhe [in cm]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "vFW": {
+              "fieldType": "HELP_TEXT",
+              "text": {
+                "de": "Vor Filterwechsel:",
+                "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+              },
+              "width": 1
+            },
+            "differenzdruckvFW": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Differenzdruck [in Pa]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "stroemgeschwFW": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Strömungsgeschwindigkeit [in m/s]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "nFW": {
+              "fieldType": "HELP_TEXT",
+              "text": {
+                "de": "Nach Filterwechsel:",
+                "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+              },
+              "width": 1
+            },
+            "differenzdrucknFW": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Differenzdruck [in Pa]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            },
+            "stroemgeschwnFW": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Strömungsgeschwindigkeit [in m/s]",
+                "en": "Contact Person of Customer"
+              },
+              "hideInPdfIfEmpty": false,
+              "width": 1,
+              "required": false
+            }
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "04_pruefergebnis": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Prüfergebnis"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "dguv3": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Prüfung nach DGUV-V3 durchgeführt",
+            "en": "Exchange oil filter"
+          }
+        },
+        "anlageok1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlage i. O.",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.3,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "ja",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "nein",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "repars1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Notwendige Reparaturen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "minRows": 1
+        },
+        "mechpruef": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Mechanische Prüfung durchgeführt",
+            "en": "Exchange oil filter"
+          }
+        },
+        "anlageok2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlage i. O.",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.3,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "ja",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "nein",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "repars2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Notwendige Reparaturen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "minRows": 1
+        },
+        "pneupruef": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Pneumatische Prüfung durchgeführt",
+            "en": "Exchange oil filter"
+          }
+        },
+        "anlageok3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlage i. O.",
+            "en": "Reason"
+          },
+          "width": 0.3,
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "ja",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "nein",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "repars3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Notwendige Reparaturen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "minRows": 1
+        },
+        "staubdurchtritt": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Prüfung auf Staubdurchtritt",
+            "en": "Exchange oil filter"
+          }
+        },
+        "anlageok4": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlage i. O.",
+            "en": "Reason"
+          },
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "ja",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "nein",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "repars4": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Notwendige Reparaturen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "minRows": 1
+        },
+        "exschutz": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Prüfung Ex-Schutz",
+            "en": "Exchange oil filter"
+          }
+        },
+        "anlageok5": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlage i. O.",
+            "en": "Reason"
+          },
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "ja",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "nein",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "repars5": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Notwendige Reparaturen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "minRows": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "07-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Prüfer"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Prüfer",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Kundenausfertigung als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "ULT Prüfbericht für Absaug- und Filteranlagen",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Prüfbericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "commentAddendum": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen & Hinweise",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        },
+        "filesHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Dokumentenanhang",
+            "en": "Documents Attachment"
+          },
+          "required": false,
+          "hiddenInPdf": true
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          }
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht mit internem Nachtrag als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Prüfbericht - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
