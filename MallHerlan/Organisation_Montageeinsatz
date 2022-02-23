@@ -1,0 +1,705 @@
+{
+  "general": {
+    "name": {
+      "en": "Organisation Assembly Order",
+      "de": "Organisation Montageeinsatz"
+    }
+  },
+  "formStructure":{
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "anfrage_checkbox":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Anfrage",
+            "en": "Request"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "anfrage_input": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anfrage",
+            "en": "Request"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "auftrag_checkbox":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Auftrag",
+            "en": "Order"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "space0":{
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": " \n ",
+            "en": " \n "
+          }
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData":{
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customeraddress"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customercontactperson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customeraddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Adresse",
+              "en": "Address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "space01":{
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "customercontactperson": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Ansprechpartner",
+            "en": "Contact person"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "customer_contact": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner",
+            "en": "Contact person"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "customer_contact_data": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kontaktdaten Ansprechpartner",
+            "en": "Contact data of contact person"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customercontactperson",
+                    "_propertyName": "account"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customeraddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_order_info": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Order Information",
+        "de": "Auftragsinformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "auftrag_installation": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer Installation",
+            "en": "Order-No. installation"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "auftrag_teile": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer Teile",
+            "en": "Order-No. parts"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "problem":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Problem",
+            "en": "Problem"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": true,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Mechanisch",
+                "en": "Mechanical"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Elektrisch",
+                "en": "Electrical"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "Software",
+                "en": "Software"
+              }
+            },
+            {
+              "value": "4",
+              "text": {
+                "de": "Verfahren",
+                "en": "Process"
+              }
+            }
+          ]
+        },
+        "beschreibung": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Description"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "anzahl_techniker_mech": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anzahl Techniker mechanisch",
+            "en": "Number for mechanical technicians"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "anzahl_techniker_elek": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anzahl Techniker elektrisch",
+            "en": "Number for electrical technicians"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "zeitraum": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Zeitraum",
+            "en": "Timeframe"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "dauer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Dauer",
+            "en": "Duration"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "header_info_construction":{
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Info an Konstruktion durch CS",
+            "en": "Construction informed by CS"
+          }
+        },
+        "mechanisch":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Mechanisch",
+            "en": "Mechanic"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "mechanisch_am":{
+          "fieldType": "REMBERG_DATE",
+          "required": false,
+          "hiddenInPdf": false,
+          "autofillCurrentDate": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.3,
+          "label": {
+            "de": "am",
+            "en": "on"
+          }
+        },
+        "mechanic_an": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "an",
+            "en": "to"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "elektrisch":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Elektrisch",
+            "en": "Electric"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "elektrisch_am":{
+          "fieldType": "REMBERG_DATE",
+          "required": false,
+          "hiddenInPdf": false,
+          "autofillCurrentDate": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.3,
+          "label": {
+            "de": "am",
+            "en": "on"
+          }
+        },
+        "elektrisch_an": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "an",
+            "en": "to"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "space1":{
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "teileverfuegbarkeit":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Teileverfügbarkeit",
+            "en": "Spare part availability"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Kritisch",
+                "en": "Critical"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Vorrätig",
+                "en": "In stock"
+              }
+            }
+          ]
+        },
+        "berechnung":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Einsatz an Kunde berechnen",
+            "en": "Charge customer for mission"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "03_Einsatz_Informationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Assembly Order for Service Technician",
+        "de": "Montageauftrag für Servicetechniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "fehlerbeschreibung": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Fehlerbeschreibung des Kunden",
+            "en": "Error description of customer"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "Arbeiten": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Arbeiten",
+            "en": "Performed tasks"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "werkzeug": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Spezialwerkzeug",
+            "en": "Special tooling"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "Werksgesetze":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Werksgesetze",
+            "en": "Plans acts"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": true,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Vorhanden im Managementsystem",
+                "en": "Available in management system"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Übergeben an Servicetechniker",
+                "en": "Handed over to service technician"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "Unterweisung erfolgt",
+                "en": "Instructions given "
+              }
+            }
+          ]
+        }
+      }
+    },
+    "10-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Organisation Montageeinsatz",
+            "content": "Sehr geehrte Damen und Herren,\n\nanbei erhalten sie die Organisation des Montageeinsatzes unseres Monteursn.\n\nMit freundlichen Grüßen\n\nIhr Team der Firma Mall+Herlan",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true,
+              "others": [
+                
+              ]
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
