@@ -26,17 +26,10 @@
         "de": "Kontakt"
       },
       "children": {
-        "serviceTechnicians": {
-          "fieldType": "REMBERG_USER_SELECT",
-          "label": {
-            "en": "Technican",
-            "de": "Techniker"
-          },
-          "autofillCurrentUser": true
-        },
         "customer": {
           "fieldType": "REMBERG_CUSTOMER_SELECT",
-          "required": true,
+          "required": false,
+          "width": 0.5,
           "label": {
             "de": "Kunde",
             "en": "Customer"
@@ -90,11 +83,56 @@
             ]
           }
         },
-        "location": {
-          "fieldType": "INPUT_TEXT",
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
           "label": {
-            "de": "Standort",
-            "en": "Location"
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5,
+          "messages": {
+            "onChange": [
+              {
+                "to": "A1-signatureTechnican",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "A2-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
           }
         },
         "deliveryNoteNumber": {
@@ -104,14 +142,20 @@
             "en": "Delivery note number"
           }
         },
-        "asset": {
-          "fieldType": "REMBERG_ASSET_SELECT",
+        "serviceTechnicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "en": "Technican",
+            "de": "Techniker"
+          },
+          "autofillCurrentUser": true
+        },
+        "sn": {
+          "fieldType": "INPUT_TEXT",
           "label": {
             "de": "Model",
             "en": "Model"
-          },
-          "registerAssetChange": false,
-          "required": true
+          }
         },
         "ink": {
           "fieldType": "INPUT_TEXT",
@@ -120,12 +164,14 @@
             "en": "Ink"
           }
         },
-        "sn": {
-          "fieldType": "INPUT_TEXT",
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
           "label": {
             "de": "S/N",
             "en": "S/N"
-          }
+          },
+          "registerAssetChange": false,
+          "required": false
         }
       },
       "messages": {
@@ -160,8 +206,26 @@
                     "_propertyName": "customer"
                   },
                   "output": {
-                    "_field": "asset",
-                    "_propertyName": "customerFilter"
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
                   }
                 }
               }
@@ -280,7 +344,10 @@
             "de": "Allgemeine Bemerkungen & Hinweise",
             "en": "General Notes"
           },
-          "minRows": 1
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          }      
         },
         "documents-notes": {
           "fieldType": "REMBERG_FILE_UPLOAD",
@@ -348,8 +415,8 @@
             "en": "SEND"
           },
           "prefillConfig": {
-            "subject": "",
-            "content": "",
+            "subject": "Übergabeprotokoll Systeme",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
             "to": {
               "currentUser": false
             },
@@ -357,7 +424,7 @@
               "currentUser": false
             },
             "bcc": {
-              "currentUser": false
+              "currentUser": true
             }
           }
         }
