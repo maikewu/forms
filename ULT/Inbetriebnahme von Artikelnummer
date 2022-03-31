@@ -1,0 +1,818 @@
+{
+  "general": {
+    "name": {
+      "de": "Inbetriebnahme von Artikelnummer / Uruchomienie Doppel500er"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "de": "Unterschrift / Podpis"
+      },
+      "popupDescription": {
+        "de": "Bitte unterschreiben Sie das Inbetriebnahmeprotokoll / Proszę podpisać protokół przekazania do eksploatacji"
+      }
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Auftrags- und Gerätedaten / Dane dotyczace zamowienia i urzadzenia"
+      },
+      "children": {
+        "vg-nr": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "VG-Nr. / Numer procesu:"
+          }
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde/Händler / Klient/Kupiec"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customercontactperson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Artikelbezeichnung / Nazwa artykulu"
+          }
+        },
+        "finishDate": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Fertigungsende am / Koniec produkcji w dniu"
+          }
+        },
+        "startDate": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Inbetriebnahme von / Uruchomiony przez"
+          }
+        },
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Gefertigt von / Sporzadzony przez:"
+          },
+          "autofillCurrentUser": true,
+          "printEmailAddress": true
+        },
+        "on": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Am / Dnia:"
+          }
+        },
+        "messages": {
+          "onLoaded": [
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "output": {
+                      "_field": "asset",
+                      "_propertyName": "product"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "02_commissioning": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Mechanische Inbetriebnahme / Uruchomienie mechaniczne"
+      },
+      "children": {
+        "header": {
+          "fieldType": "H2",
+          "width": 1,
+          "text": {
+            "de": "Ventilator / Wentylator"
+          }
+        },
+        "testObject": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Frequenzumrichter / Przemiennik częstotliwości"
+          }
+        },
+        "testStep": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Parametrierung / Parametryzacja:\n\nA001 Frequenz-Sollwertquelle / Źródło odniesienia częstotliwości 01(Werkseinstellung / Ustawienie fabryczne)\nA002 Start-Befehlsquelle / Uruchom źródło polecenia\t 01(Werkseinstellung / Ustawienie fabryczne)\nA004 Maximalfrequenz / Maksymalna częstotliwość\t 95 [Hz]\nA003 Eckfrequenz / Czestotliwosc Narozna 95[Hz]\nA082 Bemessungsspannung / Napięcie pomiarowe 220[V]\nB012 Strom für i²t-Überwachung / Zasilanie dla monitoringu i²t 13,64[A]\nB035 Drehrichtungsbeschränkung / Ograniczenie kierunku obrotów 01 (nur vorwärts / tylko do przodu)\nB049 Betriebsart / Tryb pracy 01\nB083 FU-Taktfrequenz / Czestotliwosc Taktowania 10[kHz]\nC005 Eingang / Wejscie 5/PT 19(PTC aktiviert)\nF002 Hochlaufzeit / Najdluzszy czas pracy 30[s]\nF003 Auslaufzeit / Czaswygasniecia 40[s]\nH003 Motor-Bemessungsleistung / Pomiarowa moc silnika 3,0[kW]\nH004 Motor-Polpaarzahl / Liczba par biegunow silnika 2\n\nFrequenzumrichter neu starten / Zrestartuj przemiennik czestotliwosci"
+          }
+        },
+        "testReact": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Achtung! Frequenzumrichter wechselt das Parameter-Menü / Uwaga! Przemiennik częstotliwości zmienia menu parametrow"
+          }
+        },
+        "checkbox": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "header2": {
+          "fieldType": "H2",
+          "width": 1,
+          "text": {
+            "de": "Steuerung / Kontrola"
+          }
+        },
+        "testObject2": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub2": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Logoprogram"
+          }
+        },
+        "testStep2": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub2": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "ULT-D50963 Ausg001 TH 2019_11_06 übertragen/transfer"
+          }
+        },
+        "checkbox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject3": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub3": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Drehzahl / Predkosc obrotowa"
+          }
+        },
+        "testStep3": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub3": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Drehschalter „air flow“ auf „n“ stellen (rechts) Potentiometer „set n“ aufdrehen\nUstaw przełącznik obrotowy„air flow” na „n” (po rawej)Podkręć potencjometr „set n”"
+          }
+        },
+        "testReact3": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub3": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Absperrschieber öffnet Ventilator fährt hoch(siehe Frequenz am FU)\nWentylator sie uruchamia(Patrz frekwencja przy FU)"
+          }
+        },
+        "checkbox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject4": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub4": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Unterdruck-Konstanthaltung / Stałe utrzymywanie próżni"
+          }
+        },
+        "testStep4": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub4": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Drehschalter „air flow“ auf „p“ stellen (links) Potentiometer „set p“ auf Mittelstellung drehen Ansaug mit Pappe verschließen\nUstaw przełącznik obrotowy „air flow ” na „p” (po lewej) Potencjometr „set p” przekręcić do pozycji środkowej Uszczelnij wlot tekturą"
+          }
+        },
+        "testReact4": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub4": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Ventilator fährt hoch Drehzahl/Frequenz sinkt\nWentylator sie uruchamia Prędkość / częstotliwość spada"
+          }
+        },
+        "checkbox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject5": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub5": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Polizeifilter / filtr policyjny"
+          }
+        },
+        "testStep5": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub5": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Unterdruck an Messpunkt (zwischen Ventilator & Polizeifilter) erzeugen\nWytwarzanie podciśnienia w punkcie pomiarowym (między wentylatorem a filtr policyjny)"
+          }
+        },
+        "testReact5": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub5": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Nach 10s:\nMeldeleuchte „saftyfilter“ leuchtet\nPo 10 sek. zapala sie lampka kontrolna „saftyfilter“\n\n Meldeleuchte „malfunction“ Leuchtet\nLampka kontrolna swieci „malfunction“\n\nPotentialfreier Kontakt -XG4 7-8 schließt\nKontakt bezpotencjałowy -XG4 7-8 zamyka się"
+          }
+        },
+        "checkbox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject6": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub6": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Hauptfilter / Glowny filtr"
+          }
+        },
+        "testStep6": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub6": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Unterdruck an Messpunkt (neben Polizeifilter) erzeugen\nWygeneruj podciśnienie w punkcie pomiarowym (obok filtr policyjny)"
+          }
+        },
+        "testReact6": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub6": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Druckschalter -BP2 schaltet bei 2,5kPa\nPrzełącznik ciśnienia -BP2 wlacza sie przy 2,5kPa\n\nMeldeleuchte „filter“ leuchtet\nLampka sygnalizacyjna „filter“ świeci się\n\nMeldeleuchte „malfunction“ Leuchtet\nLampka sygnalizacyjna „malfunction“ świeci się\n\nPotentialfreier Kontakt -XG4 3-4 schließt\nPotencjalnie wolny kontakt -XG4 3-4 zamyka sie"
+          }
+        },
+        "checkbox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject7": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub7": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Fern Ein Aus / Zdalnie Wlacznik Wylacznik"
+          }
+        },
+        "testStep7": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub7": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Anlage an Schalter „ON OFF“ ausschalten Klemme -XG4 1-2 brücken\nWyłączyć instalację za pomocą przełącznika „ON OFF“ Terminal -XG4 1-2 zmostkowac"
+          }
+        },
+        "testReact7": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub7": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Ventilator startet / Wentylator się uruchamia"
+          }
+        },
+        "checkbox7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject8": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub8": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Betriebsmeldung / Komunikat operacyjny"
+          }
+        },
+        "testStep8": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub8": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Klemme -XG4 5-6 prüfen / Sprawdź zacisk -XG4 5-6"
+          }
+        },
+        "testReact8": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub8": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Bei Differenzdruck über den Filterpatronen schließt der Kontakt zeitverzögert\nJeżeli na wkładach filtracyjnych występuje różnica ciśnień, styk zamyka się z opóźnieniem"
+          }
+        },
+        "checkbox8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject9": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub9": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Sicherheitsabschaltung / Wyłączenie bezpieczenstwa"
+          }
+        },
+        "testStep9": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub9": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Ansaug mit Pappe ganz verschließen (Schwellwert B57 muss überschritten werden)\nCałkowicie zamknąć wlot kartonem (należy przekroczyć wartość progową B57)"
+          }
+        },
+        "testReact9": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub9": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Nach 30s schaltet Ventilator ab\nWentylator wyłącza się po 30s\n\nMeldeleuchte „malfunction“ leuchtet\nZapala sie lampka kontrolna „malfunction“"
+          }
+        },
+        "checkbox9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "header3": {
+          "fieldType": "H2",
+          "width": 1,
+          "text": {
+            "de": "Zudosierung / Dozowanie"
+          }
+        },
+        "testObject10": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub10": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Bedingungen / Warunki"
+          }
+        },
+        "testStep10": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub10": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Betriebsmeldung aktiv Freigabe (Brücke) an Klemme -XG4 13-14\nAktywny komunikat roboczy Zezwolenie (most) na zacisku -XG4 13-14"
+          }
+        },
+        "testReactSub10": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Informativ / Informacyjny"
+          }
+        },
+        "testObject11": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub11": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Erst-Precoatierung"
+          }
+        },
+        "testStep11": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub11": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Anlage an Schalter „ON OFF“ ausschalten & einschalten\nWyłącz i włącz system za pomocą przełącznika „ON OFF”"
+          }
+        },
+        "testReact11": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub11": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "25s nach einschalten der Anlage wird einmal zudosiert\n25s po włączeniu systemu jest  dozowane jednorazowo"
+          }
+        },
+        "checkbox11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject12": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub12": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Dosiermeldung"
+          }
+        },
+        "testStep12": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub12": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "B137 Zähler auf 240 stellen\nUstaw licznik B137 na 240 \n\nLeuchttaster „reset dosing“ betätigen\nNacisnąć przycisk podświetlany „reset dozowania“"
+          }
+        },
+        "testReact12": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Reaktion / Reakcja"
+          }
+        },
+        "testReactSub12": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Meldeleuchte „malfunction“ leuchtet\nZapala sie lampka kontrolna „malfunction“ \n\nLeuchttaster „reset dosing“ leuchtet\nPodświetlany przycisk reset dozowania“ świeci się\n\nMeldeleuchte „malfunction“ und Leuchttaster „reset dosing“ schalten ab Zähler B137 auf 0 gesetzt\nLampka sygnalizacyjna „malfunction“ i podswietlony przycisk „reset dosing“ wyłączyć Licznik B137 ustawiony na 0"
+          }
+        },
+        "checkbox12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "header4": {
+          "fieldType": "H2",
+          "width": 1,
+          "text": {
+            "de": "Dichtheit / Szczelnosc"
+          }
+        },
+        "testObject13": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub13": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Pneumatik / Pneumatyka"
+          }
+        },
+        "testStep13": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub13": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Steckverbindungen der Schläuche mit „Leak-Detector“ prüfen\nSprawdzić połączenia wtykowe węży za pomocą „Leak-Detector“"
+          }
+        },
+        "checkbox13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        },
+        "testObject14": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Was ist zu prüfen / Co jest do sprawdzenia?"
+          }
+        },
+        "testObjectsub14": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Anlage / Urzadzenie"
+          }
+        },
+        "testStep14": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Prüfarbeitsschritt / Sprawdzanie etapu pracy"
+          }
+        },
+        "testStepsub14": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Gehäusestöße mit Rauchröhrchen bei laufender Anlage Prüfen\nUderzenia obudowy z rurą dymową przy pracującym systemie sprawdzic"
+          }
+        },
+        "checkbox14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          }
+        }
+      }
+    },
+    "A0_notesInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Bemerkungen / Uwagi"
+      },
+      "children": {
+        "generalNotes": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen / Uwagi"
+          },
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "hint": {
+          "fieldType": "HELP_TEXT",
+          "label": {
+            "de": "Die Maschine läuft nach den Spezifikationen. Alle Schaltzustände und Funktionen wurden geprüft. Es wurden keine Abweichungen festgestellt.\nMaszyna działa zgodnie ze specyfikacją. Wszystkie stany przełączania i funkcje zostały sprawdzone. Nie znaleziono rozbieżności."
+          }
+        }
+      }
+    },
+    "A1-signatureAuditor": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "de": "Unterschrift / Podpis"
+      },
+      "children": {
+        "header": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Nach der Unterschrift ist diese Datei auf / Po podpisaniu plik ten należy zapisać w U:\\02_Fertigung\\99 Gerätearchiv\\Gerätetyp\\Sereiennummer\\Lieferzustand abzuspeichern."
+          }
+        },
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Unterschrift / Podpis"
+          },
+          "autofillCurrentUser": true,
+          "required": true,
+          "width": 1
+        }
+      }
+    },
+    "A3-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "de": "Inbetriebnahmeprotokoll als E-Mail senden/gesendet / Wysyłanie/wysyłanie protokołu uruchomienia jako wiadomości e-mail"
+      },
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN"
+          },
+          "prefillConfig": {
+            "subject": "",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

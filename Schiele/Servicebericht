@@ -218,66 +218,60 @@
           "printEmailAddress": false,
           "required": false
         },
-        "userselect_2": {
+        "userselect_3": {
           "fieldType": "REMBERG_USER_SELECT",
           "label": {
-              "de": "Weiterer Monteur",
-              "en": "Additional Assembler"
-              },
+            "de": "Weiterer Monteur",
+            "en": "Additional Assembler"
+          },
           "hiddenInPdf": false,
-          "width": 0.5,
           "hideInPdfIfEmpty": true,
+          "width": 0.5,
           "autofillCurrentUser": false,
           "printEmailAddress": false,
           "required": false
         },
         "text_4": {
-          "fieldType": "INPUT_TEXT",
+          "fieldType": "SELECT",
           "label": {
-              "de": "KFZ",
-              "en": "Car"
+            "de": "KFZ",
+            "en": "Car"
           },
           "required": false,
           "width": 0.5,
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true,
-          "disabled": false
-        },
-        "text_5": {
-          "fieldType": "INPUT_TEXT",
-          "label": {
-              "de": "Modell",
-              "en": "Model"
-          },
-          "required": false,
-          "width": 0.5,
-          "hiddenInPdf": false,
-          "hideInPdfIfEmpty": true,
-          "disabled": false
-        },
-        "text_6": {
-          "fieldType": "INPUT_TEXT",
-          "label": {
-              "de": "KM-Start",
-              "en": "KM Start"
-          },
-          "required": false,
-          "width": 0.5,
-          "hiddenInPdf": false,
-          "hideInPdfIfEmpty": true,
-          "disabled": false
-        },
-        "text_7": {
-          "fieldType": "INPUT_TEXT",
-          "label": {
-              "de": "KM-Ende",
-              "en": "KM End"
-          },
-          "required": false,
-          "width": 0.5,
-          "hiddenInPdf": false,
-          "hideInPdfIfEmpty": true,
-          "disabled": false
+          "multiple": false,
+          "options": [
+              {
+                  "value": "Transit AW-S-4900",
+                  "text": {
+                      "de": "Transit AW-S-4900",
+                      "en": "Transit AW-S-4900"
+                  }
+              },
+              {
+                  "value": "Transit AW-S-5200",
+                  "text": {
+                      "de": "Transit AW-S-5200",
+                      "en": "Transit AW-S-5200"
+                  }
+              },
+              {
+                  "value": "Focus AW-S-5800",
+                  "text": {
+                      "de": "Focus AW-S-5800",
+                      "en": "Focus AW-S-5800"
+                  }
+              },
+              {
+                "value": "Transit (AHK) AW-S-5900",
+                "text": {
+                    "de": "Transit (AHK) AW-S-5900",
+                    "en": "Transit (AHK) AW-S-5900"
+                }
+              }
+          ]
         }
       },
       "messages": {
@@ -373,28 +367,57 @@
       "ui": "CARD",
       "initialExpand": true,
       "cardHeadline": {
-        "de": " ",
-        "en": " "
+        "de": "Aufgabenstellung",
+        "en": "Tasks"
       },
       "stateIndicator": true,
       "hasNextStep": true,
       "required": true,
       "children": {
-        "richtext_1": {
-          "fieldType": "REMBERG_RICH_TEXTAREA",
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
           "label": {
-            "de": "Aufgabenstellung",
-            "en": "Assignment"
-          },
-          "placeholder": {
-            "de": "Hier tippen...",
-            "en": "Type here..."
+            "de": "Aufgaben",
+            "en": "Tasks"
           },
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true,
-          "required": false,
-          "width": 1.0
+          "width": 1,
+          "required": false
         }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
       }
     },
     "4-report": {
@@ -435,6 +458,8 @@
         "en": "Spare Parts"
       },
       "stateIndicator": true,
+      "hideInPdfIfEmpty": true,
+      "hiddenInPdf": false,
       "hasNextStep": true,
       "required": true,
       "children": {
@@ -540,22 +565,78 @@
           },
           "required": false
         }
+      }
+    },
+    "8_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "commentAddendum": {
+            "fieldType": "REMBERG_RICH_TEXTAREA",
+            "label": {
+              "de": "Interne Bemerkungen, Hinweise und To-Dos",
+              "en": "Internal comments, notes and to-dos"
+            },
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hideInPdfIfEmpty": false,
+            "hiddenInPdf": false,
+            "required": false,
+            "width": 1.0
+        }
+      }
+    },
+    "9-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send completed service report with internal addendum",
+        "de": "Ausgefüllter Servicebericht mit internem Nachtrag absenden"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Servicebericht - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "required": false
+        }
       },
       "messages": {
         "onFinish": [
           {
-            "to": "12-send",
+            "to": "ROOT",
             "actions": [
               {
-                "name": "PANEL_EXPAND"
-              },
-              {
-                "to": "12-send",
-                "actions": [
-                  {
-                    "name": "PANEL_EXPAND"
-                  }
-                ]
+                "name": "SAVE_TO_BACKEND"
               }
             ]
           }
