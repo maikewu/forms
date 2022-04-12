@@ -9,7 +9,7 @@
         "de": "Unterschrift notwendig"
       },
       "popupDescription": {
-        "de": "Bitte unterschreiben Sie das Prüfprotokoll."
+        "de": "Bitte unterschreiben Sie den Servicebericht."
       }
     }
   },
@@ -23,14 +23,18 @@
       "children": {
         "customer0": {
           "fieldType": "REMBERG_CUSTOMER_SELECT",
-          "required": true,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
           "label": {
             "de": "Auftraggeber"
           }
         },
         "customer": {
           "fieldType": "REMBERG_CUSTOMER_SELECT",
-          "required": true,
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
           "label": {
             "de": "Warenempfänger"
           },
@@ -64,24 +68,24 @@
               },
               {
                 "to": "01-generalInformation",
-                "actions": [
-                  {
-                    "name": "PATCH_DATA",
-                    "_dynamicData": {
-                      "input": {
-                        "_field": "customer",
-                        "_propertyName": "customer"
-                      },
-                      "output": {
-                        "_field": "contactPersons",
-                        "_propertyName": "account"
-                      }
-                    }
-                  }
-                ]
+                              "actions": [
+                                {
+                                  "name": "PATCH_DATA",
+                                  "_dynamicData": {
+                                    "input": {
+                                      "_field": "customer",
+                                      "_propertyName": "customer"
+                                    },
+                                    "output": {
+                                      "_field": "contactPerson",
+                                      "_propertyName": "account"
+                                    }
+                                  }
+                                }
+                              ]
               },
               {
-                "to": "01-generalInformation",
+                "to": "01-01-Serviceauftrag",
                 "actions": [
                   {
                     "name": "PATCH_DATA",
@@ -121,31 +125,13 @@
         },
         "customerLocation": {
           "fieldType": "REMBERG_ADDRESS",
-          "label": {
-            "de": "Standort der Anlage"
-          },
+          "width": 0.5,
           "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Bezirk"
+          },
           "messages": {
             "onChange": [
-              {
-                "to": "A1-signatureTechnican",
-                "actions": [
-                  {
-                    "name": "PATCH_DATA",
-                    "_dynamicData": {
-                      "input": {
-                        "_field": "customerLocation",
-                        "_propertyName": "city"
-                      },
-                      "output": {
-                        "_formArray": "signature1",
-                        "_formArrayIndex": 0,
-                        "_propertyName": "location"
-                      }
-                    }
-                  }
-                ]
-              },
               {
                 "to": "B1-signatureCustomer",
                 "actions": [
@@ -168,35 +154,127 @@
             ]
           }
         },
+        "meldender": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Meldender"
+          },
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true
+        },
         "Meldedatum": {
           "fieldType": "REMBERG_DATE",
           "label": {
-            "de": "Meldender / Datum"
+            "de": "Datum"
           },
-          "required": false
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true,
+          "autofillCurrentDate": false
         },
-        "customerContactPerson": {
-          "fieldType": "INPUT_TEXT",
+        "contactPerson": {
+          "fieldType": "REMBERG_USER_SELECT",
           "label": {
             "de": "Ansprechpartner"
-          },
-          "required": false
+           },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": false,
+          "printEmailAddress": false,
+          "required": false,
+          "hideInPdfIfEmpty": true
         },
+        "bestellnummer": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Best.-Nr."
+            },
+            "required": false,
+            "width": 0.5,
+            "hideInPdfIfEmpty": true
+          },
         "bestDatum": {
           "fieldType": "REMBERG_DATE",
           "label": {
-            "de": "Best.-Nr. / Datum"
+            "de": "Datum"
           },
-          "required": false
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
         },
         "meldung": {
           "fieldType": "INPUT_TEXT",
           "label": {
             "de": "Meldung"
           },
-          "required": false
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true
         }
-      }
+      },
+      "messages": {
+            "onLoaded":[
+              {
+                          "to": "ROOT",
+                          "actions": [
+                            {
+                              "name": "PATCH_DATA",
+                              "_dynamicData": {
+                                "input": {
+                                  "_field": "ARGS",
+                                  "_propertyName": "address"
+                                },
+                                "output": {
+                                  "_field": "customerLocation",
+                                  "_propertyName": ""
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "to": "ROOT",
+                          "actions": [
+                            {
+                              "name": "PATCH_DATA",
+                              "_dynamicData": {
+                                "input": {
+                                  "_field": {
+                                    "_field": "ARGS",
+                                    "_propertyName": "asset",
+                                    "_functionName": "GET_PRODUCT"
+                                  },
+                                  "_propertyName": "customer"
+                                },
+                                "output": {
+                                  "_field": "customer",
+                                  "_propertyName": "customer"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "to": "ROOT",
+                          "actions": [
+                            {
+                              "name": "PATCH_DATA",
+                              "_dynamicData": {
+                                "input": {
+                                  "_field": "ARGS",
+                                  "_propertyName": "customer"
+                                },
+                                "output": {
+                                  "_field": "contactPerson",
+                                  "_propertyName": "account"
+                                }
+                              }
+                            }
+                          ]
+                        }
+            ]
+          }
     },
     "01-01-Serviceauftrag": {
       "isForm": true,
@@ -204,63 +282,100 @@
       "cardHeadline": {
         "de": "Serviceauftrag"
       },
-      "required": true,
       "children": {
-        "asset": {
+        "servicenummer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Serviceauftrag-Nr."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+          },
+        "servicemeldung": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Servicemeldung"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+          },
+          "asset": {
           "fieldType": "REMBERG_ASSET_SELECT",
           "label": {
             "de": "Masch-Nr."
           },
           "registerAssetChange": true,
-          "required": true
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true
         },
         "technischesObjekt": {
           "fieldType": "INPUT_TEXT",
           "label": {
             "de": "Technisches Objekt"
           },
-          "required": false
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmtpy": true
         },
         "anlagenbezeichnung": {
           "fieldType": "INPUT_TEXT",
           "label": {
             "de": "Anlagenbezeichnung"
           },
-          "required": false
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmtpy": true
         },
         "asset_runningtime": {
           "fieldType": "REMBERG_DATE",
           "label": {
             "de": "Gewährleistungsende"
-          }
+          },
+          "width": 0.5,
+          "hideInPdfIfEmtpy": true
         },
         "sachbearbeiter": {
           "fieldType": "REMBERG_USER_SELECT",
           "label": {
             "de": "Sachbearbeiter"
           },
-          "autofillCurrentUser": false
+          "autofillCurrentUser": false,
+          "width": 0.5,
+          "hideInPdfIfEmtpy": true
         },
         "serviceTechnicians": {
           "fieldType": "REMBERG_USER_SELECT",
           "label": {
             "de": "Servicetechniker"
           },
-          "autofillCurrentUser": true
+          "autofillCurrentUser": true,
+          "width": 0.5,
+          "hideInPdfIfEmtpy": true
         },
         "berechnungsMotiv": {
           "fieldType": "INPUT_TEXT",
           "label": {
             "de": "Berechnungsmotiv"
           },
-          "required": false
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmtpy": true
         },
         "leistungsart": {
           "fieldType": "INPUT_TEXT",
           "label": {
             "de": "IH-Leistungsart"
           },
-          "required": false
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmtpy": true
         }
       },
       "messages": {
@@ -301,6 +416,43 @@
                 }
               }
             ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+              "actions": [
+              {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                  "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "customer"
+                  },
+                  "output": {
+                      "_field": "asset",
+                      "_propertyName": "customerFilter"
+                  }
+                  }
+              }
+            ]
           }
         ]
       }
@@ -309,21 +461,25 @@
       "isForm": true,
       "ui": "CARD",
       "cardHeadline": {
-        "de": "Tätigkeiten"
+        "de": "Ausgeführte Tätigkeiten"
       },
       "children": {
         "header": {
           "fieldType": "HELP_TEXT",
           "text": {
             "de": "Nachfolgend aufgeführten Leistungen wurden nach Aufwand erbracht. Nicht aufgeführte Leistungen wurden gemäß Auftragspauschale durchgeführt."
-          }
-        },
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },  
         "tasks": {
           "fieldType": "REMBERG_TASKS",
           "label": {
             "de": "Ausgeführte Tätigkeiten"
           },
-          "required": false
+          "required": false,
+          "width": 1.0,
+          "hideInPdfIfEmtpy": true
         },
         "tasksComment": {
           "fieldType": "TEXTAREA",
@@ -331,7 +487,9 @@
             "de": "Kommentar"
           },
           "required": false,
-          "minRows": 1
+          "minRows": 1,
+          "width": 1.0,
+          "hideInPdfIfEmtpy": true
         }
       },
       "messages": {
@@ -364,22 +522,16 @@
       "cardHeadline": {
         "de": "Arbeitszeiten / gefahrene Kilometer"
       },
-      "required": true,
+      "required": false,
       "children": {
         "times": {
           "fieldType": "REMBERG_WORK_TIMES",
           "label": {
-            "de": "Zeiten"
-          },
-          "required": false
-        },
-        "tasksComment": {
-          "fieldType": "TEXTAREA",
-          "label": {
-            "de": "Kommentar"
+            "de": "Arbeitszeiten / gefahrene Kilometer"
           },
           "required": false,
-          "minRows": 1
+          "width": 1.0,
+          "hideInPdfIfEmtpy": true
         }
       }
     },
@@ -390,52 +542,105 @@
         "de": "Materialverwendung"
       },
       "children": {
-        "times": {
+        "spareparty": {
           "fieldType": "REMBERG_SPARE_PARTS",
           "label": {
-            "de": "Material"
+            "de": "Materialverwendung"
           },
-          "invoiceFields": false
-        },
-        "tasksComment": {
-          "fieldType": "TEXTAREA",
-          "label": {
-            "de": "Kommentar"
-          },
-          "required": false,
-          "minRows": 1
+          "partNumberRequired": false,
+          "descriptionRequired": false,
+          "amountRequired": false,
+          "deliveryRequired": false,
+          "invoice": false,
+          "invoiceFields": false,
+          "hideWarrantyField": true,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
         }
-      }
+            }
     },
     "05-maschinestatus": {
       "isForm": true,
       "ui": "CARD",
       "cardHeadline": {
-        "de": "Maschinenstatus"
+        "de": "Maschinen- und Auftragsstatus"
       },
       "children": {
         "asset": {
           "fieldType": "REMBERG_ASSET_SELECT",
           "label": {
-            "de": "Anlagenbezeichnung"
+            "de": "Serialnummer"
           },
           "registerAssetChange": true,
-          "required": false
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true
         },
-        "machinenstatus": {
+        "Anlagenbez": {
           "fieldType": "INPUT_TEXT",
           "label": {
-            "de": "Maschinenstatus"
-          }
+            "de": "Anlagenbez."
+          },
+          "width": 0.5,
+          "hideInPdfIfEmtpy": true
         },
-        "generalNotes": {
-          "fieldType": "TEXTAREA",
+        "Testlauf": {
+          "fieldType": "CHECKBOX",
           "label": {
-            "de": "Bemerkung"
+            "de": "Testlauf erfolgreich durchgeführt"
           },
           "required": false,
-          "minRows": 1
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": true
+        },
+        "Auftrag": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Störung beseitigt / Auftrag erledigt"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": true
+        },
+        "comment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1.0,
+          "minRows": 1,
+          "hideInPdfIfEmpty": true
         }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]  
       }
     },
     "B1-signatureCustomer": {
@@ -450,7 +655,7 @@
         "subline17": {
           "fieldType": "HELP_TEXT",
           "text": {
-            "de": "Alle Leistungen wurden auf Grundlage der aktuellen Fessmann Berechnungssätze für Serviceleistungen ausgeführt. \nWenn diese dem Auftraggeber nicht vorliegen können sie jederzeit zur Verfügung gestellt werden.\n  Der Unterzeichner bestätigt die ordnungsgemäße Ausführung der Arbeiten und die Funktion der Anlage zum Zeitpunkt der Unterschrift."
+            "de": "Alle Leistungen wurden auf Grundlage der aktuellen Fessmann Berechnungssätze für Serviceleistungen ausgeführt. \nWenn diese dem Auftraggeber nicht vorliegen können sie jederzeit zur Verfügung gestellt werden.\n Der Unterzeichner bestätigt die ordnungsgemäße Ausführung der Arbeiten und die Funktion der Anlage zum Zeitpunkt der Unterschrift."
           },
           "width": 1
         },
@@ -467,7 +672,7 @@
       "ui": "CARD",
       "hiddenInPdf": true,
       "cardHeadline": {
-        "de": "Bericht als E-Mail senden/gesendet"
+        "de": "Servicebericht als E-Mail senden/gesendet"
       },
       "children": {
         "send": {
@@ -476,8 +681,8 @@
             "de": "SENDEN"
           },
           "prefillConfig": {
-            "subject": "FESSMANN",
-            "content": "Sehr geehrte Damen und Herren,\n\nanbei erhalten sie dan letzten Servicebericht.",
+            "subject": "Servicebericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
             "to": {
               "currentUser": false
             },
@@ -485,7 +690,7 @@
               "currentUser": false
             },
             "bcc": {
-              "currentUser": false
+              "currentUser": true
             }
           }
         }
