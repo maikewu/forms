@@ -1,0 +1,498 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Service Report",
+      "de": "Servicebericht"
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer" 
+          },
+          "messages": {
+            "onChange":[
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customeraddress"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }    
+        },
+        "customeraddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Kundenadresse",
+              "en": "Customer Address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "5-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "6-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "text_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Auftr. Nr.",
+              "en": "Order No."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hideInPdfIfEmpty": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+              "de": "WK Nr. & Typ",
+              "en": "Serial No. & Type"
+          }
+        },
+        "text_3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Anwesender Kundenkontakt",
+              "en": "Present Customer Contact"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "userselect_1": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+              "de": "Anwesender Hans Weber Monteur",
+              "en": "Present Hans Weber Engineer"
+              },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customeraddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+          "actions": [
+            {
+            "name": "PATCH_DATA",
+            "_dynamicData": {
+              "input": {
+                "_field": "ARGS",
+                "_propertyName": "asset",
+                "_functionName": "GET_PRODUCT"
+              },
+              "output": {
+                "_field": "asset",
+                "_propertyName": "product"
+              }
+            }
+            }
+          ]
+          }
+        ]
+      }
+    },
+    "2-report": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Bericht",
+        "en": "Report"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "subject": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+                "de": "Betreff",
+                "en": "Subject"
+            },
+            "required": false,
+            "width": 1,
+            "hiddenInPdf": false,
+            "hideInPdfIfEmpty": true,
+            "disabled": false
+          },
+          "report": {
+            "fieldType": "REMBERG_RICH_TEXTAREA",
+            "label": {
+              "de": "Beschreibung",
+              "en": "Description"
+            },
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
+            "required": false,
+            "width": 0.5
+        },        
+          "documents": {
+            "width": 1,
+            "fieldType": "REMBERG_FILE_UPLOAD",
+            "required": false,
+            "label": {
+               "de": "Bilder / Anhänge",
+               "en": "Images / Attachments"
+            }
+          }
+      }
+    },
+    "5-signature_technician": {
+      "width": 0.5,
+      "unbreakable": true,
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Hans Weber",
+        "de": "Unterschrift Hans Weber"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Hans Weber",
+            "en": "Hans Weber"
+          },
+          "required": false,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "6-signature_customer": {
+      "isForm": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "width": 0.5,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": false,
+          "autofillCurrentUser": false
+        }
+      }
+    },
+    "7-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send filled Service Report",
+        "de": "Ausgefüllter Servicebericht absenden/gesendet"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "prefillConfig": {
+            "subject": "Servicebericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false
+        }
+      }
+    },
+    "8_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "commentAddendum": {
+            "fieldType": "REMBERG_RICH_TEXTAREA",
+            "label": {
+              "de": "Interne Bemerkungen, Hinweise und To-Dos",
+              "en": "Internal comments, notes and to-dos"
+            },
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hideInPdfIfEmpty": false,
+            "hiddenInPdf": false,
+            "required": false,
+            "width": 1.0
+        }
+      }
+    },
+    "9-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send completed service report with internal addendum",
+        "de": "Ausgefüllter Servicebericht mit internem Nachtrag absenden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Servicebericht - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

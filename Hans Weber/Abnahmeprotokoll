@@ -1,0 +1,492 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Acceptance Test for Machine / Line",
+      "de": "Abnahmeprotokoll für Maschine / Anlage"
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer" 
+          },
+          "messages": {
+            "onChange":[
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customeraddress"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }    
+        },
+        "customeraddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Kundenadresse",
+              "en": "Customer Address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "5-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "6-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hideInPdfIfEmpty": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+              "de": "Maschine / Anlage",
+              "en": "Machine / Line"
+          }
+        },
+        "text_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Auftr. Nr.",
+              "en": "Order No."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customeraddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+          "actions": [
+            {
+            "name": "PATCH_DATA",
+            "_dynamicData": {
+              "input": {
+                "_field": "ARGS",
+                "_propertyName": "asset",
+                "_functionName": "GET_PRODUCT"
+              },
+              "output": {
+                "_field": "asset",
+                "_propertyName": "product"
+              }
+            }
+            }
+          ]
+          }
+        ]
+      }
+    },
+    "2-report": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Abnahmeprotokoll",
+        "en": "Acceptance Test"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": false,
+      "children": {
+        "headline_1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.3,
+          "text": {
+            "de": "Abnahme",
+            "en": "Acceptance"
+          }
+        },
+        "checkbox_1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "beim Kunden",
+            "en": "at Customer"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "checkbox_2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "bei Fa. Weber",
+            "en": "at Weber"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "spacer_1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "headline_2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.3,
+          "text": {
+            "de": "In Ordnung",
+            "en": "O.K."
+          }
+        },
+          "checkbox_3": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "Ja",
+              "en": "Yes"
+            },
+            "required": false,
+            "width": 0.3,
+            "hiddenInPdf": false,
+            "checked": false
+          },
+          "checkbox_4": {
+            "fieldType": "CHECKBOX",
+              "label": {
+                "de": "Nein",
+                "en": "No"
+              },
+              "required": false,
+              "width": 0.3,
+              "hiddenInPdf": false,
+              "checked": false
+          },
+          "spacer_2": {
+            "fieldType": "H3",
+            "hiddenInPdf": false,
+            "width": 1,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          },
+            "helptext_1": {
+              "fieldType": "HELP_TEXT",
+              "hiddenInPdf": false,
+              "width": 1,
+              "text": {
+                "de": "Der Probelauf der Maschine / Anlage wurde gemäß den Festlegungen des Vertrages erfolgreich durchgeführt.",
+                "en": "The test of machine / line was successfully done acc. to contract rules."
+              }
+            },
+              "remarks": {
+                "fieldType": "REMBERG_RICH_TEXTAREA",
+                "label": {
+                  "de": "Bemerkungen",
+                  "en": "Remarks"
+                },
+                "placeholder": {
+                  "de": "Hier tippen...",
+                  "en": "Type here..."
+                },
+                "hiddenInPdf": false,
+                "required": false,
+                "width": 1
+              },
+              "helptext_2": {
+                "fieldType": "HELP_TEXT",
+                "hiddenInPdf": true,
+                "width": 1,
+                "text": {
+                  "de": "Hinweis: Soweit die Anlage nicht abgenommen werden konnte, neuen Abnahmetermin festlegen!",
+                  "en": "Remark: If the line could not be accepted please fix a new date of acceptance!"
+                }
+              },
+              "spacer_3": {
+                "fieldType": "H3",
+                "hiddenInPdf": false,
+                "width": 1,
+                "text": {
+                  "de": " ",
+                  "en": " "
+                }
+              }
+            }
+          },
+    "5-signature_technician": {
+      "width": 0.5,
+      "unbreakable": true,
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Hans Weber",
+        "de": "Unterschrift Hans Weber"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Hans Weber",
+            "en": "Hans Weber"
+          },
+          "required": false,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "6-signature_customer": {
+      "isForm": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Die Anlage gilt aufgrund nachstehender Unterschrift als abgenommen.",
+            "en": "Validity of acceptance acc. to mentioned below signature."
+          }
+        },
+        "signature2": {
+          "width": 0.5,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": false,
+          "autofillCurrentUser": false
+        }
+      }
+    },
+    "7-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send filled Acceptance Test",
+        "de": "Ausgefülltes Abnahmeprotokoll absenden/gesendet"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "prefillConfig": {
+            "subject": "Abnahmeprotokoll",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
