@@ -1,0 +1,3083 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Service-Checklist-Extruder",
+      "de": "Service-Checkliste-Extruder"
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer" 
+          },
+          "messages": {
+            "onChange":[
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customeraddress"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }    
+        },
+        "customeraddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Kundenadresse",
+              "en": "Customer Address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "5-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "6-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "text_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Auftr. Nr.",
+              "en": "Order No."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hideInPdfIfEmpty": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+              "de": "WK Nr.",
+              "en": "Serial No."
+          }
+        },
+        "text_3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Baujahr",
+              "en": "Year of Manuf."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "text_4": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Betriebsstunden",
+              "en": "Operating Hour"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customeraddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+          "actions": [
+            {
+            "name": "PATCH_DATA",
+            "_dynamicData": {
+              "input": {
+                "_field": "ARGS",
+                "_propertyName": "asset",
+                "_functionName": "GET_PRODUCT"
+              },
+              "output": {
+                "_field": "asset",
+                "_propertyName": "product"
+              }
+            }
+            }
+          ]
+          }
+        ]
+      }
+    },
+    "2-check": {
+      "isForm": true,
+      "width": 1,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Weber-Service-Check",
+        "en": "Weber-Service-Check"
+      },
+      "children": {
+        "headline1": {
+          "fieldType": "H1",
+          "text": {
+            "de": "Antriebseinheit",
+            "en": "Motor"
+          },
+          "width": 1
+        },
+        "headline1_1": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Antriebsmotor",
+            "en": "Drive motor"
+          },
+          "width": 1
+        },
+        "subline1": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Verschmutzungen",
+            "en": "Pollution"
+          },
+          "width": 0.3
+        },
+        "iBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "subline2": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Filtermatten Motorlüfter",
+            "en": "Filter mats motor fan"
+          },
+          "width": 0.3
+        },
+        "iBox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "subline3": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Motorlüfter (Funktion)",
+            "en": "Motor fan (function)"
+          },
+          "width": 0.3
+        },
+        "iBox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "subline5": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Kohlebürsten Gleichstromantrieb",
+            "en": "Carbon brushes DC-drive"
+          },
+          "width": 0.3
+        },
+        "iBox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note5": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "headline6": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Wärmeaustauscherstation (wassergekühlter Antrieb)",
+            "en": "Heat exchanger station (water-cooled drive)"
+          },
+          "width": 1
+        },
+        "subline6": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Dichtheit",
+            "en": "Tightness"
+          },
+          "width": 0.3
+        },
+        "iBox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note6": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "subline7": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Druck",
+            "en": "Pressure"
+          },
+          "width": 0.3
+        },
+        "iBox7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note7": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "headline8": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Wellenkupplung",
+            "en": "Shaft coupling"
+          },
+          "width": 1
+        },
+        "subline8": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Verschleiß Wellenreifen",
+            "en": "Wear shaft tire"
+          },
+          "width": 0.3
+        },
+        "iBox8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note8": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "subline9": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Korrekter Sitz Wellenreifen",
+            "en": "Correct fit shaft tire"
+          },
+          "width": 0.3
+        },
+        "iBox9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note9": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "headline10": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Keilriemen",
+            "en": "V-belt"
+          },
+          "width": 1
+        },
+        "subline10": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Keilriemenspannung",
+            "en": "V-belt tension"
+          },
+          "width": 0.3
+        },
+        "iBox10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note10": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "subline11": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Richtige Riemen montiert",
+            "en": "Correct belts mounted"
+          },
+          "width": 0.3
+        },
+        "iBox11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note11": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "subline12": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Verschleiß",
+            "en": "Wear"
+          },
+          "width": 0.3
+        },
+        "iBox12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O.",
+            "en": "Ok"
+          },
+          "width": 0.1
+        },
+        "dBox12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "N.i.O.",
+            "en": "Not Ok"
+          },
+          "width": 0.1
+        },
+        "note12": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkung",
+            "en": "Notes"
+          },
+          "width": 0.5
+        },
+        "spacer_1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+          "headline1_": {
+            "fieldType": "H1",
+            "text": {
+              "de": "Getriebe",
+              "en": "Gearbox"
+            },
+            "width": 1
+          },
+          "headline12": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Zahnradgetriebe",
+              "en": "Gearbox"
+            },
+            "width": 1
+          },
+          "subline12_": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Dichtheit",
+              "en": "Tightness"
+            },
+            "width": 0.3
+          },
+          "iBox12_": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox12_": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note12_": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline13": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Wasseranschlüsse / Verschlauchung",
+              "en": "Water connections / tubing"
+            },
+            "width": 0.3
+          },
+          "iBox13": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox13": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note13": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "headline14": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Verteilgetriebe",
+              "en": "Distribution gearbox"
+            },
+            "width": 1
+          },
+          "subline14": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Dichtheit",
+              "en": "Tightness"
+            },
+            "width": 0.3
+          },
+          "iBox14": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox14": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note14": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline15": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Wasseranschluss / Verschlauchung",
+              "en": "Water Connection / Tubing"
+            },
+            "width": 0.3
+          },
+          "iBox15": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox15": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note15": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "headline16": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Ölstand",
+              "en": "Oil level"
+            },
+            "width": 1
+          },
+          "subline16": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Ölstand kontrolliert",
+              "en": "Oil level checked"
+            },
+            "width": 0.3
+          },
+          "iBox16": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox16": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note16": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "headline17": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Aktive Ölkühlung Getriebe",
+              "en": "Active oil cooling gearbox"
+            },
+            "width": 1
+          },
+          "subline17": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Grenzwert in Steuerung",
+              "en": "Limit value in control unit"
+            },
+            "width": 0.3
+          },
+          "iBox17": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox17": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note17": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline18": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Funktion Ölkühlung (schaltet bei Grenzwert)",
+              "en": "Fuction oil cooling (switches at limit value)"
+            },
+            "width": 0.3
+          },
+          "iBox18": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox18": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note18": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline19": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Thermoelement (Funktion)",
+              "en": "Thermal element (function)"
+            },
+            "width": 0.3
+          },
+          "iBox19": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox19": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note19": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "headline20": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Kühlspirale",
+              "en": "Cooling coil"
+            },
+            "width": 1
+          },
+          "subline20": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Dichtheit",
+              "en": "Tightness"
+            },
+            "width": 0.3
+          },
+          "iBox20": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox20": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note20": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "headline21": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Drehmoment",
+              "en": "Torque"
+            },
+            "width": 1
+          },
+          "subline21": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Drehmomentsicherung (falls vorhanden)",
+              "en": "Torque Lock (if present)"
+            },
+            "width": 0.3
+          },
+          "iBox21": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox21": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note21": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "spacer22": {
+          "fieldType": "H3",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 1
+        },
+          "headline22": {
+            "fieldType": "H1",
+            "text": {
+              "de": "Verfahrenseinheit",
+              "en": "Process unit"
+            },
+            "width": 1
+          },
+          "subline22": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Schnecken optische Kontrolle",
+              "en": "Screws optical control"
+            },
+            "width": 0.3
+          },
+          "iBox22": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox22": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note22": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline23": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Zylinder optische Kontrolle",
+              "en": "Cylinder optical control"
+            },
+            "width": 0.3
+          },
+          "iBox23": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox23": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note23": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline24": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Schneckenspieleinstellung",
+              "en": "Screw play setting"
+            },
+            "width": 0.3
+          },
+          "iBox24": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox24": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note24": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "headline25": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Wasserversorgung der Maschine",
+              "en": "Water supply to the machine"
+            },
+            "width": 1
+          },
+          "subline25": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Dichtheit",
+              "en": "Tightness"
+            },
+            "width": 0.3
+          },
+          "iBox25": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox25": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note25": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline26": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Wasseranschlüsse",
+              "en": "Water connections"
+            },
+            "width": 0.3
+          },
+          "iBox26": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox26": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note26": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline27": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Absperrhähne",
+              "en": "Stopcocks"
+            },
+            "width": 0.3
+          },
+          "iBox27": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox27": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note27": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "headline28": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Heizelemente",
+              "en": "Heating element"
+            },
+            "width": 1
+          },
+          "subline28": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Funktion Heizelemente",
+              "en": "Heating elements function"
+            },
+            "width": 0.3
+          },
+          "iBox28": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox28": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note28": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline29": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Optische Kontrolle der Kabel",
+              "en": "Optical control of the cables"
+            },
+            "width": 0.3
+          },
+          "iBox29": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox29": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note29": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline30": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Fester Sitz der Heizelemente (ggf. nachziehen)",
+              "en": "Tight fit of the heating elements (retighten if necessary)"
+            },
+            "width": 0.3
+          },
+          "iBox30": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox30": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note30": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "headline31": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Kühlungen",
+              "en": "Coolings"
+            },
+            "width": 1 
+          },
+          "subline31": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Funktion Kühlgebläse",
+              "en": "Cooling fan function"
+            },
+            "width": 0.3
+          },
+          "iBox31": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox31": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note31": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline32": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Optische Kontrolle der Kabel",
+              "en": "Optical control of the cables"
+            },
+            "width": 0.3
+          },
+          "iBox32": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox32": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note32": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline33": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Fester Sitz der Heizelemente (ggf. nachziehen)",
+              "en": "Tight fit of the heating elements (retighten if necessary)"
+            },
+            "width": 0.3
+          },
+          "iBox33": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox33": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note33": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "header34": {
+            "fieldType": "H3",
+            "hiddenInPdf": false,
+            "width": 1,
+            "text": {
+              "de": "Thermoelemente",
+              "en": "Thermocouples"
+            }
+          },
+          "subline34": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Optische Kontrolle der Kabel",
+              "en": "Optical control of the cables"
+            },
+            "width": 0.3
+          },
+          "iBox34": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox34": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note34": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline35": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Korrekter Sitz der Thermoelemente",
+              "en": "Correct fit of thermocouples"
+            },
+            "width": 0.3
+          },
+          "iBox35": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox35": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note35": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline36": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Zuordnung der Thermoelemente zur Steuerung",
+              "en": "Assignment of the thermocouples to the control"
+            },
+            "width": 0.3
+          },
+          "iBox36": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox36": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note36": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "header37": {
+            "fieldType": "H3",
+            "hiddenInPdf": false,
+            "width": 1,
+            "text": {
+              "de": "Trichter / Einfüllzone",
+              "en": "Hopper / Filling zone"
+            }
+          },
+          "subline37": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Trichterfüllstandsensor",
+              "en": "Hopper level sensor"
+            },
+            "width": 0.3
+          },
+          "iBox37": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox37": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note37": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline38": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Einlaufkühlung",
+              "en": "Inlet Cooling"
+            },
+            "width": 0.3
+          },
+          "iBox38": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox38": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note38": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline39": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Handradverstellung",
+              "en": "Handwheel adjustment"
+            },
+            "width": 0.3
+          },
+          "iBox39": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox39": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note39": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "header40": {
+            "fieldType": "H3",
+            "hiddenInPdf": false,
+            "width": 1,
+            "text": {
+              "de": "Nutbuchsenkühlung",
+              "en": "Grooved bush cooling"
+            }
+          },
+          "subline40": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Durchfluss",
+              "en": "Flow rate"
+            },
+            "width": 0.3
+          },
+          "iBox40": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox40": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note40": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline41": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Dichtheit",
+              "en": "Tightness"
+            },
+            "width": 0.3
+          },
+          "iBox41": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox41": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note41": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "header41": {
+            "fieldType": "H3",
+            "hiddenInPdf": false,
+            "width": 1,
+            "text": {
+              "de": "Entgasungszone prüfen",
+              "en": "Check degassing zone"
+            }
+          },
+          "subline42": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Dichtungen",
+              "en": "Seals"
+            },
+            "width": 0.3
+          },
+          "iBox42": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox42": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note42": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline43": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Verschlauchung",
+              "en": "Tubing"
+            },
+            "width": 0.3
+          },
+          "iBox43": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox43": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note43": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline44": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Verschmutzung",
+              "en": "Pollution"
+            },
+            "width": 0.3
+          },
+          "iBox44": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox44": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note44": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "header45": {
+            "fieldType": "H3",
+            "hiddenInPdf": false,
+            "width": 1,
+            "text": {
+              "de": "Vakuumanlage prüfen",
+              "en": "Check vacuum system"
+            }
+          },
+          "subline45": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Dichtungen",
+              "en": "Seals"
+            },
+            "width": 1
+          },
+          "iBox45_1": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.25
+          },
+          "iBox45_2": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.25
+          },
+          "dBox45_1": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.25
+          },
+          "dBox45_2": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.25
+          },
+          "note45": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 1
+          },
+          "subline46": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Materialabscheider",
+              "en": "Material separator"
+            },
+            "width": 1
+          },
+          "iBox46_1": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.25
+          },
+          "iBox46_2": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.25
+          },
+          "dBox46_1": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.25
+          },
+          "dBox46_2": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.25
+          },
+          "note46": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 1
+          },
+          "subline47": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Verschlauchung",
+              "en": "Tubing"
+            },
+            "width": 0.3
+          },
+          "iBox47": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox47": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note47": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline48": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Vakuumpumpe",
+              "en": "Vacuum pump"
+            },
+            "width": 0.3
+          },
+          "iBox48": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox48": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note48": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline49": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Magnetventile Wasser / Luft",
+              "en": "Solenoid valves water / air"
+            },
+            "width": 0.3
+          },
+          "iBox49": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox49": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note49": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline50": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Vakuumsensor / Anschlussleitung",
+              "en": "Vacuum sensor / connection cable"
+            },
+            "width": 0.3
+          },
+          "iBox50": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox50": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note50": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "header51": {
+            "fieldType": "H3",
+            "hiddenInPdf": false,
+            "width": 1,
+            "text": {
+              "de": "Werkzeuganschluss",
+              "en": "Tool connection"
+            }
+          },
+          "subline51": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Dichheit / Beschädigung Dichtflächen",
+              "en": "Tightness / damage to sealing surfaces"
+            },
+            "width": 0.3
+          },
+          "iBox51": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox51": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note51": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline52": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Klemmring",
+              "en": "Clamping ring"
+            },
+            "width": 0.3
+          },
+          "iBox52": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox52": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note52": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline53": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Sicherungsschrauben",
+              "en": "Locking screws"
+            },
+            "width": 0.3
+          },
+          "iBox53": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox53": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note53": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "spacer54": {
+            "fieldType": "H3",
+            "label": {
+              "de": " ",
+              "en": " "
+            },
+            "width": 1
+          },
+          "headline55": {
+            "fieldType": "H1",
+            "text": {
+              "de": "Elektrik",
+              "en": "Electrics"
+            },
+            "width": 1
+          },
+          "headline56": {
+            "fieldType": "H3",
+            "text": {
+              "de": "Schaltschrank überprüfen",
+              "en": "Check control cabinet"
+            },
+            "width": 1
+          },
+          "subline56": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Schaltschranklüfter / Wärmetauscher",
+              "en": "Control cabinet fan / heat exchanger"
+            },
+            "width": 0.3
+          },
+          "iBox56": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox56": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note56": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline57": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Leuchtmittel",
+              "en": "Illuminant"
+            },
+            "width": 0.3
+          },
+          "iBox57": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox57": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note57": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline58": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Sicherung",
+              "en": "Fuse"
+            },
+            "width": 0.3
+          },
+          "iBox58": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox58": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note58": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline59": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Motorschutzschalter",
+              "en": "Motor protection switch"
+            },
+            "width": 0.3
+          },
+          "iBox59": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox59": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note59": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline60": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Stecker und Steckdosen",
+              "en": "Plugs and sockets"
+            },
+            "width": 0.3
+          },
+          "iBox60": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox60": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note60": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline61": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Servicesteckdose",
+              "en": "Service socket"
+            },
+            "width": 0.3
+          },
+          "iBox61": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox61": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note61": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline62": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Notausfunktion",
+              "en": "Emergency stop function"
+            },
+            "width": 0.3
+          },
+          "iBox62": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox62": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note62": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline63": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Panel Touch-Funktion",
+              "en": "Panel touch function"
+            },
+            "width": 0.3
+          },
+          "iBox63": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox63": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note63": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline64": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Maschine auf relevante Fehlermeldungen überprüfen",
+              "en": "Check machine for relevant error messages"
+            },
+            "width": 0.3
+          },
+          "iBox64": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox64": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note64": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline65": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Massedruck- / Massetemperaturmessanlage",
+              "en": "Mass pressure / mass temperature measuring system"
+            },
+            "width": 0.3
+          },
+          "iBox65": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox65": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note65": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "spacer66": {
+            "fieldType": "H3",
+            "label": {
+              "de": " ",
+              "en": " "
+            },
+            "width": 1
+          },
+          "headline66": {
+            "fieldType": "H1",
+            "text": {
+              "de": "Ölprobe",
+              "en": "Oil sample"
+            },
+            "width": 1
+          },
+          "subline66": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Ölprobe entnommen",
+              "en": "Oil sample taken"
+            },
+            "width": 0.3
+          },
+          "iBox66": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox66": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note66": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "spacer67": {
+            "fieldType": "H3",
+            "label": {
+              "de": " ",
+              "en": " "
+            },
+            "width": 1
+          },
+          "headline67": {
+            "fieldType": "H1",
+            "text": {
+              "de": "Zusatzeinrichtungen",
+              "en": "Additional equipment"
+            },
+            "width": 1
+          },
+          "subline67": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": " ",
+              "en": " "
+            },
+            "width": 0.3
+          },
+          "iBox67": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox67": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note67": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline68": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": " ",
+              "en": " "
+            },
+            "width": 0.3
+          },
+          "iBox68": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox68": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note68": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline69": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": " ",
+              "en": " "
+            },
+            "width": 0.3
+          },
+          "iBox69": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox69": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note69": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "spacer70": {
+            "fieldType": "H3",
+            "label": {
+              "de": " ",
+              "en": " "
+            },
+            "width": 1
+          },
+          "headline70": {
+            "fieldType": "H1",
+            "text": {
+              "de": "Seriennummern",
+              "en": "Serial numbers"
+            },
+            "width": 1
+          },
+          "subline70": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "PC",
+              "en": "PC"
+            },
+            "width": 0.3
+          },
+          "iBox70": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox70": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note70": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline71": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Panel",
+              "en": "Panel"
+            },
+            "width": 0.3
+          },
+          "iBox71": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox71": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note71": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline72": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Frequenzumrichter",
+              "en": "Frequency converter"
+            },
+            "width": 0.3
+          },
+          "iBox72": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox72": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note72": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline73": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Stromrichter",
+              "en": "Power converter"
+            },
+            "width": 0.3
+          },
+          "iBox73": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox73": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note73": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline74": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Hauptantrieb",
+              "en": "Main drive"
+            },
+            "width": 0.3
+          },
+          "iBox74": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox74": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note74": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline75": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Schneckennummer",
+              "en": "Screw number"
+            },
+            "width": 0.3
+          },
+          "iBox75": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox75": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note75": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          },
+          "subline76": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Zylindernummer",
+              "en": "Cylinder number"
+            },
+            "width": 0.3
+          },
+          "iBox76": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "i.O.",
+              "en": "Ok"
+            },
+            "width": 0.1
+          },
+          "dBox76": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "N.i.O.",
+              "en": "Not Ok"
+            },
+            "width": 0.1
+          },
+          "note76": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Anmerkung",
+              "en": "Notes"
+            },
+            "width": 0.5
+          }
+        }
+    },
+    "3-remarks": {
+      "width": 1,
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Notes",
+        "de": "Anmerkungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "remarks": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": " ",
+            "en": " "
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "5-signature_technician": {
+      "width": 0.5,
+      "unbreakable": true,
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service Technician",
+        "de": "Unterschrift Servicetechniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service Technician"
+          },
+          "required": false,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "6-signature_customer": {
+      "isForm": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service / Process engineering",
+        "de": "Unterschrift Service / Verfahrenstechnik"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "width": 0.5,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Service / Verfahrenstechnik",
+            "en": "Service / Process engineering"
+          },
+          "required": false,
+          "autofillCurrentUser": false
+        }
+      }
+    },
+    "7-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send filled Service-Checklist-Extruder",
+        "de": "Ausgefüllte Service-Checkliste-Extruder absenden/gesendet"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "prefillConfig": {
+            "subject": "Service-Checkliste-Extruder",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
