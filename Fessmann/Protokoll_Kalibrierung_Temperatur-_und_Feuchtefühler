@@ -1,0 +1,634 @@
+{
+  "general": {
+    "name": {
+      "de": "Protokoll zur Kalibrierung von Temperatur- und Feuchtefühlern"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "de": "Unterschrift notwendig"
+      },
+      "popupDescription": {
+        "de": "Bitte unterschreiben Sie das Protokoll."
+      }
+    }
+  },
+  "formStructure": {
+    "01-generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Allgemeine Informationen"
+      },
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "width": 1,
+          "label": {
+            "de": "Kundenname"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01-generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "03-testSteps",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset_2",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "width": 1,
+          "label": {
+            "de": "Standort"
+          },
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "A1-signatureTechnican",
+                "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": "address",
+                      "_propertyName": "city"
+                    },
+                    "output": {
+                      "_formArray": "signature1",
+                      "_formArrayIndex": 0,
+                      "_propertyName": "location"
+                    }
+                  }
+                }
+                ]
+              }
+            ]
+          }
+        },
+        "serviceTechnicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "width": 1,
+          "label": {
+            "de": "Monteur / Fachberater"
+          },
+          "autofillCurrentUser": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02-testSteps": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Kalibrierung von Temperatur- und Feuchtefühlern"
+      },
+      "children": {
+        "subline1": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Zur Kalibrierung wurde ein Referenzthermometer verwendet von:"
+          },
+          "width": 1
+        },
+        "iBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Fessmann"
+          },
+          "width": 0.5
+        },
+        "dBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kunde"
+          },
+          "width": 0.5
+        },
+        "note2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Nr. Testo-Kalibrier-Zertifikat des Referenzthermometers"
+          },
+          "width": 1
+        },
+        "note3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Typenbezeichnung Testo- des Referenzthermometers"
+          },
+          "width": 1
+        },
+        "note4": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gerätetyp des Kundenthermometers"
+          },
+          "width": 1
+        },
+        "note5": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Serien-Nr. des Kundenthermometers"
+          },
+          "width": 1
+        },
+        "note6": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Prüf-Nr. des Kundenthermometers"
+          },
+          "width": 1
+        },        
+        "note7": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Prüf-Datum des Kundenthermometers"
+          },
+          "width": 1
+        }
+      }
+    },    
+    "03-testSteps": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": " "
+      },
+      "children": {
+        "asset_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anlagen-Nr. Kunde"
+          },
+          "width": 0.3
+        },
+        "asset_2": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.3,
+          "label": {
+            "de": "Serien-Nr. Fessmann"
+          }
+        },
+        "asset_3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anlagensteuerung"
+          },
+          "width": 0.3
+        }, 
+        "headline1": {
+          "fieldType": "H3",
+          "text": {
+            "de": "1. Kammertemperaturfühler"
+          },
+          "width": 1
+        },
+        "subline1": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Abgleichtemperatur [°C]"
+          },
+          "width": 0.3
+        },
+        "note1_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "kalt"
+          },
+          "width": 0.3
+        },
+        "note1_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "warm"
+          },
+          "width": 0.3
+        },
+        "subline2": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Temperaturdifferenz [°C]"
+          },
+          "width": 0.3
+        },
+        "note2_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "kalt"
+          },
+          "width": 0.3
+        },
+        "note2_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "warm"
+          },
+          "width": 0.3
+        },
+        "subline3": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Temperaturen abgeglichen"
+          },
+          "width": 0.3
+        },
+        "iBox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja"
+          },
+          "width": 0.3
+        },
+        "dBox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein"
+          },
+          "width": 0.3
+        },
+        "headline2": {
+          "fieldType": "H3",
+          "text": {
+            "de": "2. Kerntemperaturfühler"
+          },
+          "width": 1
+        },
+        "subline4": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Abgleichtemperatur [°C]"
+          },
+          "width": 0.3
+        },
+        "note4_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "kalt"
+          },
+          "width": 0.3
+        },
+        "note4_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "warm"
+          },
+          "width": 0.3
+        },
+        "subline5": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Temperaturdifferenz [°C]"
+          },
+          "width": 0.3
+        },
+        "note5_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "kalt"
+          },
+          "width": 0.3
+        },
+        "note5_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "warm"
+          },
+          "width": 0.3
+        },
+        "subline6": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Temperaturen abgeglichen"
+          },
+          "width": 0.3
+        },
+        "iBox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja"
+          },
+          "width": 0.3
+        },
+        "dBox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein"
+          },
+          "width": 0.3
+        },
+        "headline3": {
+          "fieldType": "H3",
+          "text": {
+            "de": "3. Feuchtefühler"
+          },
+          "width": 1
+        },
+        "subline7": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Abgleichtemperatur [°C]"
+          },
+          "width": 0.3
+        },
+        "note7_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "kalt"
+          },
+          "width": 0.3
+        },
+        "note7_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "warm"
+          },
+          "width": 0.3
+        },
+        "subline8": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Abgleichtemperatur [°C]"
+          },
+          "width": 0.3
+        },
+        "note8_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "kalt"
+          },
+          "width": 0.3
+        },
+        "note8_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "warm"
+          },
+          "width": 0.3
+        },
+        "subline9": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Temperaturdifferenz [°C]"
+          },
+          "width": 0.3
+        },
+        "note9_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "kalt"
+          },
+          "width": 0.3
+        },
+        "note9_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "warm"
+          },
+          "width": 0.3
+        },
+        "subline10": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Temperaturen abgeglichen"
+          },
+          "width": 0.3
+        },
+        "iBox10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja"
+          },
+          "width": 0.3
+        },
+        "dBox10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein"
+          },
+          "width": 0.3
+        },
+        "spacer": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },    
+        "subline11": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Die Temperaturfühler wurden im Wasserbad mit kalibriertem Referenzthermometer abgeglichen."
+          },
+          "width": 1
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset_2",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+              "actions": [
+              {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                  "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "customer"
+                  },
+                  "output": {
+                      "_field": "asset_2",
+                      "_propertyName": "customerFilter"
+                  }
+                  }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "04-remarks": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Bemerkungen"
+      },
+      "children": {
+        "notes": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": " "
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "A1-signatureTechnican": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 1,
+      "unbreakable": true,
+      "cardHeadline": {
+        "de": "Unterschrift Monteur / Fachberater"
+      },
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Unterschrift Monteur / Fachberater"
+          },
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "C3-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "de": "Protokoll als E-Mail senden/gesendet"
+      },
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "prefillConfig": {
+            "subject": "Protokoll zur Kalibrierung von Temperatur- und Feuchtefühlern",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
