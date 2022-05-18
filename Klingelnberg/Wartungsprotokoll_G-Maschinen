@@ -16,13 +16,12 @@
       },
       "stateIndicator": true,
       "hasNextStep": true,
-      "required": true,
       "children": {
         "asset": {
           "fieldType": "REMBERG_ASSET_SELECT",
           "label": {
             "de": "Maschine",
-            "en": "Select Asset"
+            "en": "Asset"
           },
           "required": true,
           "disableSelection": false,
@@ -41,51 +40,15 @@
                       "input": {
                         "_field": {
                           "_field": {
-                            "_field": {
-                              "_field": {
-                                "_field": {
-                                  "_field": "asset",
-                                  "_propertyName": "product"
-                                },
-                                "_functionName": "GET_PRODUCT"
-                              },
-                              "_propertyName": "customer"
-                            },
-                            "_functionName": "GET_ACCOUNT"
+                            "_field": "asset",
+                            "_propertyName": "product"
                           },
-                          "_propertyName": "company"
+                          "_functionName": "GET_PRODUCT"
                         },
-                        "_propertyName": "billingAddress"
+                        "_propertyName": "location"
                       },
                       "output": {
                         "_field": "customerDestination"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "to": "1-maschine",
-                "actions": [
-                  {
-                    "name": "PATCH_DATA",
-                    "_dynamicData": {
-                      "input": {
-                        "_field": {
-                          "_field": {
-                            "_field": {
-                              "_field": "asset",
-                              "_propertyName": "product"
-                            },
-                            "_functionName": "GET_PRODUCT"
-                          },
-                          "_propertyName": "customer"
-                        },
-                        "_functionName": "GET_ACCOUNT"
-                      },
-                      "output": {
-                        "_field": "contactPersons",
-                        "_propertyName": "account"
                       }
                     }
                   }
@@ -163,6 +126,58 @@
             "en": "Customer (Company)"
           },
           "required": true
+        },
+        "customerDestination": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Reiseziel- und Ort",
+            "en": "Destination and place"
+          },
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "11-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerDestination",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "11-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerDestination",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
         }
       },
       "messages": {
@@ -203,6 +218,25 @@
                   "output": {
                     "_field": "customer",
                     "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "customerDestination",
+                    "_propertyName": ""
                   }
                 }
               }
@@ -300,16 +334,19 @@
           ]
         },
         "sichtkontrolleNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "width": 1,
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "headlineSchmierungPneumatik": {
           "fieldType": "H3",
@@ -404,16 +441,19 @@
           ]
         },
         "schmieranlageNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "width": 1,
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine1": {
           "fieldType": "HELP_TEXT",
@@ -500,16 +540,19 @@
           ]
         },
         "oelwechselNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "width": 1,
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine2": {
           "fieldType": "HELP_TEXT",
@@ -596,16 +639,19 @@
           ]
         },
         "filterNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "width": 1,
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine3": {
           "fieldType": "HELP_TEXT",
@@ -692,16 +738,19 @@
           ]
         },
         "druckNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "width": 1,
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine4": {
           "fieldType": "HELP_TEXT",
@@ -788,16 +837,19 @@
           ]
         },
         "leitungenSchlaeucheNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "width": 1,
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine5": {
           "fieldType": "HELP_TEXT",
@@ -884,16 +936,19 @@
           ]
         },
         "notauskreisNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "width": 1,
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine7": {
           "fieldType": "HELP_TEXT",
@@ -980,16 +1035,19 @@
           ]
         },
         "quadringNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "width": 1,
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine12": {
           "fieldType": "HELP_TEXT",
@@ -1084,16 +1142,19 @@
             ]
           },
           "dichtfilterNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine59": {
               "fieldType": "HELP_TEXT",
@@ -1180,16 +1241,19 @@
             ]
           },
           "dirtyfilterNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine60": {
               "fieldType": "HELP_TEXT",
@@ -1276,16 +1340,19 @@
             ]
           },
           "durchflussNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine61": {
               "fieldType": "HELP_TEXT",
@@ -1372,16 +1439,19 @@
             ]
           },
           "leitungenNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine62": {
               "fieldType": "HELP_TEXT",
@@ -1468,16 +1538,19 @@
             ]
           },
           "schleifNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine70": {
               "fieldType": "HELP_TEXT",
@@ -1564,16 +1637,19 @@
             ]
           },
           "stromNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine71": {
               "fieldType": "HELP_TEXT",
@@ -1660,16 +1736,19 @@
             ]
           },
           "achsencNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine72": {
               "fieldType": "HELP_TEXT",
@@ -1756,16 +1835,19 @@
             ]
           },
           "liftNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine73": {
               "fieldType": "HELP_TEXT",
@@ -1868,16 +1950,19 @@
           ]
         },
         "oelnebelabsaugungsfilterNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
-          "width": 1,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine122": {
             "fieldType": "HELP_TEXT",
@@ -1964,16 +2049,19 @@
             ]
           },
           "drehzahlNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine123": {
             "fieldType": "HELP_TEXT",
@@ -2060,16 +2148,19 @@
             ]
           },
           "fehanzeigeNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine124": {
             "fieldType": "HELP_TEXT",
@@ -2156,16 +2247,19 @@
             ]
           },
           "zufuhrNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
-            "width": 1,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           }
       }
     },
@@ -2266,16 +2360,19 @@
           ]
         },
         "kugelrollspindelNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine13": {
           "fieldType": "HELP_TEXT",
@@ -2362,16 +2459,19 @@
           ]
         },
         "xachseNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine28": {
           "fieldType": "HELP_TEXT",
@@ -2458,16 +2558,19 @@
           ]
         },
         "linearPrNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine29": {
           "fieldType": "HELP_TEXT",
@@ -2554,16 +2657,19 @@
           ]
         },
         "testNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine30": {
           "fieldType": "HELP_TEXT",
@@ -2650,16 +2756,19 @@
           ]
         },
         "allaxesNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine31": {
           "fieldType": "HELP_TEXT",
@@ -2746,16 +2855,19 @@
           ]
         },
         "zahnriNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine125": {
             "fieldType": "HELP_TEXT",
@@ -2842,16 +2954,19 @@
             ]
           },
           "ycNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
-            "width": 1,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine126": {
             "fieldType": "HELP_TEXT",
@@ -2938,16 +3053,19 @@
             ]
           },
           "abspindelNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
-            "width": 1,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine80": {
             "fieldType": "HELP_TEXT",
@@ -3034,16 +3152,19 @@
             ]
           },
           "ycdampNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
-            "width": 1,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine81": {
             "fieldType": "HELP_TEXT",
@@ -3130,16 +3251,19 @@
             ]
           },
           "grindNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
-            "width": 1,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine82": {
             "fieldType": "HELP_TEXT",
@@ -3226,16 +3350,19 @@
             ]
           },
           "bachseNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
-            "width": 1,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine83": {
             "fieldType": "HELP_TEXT",
@@ -3330,16 +3457,19 @@
             ]
           },
           "xachsenbremseNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
             "width": 1,
-            "validators": []
+            "hideInPdfIfEmpty": true
           },
           "emptyLine63": {
             "fieldType": "HELP_TEXT",
@@ -3426,16 +3556,19 @@
             ]
           },
           "entgradeNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
             "width": 1,
-            "validators": []
+            "hideInPdfIfEmpty": true
           },
           "emptyLine64": {
             "fieldType": "HELP_TEXT",
@@ -3522,16 +3655,19 @@
             ]
           },
           "lueckensNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
             "width": 1,
-            "validators": []
+            "hideInPdfIfEmpty": true
           },
           "emptyLine65": {
             "fieldType": "HELP_TEXT",
@@ -3618,16 +3754,19 @@
             ]
           },
           "gapNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
             "width": 1,
-            "validators": []
+            "hideInPdfIfEmpty": true
           },
           "emptyLine84": {
             "fieldType": "HELP_TEXT",
@@ -3722,16 +3861,19 @@
           ]
         },
         "linearmNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         },
         "emptyLine47": {
           "fieldType": "HELP_TEXT",
@@ -3818,16 +3960,19 @@
           ]
         },
         "cbmNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine43": {
           "fieldType": "HELP_TEXT",
@@ -3914,16 +4059,19 @@
           ]
         },
         "lmNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         }
       }
     },
@@ -4024,16 +4172,19 @@
           ]
         },
         "safteyNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         },
         "emptyLine44": {
           "fieldType": "HELP_TEXT",
@@ -4120,16 +4271,19 @@
           ]
         },
         "safteyNotizen2": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         },
         "emptyLine45": {
           "fieldType": "HELP_TEXT",
@@ -4216,16 +4370,19 @@
           ]
         },
         "axeEndposNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine32": {
           "fieldType": "HELP_TEXT",
@@ -4312,16 +4469,19 @@
           ]
         },
         "axeEndposNotizen2": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "controlCabPruefung": {
           "fieldType": "H3",
@@ -4408,16 +4568,19 @@
           ]
         },
         "controlCoolNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         },
         "emptyLine17": {
           "fieldType": "HELP_TEXT",
@@ -4504,16 +4667,19 @@
           ]
         },
         "filterCoolNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine18": {
           "fieldType": "HELP_TEXT",
@@ -4600,16 +4766,19 @@
           ]
         },
         "bedienfeldNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine19": {
           "fieldType": "HELP_TEXT",
@@ -4696,16 +4865,19 @@
           ]
         },
         "visualCoolNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine20": {
           "fieldType": "HELP_TEXT",
@@ -4792,16 +4964,19 @@
           ]
         },
         "akkuNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
-          "width": 1,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine126": {
             "fieldType": "HELP_TEXT",
@@ -4888,16 +5063,19 @@
             ]
           },
           "complabNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
-            "width": 1,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine127": {
             "fieldType": "HELP_TEXT",
@@ -4984,16 +5162,19 @@
             ]
           },
           "algzuNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
-            "width": 1,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
           "emptyLine128": {
             "fieldType": "HELP_TEXT",
@@ -5080,16 +5261,19 @@
             ]
           },
           "imageNotizen": {
-            "fieldType": "INPUT_TEXT",
-            "hideInPdfIfEmpty": true,
+            "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
               "de": "Notizen",
               "en": "Notes"
             },
-            "readonly": false,
-            "width": 1,
+            "placeholder": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "hiddenInPdf": false,
             "required": false,
-            "validators": []
+            "width": 1,
+            "hideInPdfIfEmpty": true
           },
         "elUsagePruefung": {
           "fieldType": "H3",
@@ -5176,16 +5360,19 @@
           ]
         },
         "elAxesNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         },
         "emptyLine21": {
           "fieldType": "HELP_TEXT",
@@ -5280,16 +5467,19 @@
           ]
         },
         "currencyNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         },
         "emptyLine22": {
           "fieldType": "HELP_TEXT",
@@ -5376,16 +5566,19 @@
           ]
         },
         "recMarNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         },
         "emptyLine25": {
           "fieldType": "HELP_TEXT",
@@ -5472,16 +5665,19 @@
           ]
         },
         "saveNewestNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         },
         "emptyLine24": {
           "fieldType": "HELP_TEXT",
@@ -5568,16 +5764,19 @@
           ]
         },
         "wrongEntryNotizen": {
-          "fieldType": "INPUT_TEXT",
-          "hideInPdfIfEmpty": true,
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
           "width": 1,
-          "validators": []
+          "hideInPdfIfEmpty": true
         }
       }
     },
@@ -5815,14 +6014,19 @@
           }
         },
         "ersatzteileNotizen": {
-          "fieldType": "INPUT_TEXT",
+          "fieldType": "REMBERG_RICH_TEXTAREA",
           "label": {
             "de": "Notizen",
             "en": "Notes"
           },
-          "readonly": false,
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
           "required": false,
-          "validators": []
+          "width": 1,
+          "hideInPdfIfEmpty": true
         },
         "emptyLine50": {
           "fieldType": "HELP_TEXT",
@@ -5861,7 +6065,8 @@
             "de": "Klingelnberg-Mitarbeiter",
             "en": "Klingelnberg employee"
           },
-          "required": false
+          "required": false,
+          "autofillCurrentUser": true
         }
       }
     },
@@ -5971,8 +6176,6 @@
             "to": {
               "currentUser": false,
               "others": [
-                "tsm-h@klingelnberg.com",
-                "Neumaschinengeschaeft-TSM@klingelnberg.com",
                 "Aftersales-TSM@klingelnberg.com"
               ]
             },
