@@ -1,0 +1,852 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "UVV Offer",
+      "de": "UVV Angebot"
+    }
+  },
+  "formStructure": {
+    "00_generaloffer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Offer for UVV inspection on industrial trucks",
+        "de": "Angebot für UVV-Prüfung an Flurförderfahrzeugen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sehr geehrte Damen und Herren,\n\ngemäß DGUV Vorschrift 68 ist durch die Berufsgenossenschaft eine jährliche UVV-Prüfung an Flurförderfahrzeugen vorgeschrieben.\n\nWir erlauben uns, Sie an die Fälligkeit Ihrer Geräte zu erinnern. Gerne sind wir bereit, diese Prüfung vorzunehmen. Eine Auftragserteilung Ihrerseits würde uns sehr freuen.\n\nMit freundlichen Grüßen\nGenkinger GmbH",
+            "en": "Dear Sir or Madam,\nAccording to DGUV regulation 68, the Employer's Liability Insurance Association requires an annual UVV inspection of industrial trucks.\nWe take the liberty of reminding you that your equipment is due for inspection. We would be more than happy to carry out this inspection for you. We would be very pleased to receive an order from you.\nWith kind regards\nGenkinger GmbH"
+          }
+        }
+      }
+    },
+    "01_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Kundeninformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",  
+          "required": false,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "04_operationsite",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }  
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5,
+          "messages": {
+            "onChange": [
+              {
+                "to": "10-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "address",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "10-signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "messages": {
+          "onLoaded":[
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "customerAddress"
+                    },
+                    "output": {
+                      "_field": "customerLocation",
+                      "_propertyName": ""
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": {
+                        "_field": "ARGS",
+                        "_propertyName": "asset",
+                        "_functionName": "GET_PRODUCT"
+                      },
+                      "_propertyName": "customer"
+                    },
+                    "output": {
+                      "_field": "customer",
+                      "_propertyName": "customer"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "02_serviceinformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "1. Service Asset and Service Rate",
+        "de": "1. Service-Gegenstand und Servicerate"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "serviceproduct": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Servicegegenstand",
+            "en": "Service Asset"
+          },
+          "required": false,
+          "width": 1,
+          "options": [
+            {
+              "value": "Service_1",
+              "text": {
+                "de": "Servicepauschale inkl. Fahrtkostenpauschale(n) für die An- und Abreise",
+                "en": "Service flat rate incl. travel flat rate(s) for arrival and departure"
+              }
+            },
+            {
+              "value": "Service_2",
+              "text": {
+                "de": "Servicepauschale zzgl. Fahrtkostenpauschale (FKP) für die An- und Abreise sowie evtl. Übernachtung und Kleinteile",
+                "en": "Service flat rate plus travel flat rate (FKP) for arrival and departure as well as possible overnight stay and small parts"
+              }
+            }
+          ]
+        },
+        "service_repeater": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No service item information has been provided yet",
+            "de": "Es wurden noch keine Servicegegenstandsangaben gemacht."
+          },
+          "disableTabularView": true,
+          "children": {
+            "serviceitem": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Servicegegenstand und Anzahl",
+                "en": "Service item and quantity"
+              },
+              "required": true,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5
+            },
+            "asset1": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": true,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "label": {
+                "de": "Seriennummer",
+                "en": "Serial Number"
+              }
+            },
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "label": {
+                "de": "Seriennummer",
+                "en": "Serial Number"
+              }
+            },
+            "asset3": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "label": {
+                "de": "Seriennummer",
+                "en": "Serial Number"
+              }
+            },
+            "asset4": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "label": {
+                "de": "Seriennummer",
+                "en": "Serial Number"
+              }
+            },
+            "asset5": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "label": {
+                "de": "Seriennummer",
+                "en": "Serial Number"
+              }
+            },
+            "servicerate": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Servicerate (in € je Gerät, zzgl. MwSt)",
+                "en": "Service rate (in € per asset, plus VAT)"
+              },
+              "required": true,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5
+            },
+            "recommendedexecution": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Empfohlene Durchführung",
+                "en": "Recommended execution"
+              },
+              "required": false,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5
+            }
+          }
+        }
+      }
+    },
+    "03_contractperiod": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "2. Contract Period",
+        "de": "2. Vertragszeitraum"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {        
+        "contractStart": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Vertragsbeginn",
+            "en": "Contract Start"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "maintenanceDate": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Wartungstermin",
+            "en": "Maintenance Date"
+          },
+          "required": false
+        },
+        "duration": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Laufzeit",
+            "en": "Duration"
+          },
+          "required": false
+        },
+        "offervalidity": {
+            "fieldType": "REMBERG_DATE",
+            "label": {
+              "de": "Angebotsgültigkeit",
+              "en": "Offer Validity"
+            },
+            "readonly": false,
+            "required": false,
+            "validators": []
+        }
+      }
+    },
+    "04_operationsite": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "3. Operation Site",
+        "de": "3. Einsatzort"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange":[
+              {
+                "to": "04_operationsite",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "05_paymentterms": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "4. Terms of Payment",
+        "de": "4. Zahlungsbedingungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "zahlbed": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Die vereinbarte Wartungsrate zuzüglich gesetzlicher Mehrwertsteuer ist innerhalb 30 Tagen nach Rechnungserhalt netto zahlbar.",
+              "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+            },
+            "width": 1
+        }
+      }
+    },
+    "06_service_scope": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "5. Scope of Service",
+        "de": "5. Leistungsumfang"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "servicescope": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Das Angebot umfasst folgende Leistungen, die während der normalen Geschäftszeiten zwischen 7.00 – 16.00 Uhr (Montag – Freitag) zu erbringen sind:",
+            "en": "The offer includes the following services that are to be provided during normal business hours between 7:00 a.m. - 4:00 p.m. (Monday - Friday):"
+          },
+          "width": 1
+        },
+        "check0": {
+          "width": 1,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Alle gemäß Bedienungs- und Wartungsanleitung fälligen Wartungen alle 500 Betriebsstunden, jedoch mindestens einmal halbjährlich. Je nachdem, welches Ereignis zuerst eintritt.",
+            "en": "Cleaning of machine"
+          }
+        },
+        "check1_1": {
+          "width": 1,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Alle gemäß Bedienungs- und Wartungsanleitung fälligen Wartungen alle 1.000 Betriebsstunden, jedoch mindestens einmal jährlich. Je nachdem, welches Ereignis zuerst eintritt.",
+            "en": "Cleaning of machine"
+          }
+        },
+        "check1_2": {
+          "width": 1,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Alle gemäß Bedienungs- und Wartungsanleitung fälligen Wartungen alle 2.000 Betriebsstunden, jedoch mindestens einmal alle 2 Jahre. Je nachdem, welches Ereignis zuerst eintritt.",
+            "en": "Cleaning of machine"
+          }
+        },
+        "check2": {
+          "width": 1,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "UVV-Prüfung DGUV Vorschrift 68 (Gerätesicherheitsprüfung) einmal jährlich",
+            "en": "Cleaning of machine"
+          }
+        },
+        "check3": {
+          "width": 1,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Hydraulikölwechsel inklusive Hydrauliköl und Entsorgung Entsorgung Altöl",
+            "en": "Cleaning of machine"
+          }
+        },
+        "check4": {
+          "width": 1,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Hydraulikölwechsel zzgl. Hydrauliköl und Entsorgung Entsorgung Altöl",
+            "en": "Cleaning of machine"
+          }
+        },
+        "spacing": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "required": false,
+          "hiddenInPdf": false
+        },
+        "leistungsumfang1": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "NICHT enthalten sind:\n- Sämtliche Materialien und Hilfsmittel,\n- Beseitigung von Schäden, Defekten und Erbringung von Reparaturleistungen,\n- Serviceeinsätze außerhalb der normalen Geschäftszeiten und an Samstagen und Sonn- und Feiertagen",
+            "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+          },
+          "width": 1
+        },
+        "leistungsumfang2": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Für Serviceeinsätze, die aufgrund der letztgenannten Bedingungen erforderlich werden, werden die jeweils geltenden Verrechnungssätze für Zeit und Aufwand berechnet.",
+            "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+          },
+          "width": 1
+        },
+        "leistungsumfang3": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Sollten Reparaturen mit Materialien oder Hilfsmitteln notwendig sein können wir diese nach Ihrer Genehmigung sofort erledigen.",
+            "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+          },
+          "width": 1
+        },
+        "pricing": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Verrechnungssätze aktuell:",
+            "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved."
+          },
+          "width": 1
+        },
+        "workHour": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Arbeitsstunde (in €, zzgl. MwSt)",
+            "en": "Maintenance Lump-Sum"
+          },
+          "required": false
+        },
+        "travelHour": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Reisestunde (in €, zzgl. MwSt)",
+            "en": "Travel hour Lump-Sum"
+          },
+          "required": false
+        },
+        "smallParts": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Kleinteile (in €, zzgl. MwSt)",
+            "en": "Maintenance Lump-Sum"
+          },
+          "required": false
+        },
+        "travelLumpSum": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Fahrtkostenpauschale (in €, zzgl. MwSt)",
+            "en": "Maintenance Lump-Sum"
+          },
+          "required": false
+        },
+        "sleepover": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Übernachtung (in €, zzgl. MwSt)",
+            "en": "Maintenance Lump-Sum"
+          },
+          "required": false
+        },
+        "workingtime": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Arbeitszeit Systemtechniker (in €, zzgl. MwSt)",
+            "en": "Maintenance Lump-Sum"
+          },
+          "required": false
+        }
+      }
+    },
+    "07_suppliercontact": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "6. Contact Service Supplier",
+        "de": "6. Kontakt Servicelieferant"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "phone": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Telefon: +49 7381 186 - 8903",
+            "en": "Phone: +49 7381 186 - 8903"
+          },
+          "width": 1
+        },
+        "fax": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Fax: +49 7381 186 - 52",
+            "en": "Fax: +49 7381 186 - 52"
+          },
+          "width": 1
+        },
+        "mail": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "E-Mail: service@genkinger.de",
+            "en": "E-Mail: service@genkinger.de"
+          },
+          "width": 1
+        }
+      }
+    },
+    "08_others": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "7. Other Agreements",
+        "de": "7. Sonstige Vereinbarungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "agreements": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Sonstige Vereinbarungen",
+            "en": "Other Agreements"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "minRows": 1
+        },
+        "agreements_1": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Nebenabreden und sonstige Vereinbarungen bestehen nicht und bedürfen der Schriftform, um wirksam zu werden.",
+            "en": "Subsidiary agreements and other agreements do not exist and must be in writing to become effective."
+          },
+          "width": 1
+        }
+      }
+    },
+    "09_01_ending": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": " ",
+        "de": " "
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wenn Sie eine Durchführung der UVV-Prüfung durch uns, Genkinger GmbH, wünschen, dann teilen Sie uns bitte den zuständigen Ansprechpartner (inklusive Telefon und Fax) mit.\n\nWir erstellen Ihnen auf Anfrage gerne einen individuellen Wartungsvertrag in Verbindung mit einer attraktiven Fahrtkostenpauschale.\n\nRückantwort bitte an service@genkinger.de oder per Fax an +49 7381 186 52.",
+            "en": "If you wish us, Genkinger GmbH, to carry out the UVV inspection, please inform us of the responsible contact person (including telephone and fax).\n\nOn request, we will be happy to create an individual maintenance contract for you in conjunction with an attractive flat rate for travel costs."
+          }
+        }
+      }
+    },
+    "09-signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service Supplier",
+        "de": "Unterschrift Servicelieferant"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicelieferant",
+            "en": "Service Supplier"
+          },
+          "autofillCurrentUser": true,
+          "autofillLocation": "Münsingen",
+          "required": true
+        }
+      }
+    },
+    "10-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service Customer",
+        "de": "Unterschrift Servicekunde"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicekunde",
+            "en": "Service Customer"
+          },
+          "required": false
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send/sent filled out UVV offer",
+        "de": "Ausgefülltes UVV-Angebot senden/gesendet"
+      },
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false,
+          "prefillConfig": {
+            "subject": "Angebot für UVV-Prüfung an Flurförderfahrzeugen",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Genkinger GmbH.\n\nIm Anhang finden Sie Ihr Angebot für eine UVV-Prüfung als PDF.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen | Best regards",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
