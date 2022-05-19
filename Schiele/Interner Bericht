@@ -25,7 +25,7 @@
           "fieldType": "REMBERG_CUSTOMER_SELECT",
           "required": false,
           "hideInPdfIfEmpty": true,
-          "width": 0.5,
+          "width": 1,
           "label": {
             "de": "Kunde",
             "en": "Customer" },
@@ -81,13 +81,24 @@
         "customeraddress": {
           "fieldType": "REMBERG_ADDRESS",
           "label": {
-              "de": "Kundenadresse",
-              "en": "Customer Address"
+              "de": "Rechnungsadresse",
+              "en": "Billing Address"
           },
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true,
           "width": 0.5,
-          "required": false,
+          "required": false
+        },
+        "workorderaddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Auftragsaddresse",
+              "en": "Work Order Address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false,  
           "messages": {
             "onChange": [
               {
@@ -165,7 +176,29 @@
           "width": 0.5,
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true,
-          "disabled": false
+          "disabled": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "05-signature",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "contactName"
+                      },
+                      "output": {
+                        "_formArray": "signature_05",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "name"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
         },
         "text_2": {
             "fieldType": "REMBERG_PHONE",
@@ -330,6 +363,24 @@
             ]
           },
           {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "workorderaddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
           "to": "ROOT",
           "actions": [
             {
@@ -347,251 +398,28 @@
             }
             }
           ]
+          },
+          {
+            "to": "ROOT",
+              "actions": [
+              {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                  "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "customer"
+                  },
+                  "output": {
+                      "_field": "asset",
+                      "_propertyName": "customerFilter"
+                  }
+                  }
+              }
+            ]
           }
         ]
       }
     },
-    "2-report": {
-      "isForm": true,
-      "ui": "CARD",
-      "initialExpand": true,
-      "cardHeadline": {
-        "de": "Interner Bericht",
-        "en": "Internal Report"
-      },
-      "stateIndicator": true,
-      "hasNextStep": true,
-      "required": true,
-      "children": {
-        "richtext_1": {
-          "fieldType": "REMBERG_RICH_TEXTAREA",
-          "label": {
-            "de": "Interne Bemerkungen, Hinweise und To-Dos",
-            "en": "Internal comments, notes and to-dos"
-          },
-          "placeholder": {
-            "de": "Hier tippen...",
-            "en": "Type here..."
-          },
-          "hiddenInPdf": false,
-          "hideInPdfIfEmpty": true,
-          "required": false,
-          "width": 1.0
-        }
-      }
-    },
-    "2_1-dailyreport": {
-      "isForm": true,
-      "ui": "CARD",
-      "initialExpand": true,
-      "cardHeadline": {
-        "de": "Alternative 1: Tagesberichte",
-        "en": "Alternative 1: Daily Reports"
-      },
-      "stateIndicator": true,
-      "hasNextStep": true,
-      "required": true,
-      "children": {
-        "day": {
-          "fieldType": "SELECT",
-          "label": {
-            "de": "Tag",
-            "en": "Day"
-          },
-          "required": false,
-          "width": 0.5,
-          "hiddenInPdf": false,
-          "multiple": false,
-          "options": [
-              {
-                  "value": "Montag",
-                  "text": {
-                      "de": "Montag",
-                      "en": "Monday"
-                  }
-              },
-              {
-                  "value": "Dienstag",
-                  "text": {
-                      "de": "Dienstag",
-                      "en": "Tuesday"
-                  }
-              },
-              {
-                  "value": "Mittwoch",
-                  "text": {
-                      "de": "Mittwoch",
-                      "en": "Wednesday"
-                  }
-              },
-              {
-                "value": "Donnerstag",
-                "text": {
-                    "de": "Donnerstag",
-                    "en": "Thursday"
-                }
-            },
-            {
-              "value": "Freitag",
-              "text": {
-                  "de": "Freitag",
-                  "en": "Friday"
-              }
-            }
-          ]
-        },
-        "description": {
-          "fieldType": "TEXTAREA",
-          "label": {
-            "de": "Erledigte Aufgaben",
-            "en": "Finished Tasks"
-          },
-          "hiddenInPdf": false,
-          "required": false,
-          "width": 0.5,
-          "minRows": 1
-      },
-      "date": {
-        "fieldType": "REMBERG_DATE",
-        "label": {
-          "de": "Tag",
-          "en": "Day"
-        },
-        "hiddenInPdf": false,
-        "width": 0.5,
-        "autofillCurrentDate": false,
-        "required": false
-      },
-      "description_1": {
-        "fieldType": "TEXTAREA",
-        "label": {
-          "de": "Erledigte Aufgaben",
-          "en": "Finished Tasks"
-        },
-        "hiddenInPdf": false,
-        "required": false,
-        "width": 0.5,
-        "minRows": 1
-      }
-    }
-    },
-    "2_2-dailyreport": {
-      "isForm": true,
-      "ui": "CARD",
-      "initialExpand": true,
-      "cardHeadline": {
-        "de": "Alternative 2: Tagesberichte",
-        "en": "Alternative 2: Daily Reports"
-      },
-      "stateIndicator": true,
-      "hasNextStep": true,
-      "required": true,
-      "children": {
-        "Tasks": {
-          "isForm": true,
-          "isListForm": true,
-          "displayButtons": true,
-          "listFormNoDataHint": {
-            "en": "No entries added yet.",
-            "de": "Es wurden noch keine Einträge hinzugefügt."
-          },
-          "children": {
-            "day": {
-              "fieldType": "SELECT",
-              "label": {
-                "de": "Tag",
-                "en": "Day"
-              },
-              "required": false,
-              "width": 1.0,
-              "hiddenInPdf": false,
-              "multiple": false,
-              "options": [
-                  {
-                      "value": "Montag",
-                      "text": {
-                          "de": "Montag",
-                          "en": "Monday"
-                      }
-                  },
-                  {
-                      "value": "Dienstag",
-                      "text": {
-                          "de": "Dienstag",
-                          "en": "Tuesday"
-                      }
-                  },
-                  {
-                      "value": "Mittwoch",
-                      "text": {
-                          "de": "Mittwoch",
-                          "en": "Wednesday"
-                      }
-                  },
-                  {
-                    "value": "Donnerstag",
-                    "text": {
-                        "de": "Donnerstag",
-                        "en": "Thursday"
-                    }
-                },
-                {
-                  "value": "Freitag",
-                  "text": {
-                      "de": "Freitag",
-                      "en": "Friday"
-                  }
-                }
-              ]
-            },
-            "description": {
-              "fieldType": "TEXTAREA",
-              "label": {
-                "de": "Erledigte Aufgaben",
-                "en": "Finished Tasks"
-              },
-              "hiddenInPdf": false,
-              "required": false,
-              "width": 1.0,
-              "minRows": 1
-            }
-          }
-        },
-        "Tasks_1": {
-          "isForm": true,
-          "isListForm": true,
-          "displayButtons": true,
-          "listFormNoDataHint": {
-            "en": "No entries added yet.",
-            "de": "Es wurden noch keine Einträge hinzugefügt."
-          },
-          "children": {
-            "date": {
-              "fieldType": "REMBERG_DATE",
-              "label": {
-                "de": "Tag",
-                "en": "Day"
-              },
-              "hiddenInPdf": false,
-              "width": 1.0,
-              "autofillCurrentDate": false,
-              "required": false
-            },
-            "description": {
-              "fieldType": "TEXTAREA",
-              "label": {
-                "de": "Erledigte Aufgaben",
-                "en": "Finished Tasks"
-              },
-              "hiddenInPdf": false,
-              "required": false,
-              "width": 1.0,
-              "minRows": 1
-            }
-          }
-        }
-      }
-    },    
     "3-send": {
       "isForm": true,
       "ui": "CARD",
