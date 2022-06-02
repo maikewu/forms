@@ -12,6 +12,7 @@
       "isForm": true,
       "ui": "CARD",
       "initialExpand": true,
+      "hideFormIdInPdf": true,
       "cardHeadline": {
         "de": "Allgemeine Informationen",
         "en": "General Information"
@@ -24,7 +25,7 @@
           "fieldType": "REMBERG_CUSTOMER_SELECT",
           "required": false,
           "hideInPdfIfEmpty": true,
-          "width": 0.5,
+          "width": 1,
           "label": {
             "de": "Kunde",
             "en": "Customer" },
@@ -80,13 +81,24 @@
         "customeraddress": {
           "fieldType": "REMBERG_ADDRESS",
           "label": {
-              "de": "Kundenadresse",
-              "en": "Customer Address"
+              "de": "Rechnungsadresse",
+              "en": "Billing Address"
           },
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true,
           "width": 0.5,
-          "required": false,
+          "required": false
+        },
+        "workorderaddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Auftragsaddresse",
+              "en": "Work Order Address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false,  
           "messages": {
             "onChange": [
               {
@@ -164,7 +176,29 @@
           "width": 0.5,
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true,
-          "disabled": false
+          "disabled": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "05-signature",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "contactName"
+                      },
+                      "output": {
+                        "_formArray": "signature_05",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "name"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
         },
         "text_2": {
             "fieldType": "REMBERG_PHONE",
@@ -204,7 +238,7 @@
           "hiddenInPdf": false,
           "hideInPdfIfEmpty": true,
           "disabled": false
-        },
+       },
         "text_3_1": {
           "fieldType": "INPUT_TEXT",
           "label": {
@@ -230,15 +264,15 @@
           "printEmailAddress": false,
           "required": false
         },
-        "userselect_3": {
-          "fieldType": "REMBERG_USER_SELECT",
+        "userselect_2": {
+          "fieldType": "INPUT_TEXT",
           "label": {
-            "de": "Weiterer Monteur",
-            "en": "Additional Assembler"
-          },
+              "de": "Weitere/r Monteur/e",
+              "en": "Additional Assembler/s"
+              },
           "hiddenInPdf": false,
-          "hideInPdfIfEmpty": true,
           "width": 0.5,
+          "hideInPdfIfEmpty": true,
           "autofillCurrentUser": false,
           "printEmailAddress": false,
           "required": false
@@ -329,6 +363,24 @@
             ]
           },
           {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "workorderaddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
           "to": "ROOT",
           "actions": [
             {
@@ -346,6 +398,24 @@
             }
             }
           ]
+          },
+          {
+            "to": "ROOT",
+              "actions": [
+              {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                  "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "customer"
+                  },
+                  "output": {
+                      "_field": "asset",
+                      "_propertyName": "customerFilter"
+                  }
+                  }
+              }
+            ]
           }
         ]
       }
@@ -436,66 +506,6 @@
         "de": "Es wurden noch keine Einträge hinzugefügt."
       },
       "children": {
-        "value20":{
-          "fieldType": "SELECT",
-          "label": {
-            "de": "Tag",
-            "en": "Day"
-          },
-          "required": false,
-          "multiple": false,
-          "options": [
-            {
-              "value": "1",
-              "text": {
-                "de": "Montag",
-                "en": "Monday"
-              }
-            },
-            {
-              "value": "2",
-              "text": {
-                "de": "Dienstag",
-                "en": "Tuesday"
-              }
-            },
-            {
-              "value": "3",
-              "text": {
-                "de": "Mittwoch",
-                "en": "Wednesday"
-              }
-            },
-            {
-              "value": "4",
-              "text": {
-                "de": "Donnerstag",
-                "en": "Thursday"
-              }
-            },
-            {
-              "value": "5",
-              "text": {
-                "de": "Freitag",
-                "en": "Friday"
-              }
-            },
-            {
-              "value": "6",
-              "text": {
-                "de": "Samstag",
-                "en": "Saturday"
-              }
-            },
-            {
-              "value": "7",
-              "text": {
-                "de": "Sonntag",
-                "en": "Sunday"
-              }
-            }
-          ]
-        },
         "value21": {
           "fieldType": "REMBERG_DATE",
           "label": {
