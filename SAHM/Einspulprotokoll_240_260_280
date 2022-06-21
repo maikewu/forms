@@ -1,0 +1,1045 @@
+{
+  "general": {
+    "name": {
+      "en": "Rewinding Protocoll",
+      "de": "Einspulprotokoll"
+    }
+  },
+  "formStructure":{
+    "01_generalInformation":{
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "Auftragsnummer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer",
+            "en": "Order No."
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "datum":{
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "hideInPdfIfEmpty": true,
+          "required": true
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData":{
+                      "input":{
+                        "_field":{
+                          "_field":{
+                            "_field": "customer",
+                            "_propertyName": "customer"
+                          },
+                          "_functionName": "GET_ACCOUNT"
+                        },
+                        "_propertyName": "customerNumber"
+                      },
+                      "output":{
+                        "_field": "customerNumber"
+                      }
+                    }    
+                  }
+                ]
+              }          
+            ]
+          }
+        },
+        "Projektnummer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Projektnummer",
+            "en": "Project No."
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "customerNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kundennummer",
+            "en": "Customer No."
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "maschinentyp":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Maschinentyp",
+            "en": "Machine type"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "240",
+                "en": "240"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "260",
+                "en": "260"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "280",
+                "en": "280"
+              }
+            }
+          ]
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_spulgut":{
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Winding Material",
+        "de": "Spulgut"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "spule_bereitgestellt":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Bereitgestellt durch",
+            "en": "Provided by"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Intern",
+                "en": "Internal"
+              }
+            }
+          ]
+        },
+        "material": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Material",
+            "en": "Material"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "gespult_material": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gespult mit Material",
+            "en": "Winded with material"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "titer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Titer (dtex)",
+            "en": "Titer (dtex)"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "gespult_titer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gespult mit Titer (dtex)",
+            "en": "Winded with titer (dtex)"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "breite": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Breite (mm)",
+            "en": "Width (mm)"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "gespult_breite": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gespult mit Breite (mm)",
+            "en": "Winded with width (mm)"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "staerke": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Stärke (mm)",
+            "en": "Thickness (mm)"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "gespult_staerke": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gespult mit Stärke (mm)",
+            "en": "Winded with thickness (mm)"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "durchmesser": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Durchmesser (mm)",
+            "en": "Diameter (mm)"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "gespult_durchmesser": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gespult mit Durchmesser (mm)",
+            "en": "Winded with diameter (mm)"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "countFaeden": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anzahl Fäden",
+            "en": "Yarn count"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "gespult_Faden": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gesuplt mit Anzahl Fäden",
+            "en": "Winded with yarn count"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "03_huelse":{
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Tube",
+        "de": "Hülse"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "huelse_bereitgestellt":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Bereitgestellt durch",
+            "en": "Provided by"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Intern",
+                "en": "Internal"
+              }
+            }
+          ]
+        },
+        "nennbewicklungsbreite": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Nennbewicklungsbreite (mm)",
+            "en": "Nominal winding width (mm)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "innen_durchmesser": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Innendurchmesser (mm)",
+            "en": "Inner diameter (mm)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "aussen_durchmesser": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Außendurchmesser (mm)",
+            "en": "Outer diameter (mm)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "laenge": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Länge (mm)",
+            "en": "Length (mm)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "werkstoff":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Werkstoff",
+            "en": "Material"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Aluminium",
+                "en": "Aluminium"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Pappe",
+                "en": "Cardboard"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "Kunststoff",
+                "en": "Plastics"
+              }
+            },
+            {
+              "value": "4",
+              "text": {
+                "de": "Stahl",
+                "en": "Steel"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "04_speed":{
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Speed",
+        "de": "Geschwindigkeit"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "v_min": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "V Minimum (m/min)",
+            "en": "V minimum (m/min)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "v_max": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "V Maximum (m/min)",
+            "en": "V maximum (m/min)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "v_gespult": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "V Gespult (m/min)",
+            "en": "V winded (m/min)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "schnittstelle":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Schnittstelle / Geschwindigkeitsverbindung geprüft",
+            "en": "Interface / speed connection tested"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "05_spulversuch":{
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Parameter / Spulversuch",
+        "de": "Parameter / Winding Test"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "spulverhaeltnis": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Spulverhältnis (1:x)",
+            "en": "Winding ratio (1:x)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "sv_faktor": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "SV Faktor",
+            "en": "SV factor"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "incremente": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Incremente",
+            "en": "Increments"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "verlegeabstand": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verlegeabstand (mm)",
+            "en": "Traversing distance (mm)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "lauflaenge": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Lauflänge (m)",
+            "en": "Running length (m)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "fadenspannung": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Fadenspannung (cN)",
+            "en": "Yarn tension (cN)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "raste_position": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Raste (Position)",
+            "en": "Notch (position)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "anpressdruck": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anpressdruck/Raste (Position)",
+            "en": "Contact pressure/notch (position)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "tanzerstellung":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Tänzerstellung",
+            "en": "Dancer position"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Mittellage",
+                "en": "Central position"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "unter Mitte",
+                "en": "Under center"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "über Mitte",
+                "en": "Above center"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "06_sonstiges":{
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Other",
+        "de": "Sonstiges"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "software": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Aktuelle Software",
+            "en": "Current software"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "software_HMI": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "HMI",
+            "en": "HMI"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "software_gateway": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gateway",
+            "en": "Gateway"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "software_spulkopf": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Spulkopf",
+            "en": "Winding head"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "software_FU": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "FU",
+            "en": "FU"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "space-6-1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "kehrgewindewelle": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kehrgewindewelle",
+            "en": "Spline shaft"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "windung": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Windung",
+            "en": "Winding"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "steigung": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Steigung",
+            "en": "Slope"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "uebersetzung": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Übersetzung",
+            "en": "Transmission"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "getriebe-spinde": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Getriebe-Spindel",
+            "en": "Gearbox spindle"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "getriebe-kehrgewindewelle": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Getriebe-Kehrgewindewelle",
+            "en": "Gearbox spline shaft"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "space-6-3": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        },
+        "fadebfuehrer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Fadenführer",
+            "en": "Yarn guide"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true
+        },
+        "lampe":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Lampe und Horn auf Funktion geprüft",
+            "en": "Lamp and horn function tested"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "OPC":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "OPC Anbindung",
+            "en": "OPC connection"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "OPC_tested":{
+          "fieldType": "SELECT",
+          "label": {
+            "de": "OPC Anbindung geprüft",
+            "en": "OPC connection tested"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "freitext":{
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Freitext",
+            "en": "Free text"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "creator": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Erstellt von",
+            "en": "Created by"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "autofillCurrentUser": true,
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": false,
+          "required": true
+        }
+      }
+    },
+    "11-send":{
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Einspulprotokoll",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
