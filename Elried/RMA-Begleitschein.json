@@ -1,0 +1,307 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "RMA Shipping Document",
+      "de": "RMA-Begleitschein"
+    }
+  },
+  "formStructure": {
+    "1-ElriedInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Elried Markierungssysteme GmbH",
+        "en": "Elried Markierungssysteme GmbH"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "RMA\nGrünwalder Weg 28e\nD-82041 Oberhaching",
+            "en": "RMA\nGrünwalder Weg 28e\nD-82041 Oberhaching"
+          }
+        },
+        "space1": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        }
+      }
+    },
+    "2-CustomerInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Kundeninformationen",
+        "en": "Customer Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "2-CustomerInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customeraddress"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "2-CustomerInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customeraddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "required": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hideInPdfIfEmpty": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Gerätenummer",
+            "en": "Device Number"
+          }
+        },
+        "space2": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "space3": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "space4": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customeraddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "3-CustomerToDo": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "RMA-Begleitschein",
+        "en": "RMA Shipping Document"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sehr geehrte Damen und Herren,\n\nbitte drucken Sie den RMA-Begleitschein aus und legen diesen Ihrer Rücksendung bei.\nBei Rückfragen, melden Sie sich gerne unter service@elried.de.\n\nFreundliche Grüße,\nElried Markierungssysteme GmbH",
+            "en": "Dear Sir or Madam,\n\nlease print out the RMA shipping document and enclose it with your return.\nIf you have any questions, please do not hesitate to contact us at service@elried.de.\n\nBest Regards,\nElried Markierungssysteme GmbH"
+          }
+        }
+      }
+    },
+    "7-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send/sent RMA Shipping Document",
+        "de": "RMA-Begleitschein senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "prefillConfig": {
+            "subject": "Elried: RMA-Begleitschein",
+            "content": "Sehr geehrte Damen und Herren,\n\nanbei finden Sie den RMA- Begleitschein. Bitte drucken Sie diesen aus und legen ihn Ihrer Rücksendung bei.\nBei Rückfragen, melden Sie sich gerne unter service@elried.de.\n\nFreundliche Grüße,\nElried Markierungssysteme GmbH",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

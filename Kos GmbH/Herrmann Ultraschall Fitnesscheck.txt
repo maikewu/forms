@@ -1,0 +1,902 @@
+{
+  "general": {
+    "name": {
+      "de": "Fitnesscheck Maschinen und System"
+    }
+  },
+  "formStructure": {
+    "01-generalInformation": {
+      "isForm": true,
+       "ui": "CARD",
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+         "en": "General Information"
+       },
+      "children": {
+        "H1_customerInfo": {
+          "fieldType": "H1",
+          "hiddenInPdf": false,
+         "width": 1,
+         "text": {
+           "de": "Kundendaten",
+           "en": "Customer Data"
+          }
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01-generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01-generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "width": 1,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": false,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "H1_assetInfo": {
+          "fieldType": "H1",
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "text": {
+            "de": "Maschinentyp",
+            "en": "Machine Type"
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Maschinentyp oder Gerätebezeichnung",
+            "en": "Maschine Type or Device Designation"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "SMnumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "SM-Nummer",
+            "en": "SM Number"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "additionalFunctions": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zusatz- / Sonderfunktionen",
+            "en": "Additional Functions / Special Functions"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Teileerkennung",
+                "en": "Parts Recognition"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Kamerasystem",
+                "en": "Camera System"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "Teilerutsche",
+                "en": "Share Slide"
+              }
+            },
+            {
+              "value": "4",
+              "text": {
+                "de": "Vakuum",
+                "en": "Vacuum"
+              }
+            },
+            {
+              "value": "5",
+              "text": {
+                "de": "Kühlung",
+                "en": "Cooling"
+              }
+            },
+            {
+              "value": "6",
+              "text": {
+                "de": "Niederhalter",
+                "en": "Down Device"
+              }
+            }
+          ]
+        }
+      } 
+    },
+    "01-machineCheck": {
+      "isForm": true,
+      "width": 1,
+      "hiddenInPdf": false,
+       "ui": "CARD",
+      "cardHeadline": {
+        "de": "Maschinencheck",
+        "en": "Machine Check"
+       },
+      "children": {
+        "headline1": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Überprüfung der grundlegenden Maschinenfunktionen",
+            "en": "Check Of Basic Machine Functions"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText1": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "iBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "niBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText2": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Kraftwerte im Bereich der Schweißkräfte in Toleranz",
+            "en": "Force Values For Weld Forces Within Typical Tolerances"
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "iBox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "niBox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText3": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Wegmesswerte im Bereich der Schweißposition in Toleranz",
+            "en": "Position measuring values for weld position within typical tolerances"
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "iBox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "niBox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "note1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkungen",
+            "en": "Remarks"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "headline4": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Überprüfung der mechanischen Komponenten",
+            "en": "Check Of Mechanical Components"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText4": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "iBox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "niBox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "note2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkungen",
+            "en": "Remarks"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "headline5": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Überprüfung der elektrischen Komponenten",
+            "en": "Check Of Electrical Components"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText5": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "iBox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "niBox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "note3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkungen",
+            "en": "Remarks"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "headline6": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Überprüfung der pneumatischen Komponenten",
+            "en": "Check Of Pneumatic Components"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText6": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "iBox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "niBox6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.i.O."
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "note4": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkungen",
+            "en": "Remarks"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "headline7": {
+          "fieldType": "H1",
+          "text": {
+            "de": "Maschinenzustandsbeurteilung nach aktuellem Stand:",
+            "en": "Machine Condition Assessment According To The Current State:"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "subline3": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Auffällige Komponenten",
+            "en": "Conspicuous components"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText7": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "yesBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Ja",
+            "en": "Yes"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "noBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nein",
+            "en": "No"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "note5": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkungen",
+            "en": "Remarks"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "subline4": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Wartung empfohlen",
+            "en": "Maintenance Recommended"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText8": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "yesBox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Ja",
+            "en": "Yes"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "noBox2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nein",
+            "en": "No"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "subline5": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Kalibrierung empfohlen",
+            "en": "Calibration Recommended"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText9": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "yesBox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Ja",
+            "en": "Yes"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "noBox3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nein",
+            "en": "No"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "subline6": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Maschinenfunktionalität gewährleistet",
+            "en": "Machine Functionality Guaranteed"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText10": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "yesBox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Ja",
+            "en": "Yes"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "noBox4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nein",
+            "en": "No"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "note6": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Handlungsempfehlungen und Notwendigkeiten",
+            "en": "Recommendations And Necessities"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "headline8": {
+          "fieldType": "H1",
+          "text": {
+            "de": "Produktionsabsicherung",
+            "en": "Production Safeguarding"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "subline7": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Interesse an Ersatzteilstrategie / Produktionsabsicherung?",
+            "en": "Interested in spare parts strategy / production safeguarding?"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "helpText11": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 0.6,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "yesBox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Ja",
+            "en": "Yes"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "noBox5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nein",
+            "en": "No"
+          },
+          "width": 0.2,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "note7": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anmerkungen",
+            "en": "Remarks"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        },
+        "careBox1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ULTRACAREplus"
+          },
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false
+        }
+      }
+    },
+    "07-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "08-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "09-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as email",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Herrmann Ultraschall Fitnesscheck",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Fitnesscheck als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "10_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "commentAddendum": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen & Hinweise",
+            "en": "Comments & Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "unbreakable": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as emnail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Fitnesscheck - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
