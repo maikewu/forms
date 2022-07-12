@@ -1,0 +1,581 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Checklist potential analysis - Service after commissioning",
+      "de": "Checkliste Potenzialanalyse - Service nach Inbetriebnahme"
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "hideFormIdInPdf": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer" },
+          "messages": {
+            "onChange":[
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customeraddress"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }    
+        },
+        "customeraddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Kundenadresse",
+              "en": "Customer address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "workorderaddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Lieferadresse",
+              "en": "Delivery address"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false,  
+          "messages": {
+            "onChange": [
+              {
+                "to": "5-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "6-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "text_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Ansprechpartner",
+              "en": "Contact person"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "05-signature",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "contactName"
+                      },
+                      "output": {
+                        "_formArray": "signature_05",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "name"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "text_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Eventuelle Vorgangsnummer",
+              "en": "Eventual transaction number"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+       },
+       "helptext_1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Achtung: Nicht vor/bei dem Kunden ausfüllen, sondern nach Kundengespräch/Einsatz im Auto/Büro.",
+            "en": "Attention: Do not fill out in front of/at the customer, but after customer meeting in the car/office."
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+          "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customeraddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "workorderaddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "2-checklist": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Checkliste Potenzialanalyse",
+        "en": "Checklist potential analysis"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "checkbox_1": {
+            "fieldType": "CHECKBOX",
+            "label": {
+              "de": "Visitenkarte Ansprechpartner (Endkunde) - Bitte über den nachfolgenden Dateianhang anhängen",
+              "en": "Business card contact person (end customer) - Please attach via the file attachment below"
+            },
+            "required": false,
+            "width": 1,
+            "hiddenInPdf": false,
+            "checked": false
+        },
+        "fileupload_1": {
+          "hiddenInPdf": true,
+          "hideinPdfIfEmpty": true,
+          "width": 1,
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Visitenkarte bitte abfotografieren und hochladen",
+            "en": "Please take a picture of the business card and upload it"
+          }
+        },
+        "text_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Leistungsbedarf ca.",
+              "en": "Approx. power required"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+       },
+       "text_3": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+            "de": "Anzahl der Trafos",
+            "en": "Number of transformers"
+        },
+        "required": false,
+        "width": 0.5,
+        "hiddenInPdf": false,
+        "hideInPdfIfEmpty": true,
+        "disabled": false
+      },
+      "helptext_2": {
+        "fieldType": "HELP_TEXT",
+        "hiddenInPdf": false,
+        "width": 0.3,
+        "text": {
+          "de": "Messgeräte vorhanden",
+          "en": "Measuring devices available"
+        }
+      },
+      "checkbox_2": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Ja",
+          "en": "Yes"
+        },
+        "required": false,
+        "width": 0.1,
+        "hiddenInPdf": false,
+        "checked": false
+      },
+      "checkbox_3": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Nein",
+          "en": "No"
+        },
+        "required": false,
+        "width": 0.1,
+        "hiddenInPdf": false,
+        "checked": false
+      },
+      "text_4": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+            "de": "Hersteller",
+            "en": "Manufacturer"
+        },
+        "required": false,
+        "width": 0.5,
+        "hiddenInPdf": false,
+        "hideInPdfIfEmpty": false,
+        "disabled": false
+      } ,
+      "helptext_3": {
+        "fieldType": "HELP_TEXT",
+        "hiddenInPdf": false,
+        "width": 0.3,
+        "text": {
+          "de": "EDM vorhanden",
+          "en": "EDM available"
+        }
+      },
+      "checkbox_4": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Ja",
+          "en": "Yes"
+        },
+        "required": false,
+        "width": 0.1,
+        "hiddenInPdf": false,
+        "checked": false
+      },
+      "checkbox_5": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Nein",
+          "en": "No"
+        },
+        "required": false,
+        "width": 0.1,
+        "hiddenInPdf": false,
+        "checked": false
+      },
+      "text_5": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+            "de": "Hersteller",
+            "en": "Manufacturer"
+        },
+        "required": false,
+        "width": 0.5,
+        "hiddenInPdf": false,
+        "hideInPdfIfEmpty": false,
+        "disabled": false
+      } ,
+      "helptext_4": {
+        "fieldType": "HELP_TEXT",
+        "hiddenInPdf": false,
+        "width": 0.3,
+        "text": {
+          "de": "Energie Optimierung",
+          "en": "Energy optimization"
+        }
+      },
+      "checkbox_6": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Ja",
+          "en": "Yes"
+        },
+        "required": false,
+        "width": 0.1,
+        "hiddenInPdf": false,
+        "checked": false
+      },
+      "checkbox_7": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Nein",
+          "en": "No"
+        },
+        "required": false,
+        "width": 0.1,
+        "hiddenInPdf": false,
+        "checked": false
+      },
+      "text_6": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+            "de": "Hersteller",
+            "en": "Manufacturer"
+        },
+        "required": false,
+        "width": 0.5,
+        "hiddenInPdf": false,
+        "hideInPdfIfEmpty": false,
+        "disabled": false
+      },
+      "helptext_5": {
+        "fieldType": "HELP_TEXT",
+        "hiddenInPdf": false,
+        "width": 0.3,
+        "text": {
+          "de": "Netzprobleme",
+          "en": "Power problems"
+        }
+      },
+      "checkbox_8": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Ja",
+          "en": "Yes"
+        },
+        "required": false,
+        "width": 0.1,
+        "hiddenInPdf": false,
+        "checked": false
+      },
+      "checkbox_9": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Nein",
+          "en": "No"
+        },
+        "required": false,
+        "width": 0.1,
+        "hiddenInPdf": false,
+        "checked": false
+      }
+    }
+  },
+    "5-signature_technician": {
+      "width": 1,
+      "unbreakable": true,
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service technician",
+        "de": "Unterschrift Servicetechniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service technician"
+          },
+          "required": true,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "7-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send filled checklist",
+        "de": "Ausgefüllte Checkliste absenden"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "prefillConfig": {
+            "subject": "Checkliste Potenzialanalyse",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
