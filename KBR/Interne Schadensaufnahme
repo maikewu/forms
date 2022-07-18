@@ -1,0 +1,1037 @@
+{
+  "general": {
+    "type": "service_report",
+    "list_path": "service_report",
+    "name": {
+      "en": "Internal damage assessment: Damage of compensation system",
+      "de": "Interne Schadensaufnahme: Schäden der Kompensationsanlage"
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "hideFormIdInPdf": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer" },
+          "messages": {
+            "onChange":[
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+              "to": "1-allgmeineInformationen",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "workorderaddress"
+                      }
+                    }
+                  }
+                ]
+              }
+              
+            ]
+          }    
+        },
+        "workorderaddress": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+              "de": "Standort der Anlage",
+              "en": "Asset location"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false,  
+          "messages": {
+            "onChange": [
+              {
+                "to": "5-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "6-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "text_1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Ansprechpartner",
+              "en": "Contact person"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "05-signature",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "contactName"
+                      },
+                      "output": {
+                        "_formArray": "signature_05",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "name"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hideInPdfIfEmpty": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+              "de": "Anlage",
+              "en": "Asset"
+          }
+        },
+        "text_3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+              "de": "Baujahr",
+              "en": "Year of manufacture"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+       },
+       "subline5": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "KBR hat geliefert",
+          "en": "KBR delivered"
+        },
+        "width": 0.25
+      },
+      "iBox5": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Komplette Anlage",
+          "en": "Complete asset"
+        },
+        "width": 0.25
+      },
+      "dBox5": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Module",
+          "en": "Modules"
+        },
+        "width": 0.25
+      },
+      "dBox6": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Komponente",
+          "en": "Components"
+        },
+        "width": 0.25
+      }
+    },
+    "messages": {
+      "onLoaded":[
+        {
+                    "to": "ROOT",
+                    "actions": [
+                      {
+                        "name": "PATCH_DATA",
+                        "_dynamicData": {
+                          "input": {
+                            "_field": "ARGS",
+                            "_propertyName": "address"
+                          },
+                          "output": {
+                            "_field": "workorderaddress",
+                            "_propertyName": ""
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "to": "ROOT",
+                    "actions": [
+                      {
+                        "name": "PATCH_DATA",
+                        "_dynamicData": {
+                          "input": {
+                            "_field": {
+                              "_field": "ARGS",
+                              "_propertyName": "asset",
+                              "_functionName": "GET_PRODUCT"
+                            },
+                            "_propertyName": "customer"
+                          },
+                          "output": {
+                            "_field": "customer",
+                            "_propertyName": "customer"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "to": "ROOT",
+                    "actions": [
+                      {
+                        "name": "PATCH_DATA",
+                        "_dynamicData": {
+                          "input": {
+                            "_field": "ARGS",
+                            "_propertyName": "asset",
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "output": {
+                            "_field": "asset",
+                            "_propertyName": "product"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "to": "ROOT",
+                      "actions": [
+                      {
+                          "name": "PATCH_DATA",
+                          "_dynamicData": {
+                          "input": {
+                              "_field": "ARGS",
+                              "_propertyName": "customer"
+                          },
+                          "output": {
+                              "_field": "asset",
+                              "_propertyName": "customerFilter"
+                          }
+                          }
+                      }
+                    ]
+                  }
+        ] 
+      }
+  },
+  "2-environmentalConditions": {
+    "isForm": true,
+    "ui": "CARD",
+    "initialExpand": true,
+    "hideFormIdInPdf": true,
+    "cardHeadline": {
+      "de": "Umgebungsbedingungen",
+      "en": "Environmental conditions"
+    },
+    "stateIndicator": true,
+    "hasNextStep": true,
+    "required": true,
+    "children": {
+      "subline1": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "Umgebungsbedingungen",
+          "en": "Environmental conditions"
+        },
+        "width": 0.3
+      },
+      "iBox1": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "i.O.",
+          "en": "Ok"
+        },
+        "width": 0.1
+      },
+      "dBox1": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "n.i.O.",
+          "en": "Not ok"
+        },
+        "width": 0.1
+      },
+      "note1": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Messwerte / Bemerkungen",
+          "en": "Measured values / remarks"
+        },
+        "width": 0.5
+      },
+      "subline2": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "Raumtemparatur",
+          "en": "Room temperature"
+        },
+        "width": 0.3
+      },
+      "iBox2": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "i.O.",
+          "en": "Ok"
+        },
+        "width": 0.1
+      },
+      "dBox2": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "n.i.O.",
+          "en": "Not ok"
+        },
+        "width": 0.1
+      },
+      "note2": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Messwerte / Bemerkungen",
+          "en": "Measured values / remarks"
+        },
+        "width": 0.5
+      },
+      "subline3": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "Raumbelüftung",
+          "en": "Room ventilation"
+        },
+        "width": 0.3
+      },
+      "iBox3": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "i.O.",
+          "en": "Ok"
+        },
+        "width": 0.1
+      },
+      "dBox3": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "n.i.O.",
+          "en": "Not ok"
+        },
+        "width": 0.1
+      },
+      "note3": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Messwerte / Bemerkungen",
+          "en": "Measured values / remarks"
+        },
+        "width": 0.5
+      },
+      "subline4": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "Stäube in der Luft",
+          "en": "Dusts in the air"
+        },
+        "width": 0.3
+      },
+      "iBox4": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "i.O.",
+          "en": "Ok"
+        },
+        "width": 0.1
+      },
+      "dBox4": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "n.i.O.",
+          "en": "Not ok"
+        },
+        "width": 0.1
+      },
+      "note4": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Messwerte / Bemerkungen",
+          "en": "Measured values / remarks"
+        },
+        "width": 0.5
+      },
+      "subline5": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "Verschmutzung allgemein",
+          "en": "Pollution in general"
+        },
+        "width": 0.3
+      },
+      "iBox5": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "i.O.",
+          "en": "Ok"
+        },
+        "width": 0.1
+      },
+      "dBox5": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "n.i.O.",
+          "en": "Not ok"
+        },
+        "width": 0.1
+      },
+      "note5": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Messwerte / Bemerkungen",
+          "en": "Measured values / remarks"
+        },
+        "width": 0.5
+      },
+      "note6": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Welche Be-und Entlüftung?",
+          "en": "What ventilation and exhaust?"
+        },
+        "width": 1
+      }
+    }
+  },
+  "3-technicalSpecifications": {
+    "isForm": true,
+    "ui": "CARD",
+    "initialExpand": true,
+    "hideFormIdInPdf": true,
+    "cardHeadline": {
+      "de": "Technischen Angaben zur Anlage",
+      "en": "Technische Angaben zur Anlage"
+    },
+    "stateIndicator": true,
+    "hasNextStep": true,
+    "required": true,
+    "children": {
+      "note1": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Welcher Regler?",
+          "en": "Which controller?"
+        },
+        "width": 0.5
+      },
+      "note2": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Netzspannung",
+          "en": "Mains voltage"
+        },
+        "width": 0.5
+      },
+      "note3": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Max. Spannung",
+          "en": "Max. voltage"
+        },
+        "width": 0.5
+      },
+      "note4": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Entladezeit",
+          "en": "Discharge time"
+        },
+        "width": 0.5
+      },
+      "note5": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Max. Strom",
+          "en": "Max. power"
+        },
+        "width": 0.5
+      },
+      "note6": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Schrankgröße (HxBxT)",
+          "en": "Cabinet size"
+        },
+        "width": 0.5
+      },
+      "note7": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Max. Temparatur",
+          "en": "Max. temparature"
+        },
+        "width": 0.5
+      },
+      "repeater": {
+        "isForm": true,
+        "isListForm": true,
+        "displayButtons": true,
+        "listFormNoDataHint": {
+          "en": "No entries have been added yet.",
+          "de": "Es wurden noch keine Einträge hinzugefügt."
+        },
+        "disableTabularView": false,
+        "children": {
+          "select": {
+            "fieldType": "SELECT",
+            "label": {
+              "de": "Stufe",
+              "en": "Stage"
+            },
+            "required": true,
+            "width": 1,
+            "hiddenInPdf": false,
+            "multiple": false,
+            "options": [
+                {
+                    "value": "one",
+                    "text": {
+                        "de": "Stufe 1",
+                        "en": "Stage 1"
+                    }
+                },
+                {
+                    "value": "two",
+                    "text": {
+                        "de": "Stufe 2",
+                        "en": "Stage 2"
+                    }
+                },
+                {
+                    "value": "three",
+                    "text": {
+                        "de": "Stufe 3",
+                        "en": "Stage 3"
+                    }
+                },
+                {
+                  "value": "four",
+                  "text": {
+                      "de": "Stufe 4",
+                      "en": "Stage 4"
+                  }
+                },
+                {
+                  "value": "five",
+                  "text": {
+                      "de": "Stufe 5",
+                      "en": "Stage 5"
+                  }
+                },
+                {
+                  "value": "six",
+                  "text": {
+                      "de": "Stufe 6",
+                      "en": "Stage 6"
+                  }
+                },
+                {
+                  "value": "seven",
+                  "text": {
+                      "de": "Stufe 7",
+                      "en": "Stage 7"
+                  }
+                },
+                {
+                  "value": "eight",
+                  "text": {
+                      "de": "Stufe 8",
+                      "en": "Stage 8"
+                  }
+                },
+                {
+                  "value": "nine",
+                  "text": {
+                      "de": "Stufe 9",
+                      "en": "Stage 9"
+                  }
+                },
+                {
+                  "value": "ten",
+                  "text": {
+                      "de": "Stufe 10",
+                      "en": "Stage 10"
+                  }
+                },
+                {
+                  "value": "eleven",
+                  "text": {
+                      "de": "Stufe 11",
+                      "en": "Stage 11"
+                  }
+                },
+                {
+                  "value": "twelve",
+                  "text": {
+                      "de": "Stufe 12",
+                      "en": "Stage 12"
+                  }
+                }
+              ]
+          },
+          "text_1": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Stufenleistung (kvar)",
+              "en": "Step power (kvar)"
+            },
+            "required": false,
+            "hideInPdfIfEmpty": true,
+            "width": 1
+          },
+          "text_2": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Schaltspiele",
+              "en": "Switching cycles"
+            },
+            "required": false,
+            "hideInPdfIfEmpty": true,
+            "width": 1
+          },
+          "text_3": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Kondensatorspannung",
+              "en": "Capacitor voltage"
+            },
+            "required": false,
+            "hideInPdfIfEmpty": true,
+            "width": 1
+          },
+          "text_4": {
+            "fieldType": "INPUT_TEXT",
+            "label": {
+              "de": "Stufenströme",
+              "en": "Step currents"
+            },
+            "required": false,
+            "hideInPdfIfEmpty": true,
+            "width": 1
+          }
+        }
+      }
+    }
+  },
+  "4-operatorInformation": {
+    "isForm": true,
+    "ui": "CARD",
+    "initialExpand": true,
+    "hideFormIdInPdf": true,
+    "cardHeadline": {
+      "de": "Angaben vom Betreiber",
+      "en": "Information from the operator"
+    },
+    "stateIndicator": true,
+    "hasNextStep": true,
+    "required": true,
+    "children": {
+      "date_1": {
+        "fieldType": "REMBERG_DATE",
+        "label": {
+          "de": "Schadenstag?",
+          "en": "Damage date?"
+        },
+        "hiddenInPdf": false,
+        "width": 0.5,
+        "autofillCurrentDate": false,
+        "required": false    
+      },
+      "text_1": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Nutzungseigenschaften der Anlage?",
+          "en": "Usage characteristics of the asset?"
+        },
+        "required": false,
+        "hideInPdfIfEmpty": true,
+        "width": 0.5
+      },
+      "date_2": {
+        "fieldType": "REMBERG_DATE",
+        "label": {
+          "de": "Datum Inbetriebnahmeprotokoll",
+          "en": "Date commissioning protocol"
+        },
+        "hiddenInPdf": false,
+        "width": 0.5,
+        "autofillCurrentDate": false,
+        "required": false    
+      },
+      "date_3": {
+        "fieldType": "REMBERG_DATE",
+        "label": {
+          "de": "Datum letzte Wartung der Anlage",
+          "en": "Date net measurements"
+        },
+        "hiddenInPdf": false,
+        "width": 0.5,
+        "autofillCurrentDate": false,
+        "required": false    
+      },
+      "date_4": {
+        "fieldType": "REMBERG_DATE",
+        "label": {
+          "de": "Datum Netzmessungen",
+          "en": "Date last maintenance of the asset"
+        },
+        "hiddenInPdf": false,
+        "width": 0.5,
+        "autofillCurrentDate": false,
+        "required": false    
+      }
+    }
+  },
+  "5-operatorInformation": {
+    "isForm": true,
+    "ui": "CARD",
+    "initialExpand": true,
+    "hideFormIdInPdf": true,
+    "cardHeadline": {
+      "de": "Angaben zum Schaden",
+      "en": "Information about the damage"
+    },
+    "stateIndicator": true,
+    "hasNextStep": true,
+    "required": true,
+    "children": {
+      "subline4": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "Schrank beschädigt?",
+          "en": "Cabinet damaged?"
+        },
+        "width": 0.3
+      },
+      "iBox4": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Ja",
+          "en": "Yes"
+        },
+        "width": 0.1
+      },
+      "dBox4": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Nein",
+          "en": "No"
+        },
+        "width": 0.1
+      },
+      "note4": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Umfang der Beschädigung",
+          "en": "Extent of damage"
+        },
+        "width": 0.5
+      },
+      "subline5": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "Modul beschädigt?",
+          "en": "Module damaged?"
+        },
+        "width": 0.3
+      },
+      "iBox5": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Ja",
+          "en": "Yes"
+        },
+        "width": 0.1
+      },
+      "dBox5": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Nein",
+          "en": "No"
+        },
+        "width": 0.1
+      },
+      "note5": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Umfang der Beschädigung",
+          "en": "Extent of damage"
+        },
+        "width": 0.5
+      },
+      "subline6": {
+        "fieldType": "HELP_TEXT",
+        "text": {
+          "de": "Bauteile beschädigt?",
+          "en": "Components damaged?"
+        },
+        "width": 0.3
+      },
+      "iBox6": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Ja",
+          "en": "Yes"
+        },
+        "width": 0.1
+      },
+      "dBox6": {
+        "fieldType": "CHECKBOX",
+        "label": {
+          "de": "Nein",
+          "en": "No"
+        },
+        "width": 0.1
+      },
+      "note6": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Umfang der Beschädigung",
+          "en": "Extent of damage"
+        },
+        "width": 0.5
+      },
+      "note7": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Geschätzter Aufwand für Reparatur",
+          "en": "Estimated cost of repair"
+        },
+        "width": 0.5
+      },
+      "note8": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Benötigtes Material für Reparatur",
+          "en": "Material needed for repair"
+        },
+        "width": 0.5
+      }
+    }
+  },
+  "6-remarks": {
+    "isForm": true,
+    "ui": "CARD",
+    "initialExpand": true,
+    "hideFormIdInPdf": true,
+    "cardHeadline": {
+      "de": "Sonstige Bemerkungen und Fotos der beschädigten Anlage",
+      "en": "Other remarks and photos of the damaged asset"
+    },
+    "stateIndicator": true,
+    "hasNextStep": true,
+    "required": true,
+    "children": {
+      "remarks": {
+      "fieldType": "REMBERG_RICH_TEXTAREA",
+      "label": {
+        "de": "Sonstige Bemerkungen",
+        "en": "Other remarks"
+      },
+      "placeholder": {
+        "de": "Bitte unbedingt Fotos der Anlage und des Schadens beifügen!",
+        "en": "Please be sure to include photos of the system and the damage!"
+      },
+      "hiddenInPdf": false,
+      "required": false,
+      "width": 1
+    }
+  }
+  },
+    "5-signature_technician": {
+      "width": 0.5,
+      "unbreakable": true,
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature service technician",
+        "de": "Unterschrift Servicetechniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service technician"
+          },
+          "required": true,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "7-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send filled damage report",
+        "de": "Ausgefüllter Schadensbericht absenden"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "prefillConfig": {
+            "subject": "Schadensbericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
