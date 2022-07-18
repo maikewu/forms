@@ -1,0 +1,248 @@
+{
+  "general": {
+    "type": "Freigabe - Garantie/Kulanz",
+    "list_path": "Freigabe - Garantie/Kulanz",
+    "name": {
+      "en": "Service Report",
+      "de": "Freigabe - Garantie/Kulanz"
+    }
+  },
+  "formStructure": {
+    "00-ab2500verkaufswert": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": " ",
+        "en": " "
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Auszufüllen vom zuständigen Vertriebssachbearbeiter ab einem Wert von 2.500,00 € (Verkaufswert)",
+            "en": "If the value reaches at least EUR 2,500,- (sales value), then the following has to be filled out by the responsible sales administrator."
+          }
+        }
+      }
+    },
+    "01-customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Kundeninformationen",
+        "en": "Customer Information"
+    },
+    "stateIndicator": true,
+    "hasNextStep": true,
+    "children": {
+      "customer": {
+        "fieldType": "REMBERG_CUSTOMER_SELECT",  
+        "required": false,
+        "width": 1,
+        "label": {
+          "de": "Kunde",
+          "en": "Customer"
+        },
+        "hideInPdfIfEmpty": false,
+        "messages": {
+          "onChange": [
+            {
+              "to": "01_customerInformation",
+              "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": {
+                        "_field": {
+                          "_field": {
+                            "_field": "customer",
+                            "_propertyName": "customer"
+                          },
+                          "_functionName": "GET_ACCOUNT"
+                        },
+                        "_propertyName": "company"
+                      },
+                      "_propertyName": "billingAddress"
+                    },
+                    "output": {
+                      "_field": "customerLocation"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }  
+      },
+      "customerLocation": {
+        "fieldType": "REMBERG_ADDRESS",
+        "label": {
+          "de": "Adresse",
+          "en": "Address"
+        },
+        "hideInPdfIfEmpty": true,
+        "required": false,
+        "width": 0.5
+      },
+      "messages": {
+        "onLoaded":[
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "asset": {
+        "fieldType": "REMBERG_ASSET_SELECT",
+        "required": false,
+        "disableSelection": false,
+        "hidePreselection": false,
+        "showUnassigned": true,
+        "editShowInput": true,
+        "registerAssetChange": true,
+        "hiddenInPdf": false,
+        "label": {
+          "de": "Maschinennummer",
+          "en": "Asset Number"
+        }
+      },
+      "baujahr": {
+        "fieldType": "INPUT_TEXT",
+        "label": {
+          "de": "Baujahr",
+          "en": "Construction Year"
+        },
+        "required": false,
+        "width": 0.5,
+        "hiddenInPdf": false,
+        "hideInPdfIfEmpty": false,
+        "disabled": false
+      },
+    "02_workOrderInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Work Order Information",
+        "de": "Auftragsinformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "workOrderType": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Auftragsart",
+            "en": "Work Order Type"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "GPC",
+                "en": "GPC"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "GAC",
+                "en": "GAC"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "KUC",
+                "en": "KUC"
+              }
+            }
+          ]
+        },
+        "invoiceStatus": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Rechnungsstatus",
+            "en": "Invoice Status"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Rechnungsstornierung (ohne Folgerechnung)",
+                "en": "Canceled invoice (without following invoice)"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Rechnungsgutschrift (Garantie / Kulanz)",
+                "en": "Invoice related credit note (warranty / goodwill)"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "Rechnungsgutschrift (Vertragsstrafe)",
+                "en": "Invoice related credit note (contractual penalty)"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+}
+}
