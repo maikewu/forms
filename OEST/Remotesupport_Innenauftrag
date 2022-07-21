@@ -1,0 +1,452 @@
+{
+  "general": {
+    "name": {
+      "en": "Remote support / internal order",
+      "de": "Remotesupport / Innenauftrag"
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Daten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 1,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customercontactperson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "width": 1,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "08-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "dosageType": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Dosieranlage",
+            "en": "Dosing System"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "ontopHead": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragskopf",
+            "en": "Topping Head"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer",
+            "en": "Work Order Number"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Maschinennummer",
+            "en": "Machine Number"
+          }
+        },
+        "emptyRow23": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address",
+                    "_functionName": "GET_ADDRESS"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customercontactperson",
+                    "_propertyName": "account"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "01_1_reisezeiten": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Working hours",
+        "de": "Arbeitszeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Arbeitszeiten",
+            "en": "Working hours"
+          },
+          "disableDistanceField": true,
+          "required": true
+        },
+        "emptyRow25": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        }
+      }
+    },
+    "02_mission_infos": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Service Information",
+        "de": "Service-Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "openPoints": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Was wurde gemacht?",
+            "en": "What was done?"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "minRows": 1
+        },
+        "emptyRow20": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": " ",
+            "en": " "
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "07-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "autofillLocation": "Freudenstadt",
+          "required": true
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as e-mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Remotesupport / Innenauftrag - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "norina.koenig@oest.de",
+                "marion.nuebel@oest.de",
+                "Alina.Wiebe@oest.de"
+
+              ]
+            },
+            "cc": {
+              "currentUser": true,
+              "others": [
+                "Juri.Biegler@oest.de"
+              ]
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
