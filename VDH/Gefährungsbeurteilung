@@ -1,0 +1,1676 @@
+{
+  "general": {
+    "name": {
+      "en": "Hazard Assessment By Employees On Construction Sites",
+      "de": "Gefährdungsbeurteilung durch Mitarbeiter auf Baustellen"
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "A. Name, Datum, Auftragsdaten",
+        "en": "A. Name, Date, Order Data"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "performingTechnician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Durchgeführt von",
+            "en": "Performed by"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "serviceNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftrags-Nr.",
+            "en": "Order Number"
+          },
+          "required": true,
+          "width": 0.5
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "06-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07-signature_manager",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_bestimmungen_gefaehrdung": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "B. Determination of the hazard",
+        "de": "B. Bestimmung der Gefährdung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "header1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "1. Mechanische Gefährdung",
+            "en": "1. Mechanical Hazard"
+          }
+        },
+        "hazard_B-1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Ungeschützte bewegte Teile (z.B. Quetschstelle)",
+                "en": "Unprotected moving parts (e.g. crushing point)"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Teile mit gefährlichen Oberflächen",
+                "en": "Parts with dangerous surfaces"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "Bewegte Transportmittel",
+                "en": "Moving means of transport"
+              }
+            },
+            {
+              "value": "hazard4",
+              "text": {
+                "de": "Arbeitsmittel (z.B. Gabelstapler)",
+                "en": "Work equipment (e.g. forklift)"
+              }
+            },
+            {
+              "value": "hazard5",
+              "text": {
+                "de": "Unkontrollierte bewegte Teile",
+                "en": "Uncontrolled moving parts"
+              }
+            }
+          ]
+        },
+        "comment1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Andere Gefährdungen / Bemerkungen",
+            "en": "Other Hazards / Comments"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "2. Elektrische Gefährdung",
+            "en": "2. Electrical Hazard"
+          }
+        },
+        "hazard_B-2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Ungeschützte unter Spannung stehende Teile",
+                "en": "Unprotected live parts"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Lichtbögen",
+                "en": "Electric arcs"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "Elektrostatische Aufladung",
+                "en": "Electrostatic charge"
+              }
+            }
+          ]
+        },
+        "comment2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Andere Gefährdungen / Bemerkungen",
+            "en": "Other Hazards / Comments"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header3": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 0.75,
+          "text": {
+            "de": "3. Gefährdung durch Stoffe",
+            "en": "3. Hazard from substances"
+          }
+        },
+        "hazard_B-3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Feststoffe",
+                "en": "Solids"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Flüssigkeiten",
+                "en": "Liquids"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "Gase",
+                "en": "Gases"
+              }
+            },
+            {
+              "value": "hazard4",
+              "text": {
+                "de": "Nebel",
+                "en": "Mists"
+              }
+            },
+            {
+              "value": "hazard5",
+              "text": {
+                "de": "Dämpfe",
+                "en": "Vapors"
+              }
+            },
+            {
+              "value": "hazard6",
+              "text": {
+                "de": "Stäube",
+                "en": "Dusts"
+              }
+            },
+            {
+              "value": "hazard7",
+              "text": {
+                "de": "Belastung durch Gerüche",
+                "en": "Exposure to odors"
+              }
+            },
+            {
+              "value": "hazard8",
+              "text": {
+                "de": "Arbeiten in feuchtem Umfeld",
+                "en": "Work in humid environment"
+              }
+            }
+          ]
+        },
+        "comment31": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Um welchen Stoff handelt es sich?",
+            "en": "What substance is it?"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "comment3_2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Welche Gefährdung liegt vor?",
+            "en": "Which hazard is present?"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "disclaimer1": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Sicherheitsdatenblatt einsehen!",
+            "en": "View safety data sheet!"
+          }
+        },
+        "header4": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 0.75,
+          "text": {
+            "de": "4. Biologische Gefährdung",
+            "en": "4. Biological Hazard"
+          }
+        },
+        "hazard_B-4": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Infekt.-gefährl. Mikroorganismen (Bakterien, Viren, Pilze)",
+                "en": "Microorganisms dangerous for infections (bacteria, viruses, fungi)"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Gentechnisch veränderte Organismen",
+                "en": "Genetically modified organisms"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "Allergene und toxische Stoffe v. Mikroorganismen",
+                "en": "Allergens and toxic substances of microorganisms"
+              }
+            }
+          ]
+        },
+        "disclaimer5": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Achtung: bei biologischen Gefährdungen Arbeitsfreigabe von Abteilungsleiter / VDH-FaSi einholen!",
+            "en": "Attention: in case of biological hazards, obtain work approval from department head / VDH-FaSi!"
+          }
+        },
+        "header5": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 0.75,
+          "text": {
+            "de": "5. Gefährdung, Belastung durch Arbeitsumgebung",
+            "en": "5. Hazard, strain due to work environment"
+          }
+        },
+        "hazard_B-5": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Enge Räume",
+                "en": "Confined spaces"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Verkehrswege / Fluchtwege",
+                "en": "Traffic routes / escape routes"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "Beleuchtung",
+                "en": "Lighting"
+              }
+            },
+            {
+              "value": "hazard4",
+              "text": {
+                "de": "Klima (Hitze, Kälte, Zugluft, Luftfeuchtigkeit)",
+                "en": "Climate (heat, cold, drafts, humidity)"
+              }
+            },
+            {
+              "value": "hazard5",
+              "text": {
+                "de": "Sturz, Ausrutschen, Stolpern, Umknicken, Absturz",
+                "en": "Falling, Slipping, Tripping, Twisting an ankle, Falling down"
+              }
+            }
+          ]
+        },
+        "comment5": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Andere Gefährdungen / Bemerkungen",
+            "en": "Other Hazards / Comments"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header6": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 0.75,
+          "text": {
+            "de": "6. Gefährdung durch spezielle physikalische Einwirkung",
+            "en": "6. Hazard due to special physical action"
+          }
+        },
+        "hazard_B-6": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Lärm",
+                "en": "Noise"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Vibration (z.B. Ganzkörperschwingungen)",
+                "en": "Vibration (e.g., whole-body vibration)"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "Arbeiten in Unter- oder Überdruck",
+                "en": "Working in negative or positive pressure"
+              }
+            },
+            {
+              "value": "hazard4",
+              "text": {
+                "de": "Kontakt mit heißen oder kalten Medien",
+                "en": "Contact with hot or cold media"
+              }
+            },
+            {
+              "value": "hazard5",
+              "text": {
+                "de": "Ionisierende Strahlung (z.B. Röntgenstrahlung)",
+                "en": "Ionizing radiation (e.g., X-rays)"
+              }
+            },
+            {
+              "value": "hazard6",
+              "text": {
+                "de": "Infrarote, untraviolette Strahlung",
+                "en": "Infrared, untraviolet radiation"
+              }
+            },
+            {
+              "value": "hazard7",
+              "text": {
+                "de": "Elektromagnetische Felder",
+                "en": "Electromagnetic fields"
+              }
+            },
+            {
+              "value": "hazard8",
+              "text": {
+                "de": "Laserstrahlung",
+                "en": "Laser radiation"
+              }
+            }
+          ]
+        },
+        "comment6": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Andere Gefährdungen / Bemerkungen",
+            "en": "Other Hazards / Comments"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header7": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 0.75,
+          "text": {
+            "de": "7. Brand- und Explosionsgefährung",
+            "en": "7. Fire and explosion hazard"
+          }
+        },
+        "hazard_B-7": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Brennbare Feststoffe, Flüssigkeiten, Gase",
+                "en": "Flammable solids, liquids, gases"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Explosionsfähige Atmosphäre (z.B. Stäube)",
+                "en": "Explosive atmosphere (e.g. dusts)"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "Sprengstoffe / Explosionsstoffe",
+                "en": "Explosives / explosive materials"
+              }
+            }
+          ]
+        },
+        "comment7": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Andere Gefährdungen / Bemerkungen",
+            "en": "Other Hazards / Comments"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header8": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 0.75,
+          "text": {
+            "de": "8. Physische Belastung / Arbeitsschwere",
+            "en": "8. Physical load / work severity"
+          }
+        },
+        "hazard_B-8": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Schwere dynamische Arbeit (z.B. manuelle Lastbewegung)",
+                "en": "Heavy dynamic work (e.g., manual load movement)"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Einseitige dynamische Arbeit, Körperbewegung",
+                "en": "One-sided dynamic work, body movement"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "Zwangshaltung",
+                "en": "Forced posture"
+              }
+            }
+          ]
+        },
+        "comment8": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Andere Gefährdungen / Bemerkungen",
+            "en": "Other Hazards / Comments"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header9": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 0.75,
+          "text": {
+            "de": "9. Wahrnehmung und Handhabbarkeit",
+            "en": "9. Perception and manageability"
+          }
+        },
+        "hazard_B-9": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Wahrnehmung von Signalen und Prozessmerkmalen",
+                "en": "Perception of signals and process features"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "Erschwerte Handhabbarkeit von Arbeitsmitteln",
+                "en": "Difficulty in handling work equipment"
+              }
+            }
+          ]
+        },
+        "comment9": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Andere Gefährdungen / Bemerkungen",
+            "en": "Other Hazards / Comments"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "header10": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 0.75,
+          "text": {
+            "de": "10. Sonstige Gefährdung / Belastung",
+            "en": "10. Other Hazards / Strains"
+          }
+        },
+        "hazard_B-10": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gefährdungen",
+            "en": "Hazards"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "noHazard",
+              "text": {
+                "de": "Keine Gefährdung",
+                "en": "No hazard"
+              }
+            },
+            {
+              "value": "harzard1",
+              "text": {
+                "de": "Besondere psychische Belastungen durch die Arbeit",
+                "en": "Special psychological stresses caused by work"
+              }
+            },
+            {
+              "value": "hazard2",
+              "text": {
+                "de": "durch Menschen (z.B. Überfall)",
+                "en": "by people (e.g. assault)"
+              }
+            },
+            {
+              "value": "hazard3",
+              "text": {
+                "de": "durch Tiere",
+                "en": "by animals"
+              }
+            },
+            {
+              "value": "hazard4",
+              "text": {
+                "de": "durch Pflanzen",
+                "en": "by plants"
+              }
+            }
+          ]
+        },
+        "comment10": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Andere Gefährdungen / Bemerkungen",
+            "en": "Other Hazards / Comments"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "03_technische_Schutzmaßnahmen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "C. Protective Measures",
+        "de": "C. Schutzmaßnahmen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "header_C1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "1. Technische Schutzmaßnahmen",
+            "en": "1. Technical Protective Measures"
+          }
+        },
+        "checklist-C1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Folgende technische Schutzmaßnahmen sind aufgrund der o.g. Gefährdungen / Kundenspezifisch notwendig",
+            "en": "The following technical protective measures are necessary due to the above-mentioned hazards / customer-specifics"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "item1",
+              "text": {
+                "de": "Ex- und O2-Tester",
+                "en": "Ex- und O2-Tester"
+              }
+            },
+            {
+              "value": "item2",
+              "text": {
+                "de": "Feuerlöscher",
+                "en": "Fire extinguisher"
+              }
+            },
+            {
+              "value": "item3",
+              "text": {
+                "de": "Gerüst",
+                "en": "Scaffold"
+              }
+            },
+            {
+              "value": "item4",
+              "text": {
+                "de": "Zusatzbeleuchtung",
+                "en": "Additional lighting"
+              }
+            },
+            {
+              "value": "item5",
+              "text": {
+                "de": "Hubarbeitsbühne",
+                "en": "Aerial work platform"
+              }
+            },
+            {
+              "value": "item6",
+              "text": {
+                "de": "Stapler",
+                "en": "Stacker"
+              }
+            },
+            {
+              "value": "item7",
+              "text": {
+                "de": "Kran",
+                "en": "Crane"
+              }
+            },
+            {
+              "value": "item8",
+              "text": {
+                "de": "Filmdosimeter",
+                "en": "Film dosemeter"
+              }
+            }
+          ]
+        },
+        "comment_C1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Ergänzungen / Bemerkungen",
+            "en": "Additions / Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "completed_C1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sind die erforderlichen Maßnahmen erledigt?",
+            "en": "Have the required measures been completed?"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "relevant",
+              "text": {
+                "de": "Entfällt",
+                "en": "N/A"
+              }
+            },
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "helptext_C1_2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wenn nein, dann Rücksprache mit AL",
+            "en": "If no, then consult with AL"
+          }
+        },
+        "header_C2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "2. Organisatorische Schutzmaßnahmen",
+            "en": "2. Organizational Protective Measures"
+          }
+        },
+        "checklist-C2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Folgende organisatorische Schutzmaßnahmen sind aufgrund der o.g. Gefährdungen / Kundenspezifisch notwendig",
+            "en": "The following organizational protective measures are necessary due to the above-mentioned hazards / customer-specifics"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "item1",
+              "text": {
+                "de": "gekennz. Weg nutzen",
+                "en": "Use marked path"
+              }
+            },
+            {
+              "value": "item2",
+              "text": {
+                "de": "Baustelle absperren",
+                "en": "Seal off construction site"
+              }
+            },
+            {
+              "value": "item3",
+              "text": {
+                "de": "Sicherheitspausen",
+                "en": "Safety breaks"
+              }
+            },
+            {
+              "value": "item4",
+              "text": {
+                "de": "Besond. vorsichtig arbeiten",
+                "en": "Work especially carefully"
+              }
+            },
+            {
+              "value": "item5",
+              "text": {
+                "de": "Anlage abschalten",
+                "en": "Turn off machine"
+              }
+            },
+            {
+              "value": "item6",
+              "text": {
+                "de": "Nicht unter schweb. Last.",
+                "en": "Not unter suspended load"
+              }
+            },
+            {
+              "value": "item7",
+              "text": {
+                "de": "Über Fluchtweg informiert",
+                "en": "Informed about escape route"
+              }
+            },
+            {
+              "value": "item8",
+              "text": {
+                "de": "Absprache mit Sicherheitspersonal",
+                "en": "Consultation with security personnel"
+              }
+            }
+          ]
+        },
+        "comment_C2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Ergänzungen / Bemerkungen",
+            "en": "Additions / Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "completed_C2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sind die erforderlichen Maßnahmen erledigt?",
+            "en": "Have the required measures been completed?"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "relevant_2",
+              "text": {
+                "de": "Entfällt",
+                "en": "N/A"
+              }
+            },
+            {
+              "value": "yes_2",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no_2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "helptext_C2_2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wenn nein, dann Rücksprache mit AL",
+            "en": "If no, then consult with AL"
+          }
+        },
+        "header_C3": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "3. PSA",
+            "en": "3. PPE"
+          }
+        },
+        "checklist-C3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Folgende PSA ist aufgrund der o.g. Gefährdungen / Kundenspezifisch notwendig",
+            "en": "The following PPE is necessary due to the above-mentioned hazards / customer-specifics"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "item1",
+              "text": {
+                "de": "Sicherheitsschuhe",
+                "en": "Safety shoes"
+              }
+            },
+            {
+              "value": "item2",
+              "text": {
+                "de": "Schutzbrille",
+                "en": "Safety glasses"
+              }
+            },
+            {
+              "value": "item3",
+              "text": {
+                "de": "Gehörschutz",
+                "en": "Hearing protection"
+              }
+            },
+            {
+              "value": "item4",
+              "text": {
+                "de": "Handschuhe",
+                "en": "Gloves"
+              }
+            },
+            {
+              "value": "item5",
+              "text": {
+                "de": "Staubmaske",
+                "en": "Dust mask"
+              }
+            },
+            {
+              "value": "item6",
+              "text": {
+                "de": "Atemschutz",
+                "en": "Respiratory protection"
+              }
+            },
+            {
+              "value": "item7",
+              "text": {
+                "de": "Schutzanzug",
+                "en": "Protective suit"
+              }
+            },
+            {
+              "value": "item8",
+              "text": {
+                "de": "Absturzsicherung / Gurt",
+                "en": "Fall protection / harness"
+              }
+            },
+            {
+              "value": "item9",
+              "text": {
+                "de": "Warnweste",
+                "en": "High visibility vest"
+              }
+            },
+            {
+              "value": "item10",
+              "text": {
+                "de": "Helm",
+                "en": "Helmet"
+              }
+            },
+            {
+              "value": "item11",
+              "text": {
+                "de": "Wärmeschutzkleidung",
+                "en": "Thermal clothing"
+              }
+            },
+            {
+              "value": "item12",
+              "text": {
+                "de": "Kälteschutzkleidung",
+                "en": "Cold protection clothing"
+              }
+            }
+          ]
+        },
+        "comment_C3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Ergänzungen / Bemerkungen",
+            "en": "Additions / Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "completed_C3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Wird die erforderliche PSA eingesetzt?",
+            "en": "Is the required PPE being used?"
+          },
+          "required": true,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes_2",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no_2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "helptext_C3_2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Wenn nein, dann Rücksprache mit AL",
+            "en": "If no, then consult with AL"
+          }
+        }
+      }
+    },
+    "04_corona_measures": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "D. What Corona protection measures are still necessary",
+        "de": "D. Welche Corona Schutzmaßnahmen sind noch notwendig"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "comment_D": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "",
+            "en": ""
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "05_people": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "E. Persons involved in hazard assessment",
+        "de": "E. An der Gefährdungsbeurteilung mitgewirkte Personen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "comment_D": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "",
+            "en": ""
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "06_documents": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "F. Applicable documents / attachments",
+        "de": "F. Mitgeltende Unterlagen / Anlagen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "dropdown_F": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Unterlagen/Anlagen",
+            "en": "Documents/Attachments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "value1",
+              "text": {
+                "de": "Fertigungsbegleitende Belege",
+                "en": "Production-related documents"
+              }
+            },
+            {
+              "value": "value2",
+              "text": {
+                "de": "Schweißbegleitende Belege",
+                "en": "Supporting documents for welding"
+              }
+            },
+            {
+              "value": "value3",
+              "text": {
+                "de": "Arbeitsfreigabe",
+                "en": "Work authorization"
+              }
+            },
+            {
+              "value": "value4",
+              "text": {
+                "de": "Einstiegserlaubnis",
+                "en": "Access permit"
+              }
+            },
+            {
+              "value": "value5",
+              "text": {
+                "de": "Sicherheitsdatenblatt",
+                "en": "Safety data sheet"
+              }
+            }
+          ]
+        },
+        "comment_F": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Andere",
+            "en": "Other"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "07_LMRA": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "G. LMRA",
+        "de": "G. LMRA"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "header_G": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Unabhängig von dieser Gefährdungsbeurteilung muss jeder Mitarbeiter vor jeder Arbeitsaufnahme eine LMRA durchführen:",
+            "en": "Regardless of this risk assessment, each employee must complete an LMRA before starting work:"
+          }
+        },
+        "helptext_G": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Arbeitsauftrag bekannt? Bin ich in der Lage die Arbeit auszuführen? Werkzeuge ok und sicher? Arbeitsplatz ok und sicher? Anlagenteil abgesichert? Sind alle Personen im Umfeld sicher? Alarmtöne, Fluchtwege, Notausgänge, Rettungs- und Schutzeinrichtungen bekannt? PSA geeignet?",
+            "en": "Work order known? Am I able to perform the work? Tools ok and safe? Workplace ok and safe? Plant part secured? Are all persons in the vicinity safe? Alarm sounds, escape routes, emergency exits, rescue and protection devices known? PPE suitable?"
+          }
+        }
+      }
+    },
+    "08-signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Creator Hazard Assessment",
+        "de": "Unterschrift Ersteller der Gefährdungsbeurteilung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Ersteller der Gefährdungsbeurteilung",
+            "en": "Creator Hazard Assessment"
+          },
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "09-signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Responsible Person",
+        "de": "Unterschrift Verantwortlicher"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Verantwortlicher",
+            "en": "Responsible Person"
+          },
+          "required": true,
+          "autofillCurrentUser": false
+        }
+      }
+    },
+    "10-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "prefillConfig": {
+            "subject": "Gefährdungsbeurteilung - W.v.d. Heyde GmbH",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "11-signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 1,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature",
+        "de": "Unterschrift"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "reviewer1-position": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Position",
+            "en": "Position"
+          },
+          "required": false,
+          "width": 0.5
+        },
+        "signature3": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Reviewer 1",
+            "en": "Prüfer 1"
+          },
+          "required": false,
+          "autofillCurrentUser": false,
+          "disableDateAutofill": true,
+          "width": 0.5
+        }
+      }
+    },
+    "12-signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 1,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature",
+        "de": "Unterschrift"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "reviewer2-position": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Position",
+            "en": "Position"
+          },
+          "required": false,
+          "width": 0.5
+        },
+        "signature4": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Reviewer 2",
+            "en": "Prüfer 2"
+          },
+          "required": false,
+          "autofillCurrentUser": false,
+          "disableDateAutofill": true,
+          "width": 0.5
+        }
+      }
+    },
+    "13-signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 1,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature",
+        "de": "Unterschrift"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "reviewer3-position": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Position",
+            "en": "Position"
+          },
+          "required": false,
+          "width": 0.5
+        },
+        "signature5": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Reviewer 3",
+            "en": "Prüfer 3"
+          },
+          "required": false,
+          "autofillCurrentUser": false,
+          "disableDateAutofill": true,
+          "width": 0.5
+        }
+      }
+    },
+    "14-signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 1,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature",
+        "de": "Unterschrift"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "reviewer2-position": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Position",
+            "en": "Position"
+          },
+          "required": false,
+          "width": 0.5
+        },
+        "signature6": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Reviewer 4",
+            "en": "Prüfer 4"
+          },
+          "required": false,
+          "autofillCurrentUser": false,
+          "disableDateAutofill": true,
+          "width": 0.5
+        }
+      }
+    }
+  }
+}

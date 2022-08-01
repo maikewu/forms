@@ -1,0 +1,654 @@
+{
+  "general": {
+    "name": {
+      "en": "Service Report",
+      "de": "Servicebericht"
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "serviceNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "vdh Auftrags-Nr.",
+            "en": "vdh Service Number"
+          },
+          "required": true,
+          "width": 0.5
+        },
+        "serviceTermin": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Servicetermin",
+            "en": "Service Date"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "contactPersons",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Anlage",
+            "en": "Machine"
+          },
+          "registerAssetChange": true,
+          "required": true,
+          "width": 1
+        },
+        "assetHeader": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Weitere Anlagen",
+            "en": "Additional assets"
+          }
+        },
+        "machine_repeater": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "disableTabularView": true,
+          "children": {
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": true,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "label": {
+                "de": "Weitere Anlage",
+                "en": "Additional asset"
+              }
+            }
+          }
+        },
+        "contactPersons": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Ansprechpartner beim Kunden",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": true,
+          "width": 0.5,
+          "required": false
+        },
+        "customerContactText": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Falls der Kontakt oben nicht auffindbar ist, bitte folgend manuell eintippen:",
+            "en": "In case the contact is not to be found above, please enter it manually below:"
+          }
+        },
+        "contactPersons_customer_freetext": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner beim Kunden",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "missionDetails": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Auftragsinhalt",
+            "en": "Work Order Content"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "serviceTechnician_User": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service Technician"
+          },
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": false,
+          "autofillCurrentUser": true,
+          "width": 1,
+          "required": false
+        },
+        "serviceTechnicians": {
+          "fieldType": "REMBERG_PERSONS",
+          "label": {
+            "de": "Weitere Servicetechniker",
+            "en": "Additional service technicians"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "customerFilter"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "contactPersons",
+                    "_propertyName": "account"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_Anlagenzustand_vor_Arbeit": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Machine Condition Before Service Work",
+        "de": "Anlagenzustand vor Arbeitsaufnahme"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "conidition": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlagenzustand",
+            "en": "Machine Condition"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "nOK",
+              "text": {
+                "de": "n. OK",
+                "en": "n. OK"
+              }
+            }
+          ]
+        },
+        "cleanness": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sauberkeit der Anlage",
+            "en": "Machine Cleanness"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "ok_2",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "nOK_2",
+              "text": {
+                "de": "n. OK",
+                "en": "n. OK"
+              }
+            }
+          ]
+        },
+        "leakage": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leckgröße",
+            "en": "Leakage Size"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "display_leak": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anzeige Leck",
+            "en": "Leakage Display"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "preConiditionComment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "03_performedTasksInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Performed Tasks",
+        "de": "Durchgeführte Arbeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Durchgeführte Arbeiten",
+            "en": "Performed Tasks"
+          },
+          "required": true
+        },
+        "tasksComment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "04_Anlagenzustand_nach_Arbeit": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Machine Condition After Service Work",
+        "de": "Anlagenzustand nach Beendigung der Arbeit"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "conidition_after": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlagenzustand",
+            "en": "Machine Condition"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "ok_3",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "nOK_3",
+              "text": {
+                "de": "n. OK",
+                "en": "n. OK"
+              }
+            }
+          ]
+        },
+        "cleanness_after": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sauberkeit der Anlage",
+            "en": "Machine Cleanness"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "ok_4",
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "nOK_4",
+              "text": {
+                "de": "n. OK",
+                "en": "n. OK"
+              }
+            }
+          ]
+        },
+        "leakage_after": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leckgröße",
+            "en": "Leakage Size"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "display_leak_after": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Anzeige Leck",
+            "en": "Leakage Display"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "postConiditionComment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "05_notesInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Notes",
+        "de": "Anmerkungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "additionalTasks": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Zusätzlich notwendige Arbeiten / Angebote",
+            "en": "Additional necessary tasks / offers"
+          },
+          "required": false,
+          "width": 1
+        },
+        "comments": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen / Zusätze",
+            "en": "Comments / Additions"
+          },
+          "required": true,
+          "width": 1
+        },
+        "retourGoodsText": {
+          "fieldType": "H1",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Retourware",
+            "en": "Retourware"
+          }
+        },
+        "retourGoods": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Retourware eintragen",
+            "en": "Enter Return Goods"
+          },
+          "partNumberRequired": false,
+          "descriptionRequired": false,
+          "amountRequired": false,
+          "deliveryRequired": false,
+          "invoice": false,
+          "invoiceFields": false,
+          "hideWarrantyField": true,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "06-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service Technician",
+        "de": "Unterschrift Servicetechniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service Technician"
+          },
+          "autofillCurrentUser": true,
+          "autofillLocation": "Stade",
+          "required": true
+        }
+      }
+    },
+    "08-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "prefillConfig": {
+            "subject": "Servicebericht - W.v.d. Heyde GmbH",
+            "content": "Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-Mail. \n\nAnbei erhalten sie den Bericht des letzten Serviceeinsatzes. \n\nMit freundlichen Grüßen,\nIhr Service-Team.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
