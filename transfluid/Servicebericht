@@ -1,0 +1,360 @@
+{
+  "general": {
+    "name": {
+      "en": "Service report",
+      "de": "Servicebericht"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreiben Sie das Protokoll."
+      }
+    }
+  },
+  "formStructure": {
+    "01-customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Kundeninformationen"
+      },
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "02_case",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01-customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "location"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customercontactperson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "location": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "A1-signatureTechnican",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "location",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "A2-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "location",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customercontactperson": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Ansprechpartner",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "printEmailAddress": true,
+          "width": 0.5,
+          "required": false
+        },
+        "customerContactText": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Falls der Kontakt oben nicht auffindbar ist, bitte folgend manuell eintippen:",
+            "en": "In case the contact is not to be found above, please enter it manually below:"
+          }
+        },
+        "contactPersons_customer_freetext": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "required": false
+        },
+        "contactPersons_tf": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "TF Ansprechpartner",
+            "en": "Contact Person of Customer"
+          },
+          "hideInPdfIfEmpty": false
+        }
+      }
+    },
+    "02-case": {
+      "isForm": true,
+      "ui": "CARD",
+      "unbreakable": false,
+      "cardHeadline": {
+        "en": "Order informations",
+        "de": "Auftragsinformationen"
+      },
+      "children": {
+        "assembler": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Monteur",
+            "en": "Assembler"
+          },
+          "autofillCurrentUser": true,
+          "required": true
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "times": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Arbeits- und Reisezeiten",
+            "en": "Work and travle times"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "required": false
+        },
+        "describtion": {
+          "fieldType": "H3",
+          "width": 1,
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Problembeschreibung",
+            "en": "Problem describtion"
+          }
+        },
+        "richTextField": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Beschreibung",
+            "en": "Describtion"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        },
+        "check1": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Material verbaut",
+            "en": "Material obstructed"
+          }
+        },
+        "check2": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Arbeit abgeschlossen",
+            "en": "Work done"
+          }
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          },
+          "width": 0.3
+        }
+      }
+    },
+    "A1-signatureTechnican": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Monteur"
+      },
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Monteur",
+            "en": "Assembler"
+          },
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "A2-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Unterschrift Kunde"
+      },
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "autofillCurrentUser": false,
+          "required": true
+        }
+      }
+    },
+    "A3-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "prefillConfig": {
+            "subject": "Prüfprotokoll Walzenschleifen - Herkules",
+            "content": "Sehr geehrte Damen und Herren,\n\nanbei erhalten sie den Bericht des letzten Prüfung in Ihrem Unternehmen.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          }
+        }
+      }
+    }
+  }
+}
