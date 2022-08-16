@@ -1,0 +1,882 @@
+{
+  "general": {
+    "name": {
+      "en": "Service Protocol",
+      "de": "Serviceprotokoll"
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children":{
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "06-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer_contact": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner",
+            "en": "Contact Person"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer_contact"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "name"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "gewerk": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gewerk",
+            "en": "Craft"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "messages": {
+            "onChange": [
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer_contact"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "name"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Anlage",
+            "en": "Asset"
+          }
+        },
+        "order_number": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftragsnummer",
+            "en": "Order Number"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "service_date":{
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Servicedatum",
+            "en": "Service date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": true,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_bauseits": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "On-site",
+        "de": "Bauseits"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "betriebsanleitung": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Betriebsanleitung / Wartungsanleitung erhalten",
+            "en": "Operating manual / Maintenance manual received"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "bemerkung_betriebsanleitung": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "wartungsintervalle": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Vorgeschriebene Wartungsintervalle erhalten",
+            "en": "Mandatory maintenance intervals received"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "bemerkung_wartungsintervall": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "zeichnungen": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zeichnungen erhalten",
+            "en": "Drawings received"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "bemerkung_zeichnungen": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "ersatzteile": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Ersatz- und Verschleißteile erhalten",
+            "en": "Spare parts received"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "bemerkung_ersatzteile": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "spezialwerkzeug": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Spezialwerkzeug erhalten",
+            "en": "Special toolings received"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "bemerkung_spezialwerkzeug": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "03_sichtpruefung": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Visual Inspection",
+        "de": "Sichtprüfung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "zustand": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Allgemeiner Zustand der Anlage",
+            "en": "General condition of asset"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "i.O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "n.i.O.",
+                "en": "Not OK"
+              }
+            }
+          ]
+        },
+        "bemerkung_zustand": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "verschraubungen": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Überprüfung von Verschraubungen",
+            "en": "Checking of screw connections"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "i.O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "n.i.O.",
+                "en": "Not OK"
+              }
+            }
+          ]
+        },
+        "bemerkung_verschraubungen": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "verschleiss": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Verschleiß / Verschleißteile",
+            "en": "Wearing parts"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "i.O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "n.i.O.",
+                "en": "Not OK"
+              }
+            }
+          ]
+        },
+        "bemerkung_verschleiss": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "reinigung": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Reinigung und Schmierung",
+            "en": "Cleaning and lubrication"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "i.O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "n.i.O.",
+                "en": "Not OK"
+              }
+            }
+          ]
+        },
+        "bemerkung_reinigung": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "beschaedigungen": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Beschädigungen",
+            "en": "Damages"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "i.O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "n.i.O.",
+                "en": "Not OK"
+              }
+            }
+          ]
+        },
+        "bemerkung_beschaedigungen": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "sicherheitseinrichtungen": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sicherheitseinrichtungen (mechanisch)",
+            "en": "Safety devices (mechanical)"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "i.O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "n.i.O.",
+                "en": "Not OK"
+              }
+            }
+          ]
+        },
+        "bemerkung_sicherheitseinrichtungen": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "04_tasks": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Performed Tasks",
+        "de": "Ausgeführte Arbeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "vorgaben_tasks": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Vorgabe der auszuführenden Arbeiten",
+            "en": "Specification of to be performed tasks"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "ausgefuehrte_tasks": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Ausgeführte Arbeiten / Sonsitges / Bemerkungen",
+            "en": "Performed tasks / notes"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "arbeiten_abgeschlossen": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Arbeiten abgeschlossen",
+            "en": "Work completed"
+          },
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": false,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "bemerkungen": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "06-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "07-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "12-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send3": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Serviceprotokoll - khb Maschinen- und Anlagenbau GmbH",
+            "content": "Sehr geehrte Damen und Herren,\n\nanbei erhalten sie das Serviceprotokolls unseres Technikers für den Einsatz in Ihrem Unternehmen.\nWir hoffen, dass Sie mit der ausgeführten Tätigkeit zufrieden sind.\nFür weitere Fragen steht Ihnen unser Team zur Verfügung.\n\nMit freundlichen Grüßen\n\nIhr Team der khb Maschinen- und Anlagenbau GmbH\n\n--\n\nDear Sir and Madam,\n\nEnclosed you will find the service protocol of our technician for the work in your company.\nWe hope you are satisfied with the work.\nIf you have any further questions, please do not hesitate to contact our team.\n\nBest regards\n\nYour team from khb Maschinen- und Anlagenbau GmbH",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
