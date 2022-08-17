@@ -4,6 +4,10 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
+>🚧 
+>
+> In progress
+
 The MultiLineTextInput field allows entering larger amounts of unformatted text. It respects line breaks and can be configured to limit the possible content length.
 
 # Configuration Overview
@@ -13,11 +17,13 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 | [required](#required)                                 | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 | [disabled](#disabled)                                 | Setting this to `true` permanently disables the field in the UI. |
 | [placeHolderText](#placeholdertext)                   | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
-| [pdfHideAll](#pdfhideall)                             | Setting this to `true` hides the whole field in the PDF. |
-| [pdfHideAllIfValueIsEmpty](#pdfhideallifvalueisempty) | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
+| [pdfHide](#pdfhide)                                   | Setting this to `true` hides the whole field in the PDF. |
+| [pdfHideIfValueIsEmpty](#pdfhideifvalueisempty)       | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
+| [pdfWidth](#pdfwidth)                                 | Configuration of the width of the field. |
 | [label](#label)                                       | Configuration of the field label. |
 | [value](#value)                                       | Configuration of the field value. |
 | [prefill](#prefill)                                   | Configuration to prefill the field with a value upon creation of the form instance. |
+| [onChange](#onchange)                                 | ??? |
 
 ``` typescript (complete)
 {
@@ -48,8 +54,8 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
             it: 'Example Placeholder [IT]',
         },
         disabled: false,
-        pdfHideAll: false,
-        pdfHideAllIfValueIsEmpty: false,
+        pdfHide: false,
+        pdfHideIfValueIsEmpty: false,
         uiHideInRepeaterCardDisplay: false,
         value: {
             pdfHide: false,
@@ -146,7 +152,7 @@ Important: If the field is not focused and does not have a value, `label.text` i
 ``` typescript
 placeHolderText: {
     en: 'Example Placeholder',
-    de: 'Example Placeholder [DE]',
+    de: 'Platzhalter',
     tr: 'Example Placeholder [TR]',
     fr: 'Example Placeholder [FR]',
     es: 'Example Placeholder [ES]',
@@ -155,34 +161,49 @@ placeHolderText: {
 ```
 
 ---
-## `pdfHideAll`
+## `pdfHide`
 
-| `pdfHideAll`      |                 |
+| `pdfHide`      |                 |
 | :-------------- | :-------------- |
 | Possible Values | `true`, `false` |
 | Required        | no              |
 | Default Value   | `false`         |
 
-If `pdfHideAll` is set to `true`, the field is not shown in the PDF at all. This takes precedence over `pdfHideAllIfValueIsEmpty`.
+If `pdfHide` is set to `true`, the field is not shown in the PDF at all. This takes precedence over `pdfHideIfValueIsEmpty`.
 
 ``` typescript
-pdfHideAll: true
+pdfHide: true
 ```
 
 ---
-## `pdfHideAllIfValueIsEmpty`
+## `pdfHideIfValueIsEmpty`
 
-| `pdfHideAllIfValueIsEmpty` |                 |
+| `pdfHideIfValueIsEmpty` |                 |
 | :------------------------- | :-------------- |
 | Possible Values            | `true`, `false` |
 | Required                   | no              |
 | Default Value              | `false`         |
 
-If `pdfHideAllIfValueIsEmpty` is set to `true` and the field value is empty, the field is not shown in the PDF at all.
-If the field value is not empty, the field will still be shown (unless `pdfHideAll` is not set to `true`). 
+If `pdfHideIfValueIsEmpty` is set to `true` and the field value is empty, the field is not shown in the PDF at all.
+If the field value is not empty, the field will still be shown (unless `pdfHide` is not set to `true`). 
 
 ``` typescript
-pdfHideAllIfValueIsEmpty: true
+pdfHideIfValueIsEmpty: true
+```
+
+---
+## `pdfWidth`
+
+| `pdfWdith`                 |                      |
+| :------------------------- | :------------------- |
+| Possible Values            | `0.25, 0.3, 0.5, 1`  |
+| Required                   | no                   |
+| Default Value              | `1 (full wdith)`     |
+
+*???Description???*
+
+``` typescript
+pdfWidth: 0.5
 ```
 
 ---
@@ -193,8 +214,8 @@ pdfHideAllIfValueIsEmpty: true
 | [text](#labeltext)                                    | Localized label text of the field. Shown in the UI and the PDF. |
 | [uiHide](#labeluihide)                                | Setting this to `true` hides the label in the UI. |
 | [pdfHide](#labelpdfhide)                              | Setting this to `true` hides the label in the PDF. |
-| [pdfTextColor](#labelpdftextcolor)                    | Text color of the label in the PDF. |
 | [pdfTextSize](#labelpdftextsize)                      | Text size of the label in the PDF. |
+| [pdfTextColor](#labelpdftextcolor)                    | Text color of the label in the PDF. |
 
 ---
 ### `label.text`
@@ -209,7 +230,7 @@ Label text that is shown in the UI and the PDF to identify the field.
 ``` typescript
 text: {
     en: 'Example Placeholder',
-    de: 'Example Placeholder [DE]',
+    de: 'Platzhalter',
     tr: 'Example Placeholder [TR]',
     fr: 'Example Placeholder [FR]',
     es: 'Example Placeholder [ES]',
@@ -249,21 +270,6 @@ If `pdfHide` is set to `true`, the label is not shown in the PDF.
     ```
 
 ---
-### `label.pdfTextColor`
-
-| `pdfTextColor`  |                 |
-| :-------------- | :-------------- |
-| Possible Values | Hex-Color-Code  |
-| Required        | no              |
-| Default Value   | `#000000`       |
-
-By setting `pdfTextColor`, the field label will show up in the PDF having the defined color.
-
-``` typescript
-pdfTextColor: true
-```
-
----
 ### `label.pdfTextSize`
 
 | `pdfTextSize`   |                  |
@@ -279,52 +285,7 @@ pdfTextSize: 20
 ```
 
 ---
-## `value`
-
-| Property                                              | Description                       |
-| :---------------------------------------------------- | :-------------------------------- |
-| [text](#valuetext)                                    | Localized value text of the field. Shown in the UI and the PDF. |
-| [pdfStartInNewLine](#valuepdfstartinnewline)          | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [pdfHide](#valuepdfhide)                              | Setting this to `true` hides the value in the PDF. |
-| [pdfTextColor](#valuepdftextcolor)                    | Text color of the value in the PDF. |
-| [pdfTextSize](#valuepdftextsize)                      | Text size of the value in the PDF. |
-| [uiMaxRows](#valueuimaxrows)                          | Maximum number of lines that can be seen in the UI without scrolling. |
-| [uiMinRows](#valueuiminrows)                          | Minimum number of lines that are shown in the UI. |
-| [validators.maxCharacters](#valuevalidatorsmaxcharacters) | Maximum number of characters for the input value to be valid. |
-| [validators.minCharacters](#valuevalidatorsmincharacters) | Minimum number of characters for the input value to be valid. |
-
----
-### `value.pdfStartInNewLine`
-
-| `pdfStartInNewLine`       |                 |
-| :-------------- | :-------------- |
-| Possible Values | `true`, `false` |
-| Required        | no              |
-| Default Value   | `false`         |
-
-If `pdfStartInNewLine` is set to `true`, the value of the field will be shown in the PDF on a new line below the label. If the value is `false`, the value is shown on the same line as the label.
-
-``` typescript
-pdfStartInNewLine: true
-```
-
----
-### `value.pdfHide`
-
-| `pdfHide`       |                 |
-| :-------------- | :-------------- |
-| Possible Values | `true`, `false` |
-| Required        | no              |
-| Default Value   | `false`         |
-
-If `pdfHide` is set to `true`, the value is not shown in the PDF.
-
-``` typescript
-pdfHide: true
-```
-
----
-### `value.pdfTextColor`
+### `label.pdfTextColor`
 
 | `pdfTextColor`  |                 |
 | :-------------- | :-------------- |
@@ -332,25 +293,40 @@ pdfHide: true
 | Required        | no              |
 | Default Value   | `#000000`       |
 
-By setting `pdfTextColor`, the field value will show up in the PDF having the defined color.
+By setting `pdfTextColor`, the field label will show up in the PDF having the defined color.
 
 ``` typescript
-pdfTextColor: true
+pdfTextColor: #F1F8F1
 ```
 
 ---
-### `value.pdfTextSize`
+## `value`
 
-| `pdfTextSize`   |                  |
+| Property                                                  | Description                                                                                     |
+| :-------------------------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| [uiMinRows](#valueuiminrows)                              | Minimum number of lines that are shown in the UI.                                               |
+| [uiMaxRows](#valueuimaxrows)                              | Maximum number of lines that can be seen in the UI without scrolling.                           |
+| [pdfHide](#valuepdfhide)                                  | Setting this to `true` hides the value in the PDF.                                              |
+| [pdfTextSize](#valuepdftextsize)                          | Text size of the value in the PDF.                                                              |
+| [pdfTextColor](#valuepdftextcolor)                        | Text color of the value in the PDF.                                                             |
+| [pdfStartInNewLine](#valuepdfstartinnewline)              | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
+| [validators.maxCharacters](#valuevalidatorsmaxcharacters) | Maximum number of characters for the input value to be valid.                                   |
+| [validators.minCharacters](#valuevalidatorsmincharacters) | Minimum number of characters for the input value to be valid.                                   |
+
+---
+### `value.uiMinRows`
+
+| `uiMinRows`     |                 |
 | :-------------- | :-------------- |
-| Possible Values | Integer > 0     |
+| Possible Values | Integer > 1     |
 | Required        | no              |
-| Default Value   | 9               |
+| Default Value   | 1               |
 
-By setting `pdfTextSize`, the field value will show up in the PDF having the defined text size in pixels.
+By setting `uiMinRows`, the text input in he UI will always span at the least the configured amount of lines.
+If the content spans less lines, the size of the text input will not shrink further.
 
 ``` typescript
-pdfTextSize: 20
+uiMinRows: 5
 ```
 
 ---
@@ -370,19 +346,63 @@ uiMaxRows: 15
 ```
 
 ---
-### `value.uiMinRows`
+### `value.pdfHide`
 
-| `uiMinRows`     |                 |
+| `pdfHide`       |                 |
 | :-------------- | :-------------- |
-| Possible Values | Integer > 1     |
+| Possible Values | `true`, `false` |
 | Required        | no              |
-| Default Value   | 1               |
+| Default Value   | `false`         |
 
-By setting `uiMinRows`, the text input in he UI will always span at the least the configured amount of lines.
-If the content spans less lines, the size of the text input will not shrink further.
+If `pdfHide` is set to `true`, the value is not shown in the PDF.
 
 ``` typescript
-uiMinRows: 5
+pdfHide: true
+```
+
+---
+### `value.pdfTextSize`
+
+| `pdfTextSize`   |                  |
+| :-------------- | :-------------- |
+| Possible Values | Integer > 0     |
+| Required        | no              |
+| Default Value   | 9               |
+
+By setting `pdfTextSize`, the field value will show up in the PDF having the defined text size in pixels.
+
+``` typescript
+pdfTextSize: 20
+```
+
+---
+### `value.pdfTextColor`
+
+| `pdfTextColor`  |                 |
+| :-------------- | :-------------- |
+| Possible Values | Hex-Color-Code  |
+| Required        | no              |
+| Default Value   | `#000000`       |
+
+By setting `pdfTextColor`, the field value will show up in the PDF having the defined color.
+
+``` typescript
+pdfTextColor: true
+```
+
+---
+### `value.pdfStartInNewLine`
+
+| `pdfStartInNewLine`       |                 |
+| :-------------- | :-------------- |
+| Possible Values | `true`, `false` |
+| Required        | no              |
+| Default Value   | `false`         |
+
+If `pdfStartInNewLine` is set to `true`, the value of the field will be shown in the PDF on a new line below the label. If the value is `false`, the value is shown on the same line as the label.
+
+``` typescript
+pdfStartInNewLine: true
 ```
 
 ---
@@ -456,3 +476,14 @@ prefill: {
         ],
     },
 ```
+
+---
+## `onChange`
+
+| `onChange`                 |                  |
+| :------------------------- | -----------------|
+| Possible Values            | ???              |
+| Required                   | no               |
+| Default Value              | -     
+
+*???Description???*
