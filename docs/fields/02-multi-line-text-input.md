@@ -222,7 +222,7 @@ pdfWidth: 0.5
 
 | `text` |                                       |
 | :---------------- | :------------------------- |
-| Possible Values   | [MultiLanguageText](#todo) |
+| Possible Values   | [MultiLanguageText](./01-single-line-text-input.md) |
 | Required          | yes                        |
 
 Label text that is shown in the UI and the PDF to identify the field. 

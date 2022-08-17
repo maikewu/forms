@@ -22,39 +22,39 @@ parentDoc: 62ec01bd561bab0aa775efe4
 
 
 ```typescript (complete)
-{
-                    id: 'exampleExpenseListInput_1',
-                    type: FormFieldTypesEnum.EXPENSE_LIST_INPUT,
-                    config: {
-                        pdfHide: false,
-                        pdfHideIfValueIsEmpty: false,
-                        requiredAmountOfEntries: 2,
-                        fields: {
-                            dateInput: {
-                                pdfHide: false,
-                                disabled: false,
-                                required: true,
-                            },
-                            commentMultiLineTextInput: {
-                                pdfHide: false,
-                                disabled: false,
-                                required: true,
-                            },
-                            expenseAmountNumericInput: {
-                                pdfHide: false,
-                                disabled: false,
-                                required: true,
-                            },
-                            expenseTypeSingleSelectInput: {
-                                pdfHide: false,
-                                disabled: false,
-                                required: true,
-                                values: {
-                                    exampleSelect_1: {
-                                        en: 'Example select 1',
-                                        de: 'Example select 1 [DE]',
-                                        tr: 'Example select 1 [TR]',
-                                        fr: 'Example select 1 [FR]',
+                    {
+                        id: 'exampleExpenseListInput_1',
+                        type: FormFieldTypesEnum.EXPENSE_LIST_INPUT,
+                        config: {
+                            pdfHide: false,
+                            pdfHideIfValueIsEmpty: false,
+                            requiredAmountOfEntries: 2,
+                            fields: {
+                                dateInput: {
+                                    pdfHide: false,
+                                    disabled: false,
+                                    required: true,
+                                },
+                                commentMultiLineTextInput: {
+                                    pdfHide: false,
+                                    disabled: false,
+                                    required: true,
+                                },
+                                expenseAmountNumericInput: {
+                                    pdfHide: false,
+                                    disabled: false,
+                                    required: true,
+                                },
+                                expenseTypeSingleSelectInput: {
+                                    pdfHide: false,
+                                    disabled: false,
+                                    required: true,
+                                    values: {
+                                        exampleSelect_1: {
+                                            en: 'Example select 1',
+                                            de: 'Example select 1 [DE]',
+                                            tr: 'Example select 1 [TR]',
+                                            fr: 'Example select 1 [FR]',
                                         es: 'Example select 1 [ES]',
                                         it: 'Example select 1 [IT]',
                                     },
@@ -253,3 +253,5 @@ pdfHide: true
 ``` typescript
 ???
 ```
+
+![](https://drive.google.com/uc?export=view&id=1-3lrykYKpzDD4GXOAMF53Xn97UuacEpm)
