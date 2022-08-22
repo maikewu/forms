@@ -1,0 +1,560 @@
+{
+  "general": {
+    "name": {
+      "en": "Offer",
+      "de": "Angebot"
+    }
+  },
+  "formStructure": {
+    "00_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Kundeninformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "00_customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "04_operationsite",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5,
+          "messages": {
+            "onChange": [
+              {
+                "to": "10-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "address",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "10-signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "messages": {
+          "onLoaded": [
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "customerAddress"
+                    },
+                    "output": {
+                      "_field": "customerLocation",
+                      "_propertyName": ""
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "to": "ROOT",
+              "actions": [
+                {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                    "input": {
+                      "_field": {
+                        "_field": "ARGS",
+                        "_propertyName": "asset",
+                        "_functionName": "GET_PRODUCT"
+                      },
+                      "_propertyName": "customer"
+                    },
+                    "output": {
+                      "_field": "customer",
+                      "_propertyName": "customer"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "01_generaloffer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Offer",
+        "de": "Angebot"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Sehr geehrte Damen und Herren,\n\nvielen Dank für Ihre Anfrage und das damit verbundene Interesse an unseren Dienstleistungen.\n\nGerne unterbreiten wir Ihnen folgendes Angebot:",
+            "en": "Dear Sir or Madam,\nThank you for your inquiry and the included interest in our products.\nWe are pleased to submit the following offer:"
+          }
+        }
+      }
+    },
+    "02_serviceinformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "1. Service Asset and Service Rate",
+        "de": "1. Servicegegenstand und Servicerate"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "service_repeater": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No service item information has been provided yet.",
+            "de": "Es wurden noch keine Servicegegenstandsangaben gemacht."
+          },
+          "disableTabularView": true,
+          "children": {
+            "serviceitem": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Servicegegenstand",
+                "en": "Service item"
+              },
+              "required": false,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5
+            },
+            "asset1": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "label": {
+                "de": "Anlagen-ID",
+                "en": "Asset ID"
+              }
+            },
+            "asset2": {
+              "fieldType": "REMBERG_ASSET_SELECT",
+              "required": false,
+              "disableSelection": false,
+              "hidePreselection": false,
+              "showUnassigned": true,
+              "editShowInput": true,
+              "registerAssetChange": true,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "label": {
+                "de": "Anlagen-ID",
+                "en": "Asset ID"
+              }
+            },
+            "servicerate": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Pauschale Servicerate (in € je Gerät, zzgl. MwSt)",
+                "en": "Service rate (in € per asset, plus VAT)"
+              },
+              "required": false,
+              "hideInPdfIfEmpty": true,
+              "width": 0.5
+            }
+          }
+        }
+      }
+    },
+    "04_operationsite": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "2. Operation Site",
+        "de": "2. Einsatzort"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "04_operationsite",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "06_service_scope": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "3. Our currently valid customer service rates",
+        "de": "3. Unsere derzeit gültigen Kundendienstsätze"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "workHour": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Arbeitszeit (EUR / Stunde)",
+            "en": "Maintenance Lump-Sum"
+          },
+          "required": false,
+          "width": 0.3
+        },
+        "travelHour": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Reisezeit (EUR / Stunde)",
+            "en": "Travel hour Lump-Sum"
+          },
+          "required": false,
+          "width": 0.3
+        },
+        "smallParts": {
+          "fieldType": "INPUT_TEXT",
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Fahrtkosten (EUR / km)",
+            "en": "Maintenance Lump-Sum"
+          },
+          "required": false,
+          "width": 0.3
+        }
+      }
+    },
+    "05_paymentterms": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "4. Terms of Payment",
+        "de": "4. Zahlungsbedingungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "zahlbed": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Zahlungsbedingungen: 10 Tage netto\nSteuerfrei nach §6a UStG",
+            "en": "Terms of Payment: 10 days netto"
+          },
+          "width": 1
+        }
+      }
+    },
+    "07_suppliercontact": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "5. Contact Service Supplier",
+        "de": "5. Kontakt Servicelieferant"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "phone": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Telefon: +49 8381 186 - 8903",
+            "en": "Phone: +49 8381 186 - 8903"
+          },
+          "width": 1
+        },
+        "fax": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Fax: +49 8381 186 - 52",
+            "en": "Fax: +49 8381 186 - 52"
+          },
+          "width": 1
+        },
+        "mail": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "E-Mail: service@remberg.de",
+            "en": "Email: service@remberg.de"
+          },
+          "width": 1
+        }
+      }
+    },
+    "09_01_ending": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": " ",
+        "de": " "
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "An dieses Angebot binden wir uns zwei Wochen.\n\nRückantwort bitte an service@remberg.de.",
+            "en": "We are bound to this offer for two weeks.\n\nPlease send your reply to service@remberg.de."
+          }
+        }
+      }
+    },
+    "09-signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service Supplier",
+        "de": "Unterschrift Servicelieferant"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicelieferant",
+            "en": "Service Supplier"
+          },
+          "autofillCurrentUser": true,
+          "autofillLocation": "Münsingen",
+          "required": true
+        }
+      }
+    },
+    "10-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Service Customer",
+        "de": "Unterschrift Servicekunde"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicekunde",
+            "en": "Service Customer"
+          },
+          "required": false
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send/sent filled out offer",
+        "de": "Ausgefülltes Angebot senden/gesendet"
+      },
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "required": false,
+          "prefillConfig": {
+            "subject": "remberg GmbH: Angebot",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n\nSehr geehrte Damen und Herren,\n\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma remberg GmbH.\n\nIm Anhang finden Sie unser Angebot.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          }
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
