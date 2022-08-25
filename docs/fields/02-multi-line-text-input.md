@@ -194,13 +194,14 @@ pdfHideIfValueIsEmpty: true
 ---
 ## `pdfWidth`
 
-| `pdfWdith`                 |                      |
-| :------------------------- | :------------------- |
-| Possible Values            | `0.25, 0.3, 0.5, 1`  |
-| Required                   | no                   |
-| Default Value              | `1 (full wdith)`     |
+| `pdfWdith`                 |                           |
+| :------------------------- | :-------------------------|
+| Possible Values            | Values between `0` - `1`  |
+| Required                   | no                        |
+| Default Value              | `1 (full wdith)`          |
 
-*???Description???*
+The value of `pdfWidth` defines the width of a field in the pdf layout.
+`1` represent the full row in the pdf, e.g. `0.5` represent the half row / 50 % of the row.
 
 ``` typescript
 pdfWidth: 0.5
@@ -480,10 +481,10 @@ prefill: {
 ---
 ## `onChange`
 
-| `onChange`                 |                  |
-| :------------------------- | -----------------|
-| Possible Values            | ???              |
-| Required                   | no               |
+| `onChange`                 |                   |
+| :------------------------- | ------------------|
+| Possible Values            | Array of Fuctions |
+| Required                   | no                |
 | Default Value              | -     
 
 *???Description???*
