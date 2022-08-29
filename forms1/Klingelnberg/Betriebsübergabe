@@ -1,0 +1,608 @@
+{
+	"general": {
+    "name": {
+      "en": "Production Handover Protocol",
+      "de": "Betriebsübergabe Protokoll"
+    }
+  },
+	"formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "06-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "commission_no": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommissions Nr",
+            "en": "Commission No"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "inventory_no": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Inventar Nr",
+            "en": "Inventory No"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "order_no": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kunden Best.-Nr",
+            "en": "Customer Order No"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "handover_date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Betriebsübernahme",
+            "en": "Production handover date"
+          },
+          "required": false,
+          "autofillCurrentDate": true,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_uebergabe": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Production Handover",
+        "de": "Betriebsübergabe"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "headline_1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "1. Aufbau",
+            "en": "1. Installation"
+          },
+          "width": 1
+        },
+        "checkbox_1":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Die Anlage ist aufgebaut, angeschlossen und ausgerichtet mit der entsprechenden Beladung, falls zum Zeitpunkt der Übergabe vorhanden.",
+            "en": "The installation is build, associated and in line with the appropriate loading if it is available at the time of the handover."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false
+        },
+        "comment_1":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "headline_2": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "2. Sicherheitsvorkehrungen",
+            "en": "2. Safety arrangements"
+          },
+          "width": 1
+        },
+        "checkbox_2_1":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Feuerlöschanlage und Sicherheitstüren sind aktiviert und getestet.",
+            "en": "Fire extinguishing equipment and safety doors are active and tested."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "checkbox_2_2":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "n.a.",
+            "en": "n.a."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "comment_2":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "headline_3": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "3. Abläufe",
+            "en": "3. Operational sequences"
+          },
+          "width": 1
+        },
+        "checkbox_3":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Abläufe sind getested mit/ohne Automatik.",
+            "en": "Operational sequences are tested with/without automatic."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false
+        },
+        "comment_3":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "headline_4": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "4. Sicherheitsanweisungen",
+            "en": "4. Safety instructions"
+          },
+          "width": 1
+        },
+        "checkbox_4":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sicherheitsanweisungen für die Bediener wurden durchgeführt.",
+            "en": "Safety instructions for the operators were arranged."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false
+        },
+        "comment_4":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "headline_5": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "5. Elektroschaltpläne & Software-Programm",
+            "en": "5. Electric circuit diagram"
+          },
+          "width": 1
+        },
+        "checkbox_5":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Elektropläne und eine Sicherheitskopie der aktualisierten Software wurde an den Kunden / die Instandhaltung übergeben.",
+            "en": "The customer got the electric circuit diagram and a security backup of the actual software was given to the maintenance."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false
+        },
+        "comment_5":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "headline_6": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "6. Dokumentation",
+            "en": "6. Documentation"
+          },
+          "width": 1
+        },
+        "checkbox_6_1":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Die Dokumentation hat der Kunde erhalten.",
+            "en": "The customer received the documentation."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "checkbox_6_2":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Die Dokumentation wird nachgeliefert.",
+            "en": "The documentation will be provided later."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false
+        },
+        "comment_6":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "headline_7": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "7. Div. Nachbesserungen",
+            "en": "7. Improvements"
+          },
+          "width": 1
+        },
+        "checkbox_7":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nachbesserungen, Maßnahmen, Vereinbarungen",
+            "en": "Improvements, actions, agreements"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false
+        },
+        "comment_7":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "headline_8": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "8. Produktionsübergabe",
+            "en": "8. Production handover"
+          },
+          "width": 1
+        },
+        "checkbox_8":{
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Die Anlage wird somit zur Production freigegeben.",
+            "en": "The machine is released for the production."
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false
+        },
+        "comment_8":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "space_1": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 1
+        },
+        "anwesende":{
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Anwesend (Firma)",
+            "en": "Attendants (Company)"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "06-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Klingelnberg",
+        "de": "Unterschrift Klingelnberg"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Klingelnberg",
+            "en": "Klingelnberg"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "07-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "12-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Betriebsübergabe - Protokoll",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Klingelnberg GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihr zugehöriges Betriebsübergabeprotokoll als PDF.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
