@@ -1,10 +1,10 @@
 ---
-title: Repeating properties
+title: Repeating fields
 category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-On this page you will find a list of repeating properties of various fields.
+On this page you will find a list of repeating fields.
 
 >🚧 
 >
@@ -27,9 +27,9 @@ On this page you will find a list of repeating properties of various fields.
 | [uiHide](#labeluihide)                          | Setting this to `true` hides the field in the UI.                                                       |
 | [uiTextColor](#uitextcolor)                     | Text color of a certain field in the UI.                                                                |
 | [requiredAmountOfEntries](#)                    | ???                                                                                                     |
-| [lable](#lable)                                 | Property with different sub properties.                                                                 |
-| [values](#values)                               | Property with different sub properties.                                                                 |
-| [fields](#fields)                               | Property with different sub properties.                                                                 |
+| [lable](#lable)                                 | Field with different sub fields.                                                                 |
+| [values](#values)                               | Field with different sub fields.                                                                 |
+| [fields](#fields)                               | Field with different sub fields.                                                                 |
 | [prefill](#prefill)                             | Configuration to prefill the field with a value upon creation of the form instance.                     |
 | [onChange](#onchange)                           | ??? |
 
