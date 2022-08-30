@@ -26,10 +26,10 @@ On this page you will find a list of repeating fields.
 | [text](#text)                                      | Localized text of the field. Shown in the UI and the PDF.                                               |
 | [uiHide](#uihide)                                  | Setting this to `true` hides the field in the UI.                                                       |
 | [uiTextColor](#uitextcolor)                        | Text color of a certain field in the UI.                                                                |
-| [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are requried to fill the form.                                                                                                |
-| [lable](#lable)                                    | Field with different sub fields.                                                                 |
-| [values](#values)                                  | Field with different sub fields.                                                                 |
-| [fields](#fields)                                  | Field with different sub fields.                                                                 |
+| [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are requried to fill the form.                  |                                                                             |
+| [lable](#lable)                                    | Several configurations for the lable.                                                                 |
+| [values](#values)                                  | Several configurations for the values.                                                                 |
+| [fields](#fields)                                  | Several configurations for the fields.                                                              |
 | [prefill](#prefill)                                | Configuration to prefill the field with a value upon creation of the form instance.                     |
 | [onChange](#onchange)                              | ??? |
 
@@ -274,16 +274,12 @@ requiredAmountOfEntries: 3,
 | [pdfHide](#pdfhide)                                       | Setting this to `true` hides the label in the PDF. |
 | [pdfTextSize](#pdftextsize)                               | Text size of the label in the PDF. |
 | [pdfTextColor](#pdftextcolor)                             | Text color of the label in the PDF. |
-| [uiMinRows](#valueuiminrows)                              | Minimum number of lines that are shown in the UI.                                               |
-| [uiMaxRows](#valueuimaxrows)                              | Maximum number of lines that can be seen in the UI without scrolling.                           |
-| [pdfStartInNewLine](#valuepdfstartinnewline)              | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [validators.maxCharacters](#valuevalidatorsmaxcharacters) | Maximum number of characters for the input value to be valid.                                   |
-| [validators.minCharacters](#valuevalidatorsmincharacters) | Minimum number
+| [validators.maxCharacters](#validatorsmaxcharacters)      | Maximum number of characters for the input value to be valid.                                   |
+| [validators.minCharacters](#validatorsmincharacters)      | Minimum number
 
-<details>
-<summary> <h3> validators.minCharacters </h3> </summary>
+### `validators.minCharacters`
 
-| `uiMinRows`     |                 |
+| `validators.minCharacters`     |                 |
 | :-------------- | :-------------- |
 | Possible Values | Integer > 1     |
 | Required        | no              |
@@ -297,12 +293,10 @@ validators: {
 }
 ```
 
-</details>
+---
+### `validators.maxCharacters`
 
-<details>
-<summary> <h3> validators.maxCharacters </h3> </summary>
-
-| `uiMinRows`     |                 |
+| `validators.maxCharacters`     |                 |
 | :-------------- | :-------------- |
 | Possible Values | Integer > 1     |
 | Required        | no              |
@@ -316,7 +310,7 @@ validators: {
 }
 ```
 
-</details>
+
 
 
 
