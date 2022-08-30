@@ -2,7 +2,7 @@
 	"general": {
     "name": {
       "en": "Production Handover Protocol",
-      "de": "Betriebsübergabe Protokoll"
+      "de": "Betriebsübergabeprotokoll"
     }
   },
 	"formStructure": {
@@ -42,12 +42,7 @@
                         "_propertyName": "customerFilter"
                       }
                     }
-                  }
-                ]
-              },
-              {
-                "to": "06-signatureTechnician",
-                "actions": [
+                  },
                   {
                     "name": "PATCH_DATA",
                     "_dynamicData": {
@@ -55,53 +50,17 @@
                         "_field": {
                           "_field": {
                             "_field": {
-                              "_field": {
-                                "_field": "customer",
-                                "_propertyName": "customer"
-                              },
-                              "_functionName": "GET_ACCOUNT"
+                              "_field": "customer",
+                              "_propertyName": "customer"
                             },
-                            "_propertyName": "company"
+                            "_functionName": "GET_ACCOUNT"
                           },
-                          "_propertyName": "billingAddress"
+                          "_propertyName": "company"
                         },
-                        "_propertyName": "city"
+                        "_propertyName": "billingAddress"
                       },
                       "output": {
-                        "_formArray": "signature_technician",
-                        "_formArrayIndex": 0,
-                        "_propertyName": "location"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "to": "07-signatureCustomer",
-                "actions": [
-                  {
-                    "name": "PATCH_DATA",
-                    "_dynamicData": {
-                      "input": {
-                        "_field": {
-                          "_field": {
-                            "_field": {
-                              "_field": {
-                                "_field": "customer",
-                                "_propertyName": "customer"
-                              },
-                              "_functionName": "GET_ACCOUNT"
-                            },
-                            "_propertyName": "company"
-                          },
-                          "_propertyName": "billingAddress"
-                        },
-                        "_propertyName": "city"
-                      },
-                      "output": {
-                        "_formArray": "signature_customer",
-                        "_formArrayIndex": 0,
-                        "_propertyName": "location"
+                        "_field": "customerLocation"
                       }
                     }
                   }
@@ -109,6 +68,25 @@
               }
             ]
           }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer address"
+          },
+          "required": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true
+        },
+        "space_address": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "width": 1
         },
         "asset": {
           "fieldType": "REMBERG_ASSET_SELECT",
@@ -123,6 +101,37 @@
           "label": {
             "de": "Maschine",
             "en": "Machine"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
           }
         },
         "commission_no": {
@@ -205,6 +214,42 @@
                   "output": {
                     "_field": "asset",
                     "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+              "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "customerFilter"
                   }
                 }
               }
@@ -466,7 +511,7 @@
         "checkbox_8":{
           "fieldType": "CHECKBOX",
           "label": {
-            "de": "Die Anlage wird somit zur Production freigegeben.",
+            "de": "Die Anlage wird somit zur Produktion freigegeben.",
             "en": "The machine is released for the production."
           },
           "required": false,
@@ -576,10 +621,13 @@
             "en": "Sent to"
           },
           "prefillConfig": {
-            "subject": "Betriebsübergabe - Protokoll",
+            "subject": "Betriebsübergabeprotokoll",
             "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Klingelnberg GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihr zugehöriges Betriebsübergabeprotokoll als PDF.",
             "to": {
-              "currentUser": false
+              "currentUser": false,
+              "others": [
+                "Neumaschinengeschaeft-TSM@klingelnberg.com"
+              ]
             },
             "cc": {
               "currentUser": true
