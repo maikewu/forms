@@ -29,7 +29,6 @@ On this page you will find a list of repeating fields.
 | [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are requried to fill the form.                  |                                                                             |
 | [lable](#lable)                                    | Several configurations for the lable.                                                                 |
 | [values](#values)                                  | Several configurations for the values.                                                                 |
-| [fields](#fields)                                  | Several configurations for the fields.                                                              |
 | [prefill](#prefill)                                | Configuration to prefill the field with a value upon creation of the form instance.                     |
 | [onChange](#onchange)                              | ??? |
 
