@@ -116,7 +116,7 @@ pdfWidth: 0.5
 
 | `placeHolderText` |                            |
 | :---------------- | :------------------------- |
-| Possible Values   | [MultiLanguageText](#) |
+| Possible Values   | [MultiLanguageText](#multilanguagetext) |
 | Required          | no                         |
 | Default Value     | `undefined` in which case `label.text` is used as fallback |
 
