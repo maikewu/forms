@@ -273,9 +273,22 @@ requiredAmountOfEntries: 3,
 | [pdfHide](#pdfhide)                                       | Setting this to `true` hides the label in the PDF. |
 | [pdfTextSize](#pdftextsize)                               | Text size of the label in the PDF. |
 | [pdfTextColor](#pdftextcolor)                             | Text color of the label in the PDF. |
+| [pdfStartInNewLine](#pdfstartinnewline)                   | ???|
+| [pdfAddLineBreak](#pdflinebreak)                          | ???|
 | [validators.maxCharacters](#validatorsmaxcharacters)      | Maximum number of characters for the input value to be valid.                                   |
 | [validators.minCharacters](#validatorsmincharacters)      | Minimum number
 
+---
+### `pdfStartInNewLine`
+
+???
+
+---
+### `pdfAddLineBreaks`
+
+???
+
+---
 ### `validators.minCharacters`
 
 | `validators.minCharacters`     |                 |
@@ -309,10 +322,6 @@ validators: {
 }
 ```
 
-
-
-
-
 ---
 ## `prefill`
 
@@ -324,32 +333,6 @@ validators: {
 
 This configuration follows the [general syntax for prefilling rules](#todo).
 The provided PrefillRules need to have an output value of type string.
-
-``` typescript (static string)
-prefill: {
-        value: [
-            {
-                input: 'none',
-                steps: [
-                    [ 'staticString', 'Default \n Multi \n Line \n Text' ],
-                ],
-            },
-        ],
-    },
-```
-``` typescript (asset type name)
-prefill: {
-        value: [
-            {
-                input: 'assetId',
-                steps: [
-                    'assetIdToAsset',
-                    'assetToAssetTypeNameString',
-                ],
-            },
-        ],
-    },
-```
 
 ---
 ## `onChange`
