@@ -341,6 +341,6 @@ The provided PrefillRules need to have an output value of type string.
 | :------------------------- | ------------------|
 | Possible Values            | Array of Fuctions |
 | Required                   | no                |
-| Default Value              | -     
+| Default Value              | -     |
 
 *???Description???*

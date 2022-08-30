@@ -14,12 +14,12 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 
 | Property                                                                     | Description                      |
 | :--------------------------------------------------------------------------- | :--------------------------------|
-| [required](./24-general-properties.md/#required)                             | If this is set to `true`, the field is considered invalid as long as no value is entered. |
-| [disabled](./24-general-properties.md/#disabled)                             | Setting this to `true` permanently disables the field in the UI. |
-| [pdfHide](./24-general-properties.md/#pdfhide)                               | Setting this to `true` hides the whole field in the PDF. |
-| [pdfHideIfValueIsEmpty](./24-general-properties.md/#pdfhideifvalueisempty)   | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
-| [pdfWidth](./24-general-properties.md/#pdfwidth)                             | Configuration of the width of the field. |
-| [placeHolderText](./24-general-properties.md/#placeholdertext)               | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
+| [required](./24-general-properties/#required)                             | If this is set to `true`, the field is considered invalid as long as no value is entered. |
+| [disabled](./24-general-properties/#disabled)                             | Setting this to `true` permanently disables the field in the UI. |
+| [pdfHide](./24-general-properties/#pdfhide)                               | Setting this to `true` hides the whole field in the PDF. |
+| [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)   | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
+| [pdfWidth](./24-general-properties/#pdfwidth)                             | Configuration of the width of the field. |
+| [placeHolderText](./24-general-properties/#placeholdertext)               | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
 | [label](#label)                                                              | Configuration of the field label. |
 | [value](#value)                                                              | Configuration of the field value. |
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
@@ -111,11 +111,11 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 
 | Property                                                    | Description                       |
 | :---------------------------------------------------------- | :-------------------------------- |
-| [text](./24-general-properties.md/#text)                    | Localized label text of the field. Shown in the UI and the PDF. |
-| [uiHide](./24-general-properties.md/#uihide)                | Setting this to `true` hides the label in the UI. |
-| [pdfHide](./24-general-properties.md/#pdfhide)              | Setting this to `true` hides the label in the PDF. |
-| [pdfTextSize](./24-general-properties.md/#pdftextsize)      | Text size of the label in the PDF. |
-| [pdfTextColor](./24-general-properties.md/#pdftextcolor)    | Text color of the label in the PDF. |
+| [text](./24-general-properties/#text)                    | Localized label text of the field. Shown in the UI and the PDF. |
+| [uiHide](./24-general-properties/#uihide)                | Setting this to `true` hides the label in the UI. |
+| [pdfHide](./24-general-properties/#pdfhide)              | Setting this to `true` hides the label in the PDF. |
+| [pdfTextSize](./24-general-properties/#pdftextsize)      | Text size of the label in the PDF. |
+| [pdfTextColor](./24-general-properties/#pdftextcolor)    | Text color of the label in the PDF. |
 
 ---
 ## `value`
@@ -124,12 +124,12 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 | :------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------- |
 | [uiMinRows](#valueuiminrows)                                        | Minimum number of lines that are shown in the UI.                                               |
 | [uiMaxRows](#valueuimaxrows)                                        | Maximum number of lines that can be seen in the UI without scrolling.                           |
-| [pdfHide](./24-general-properties.md/#pdfhide)                      | Setting this to `true` hides the label in the PDF. |
-| [pdfTextSize](./24-general-properties.md/#pdftextsize)              | Text size of the label in the PDF. |
-| [pdfTextColor](./24-general-properties.md/#pdftextcolor)            | Text color of the label in the PDF. |
-| [pdfStartInNewLine](./24-general-properties.md/#pdfstartinnewline)  | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [validators.minCharacters](./24-general-properties.md#validatorsmincharacters)              | Minimum number of characters for the input value to be valid.                                   |
-| [validators.maxCharacters](./24-general-properties.md#validatorsmaxcharacters)              | Maximum number of characters for the input value to be valid.                                   |
+| [pdfHide](./24-general-properties/#pdfhide)                      | Setting this to `true` hides the label in the PDF. |
+| [pdfTextSize](./24-general-properties/#pdftextsize)              | Text size of the label in the PDF. |
+| [pdfTextColor](./24-general-properties/#pdftextcolor)            | Text color of the label in the PDF. |
+| [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)  | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
+| [validators.minCharacters](./24-general-properties/#validatorsmincharacters)              | Minimum number of characters for the input value to be valid.                                   |
+| [validators.maxCharacters](./24-general-properties/#validatorsmaxcharacters)              | Maximum number of characters for the input value to be valid.                                   |
 
 ---
 ### `value.uiMinRows`
