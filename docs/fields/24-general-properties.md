@@ -13,25 +13,24 @@ On this page you will find a list of repeating fields.
 ---
 # Configuration Overview
 
-| Property                                        | Description                                                                                             |
-| :-----------------------------------------------| :-------------------------------------------------------------------------------------------------------|
-| [required](#required)                           | If this is set to `true`, the field is considered invalid as long as no value is entered.               |
-| [disabled](#disabled)                           | Setting this to `true` permanently disables the field in the UI.                                        |
-| [pdfHide](#pdfhide)                             | Setting this to `true` hides the whole field in the PDF.                                                |
-| [pdfHideIfValueIsEmpty](#pdfhideifvalueisempty) | Setting this to `true` hides the whole field in the PDF in case the field value is empty.               |
-| [pdfWidth](#pdfwidth)                           | Configuration of the width of the field.                                                                |
-| [placeHolderText](#placeholdertext)             | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
-| [pdfTextSize](#pdftextsize)                     | Text size of a certain field in the PDF.                                                                |
-| [pdfTextColor](#pdftextcolor)                   | Text color of a certain field in the PDF.                                                               |
-| [text](#labeltext)                              | Localized text of the field. Shown in the UI and the PDF.                                               |
-| [uiHide](#labeluihide)                          | Setting this to `true` hides the field in the UI.                                                       |
-| [uiTextColor](#uitextcolor)                     | Text color of a certain field in the UI.                                                                |
-| [requiredAmountOfEntries](#)                    | ???                                                                                                     |
-| [lable](#lable)                                 | Field with different sub fields.                                                                 |
-| [values](#values)                               | Field with different sub fields.                                                                 |
-| [fields](#fields)                               | Field with different sub fields.                                                                 |
-| [prefill](#prefill)                             | Configuration to prefill the field with a value upon creation of the form instance.                     |
-| [onChange](#onchange)                           | ??? |
+| Property                                           | Description                                                                                             |
+| :--------------------------------------------------| :-------------------------------------------------------------------------------------------------------|
+| [required](#required)                              | If this is set to `true`, the field is considered invalid as long as no value is entered.               |
+| [disabled](#disabled)                              | Setting this to `true` permanently disables the field in the UI.                                        |
+| [pdfHide](#pdfhide)                                | Setting this to `true` hides the whole field in the PDF.                                                |
+| [pdfHideIfValueIsEmpty](#pdfhideifvalueisempty)    | Setting this to `true` hides the whole field in the PDF in case the field value is empty.               |
+| [pdfWidth](#pdfwidth)                              | Configuration of the width of the field.                                                                |
+| [placeHolderText](#placeholdertext)                | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
+| [pdfTextSize](#pdftextsize)                        | Text size of a certain field in the PDF.                                                                |
+| [pdfTextColor](#pdftextcolor)                      | Text color of a certain field in the PDF.                                                               |
+| [text](#text)                                      | Localized text of the field. Shown in the UI and the PDF.                                               |
+| [uiHide](#uihide)                                  | Setting this to `true` hides the field in the UI.                                                       |
+| [uiTextColor](#uitextcolor)                        | Text color of a certain field in the UI.                                                                |
+| [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are requried to fill the form.                  |                                                                             |
+| [lable](#lable)                                    | Several configurations for the lable.                                                                 |
+| [values](#values)                                  | Several configurations for the values.                                                                 |
+| [prefill](#prefill)                                | Configuration to prefill the field with a value upon creation of the form instance.                     |
+| [onChange](#onchange)                              | ??? |
 
 ---
 # Configuration Parameters
@@ -117,7 +116,7 @@ pdfWidth: 0.5
 
 | `placeHolderText` |                            |
 | :---------------- | :------------------------- |
-| Possible Values   | [MultiLanguageText](#todo) |
+| Possible Values   | [MultiLanguageText](#multilanguagetext) |
 | Required          | no                         |
 | Default Value     | `undefined` in which case `label.text` is used as fallback |
 
@@ -171,7 +170,7 @@ pdfTextColor: #F1F8F1
 
 | `text` |                                       |
 | :---------------- | :------------------------- |
-| Possible Values   | [MultiLanguageText](./01-single-line-text-input.md) |
+| Possible Values   | [MultiLanguageText](#multilanguagetext) |
 | Required          | yes                        |
 
 Label text that is shown in the UI and the PDF to identify the field. 
@@ -202,7 +201,6 @@ uiHide: true
 ```
 
 ---
-
 ## `uiTextColor`
 
 | `pdfTextColor`  |                 |
@@ -219,25 +217,110 @@ uiTextColor: #F1F8F1
 
 ---
 
+## `requiredAmountOfEntries`
+
+
+| `requiredAmountOfEntries`  |                 |
+| :--------------------------| :-------------- |
+| Possible Values            | Integer >= `0`  |
+| Required                   | no              |
+| Default Value              | `0`             |
+
+By setting `requiredAmountOfEntries`, it specify how many repeating entries are requried to fill the form.
+
+```typescript
+requiredAmountOfEntries: 3,
+```
+
+---
+## `MultiLanguageText`
+
+| `MultiLanguageText` |                        |
+| :------------------ | :--------------------- |
+| Possible Values     | en, de, tr, fr, es, it |
+| Required            | no                     |
+
+ Allows to display text in the pdf in different languages.
+
+``` typescript
+{
+ en: 'Example Placeholder',
+ de: 'Platzhalter',
+ tr: 'Example Placeholder [TR]',
+ fr: 'Example Placeholder [FR]',
+ es: 'Example Placeholder [ES]',
+ it: 'Example Placeholder [IT]',
+}
+```
+
+---
+## `label`
+
+| Property                                         | Description                       |
+| :------------------------------------------------| :-------------------------------- |
+| [text](#text)                                    | Localized label text of the field. Shown in the UI and the PDF. |
+| [uiHide](#uihide)                                | Setting this to `true` hides the label in the UI. |
+| [uiTextColor](#uitextcolor)                      | Text color of a certain field in the UI.                                                                |
+| [pdfHide](#pdfhide)                              | Setting this to `true` hides the label in the PDF. |
+| [pdfTextSize](#pdftextsize)                      | Text size of the label in the PDF. |
+| [pdfTextColor](#pdftextcolor)                    | Text color of the label in the PDF. |
+
+---
 ## `value`
 
 | Property                                                  | Description                                                                                     |
 | :-------------------------------------------------------- | :---------------------------------------------------------------------------------------------- |
-| [uiMinRows](#valueuiminrows)                              | Minimum number of lines that are shown in the UI.                                               |
-| [uiMaxRows](#valueuimaxrows)                              | Maximum number of lines that can be seen in the UI without scrolling.                           |
-| [pdfHide](#valuepdfhide)                                  | Setting this to `true` hides the value in the PDF.                                              |
-| [pdfTextSize](#valuepdftextsize)                          | Text size of the value in the PDF.                                                              |
-| [pdfTextColor](#valuepdftextcolor)                        | Text color of the value in the PDF.                                                             |
-| [pdfStartInNewLine](#valuepdfstartinnewline)              | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [validators.maxCharacters](#valuevalidatorsmaxcharacters) | Maximum number of characters for the input value to be valid.                                   |
-| [validators.minCharacters](#valuevalidatorsmincharacters) | Minimum number
+| [pdfHide](#pdfhide)                                       | Setting this to `true` hides the label in the PDF. |
+| [pdfTextSize](#pdftextsize)                               | Text size of the label in the PDF. |
+| [pdfTextColor](#pdftextcolor)                             | Text color of the label in the PDF. |
+| [pdfStartInNewLine](#pdfstartinnewline)                   | ???|
+| [pdfAddLineBreak](#pdfaddlinebreak)                       | ???|
+| [validators.maxCharacters](#validatorsmaxcharacters)      | Maximum number of characters for the input value to be valid.                                   |
+| [validators.minCharacters](#validatorsmincharacters)      | Minimum number
 
-<details>
-<summary>Click to toggle contents of `code`</summary>
+---
+### `pdfStartInNewLine`
+
+???
+
+---
+### `pdfAddLineBreaks`
+
+???
+
+---
+### `validators.minCharacters`
+
+| `validators.minCharacters`     |                 |
+| :-------------- | :-------------- |
+| Possible Values | Integer > 1     |
+| Required        | no              |
+| Default Value   | -               |
+
+By setting `validators.minCharacters`, the field will be marked as invalid if the value contains less characters than the specified number.
+
+``` typescript
+validators: {
+    minCharacters: 10
+}
 ```
-CODE!
+
+---
+### `validators.maxCharacters`
+
+| `validators.maxCharacters`     |                 |
+| :-------------- | :-------------- |
+| Possible Values | Integer > 1     |
+| Required        | no              |
+| Default Value   | -               |
+
+By setting `validators.maxCharacters`, the field will be marked as invalid if the value contains more characters than the specified number.
+
+``` typescript
+validators: {
+    maxCharacters: 100
+}
 ```
-</details>
 
 ---
 ## `prefill`
@@ -251,32 +334,6 @@ CODE!
 This configuration follows the [general syntax for prefilling rules](#todo).
 The provided PrefillRules need to have an output value of type string.
 
-``` typescript (static string)
-prefill: {
-        value: [
-            {
-                input: 'none',
-                steps: [
-                    [ 'staticString', 'Default \n Multi \n Line \n Text' ],
-                ],
-            },
-        ],
-    },
-```
-``` typescript (asset type name)
-prefill: {
-        value: [
-            {
-                input: 'assetId',
-                steps: [
-                    'assetIdToAsset',
-                    'assetToAssetTypeNameString',
-                ],
-            },
-        ],
-    },
-```
-
 ---
 ## `onChange`
 
@@ -284,6 +341,6 @@ prefill: {
 | :------------------------- | ------------------|
 | Possible Values            | Array of Fuctions |
 | Required                   | no                |
-| Default Value              | -     
+| Default Value              | -     |
 
 *???Description???*
