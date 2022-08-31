@@ -274,7 +274,7 @@ requiredAmountOfEntries: 3,
 | [pdfTextSize](#pdftextsize)                               | Text size of the label in the PDF. |
 | [pdfTextColor](#pdftextcolor)                             | Text color of the label in the PDF. |
 | [pdfStartInNewLine](#pdfstartinnewline)                   | ???|
-| [pdfAddLineBreak](#pdflinebreak)                          | ???|
+| [pdfAddLineBreak](#pdfaddlinebreak)                       | ???|
 | [validators.maxCharacters](#validatorsmaxcharacters)      | Maximum number of characters for the input value to be valid.                                   |
 | [validators.minCharacters](#validatorsmincharacters)      | Minimum number
 
