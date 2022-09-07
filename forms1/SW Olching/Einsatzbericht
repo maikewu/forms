@@ -1,0 +1,468 @@
+{
+  "general": {
+    "name": {
+      "en": " ",
+      "de": "Einsatzbericht"
+    }
+  },
+  "formStructure": {
+    "01_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Kundeninformation"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+               {
+                 "name": "PATCH_DATA",
+                 "_dynamicData": {
+                   "input": {
+                     "_field": {
+                       "_field": "ARGS",
+                       "_propertyName": "asset",
+                       "_functionName": "GET_PRODUCT"
+                     },
+                     "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+               }
+              }
+            ]
+         }
+        ]
+      }
+    },
+    "02_inspectionPlace": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Inspection Place",
+        "de": "Abnahmestelle"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Anlage",
+            "en": "Asset"
+          }
+        },
+        "assetAddress": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "assetAddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+              "actions": [
+              {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                  "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "customer"
+                  },
+                  "output": {
+                      "_field": "asset",
+                      "_propertyName": "customerFilter"
+                  }
+                  }
+              }
+              ]
+            }
+        ]
+      }
+    },
+    "03_workOrderInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Work Order Information",
+        "de": "Auftragsinformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "reason": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Grund",
+            "en": "Reason"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Anfrage",
+                "en": "Value 1"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Problem",
+                "en": "Value 2"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "Vertriebsmöglichkeit",
+                "en": "Value 3"
+              }
+            },
+            {
+              "value": "4",
+              "text": {
+                "de": "sonstiger Grund",
+                "en": "Value 4"
+              }
+            },
+            {
+              "value": "5",
+              "text": {
+                "de": "Auftrag",
+                "en": "Work Order"
+              }
+            },
+            {
+              "value": "6",
+              "text": {
+                "de": "Zählerfernauslesung",
+                "en": "Value 3"
+              }
+            },
+            {
+              "value": "7",
+              "text": {
+                "de": "Leckageüberwachung",
+                "en": "Value 1"
+              }
+            },
+            {
+              "value": "8",
+              "text": {
+                "de": "Zählerwechsel/Überprüfung",
+                "en": "Value 2"
+              }
+            }
+          ]
+        },
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Durchgeführte Arbeiten",
+            "en": "Tasks"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "required": false
+        },
+        "volume": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Volumenstrom angepasst",
+            "en": "Check this field"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "fmk": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "FMK-Verdrahtung geändert",
+            "en": "Check this field"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "visualInspection": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Zustandsfeststellung",
+            "en": "Check this field"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "checked": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "04_sign": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature",
+        "de": "Unterschrift"
+      },
+      "stateIndicator": true,
+      "width": 1,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Monteur",
+            "en": "User"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "05_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Einsatzbericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Einsatzbericht Stadtwerke Olching",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "06_upload": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Document Upload",
+        "de": "Dokumente hinzufügen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "documents": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "label": {
+            "de": "Dokument",
+            "en": "Documents"
+          },
+          "width": 1,
+          "required": false
+        }
+      }
+    },
+    "07_notesInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Internal Addendum",
+        "de": "Interne Anmerkungen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "additionalTasks": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Internal Addendum"
+          },
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "08_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Einsatzbericht mit internem Nachtrag als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Einsatzberich - Interner Nachtrag",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
