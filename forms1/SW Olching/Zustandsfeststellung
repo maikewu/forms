@@ -1,0 +1,561 @@
+{
+  "general": {
+    "name": {
+      "en": "Status Report",
+      "de": "Zustandsfeststellung"
+    }
+  },
+  "formStructure": {
+    "01_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Customer",
+        "de": "Kundeninformationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+               {
+                 "name": "PATCH_DATA",
+                 "_dynamicData": {
+                   "input": {
+                     "_field": {
+                       "_field": "ARGS",
+                       "_propertyName": "asset",
+                       "_functionName": "GET_PRODUCT"
+                     },
+                     "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+               }
+              }
+            ]
+         }
+        ]
+      }
+    },
+    "02_inspectionPlace": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Inspection Place",
+        "de": "Abnahmestelle"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Anlage",
+            "en": "Asset"
+          }
+        },
+        "assetAddress": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "assetAddress",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+              "actions": [
+              {
+                  "name": "PATCH_DATA",
+                  "_dynamicData": {
+                  "input": {
+                      "_field": "ARGS",
+                      "_propertyName": "customer"
+                  },
+                  "output": {
+                      "_field": "asset",
+                      "_propertyName": "customerFilter"
+                  }
+                  }
+              }
+              ]
+            }
+        ]
+      }
+    },
+    "03_workOrderInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Work Order Information",
+        "de": "Auftragsinformationen"
+      },
+      "stateIndicator": true,
+      "width": 1,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "reason": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Grund",
+            "en": "Reason"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Anfrage",
+                "en": "Inquiry"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Problem",
+                "en": "Problem"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "Vertriebsmöglichkeit",
+                "en": "Sales Opportunity"
+              }
+            },
+            {
+              "value": "4",
+              "text": {
+                "de": "Sonstiger Grund",
+                "en": "Other Reason"
+              }
+            },
+            {
+              "value": "5",
+              "text": {
+                "de": "Auftrag",
+                "en": "Work Order"
+              }
+            },
+            {
+              "value": "6",
+              "text": {
+                "de": "Zählerfernauslesung",
+                "en": "Distant Meter Reading"
+              }
+            },
+            {
+              "value": "7",
+              "text": {
+                "de": "Leckageüberwachung",
+                "en": "Leakage Monitoring"
+              }
+            },
+            {
+              "value": "8",
+              "text": {
+                "de": "Zählerwechsel/Überprüfung",
+                "en": "Meter Switch/Check"
+              }
+            }
+          ]
+        },
+        "assetRecord": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Anlagenerfassung",
+            "en": "Asset Record"
+          }
+        },
+        "compressionLevel": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Druckstufe Anlage (lt. Typenschild)",
+            "en": "Asset Compression Level (according to type label)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "manufacturerUGS": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Hersteller und Typ der ÜGS",
+            "en": "Manufacturer and Type of ÜGS"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "manufacturerController": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Hersteller und Typ Volumenstromregler",
+            "en": "Manufacturer and Type of Flow Rate Controller"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "actuator": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Stellantrieb",
+            "en": "Actuator"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "connection": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verbindung primärseitige Zuleitung",
+            "en": "Connection Primary Supply Line"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "pressureGauge": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Druckmanometer: Anzeigebereich? (z.B. 0-16 bar)",
+            "en": "Pressure Gauge: Display Are? (e.g. 0-16 bar)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "customerAsset": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Kundenanlage",
+            "en": "Customer Asset"
+          }
+        },
+        "defects": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Mängel an Kundenanlage",
+            "en": "Defects At Customer Asset"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "defectReport": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Mängelbericht ausgefüllt",
+            "en": "Defect Report Filled Out"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "networkOperator": {
+          "fieldType": "H3",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Netzbetreiber",
+            "en": "Network Operator"
+          }
+        },
+        "safeOperation": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Sicherer Betrieb",
+            "en": "Safe Operation"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "defects2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Mängel",
+            "en": "Defects"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "defects3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Mängel",
+            "en": "Defects"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "checked": false
+        },
+        "comment2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kommentar",
+            "en": "Comment"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        }
+      }
+    },
+    "03_upload": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Document Upload",
+        "de": "Dokumente hinzufügen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "documents": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "label": {
+            "de": "Dokument",
+            "en": "Documents"
+          },
+          "width": 1,
+          "required": false
+        }
+      }
+    },
+    "04_sign": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature",
+        "de": "Unterschrift"
+      },
+      "stateIndicator": true,
+      "width": 1,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Monteur",
+            "en": "User"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "05_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Zustandsfeststellung als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Zustandsfeststellung Stadtwerke Olching",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
