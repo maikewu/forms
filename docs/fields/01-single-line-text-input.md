@@ -83,7 +83,6 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
       },
   },
 },
-
 ```
 ``` typescript (minimal)
 {
@@ -130,6 +129,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 | [validators.maxCharacters](./24-general-properties/#validatorsmaxcharacters)    | Maximum number of characters for the input value to be valid.                                   |
 | [validators.emailAddress](#validatorsemailaddress)                              | Setting this to `true` forces the input to match email address format.                                              |
 | [validators.regexPattern](#validatorsregexpattern)                              | Defines regular expression                          |
+
 ---
 ### `validators.emailAddress`
 
