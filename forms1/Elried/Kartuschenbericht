@@ -1,0 +1,378 @@
+{
+  "general": {
+    "name": {
+      "en": "Cartridge Report",
+      "de": "Kartuschenbericht"
+    }
+  },
+  "formStructure": {
+    "01_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Customer",
+        "de": "Kunde"
+      },
+      "stateIndicator": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5
+        },
+        "contactPerson": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ansprechpartner",
+            "en": "Contact person"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "phone": {
+          "fieldType": "REMBERG_PHONE",
+          "required": false,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Tel. für Rückfragen",
+            "en": "Phone for questions"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_articleInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Article",
+        "de": "Artikel"
+      },
+      "children": {
+        "articleNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Artikelnummer",
+            "en": "Article number"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty":true,
+          "disabled": false
+        },
+        "batchNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Chargennummer",
+            "en": "Batch number"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty":true,
+          "disabled": false
+        },
+        "gurantee": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Garantie",
+            "en": "Guarantee"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "yes",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "quantity": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+    	      "de": "Stückzahl",
+    	      "en": "Quantity"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        }
+      }
+    },
+    "03_errorDetails": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Error description",
+        "de": "Fehlerbeschreibung"
+      },
+      "children": {
+        "customerStatement": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kundenaussage",
+            "en": "Customer statement"
+          },
+          "hideInPdfIfEmpty": true,
+          "minRows": 1,
+          "width": 1
+        },
+        "findingElried": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Feststellung Elried",
+            "en": "Finding Elried"
+          },
+          "minRows": 1,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        },
+        "nextSteps": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Nächste Schritte (z.B. Gutschrift)",
+            "en": "Next steps (e.g. credit note)"
+          },
+          "minRows": 1,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        },
+        "residualQuantity": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Restmenge in ml je Kartusche",
+            "en": "Residual quantity in ml per cartridge"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "workingTimes": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Arbeitseinheit je 10 min",
+            "en": "Work unit each 10 min"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "comments": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        }
+      }
+    },
+    "04_finalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": " ",
+        "de": " "
+      },
+      "children": {
+        "user": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Bearbeiter",
+            "en": "Editor"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "hideInPdfIfEmpty": true,
+          "required": false
+        },
+        "status": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Status",
+            "en": "Status"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "date_1": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Eingangsdatum",
+            "en": "Date received"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": false,
+          "hideInPdfIfEmpty": true,
+          "required": false
+        },
+        "date_2": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Ausgangsdatum",
+            "en": "Outgoing date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "hideInPdfIfEmpty": true,
+          "autofillCurrentDate": false,
+          "required": false
+        }
+      }
+    },
+    "05-sendForm": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send/sent report as E-mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "prefillConfig": {
+            "subject": "Kartuschenbericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

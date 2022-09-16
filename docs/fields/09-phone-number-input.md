@@ -139,7 +139,6 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [supportedNonNumericCharacters](#supportedNonNumericCharacters)                 | By setting this, the field will support a list of non numeric characters.              
 | [validators.minCharacters](./24-general-properties/#validatorsmincharacters)    | Minimum number of characters for the input value to be valid.                                   |
 | [validators.maxCharacters](./24-general-properties/#validatorsmaxcharacters)    | Maximum number of characters for the input value to be valid.                                   |
 | [validators.supportedNonNumericCharacters](#supportedNonNumericCharacters)      | By setting this, the field will support a list of non numeric characters.                                             |
@@ -155,31 +154,9 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 
 By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
 
-``` typescript (value)
-value:{
-supportedNonNumericsCharacters: [A, I, *]
-}
-```
 ``` typescript (validators)
 validators:{
-supportedNonNumericsCharacters: [A, I, *]
-}
-```
-
----
-### `validators.regexPattern`
-
-| `validators.regexPattern`     |                 |
-| :-------------- | :-------------- |
-| Possible Values | String     |
-| Required        | no              |
-| Default Value   | -              |
-
-By defining `validators.regexPattern`, you set a regular expression. ???
-
-``` typescript
-validators:{
-regexPattern: ^[A-Z]*$
+supportedNonNumericsCharacters: ["A", "I", "*"]
 }
 ```
 
