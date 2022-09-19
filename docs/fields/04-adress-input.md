@@ -206,11 +206,11 @@ regexPattern: ^[A-Z]*$
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](#???) that output a value of type `string` |
+| Possible Values            | Array of [PrefillRules](.25-prefill-rules/#prefillrules) that output a value of type `string` |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](#???).
+This configuration follows the [general syntax for prefilling rules](.25-prefill-rules/#prefillrules).
 The provided PrefillRules need to have an output value of type string.
 
 ``` typescript
