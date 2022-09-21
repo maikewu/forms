@@ -4,9 +4,9 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-# `Dynamic Field Actions (onChange)`
+# Dynamic Field Actions (onChange)
 
-## `Concept`
+## Concept
 
 Dynamic Field Actions can be represented as a graph where nodes represent source / target fields and sections, 
 and edges of the graph represent actions themselves:
@@ -15,7 +15,7 @@ and edges of the graph represent actions themselves:
 
 ---
 
-## `Data transfer between fields / sections`
+## Data transfer between fields / sections
 
 Data entered in fields / sections can be transferred in between. Each field or section povides and expects a specific data type. 
 When the provided data type doesn't match the expected data type, transformation by using `steps` is necessary.
@@ -87,7 +87,7 @@ You can find a list below, that contains all implemented `steps`, which can be u
 
 ---
 
-## `List of all dynamic action step`
+## List of all dynamic action step
 
 
 ```Typescript (All implemented steps)
