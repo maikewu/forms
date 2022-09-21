@@ -165,7 +165,7 @@ required: {
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [pdfAddLineBreaks](./24-general-properties/#pdfaddlinebreaks)                   | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
+| [pdfAddLineBreaks](./24-general-properties/#pdfaddlinebreaks)                   | Setting this to `true` will add a linebreak in the PDF. |
 
 ---
 ### `supportedNonNumericCharacters`
@@ -206,11 +206,11 @@ regexPattern: ^[A-Z]*$
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](#???) that output a value of type `string` |
+| Possible Values            | Array of [PrefillRules](.25-prefill-rules/#prefillrules) that output a value of type `string` |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](#???).
+This configuration follows the [general syntax for prefilling rules](.25-prefill-rules/#prefillrules).
 The provided PrefillRules need to have an output value of type string.
 
 ``` typescript

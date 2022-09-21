@@ -108,6 +108,7 @@ The PersonListInput field allows to enter user.
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
+| [pdfAddLineBreaks](./24-general-properties/#pdfaddlinebreaks)                   | Setting this to `true` will add a linebreak in the PDF. |
 | [firstNameRequired](#firstnamerequired)                                         | Setting this to `true` makes field value mandatory to fill the form                             |
 | [lastNameRequired](#lastnamerequired)                                           | Setting this to `true` makes field value mandatory to fill the form                                   |
 | [email.required](./24-general-properties/#required)                             | If this is set to `true`, the field is considered invalid as long as no value is entered. |
