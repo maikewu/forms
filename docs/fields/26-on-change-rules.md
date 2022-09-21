@@ -23,14 +23,22 @@ When the provided data type doesn't match the expected data type, transformation
 `steps` have an input (expected) data type and an output (provided) data type. 
 By chaining steps, the desired data type can be achieved "step by step". 
 
-After transforming the data, the `target` field must be defined by entering a field ID. Fields with severeal properties need a `propertyName` additional.
+After transforming the data, the `target` field must be defined by entering a field `id`. Fields with several properties need a `propertyName` additional.
 
 ### **Example**:
-The `singleLineTextInput` provides a `STRING` and the `mulitLineTextInput` expects a `STRING`. Therefor no transformation is necessary to send the data to the target field.
+The `singleLineTextInput` provides a `STRING` and the `mulitLineTextInput` expects a `STRING`. Therefore no transformation is necessary to send the data to the target field.
 
 But if you would like to transfer the name from `userSingleSelect` (provided type: `USER_INFO`) to the `name` property of the `signatureSection` (expected type: `STRING`) then you need to transform the data:
 
-```Typescript (singleLineTextInput)
+```Typescript (Example: userSingleSelect)
+onChange: [
+    {
+      steps: ['userToFullNameString'],
+      target: { id: 'exampleSignatureSection', propertyName: 'name' },
+    },
+]
+```
+```Typescript (Example: singleLineTextInput)
 onChange: [
     {
       steps: [],
@@ -38,19 +46,9 @@ onChange: [
     },
 ]
 ```
-```Typescript (userSingleSelect)
-onChange: [
-    {
-      steps: ['userToFullNameString'],
-      target: { id: 'exampleSignatureSection', propertyName: 'name' },
-    },
-]
+---
 
-```
-
-You can find a list below, that contains all implemented `steps`, which can be used to transform data.
-
-### **Data type per field / section**:
+## Data type per field / section
 
 <details>
 <summary>Fields and data type</summary>
@@ -89,6 +87,7 @@ You can find a list below, that contains all implemented `steps`, which can be u
 
 ## List of all dynamic action step
 
+You can find a list below, that contains all implemented `steps`, which can be used to transform data.
 
 ```Typescript (All implemented steps)
 // Account
