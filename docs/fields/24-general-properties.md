@@ -31,6 +31,8 @@ On this page you will find a list of repeating fields.
 | [values](#values)                                  | Several configurations for the values.                                                                 |
 | [prefill](#prefill)                                | Configuration to prefill the field with a value upon creation of the form instance.                     |
 | [onChange](#onchange)                              | ??? |
+| [fields](#fields)                                  | Components of the field |
+
 
 ---
 # Configuration Parameters
@@ -344,3 +346,19 @@ The provided PrefillRules need to have an output value of type string.
 | Default Value              | -     |
 
 *???Description???*
+
+## `fields`
+
+| Property                                         | Description                       |
+| :------------------------------------------------| :-------------------------------- |
+| [commentMultiLineTextInput](#commenmultilinetextinput)        | Defines a comment section as multiLineTextInput  |
+
+
+---
+### `commentMultiLineTextInput`
+
+| Property               | Description                                                                               |
+| :----------------------| :---------------------------------------------------------------------------------------- |
+| [required](./24-general-properties/#required)                                | If this is set to `true`, the field is considered invalid as long as no value is entered. |
+| [disabled](./24-general-properties/#disabled)                                | Setting this to `true` permanently disables the field in the UI. |
+| [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the label in the PDF. |
