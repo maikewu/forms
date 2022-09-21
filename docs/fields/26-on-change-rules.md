@@ -119,10 +119,6 @@ You can find a list below, that contains all implemented `steps`, which can be u
       input: ACCOUNT,
       output: STRING,
   },
-  userInfoToUser: {
-      input: USER_INFO,
-      output: USER,
-  },
 // Address
   addressToCityString: {
       input: ADDRESS,
@@ -167,6 +163,10 @@ You can find a list below, that contains all implemented `steps`, which can be u
       input: USER_INFO,
       output: STRING,
   },
+  userInfoToUser: {
+    input: USER_INFO,
+    output: USER,
+  }, 
   userToPhoneNumberString: {
       input: USER,
       output: STRING,
@@ -205,10 +205,6 @@ accountInfoToAccount: {
 accountToPhoneNumberString: {
     input: ACCOUNT,
     output: STRING,
-},
-userInfoToUser: {
-    input: USER_INFO,
-    output: USER,
 },
 ```
 ```Typescript (Address)
@@ -257,6 +253,10 @@ phoneNumberStringToPhoneNumberObject: {
 userToFullNameString: {
     input: USER_INFO,
     output: STRING,
+},
+userInfoToUser: {
+    input: USER_INFO,
+    output: USER,
 },
 userToPhoneNumberString: {
     input: USER,
