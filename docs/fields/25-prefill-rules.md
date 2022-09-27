@@ -3,13 +3,10 @@ title: PrefillRules
 category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
-
-# `Prefill rules` 
-
 ## Concept
 
-Prefill allows you to prepopulate certain fields with values when creating a new form instance. 
-For this purpose, prefill rules must be defined for the respective fields in the form code. The [schema](#schema) of the prefill rule contains targets, inputs and steps. 
+Prefill allows you to prepopulate fields with values when creating a new form instance. 
+For this purpose, prefill rules must be defined for the respective fields in the form code. The schema of the prefill rule contains targets, inputs and steps. 
 - `target` specifies the property to which data is to be written
 - `input` can be a seperate source that already contains informations or a own defined input value,
 that should be prepopulate to the form
@@ -22,10 +19,8 @@ that should be prepopulate to the form
 
 | Section                  |      `target`      |
 | :------------------------- | :--------------|
-| SignatureSection| `name`
-|SignatureSection| `location`
-|SignatureSection| `date`
-
+| SignatureSection| `name`, `location`, `date`
+   
 | Field                  |      `target`      |
 | :------------------------- | :--------------|
 |SingleLineTextInput| `value`
@@ -52,15 +47,15 @@ that should be prepopulate to the form
 
 | Source               | `input` (provided) value | Data type |
 | :----------------------------- | :----- | :-----|
-| Asset view | `assetId`| `ASSET_ID` equals `STRING`
-| Selected organiation |`organizationId` | `ACCOUNT_ID` equals `STRING`
+| Asset view | `assetId`| `ASSET_ID` (equals `STRING`)
+| Selected organization |`organizationId` | `ACCOUNT_ID` (equals `STRING`)
 | Form creation date time |`creationDateTime` | `REMBERG_DATE`
 | Current user | `currentUser` | `USER_INFO`
-| Current user | `currentUserId` | `USER_ID` equals `STRING`
+| Current user | `currentUserId` | `USER_ID` (equals `STRING`)
 | Current account | `currentAccount` | `ACCOUNT`
-| Current account  |`currentAccountId` | `ACCOUNT_ID` equals `STRING`
-| WorkOrder view |`assignedUserId` | `USER_ID` equals `STRING`
-| WorkOrder view |`workOrderId` | `WORK_ORDER_ID` equals `STRING`
+| Current account  |`currentAccountId` | `ACCOUNT_ID` (equals `STRING`)
+| WorkOrder view |`assignedUserId` | `USER_ID` (equals `STRING`)
+| WorkOrder view |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
 
 </details>
@@ -102,7 +97,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 --- 
 ### Schema & Examples
 
-Prefill can have severeal rules, for each input, that get executed sequencly until on rule is able to applie as the necessary input data is available.
+Prefill can have severeal rules for a target, which get executed sequenctially until on rule can be applied when the required input data is available.
 <details>
 <summary>Prefill examples of certain fields</summary>
 
