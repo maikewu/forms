@@ -85,7 +85,7 @@ onChange: [
 
 ---
 
-## List of all dynamic action step
+## List of all dynamic action steps
 
 You can find a list below, that contains all implemented `steps`, which can be used to transform data.
 
