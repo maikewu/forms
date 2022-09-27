@@ -52,7 +52,6 @@ parentDoc: 62ec01bd561bab0aa775efe4
     },
 },
 ```
-
 ``` typescript (minimal)
 {
     id: 'exampleBooleanInput_1',

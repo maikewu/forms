@@ -180,7 +180,7 @@ The StaticMultiSelect field allows to choose one or more options of the dropdown
 
 | `options`       |                 |
 | :-------------- | :-------------- |
-| Possible Values | MultiLanguageText   |
+| Possible Values | `MultiLanguageText`   |
 | Required        | yes              |
 | Default Value   | -             |
 
