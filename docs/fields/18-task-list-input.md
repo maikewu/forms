@@ -114,15 +114,25 @@ TaskListInput enables the usere to create performed tasks.
 ```
 
 ---
+## `label`
+
+| Property                                                    | Description                       |
+| :---------------------------------------------------------- | :-------------------------------- |
+| [text](./24-general-properties/#text)                       | Localized label text of the field. Shown in the UI and the PDF. |
+| [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the label in the PDF. |
+| [pdfTextSize](./24-general-properties/#pdftextsize)         | Text size of the label in the PDF. |
+| [pdfTextColor](./24-general-properties/#pdftextcolor)       | Text color of the label in the PDF. |
+
+---
 ## `prefill`
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](.25-prefill-rules/#prefillrules) that output a value of type `string` |
+| Possible Values            | Array of [PrefillRules](.25-prefill-rules) that output a value of type `string` |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](.25-prefill-rules/#prefillrules).
+This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
 The provided PrefillRules need to have an output value of type string.
 
 ``` typescript (set prefilled tasks)
