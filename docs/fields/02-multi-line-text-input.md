@@ -4,10 +4,6 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
->🚧 
->
-> In progress 
-
 The MultiLineTextInput field allows entering larger amounts of unformatted text. It respects line breaks and can be configured to limit the possible content length.
 
 # Configuration Overview
@@ -23,7 +19,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 | [label](#label)                                                              | Configuration of the field label. |
 | [value](#value)                                                              | Configuration of the field value. |
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
-| [onChange](#onchange)                                                        | ??? |
+| [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
 ``` typescript (complete)
 {
@@ -162,19 +158,16 @@ If the content spans more lines than that maximum, there will be a scrollbar to 
 ``` typescript
 uiMaxRows: 15
 ```
-
 ---
 ## `prefill`
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](#todo) that output a value of type `string` |
+| Possible Values            | Array of [PrefillRules](.25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](#todo).
-The provided PrefillRules need to have an output value of type string.
-
+This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
 ``` typescript (static string)
 prefill: {
         value: [
@@ -204,10 +197,11 @@ prefill: {
 ---
 ## `onChange`
 
-| `onChange`                 |                   |
-| :------------------------- | ------------------|
-| Possible Values            | Array of Fuctions |
-| Required                   | no                |
-| Default Value              | -     
+| `onChange`                 |                                                                        |
+| :------------------------- | :--------------                                                        |
+| Possible Values            | Array of [DynamicFieldActions](.26-on-change-rules) |
+| Required                   | no                                                                     |
+| Default Value              | -                                                                      |
 
-*???Description???*
+
+This configuration follows the [general syntax for dynamic field actions](.26-on-change-rules).

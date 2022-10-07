@@ -3,7 +3,6 @@ title: PersonListInput
 category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
-# PersonListInput
 
 The PersonListInput field allows to enter user.
 # Configuration Overview
@@ -17,7 +16,7 @@ The PersonListInput field allows to enter user.
 | [label](#label)                                                              | Configuration of the field label. |
 | [value](#value)                                                              | Configuration of the field value. |
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
-| [onChange](#onchange)                                                        | ??? |
+| [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
 ``` typescript (complete)
 {
