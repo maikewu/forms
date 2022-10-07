@@ -14,6 +14,7 @@ The Expense List Input allows the user to add expenses.
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
 | [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are requried to fill the form.                                                                                        |
+| [label](#label)                                                              | Configuration of the field label. |
 | [fields](#fields)                                     | Components of the field |
 
 
@@ -76,6 +77,14 @@ The Expense List Input allows the user to add expenses.
   type: FormFieldTypesEnum.EXPENSE_LIST_INPUT,
 }
 ```
+## `label`
+
+| Property                                                    | Description                       |
+| :---------------------------------------------------------- | :-------------------------------- |
+| [text](./24-general-properties/#text)                       | Localized label text of the field. Shown in the UI and the PDF. |
+| [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the label in the PDF. |
+| [pdfTextSize](./24-general-properties/#pdftextsize)         | Text size of the label in the PDF. |
+| [pdfTextColor](./24-general-properties/#pdftextcolor)       | Text color of the label in the PDF. |
 
 ---
 ## `fields`

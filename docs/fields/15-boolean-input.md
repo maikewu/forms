@@ -4,11 +4,6 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-# Boolean Input
->🚧 
->
-> In progress
-
 # Configuration Overview
 
 | Property                                                                     | Description                      |
@@ -21,7 +16,7 @@ parentDoc: 62ec01bd561bab0aa775efe4
 | [label](#label)                                                              | Configuration of the field label. |
 | [value](#value)                                                              | Configuration of the field value. |
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
-| [onChange](#onchange)                                                        | ??? |
+| [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
 ``` typescript (complete)
 {
@@ -80,17 +75,16 @@ parentDoc: 62ec01bd561bab0aa775efe4
 | [pdfTextColor](./24-general-properties/#pdftextcolor)       | Text color of the label in the PDF. |
 
 ---
+
 ## `prefill`
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](#???) that output a value of type `string` |
+| Possible Values            | Array of [PrefillRules](.25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](#???).
-The provided PrefillRules need to have an output value of type string.
-
+This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
 ``` typescript (static boolean)
 prefill: {
         prefill: {
@@ -101,18 +95,15 @@ prefill: {
         },
 }
 ```
-
 ---
-## `onChange ???`
+## `onChange`
 
-| `onChange`                 |                   |
-| :------------------------- | ------------------|
-| Possible Values            | Array of Fuctions |
-| Required                   | no                |
-| Default Value              | -     
+| `onChange`                 |                                                                        |
+| :------------------------- | :--------------                                                        |
+| Possible Values            | Array of [DynamicFieldActions](.26-on-change-rules) |
+| Required                   | no                                                                     |
+| Default Value              | -                                                                      |
 
-*???Description???*
 
-```typescript
+This configuration follows the [general syntax for dynamic field actions](.26-on-change-rules).
 
-```

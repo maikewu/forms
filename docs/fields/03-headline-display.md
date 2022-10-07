@@ -4,11 +4,6 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-# Headline Display
->🚧 
->
-> In Progress
-
 The HeadlineDisplay is a field that displays headlines to structure content in the form and provisde information.
 
 # Configuration Overview
