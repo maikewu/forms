@@ -2,15 +2,6 @@
   "general": {
     "name": {
       "de": "Prüfprotokoll Universalanlage Autovent"
-    },
-    "confirmation": {
-      "isSignatureNeeded": true,
-      "popupHeadline": {
-        "de": "Unterschrift notwendig"
-      },
-      "popupDescription": {
-        "de": "Bitte unterschreiben Sie das Prüfprotokoll."
-      }
     }
   },
   "formStructure": {
@@ -104,26 +95,7 @@
                 ]
               },
               {
-                "to": "B1-signatureCustomer",
-                "actions": [
-                  {
-                    "name": "PATCH_DATA",
-                    "_dynamicData": {
-                      "input": {
-                        "_field": "customerLocation",
-                        "_propertyName": "city"
-                      },
-                      "output": {
-                        "_formArray": "signature2",
-                        "_formArrayIndex": 0,
-                        "_propertyName": "location"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "to": "A2-signatureTechnican",
+                "to": "A1-signatureCustomer",
                 "actions": [
                   {
                     "name": "PATCH_DATA",
@@ -142,7 +114,7 @@
                 ]
               },
               {
-                "to": "B2-signatureCustomer",
+                "to": "B1-signatureTechnican",
                 "actions": [
                   {
                     "name": "PATCH_DATA",
@@ -152,7 +124,26 @@
                         "_propertyName": "city"
                       },
                       "output": {
-                        "_formArray": "signature2",
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "B1-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
                         "_formArrayIndex": 0,
                         "_propertyName": "location"
                       }
@@ -1616,69 +1607,101 @@
             "de": "Nächste Prüfung spätestens am"
           },
           "autofillCurrentDate": false
-        },
-        "helptext_1": {
-          "fieldType": "HELP_TEXT",
-          "hiddenInPdf": false,
-          "width": 1,
-          "text": {
-            "de": "Durch die nachfolgende Unterschrift bestätigt der Servicetechniker die ordnungsgemäße Durchführung der Sicherheitsprüfung."
-          }      
         }
       }
     },    
     "A1-signatureTechnican": {
       "isForm": true,
       "ui": "CARD",
-      "width": 1,
+      "width": 0.5,
       "unbreakable": true,
       "cardHeadline": {
         "de": "Unterschrift Servicetechniker"
       },
       "children": {
+        "subline17": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Durch die nachfolgende Unterschrift bestätigt der Servicetechniker die ordnungsgemäße Durchführung der Sicherheitsprüfung."
+          },
+          "width": 1
+        },
         "signature1": {
           "fieldType": "REMBERG_SIGNATURE",
           "label": {
             "de": "Servicetechniker"
           },
           "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "A1-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "de": "Unterschrift Betreiber"
+      },
+      "children": {
+        "subline17": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Das Prüfprotokoll sowie das Ergebnis der Prüfung wurden zur Kenntnis genommen."
+          },
+          "width": 1
+        },
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Betreiber"
+          },
+          "autofillCurrentUser": false,
           "required": false
+        }
+      }
+    },
+    "A1-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "prefillConfig": {
+            "subject": "Prüfprotokoll Autovent",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          }
         }
       }
     },
     "status": {
       "isForm": true,
       "ui": "CARD",
-      "width": 0.5,
+      "width": 1,
       "unbreakable": false,
       "cardHeadline": {
-        "de": "Status der Sicherheitsprüfung"
+        "de": "Reparatur nach Sicherheitsprüfung"
       },
       "children": {
-        "select":  {
-          "fieldType": "SELECT",
-            "label": {
-              "de": "Status der Sicherheitsprüfung"
-            },
-            "required": false,
-            "width": 0.5,
-            "hiddenInPdf": false,
-            "multiple": false,
-            "options": [
-                {
-                    "value": "new",
-                    "text": {
-                        "de": "Das Prüfprotokoll sowie das Ergebnis der Prüfung wurden zur Kenntnis genommen."
-                    }
-                },
-                {
-                    "value": "used",
-                    "text": {
-                        "de": "Wir erteilen den Auftrag zur Behebung folgender Defekte."
-                    }
-                }
-            ]
-          },
           "richtext": {
             "fieldType": "REMBERG_RICH_TEXTAREA",
             "label": {
@@ -1689,7 +1712,7 @@
             },
             "hiddenInPdf": false,
             "required": false,
-            "width": 0.5,
+            "width": 1,
             "hideInPdfIfEmpty": true
           }
         }
@@ -1703,46 +1726,24 @@
           "de": "Unterschrift Betreiber"
         },
         "children": {
-          "signature2": {
+          "subline17": {
+            "fieldType": "HELP_TEXT",
+            "text": {
+              "de": "Hiermit beauftragen wir den Auftrag zur Behebung der oben genannten Defekte."
+            },
+            "width": 1
+          },
+          "signature1": {
             "fieldType": "REMBERG_SIGNATURE",
             "label": {
               "de": "Betreiber"
-            }
-          }
-        }
-      },
-      "B2-send": {
-        "isForm": true,
-        "ui": "CARD",
-        "hiddenInPdf": true,
-        "cardHeadline": {
-          "en": "Send/sent form as E-Mail",
-          "de": "Bericht als E-Mail senden/gesendet"
-        },
-        "children": {
-          "send": {
-            "fieldType": "REMBERG_SEND",
-            "label": {
-              "de": "SENDEN",
-              "en": "SEND"
             },
-            "prefillConfig": {
-              "subject": "Prüfprotokoll - Universalanlage IK3000",
-              "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
-              "to": {
-                "currentUser": false
-              },
-              "cc": {
-                "currentUser": false
-              },
-              "bcc": {
-                "currentUser": true
-              }
-            }
+            "autofillCurrentUser": false,
+            "required": false
           }
         }
       },
-      "A2-signatureTechnican": {
+      "B1-signatureTechnican": {
         "isForm": true,
         "ui": "CARD",
         "width": 0.5,
@@ -1764,11 +1765,11 @@
               "de": "Servicetechniker"
             },
             "autofillCurrentUser": true,
-            "required": true
+            "required": false
           }
         }
       },
-      "C3-send": {
+      "B1-send": {
         "isForm": true,
         "ui": "CARD",
         "hiddenInPdf": true,
@@ -1777,14 +1778,14 @@
           "de": "Bericht als E-Mail senden/gesendet"
         },
         "children": {
-          "send2": {
+          "send": {
             "fieldType": "REMBERG_SEND",
             "label": {
               "de": "SENDEN",
               "en": "SEND"
             },
             "prefillConfig": {
-              "subject": "Prüfprotokoll - Universalanlage IK3000",
+              "subject": "Prüfprotokoll Autovent",
               "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
               "to": {
                 "currentUser": false
