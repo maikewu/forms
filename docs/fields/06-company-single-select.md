@@ -165,20 +165,19 @@ If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed 
 pdfPrintCompanyNumber: true
 ```
 
-## `useAsFilterForFields ???`
+## `useAsFilterForFields`
 
-***not described in FIGMA***
 
 | `useAsFilterForFields` |      |
 | :--------------------- | :--- |
-| Possible Values        | ???  |
+| Possible Values        | Field IDs of `assetSingleSelect` or `userSingleSelect`  |
 | Required               | no   |
-| Default Value          | ???  |
+| Default Value          | -  |
 
-***Description???***
+The `useAsFilterForFields` property can be used to filter the asset and user select field.
 
 ``` typescript
-useAsFilterForFields: ???
+useAsFilterForFields: [ 'exampleAssetSingleSelect_1' ]
 ```
 ---
 
