@@ -348,10 +348,10 @@ validators: {
 | `enable` |                 |
 | :------------------------- | :-------------- |
 | Possible Values            | `true`, `false` |
-| Required                   | no              |
-| Default Value              | `false`         |
+| Required                   | yes              |
+| Default Value              | -               |
 
-If `enable` is set to true, the sub-property appears in the UI editable. 
+If `enable` is set to `true`, the sub-property appears in the UI. 
 
 ---
 ## `prefill`

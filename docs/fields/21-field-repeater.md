@@ -657,3 +657,7 @@ Property                                                    | Description       
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
 | [RepeatableFormFieldConfig](#repeatableformfieldconfig)       | ??? |
+
+---
+### `repeatableFormFieldConfig`
+
