@@ -124,11 +124,11 @@ TaskListInput enables the user to create performed tasks.
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | [PrefillRules](.25-prefill-rules)  |
+| Possible Values            | [PrefillRules](./25-prefill-rules)  |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
 ``` typescript (set prefilled tasks)
 prefill: {

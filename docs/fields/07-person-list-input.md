@@ -156,3 +156,25 @@ If `hide` is set to `true`, the field is not shown in the PDF and UI at all.
 ``` typescript
 hide: true
 ```
+
+## `prefill`
+
+| `prefill`                  |                                                                     |
+| :------------------------- | :--------------                                                     |
+| Possible Values            | Array of [PrefillRules](./25-prefill-rules)            |
+| Required                   | no                                                                  |
+| Default Value              | -                                                                   |
+
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
+
+---
+## `onChange`
+
+| `onChange`                 |                                                                        |
+| :------------------------- | :--------------                                                        |
+| Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
+| Required                   | no                                                                     |
+| Default Value              | -                                                                      |
+
+
+This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).

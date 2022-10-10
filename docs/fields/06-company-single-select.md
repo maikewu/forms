@@ -182,11 +182,11 @@ useAsFilterForFields: [ 'exampleAssetSingleSelect_1' ]
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](.25-prefill-rules)            |
+| Possible Values            | Array of [PrefillRules](./25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript (currentAccountId)
 prefill: {
     [CompanySingleSelectPrefillTargetsEnum.SELECTED_COMPANY]: [
@@ -202,12 +202,12 @@ prefill: {
 
 | `onChange`                 |                                                                        |
 | :------------------------- | :--------------                                                        |
-| Possible Values            | Array of [DynamicFieldActions](.26-on-change-rules) |
+| Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
 | Required                   | no                                                                     |
 | Default Value              | -                                                                      |
 
 
-This configuration follows the [general syntax for dynamic field actions](.26-on-change-rules).
+This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 ```typescript
 onChange: [
     {

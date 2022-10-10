@@ -109,11 +109,11 @@ The RichTextInput is a text field that allows text formatting.
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](.25-prefill-rules)            |
+| Possible Values            | Array of [PrefillRules](./25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
 ``` typescript 
 prefill: {
@@ -135,9 +135,9 @@ prefill: {
 
 | `onChange`                 |                                                                        |
 | :------------------------- | :--------------                                                        |
-| Possible Values            | Array of [DynamicFieldActions](.26-on-change-rules) |
+| Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
 | Required                   | no                                                                     |
 | Default Value              | -                                                                      |
 
 
-This configuration follows the [general syntax for dynamic field actions](.26-on-change-rules).
+This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
