@@ -283,12 +283,32 @@ requiredAmountOfEntries: 3,
 ---
 ### `pdfStartInNewLine`
 
-???
+| `pdfStartInNewLine` |                 |
+| :------------------------- | :-------------- |
+| Possible Values            | `true`, `false` |
+| Required                   | no              |
+| Default Value              | ``               |
+
+If `pdfStartInNewLine` is set to `true`, the field value starts below the field lable in the PDF.
+
+```typescript
+pdfStartInNewLine: true,
+```
 
 ---
 ### `pdfAddLineBreaks`
 
-???
+| `pdfAddLineBreaks` |                 |
+| :------------------------- | :-------------- |
+| Possible Values            | `true`, `false` |
+| Required                   | no              |
+| Default Value              | -               |
+
+If `pdfAddLineBreaks` is set to `true`, linebreaks are set after every value of the field in the PDF.
+
+```typescript
+pdfAddLineBreaks: true,
+```
 
 ---
 ### `validators.minCharacters`
@@ -358,22 +378,20 @@ If `enable` is set to `true`, the sub-property appears in the UI.
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](.25-prefill-rules)            |
+| Possible Values            | Array of [PrefillRules](./25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
 ---
 ## `onChange`
 
 | `onChange`                 |                                                                        |
 | :------------------------- | :--------------                                                        |
-| Possible Values            | Array of [DynamicFieldActions](.26-on-change-rules) |
+| Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
 | Required                   | no                                                                     |
 | Default Value              | -                                                                      |
 
 
-This configuration follows the [general syntax for dynamic field actions](.26-on-change-rules).
-
-| [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
+This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).

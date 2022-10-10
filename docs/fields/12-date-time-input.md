@@ -5,7 +5,7 @@ parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
 
-The TimeInput field allows to enter a time.
+The dateTimeInput field allows to enter a datetime.
 
 # Configuration Overview
 

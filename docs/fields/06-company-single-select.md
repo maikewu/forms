@@ -4,11 +4,6 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-
->🚧 
->
-> In progress
-
 The CompanySingleSelect field allows the user to choose one of the customer companys.
 
 # Configuration Overview
@@ -22,7 +17,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
 | [label](#label)                                 | Configuration of the field label.                                                         |
 | [value](#value)                                 | Configuration of the field value.                                                         |
-| [useAsFilterForFields](#useasfilterforfields)   | ???                                                         |
+| [useAsFilterForFields](#useasfilterforfields)   | Set `CompanySingleSelect` as filter for asset or user or both                                                         |
 | [prefill](#prefill)                             | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
@@ -174,7 +169,7 @@ pdfPrintCompanyNumber: true
 | Required               | no   |
 | Default Value          | -  |
 
-The `useAsFilterForFields` property can be used to filter the asset and user select field.
+The `useAsFilterForFields` property can be used to filter the asset and user select field by entering the field id.
 
 ``` typescript
 useAsFilterForFields: [ 'exampleAssetSingleSelect_1' ]
