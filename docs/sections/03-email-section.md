@@ -177,11 +177,9 @@ emailDialogPrefill: {
         staticEmails: [],
     },
     body: {
-        dynamic: 'tbd',
         static: 'Default Content',
     },
     subject: {
-        dynamic: 'tbd',
         static: 'Default Subject',
     },
 },
@@ -252,14 +250,12 @@ bcc: {
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [dynamic]                                                     | Dynamic text input. Supports HTML and referencing variables from the fields |
-| [static]                                                      | Static text input. |
+| [static]                                                      | Static text input that can be used to predefine the value of the `body`. |
 
 Allows to predefine a message in the body. 
 
 ```typescript
 body: {
-    dynamic: 'tbd',
     static: 'Default Content',
 },
 ```
@@ -271,15 +267,12 @@ body: {
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [dynamic]                                                     | Dynamic text input. Supports HTML and referencing variables from the fields |
-| [static]                                                      | Static text input. |
+| [static]                                                      | Static text input that can be used to pedefine the value of the `subject`. |
 
 Allows to predefine the subject of the mail. If the subject is empty the form name is used as subject. 
 
-
 ```typescript
 subject: {
-    dynamic: '<p> </p>',
     static: 'Default Subject',
 },
 ```
