@@ -10,7 +10,33 @@ For this purpose, prefill rules must be defined for the respective fields in the
 - `target` specifies the property to which data is to be written
 - `input` can be a seperate source that already contains informations or a own defined input value,
 that should be prepopulate to the form
-- `steps` can be used to transform the data type if the `input` data type does not match the expected data type of the `target`. 
+- `steps` can be used to transform the data type if the `input` data type does not match the expected data type of the `target`.
+
+You get provided with different data types depending from which part of the app you creat a new form instance.
+
+---
+From the Asset View you'll have: 
+
+| `assetId`  |  |  
+| `organizationId` 
+| `creationDateTime`  |  |  
+| `currentUser`  |  |  
+| `currentUserId`  |  |  
+| `currentAccount`  |  |  
+| `currentAccountId`  |  |  
+| `assidnedUserId`  | Optional |  
+
+---
+Form a Work Order you'll have: 
+| `relatedWorkOrderId`  |  |  
+| `organizationId`  | If WO has connected company |  
+| `assetId`  | If WO has assets |  
+| `creationDateTime`  |  |  
+| `currentUser`  |  |  
+| `currentUserId`  |  |  
+| `currentAccount`  |  |  
+| `currentAccountId`  |  |  
+| `assidnedUserId`  | Optional |  
 ---
 ## Properties
 
