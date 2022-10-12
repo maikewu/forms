@@ -4,6 +4,7 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
+The timeTrackingListInput allows the user to enter times for travel, working or breaks.
 # Configuration Overview
 
 | Property                                                                     | Description                      |
@@ -134,28 +135,28 @@ maximumDuration: 480; // = 8 h
 | [commentMultiLineTextInput](./24-general-properties/#commenmultilinetextinput)        | Defines a comment section as multiLineTextInput  |
 
 ---
-## `timeTrackingTypeStaticSingleSelect`
+### `timeTrackingTypeStaticSingleSelect`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
 | [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the label in the PDF. |
 
 ---
-## `startDateTimeInput`
+### `startDateTimeInput`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
 | [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the label in the PDF. |
 
 ---
-## `endDateTimeInput`
+### `endDateTimeInput`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
 | [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the label in the PDF. |
 
 ---
-## `breakNumericInput`
+### `breakNumericInput`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
@@ -164,7 +165,7 @@ maximumDuration: 480; // = 8 h
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the label in the PDF. |
 
 ---
-## `durationDisplay`
+### `durationDisplay`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
@@ -172,7 +173,7 @@ maximumDuration: 480; // = 8 h
 | [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the label in the PDF. |
 
 ---
-## `distanceNumericInput`
+### `distanceNumericInput`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
@@ -181,7 +182,7 @@ maximumDuration: 480; // = 8 h
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the label in the PDF. |
 
 ---
-## `technicianUserSingleSelect`
+### `technicianUserSingleSelect`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |

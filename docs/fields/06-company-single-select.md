@@ -4,11 +4,6 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-
->🚧 
->
-> In progress
-
 The CompanySingleSelect field allows the user to choose one of the customer companys.
 
 # Configuration Overview
@@ -22,7 +17,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
 | [label](#label)                                 | Configuration of the field label.                                                         |
 | [value](#value)                                 | Configuration of the field value.                                                         |
-| [useAsFilterForFields](#useasfilterforfields)   | ???                                                         |
+| [useAsFilterForFields](#useasfilterforfields)   | Set `CompanySingleSelect` as filter for asset or user or both                                                         |
 | [prefill](#prefill)                             | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
@@ -165,20 +160,19 @@ If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed 
 pdfPrintCompanyNumber: true
 ```
 
-## `useAsFilterForFields ???`
+## `useAsFilterForFields`
 
-***not described in FIGMA***
 
 | `useAsFilterForFields` |      |
 | :--------------------- | :--- |
-| Possible Values        | ???  |
+| Possible Values        | Field IDs of `assetSingleSelect` or `userSingleSelect`  |
 | Required               | no   |
-| Default Value          | ???  |
+| Default Value          | -  |
 
-***Description???***
+The `useAsFilterForFields` property can be used to filter the asset and user select field by entering the field id.
 
 ``` typescript
-useAsFilterForFields: ???
+useAsFilterForFields: [ 'exampleAssetSingleSelect_1' ]
 ```
 ---
 
@@ -188,11 +182,11 @@ useAsFilterForFields: ???
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](.25-prefill-rules)            |
+| Possible Values            | Array of [PrefillRules](./25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript (currentAccountId)
 prefill: {
     [CompanySingleSelectPrefillTargetsEnum.SELECTED_COMPANY]: [
@@ -208,12 +202,12 @@ prefill: {
 
 | `onChange`                 |                                                                        |
 | :------------------------- | :--------------                                                        |
-| Possible Values            | Array of [DynamicFieldActions](.26-on-change-rules) |
+| Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
 | Required                   | no                                                                     |
 | Default Value              | -                                                                      |
 
 
-This configuration follows the [general syntax for dynamic field actions](.26-on-change-rules).
+This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 ```typescript
 onChange: [
     {

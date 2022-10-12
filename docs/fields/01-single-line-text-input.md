@@ -123,7 +123,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 | [validators.minCharacters](./24-general-properties/#validatorsmincharacters)    | Minimum number of characters for the input value to be valid.                                   |
 | [validators.maxCharacters](./24-general-properties/#validatorsmaxcharacters)    | Maximum number of characters for the input value to be valid.                                   |
 | [validators.emailAddress](#validatorsemailaddress)                              | Setting this to `true` forces the input to match email address format.                                              |
-| [validators.regexPattern](#validatorsregexpattern)                              | Defines regular expression                          |
+| [validators.regexPattern](#validatorsregexpattern)                              | Defines regular expression that is valid                          |
 
 ---
 ### `validators.emailAddress`
@@ -151,7 +151,7 @@ emailAddress: true
 | Required        | no              |
 | Default Value   | `NULL`              |
 
-By defining `validators.regexPattern`, you set a regular expression. ???
+By defining `validators.regexPattern`, you set a regular expression that is valid. 
 
 ``` typescript
 validators:{
@@ -164,11 +164,11 @@ regexPattern: ^[A-Z]*$
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](.25-prefill-rules)            |
+| Possible Values            | Array of [PrefillRules](./25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
 ``` typescript (static string)
 prefill: {
@@ -201,9 +201,9 @@ prefill: {
 
 | `onChange`                 |                                                                        |
 | :------------------------- | :--------------                                                        |
-| Possible Values            | Array of [DynamicFieldActions](.26-on-change-rules) |
+| Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
 | Required                   | no                                                                     |
 | Default Value              | -                                                                      |
 
 
-This configuration follows the [general syntax for dynamic field actions](.26-on-change-rules).
+This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).

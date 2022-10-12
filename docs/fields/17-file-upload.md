@@ -4,6 +4,7 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
+The fieldUpload field allows to upload files.
 # Configuration Overview
 
 | Property                                                                     | Description                      |
@@ -28,8 +29,8 @@ parentDoc: 62ec01bd561bab0aa775efe4
         disabled: false,
         pdfHideIfValueIsEmpty: false,
         requiredAmountOfFiles: 0,
-        maximumSingleFileSize: 10000, // 10 MB
-        maximumAccumulatedFileSize: 100000, // 100 MB
+        maximumSingleFileSize: 10000, // ~10 kb
+        maximumAccumulatedFileSize: 100000, // ~100 kb
         acceptedFileTypes: [],
         label: {
             text: {
@@ -97,14 +98,14 @@ parentDoc: 62ec01bd561bab0aa775efe4
 
 | `maximumSingleFileSize`     |                 |
 | :-------------- | :-------------- |
-| Possible Values | Double     |
+| Possible Values | Integer     |
 | Required        | no              |
-| Default Value   | -               |
+| Default Value   | `15000000` (~15 MB)             |
 
-By setting `maximumSingleFileSize`, the maximum file size that can be uploaded is defined.
+By setting `maximumSingleFileSize`, the maximum file size that can be uploaded gets defined.  
 
 ``` typescript
-maximumSingleFileSize: 10000, // 10 MB
+maximumSingleFileSize: 100000, // ~100 kb
 ```
 
 ---
@@ -112,14 +113,14 @@ maximumSingleFileSize: 10000, // 10 MB
 
 | `maximumAccumulatedFileSize`     |                 |
 | :-------------- | :-------------- |
-| Possible Values | Double     |
+| Possible Values | Integer     |
 | Required        | no              |
-| Default Value   | -               |
+| Default Value   | `150000000` (~150 MB)              |
 
-By setting `maximumAccumulatedFileSize`, the maximum accumulated file size that can be uploaded is defined.
+By setting `maximumAccumulatedFileSize`, the maximum accumulated file size that can be uploaded gets defined.
 
 ``` typescript
-maximumAccumulatedFileSize: 100000, // 10 MB
+maximumAccumulatedFileSize: 1000000, // ~1 MB
 ```
 
 ---
@@ -128,13 +129,15 @@ maximumAccumulatedFileSize: 100000, // 10 MB
 
 | `acceptedFileTypes`     |                 |
 | :-------------- | :-------------- |
-| Possible Values | [Strings], e.g.  `pdf`, `jpg`    |
+| Possible Values | [Strings], e.g.  `image/png`, `application/pdf`    |
 | Required        | no              |
 | Default Value   | -               |
 
 By setting `acceptedFileTypes`, the file types that can be uploaded gets defined in an array of strings.
+You can find a list with all possible values [here](https://www.iana.org/assignments/media-types/media-types.xhtml)
+
 ``` typescript
-acceptedFileTypes: [],
+acceptedFileTypes: [ `application/pdf`, `image/png`],
 ```
 
 ---

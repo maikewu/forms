@@ -5,7 +5,7 @@ parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
 
-The TimeInput field allows to enter a time.
+The dateTimeInput field allows to enter a datetime.
 
 # Configuration Overview
 
@@ -123,11 +123,11 @@ dropDownInterval: 6
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](.25-prefill-rules)            |
+| Possible Values            | Array of [PrefillRules](./25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](.25-prefill-rules).
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript (static time)
 prefill: {
     value: [{
@@ -144,10 +144,10 @@ prefill: {
 
 | `onChange`                 |                                                                        |
 | :------------------------- | :--------------                                                        |
-| Possible Values            | Array of [DynamicFieldActions](.26-on-change-rules) |
+| Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
 | Required                   | no                                                                     |
 | Default Value              | -                                                                      |
 
 
-This configuration follows the [general syntax for dynamic field actions](.26-on-change-rules).
+This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 

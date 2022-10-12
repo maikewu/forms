@@ -4,6 +4,7 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
+ 
 # Configuration Overview
 
 | Property                                                                     | Description                      |
@@ -14,8 +15,13 @@ parentDoc: 62ec01bd561bab0aa775efe4
 | [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are requried to fill the form.                                                                                        |
 | [helptextBefore](#helptextbefore)                                            | Text that is displayed before the repeater |
 | [helptextAfter](#helptextafter)                                              | Text that is dispalyed after the repeater |
+| [uiHideInRepeaterCardDisplay](#uihideinrepeatercarddisplay)                  | Setting this to `true` hides the field in the UI. |
+| [pdfFieldRepeaterCellAlignment](#pdffieldrepeatercellalignment)              | Configuration of the cell alignment. |
 | [label](#label)                                                              | Configuration of the field label. |
 | [fields](#fields)                                                            | Components of the field |
+
+ uiHideInRepeaterCardDisplay?: boolean;
+ pdfFieldRepeaterCellAlignment?:
 
 
 ```typescript (Complete repeater for SingleLineTextInput)
@@ -656,4 +662,60 @@ Property                                                    | Description       
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [RepeatableFormFieldConfig](#repeatableformfieldconfig)       | ??? |
+| [RepeatableFormFieldConfig](#repeatableformfieldconfig)       | List of repeatable fields. |
+
+---
+### `repeatableFormFieldConfig`
+
+A list of a fields that can be used in the fieldRepeater.
+
+| Property                                                      | Description                       |
+| :------------------------------------------------------------ | :-------------------------------- |
+| [headlineDisplay](./03-headline-display) (not displayed in the PDF)                 | The HeadlineDisplay is a field that displays headlines to structure content in the form and provisde information.|
+| [htmlDisplay](./23-html-display)   (not displayed in the PDF)                      | The HtmlDisplay allows the user to enter html text. |
+| [singleLineTextInput](./01-single-line-text-input)       | The SingleLineTextInput field allows entering one line of unformatted text. |
+| [multiLineTextInput](./02-mutli-line-text-input)         | The MultiLineTextInput field allows entering larger amounts of unformatted text.  |
+| [addressInput](./04-address-input)                       | The AddressInput contains various fields for every information of an address. |
+| [assetSingleSelect](./05-asset-single-select)            | The AssetSingleSelect field allows to select an asset from the account or a certain costumer.  |
+| [companySingleSelect](./06-company-single-select)        | The CompanySingleSelect field allows the user to choose one of the customer companys. |
+| [userSingleSelect](./08-user-single-select)              | The UserSingleSelect field allows to select a user from the own or from a customers organisation. |
+| [phoneNumberInput](./09-phone-number-input)              | The PhoneNumberInput field allows to input telephone numbers in the common format. | 
+| [dateInput](./10-date-input)                             | The DateInput field allows to input a date. |
+| [timeInput](./11-time-input)                             | The TimeInput field allows to enter a time. |
+| [dateTimeInput](./12-date-time-input)                    | The DateTimeInput field allows to enter a datetime. |
+| [staticSingleSelect](./13-static-single-select)          | The StaticSingleSelect field allows to choose one option of the dropdown. |
+| [staticMultiSelect](./14-static-multi-select)            | The StaticMultiSelect field allows to choose one or more options of the dropdown. |
+| [booleanInput](./15-boolean-input)                       | The BooleanInput allows the user to mark a checkbox true or false. |
+
+## `uiHideInRepeaterCardDisplay`
+
+**This propertie can be part of every field config of the repeated fields.**
+
+| `uiHideInRepeaterCardDisplay`     |                 |
+| :-------------- | :-------------- |
+| Possible Values | `true`, `false`    |
+| Required        | no              |
+| Default Value   | `false`               |
+
+By setting `uiHideInRepeaterCardDisplay` to `true` the field isn't shown in the UI.
+
+``` typescript
+uiHideInRepeaterCardDisplay: true,
+```
+
+## `pdfFieldRepeaterCellAlignment`
+
+**This propertie can be part of every field config of the repeated fields.**
+
+
+| `pdfFieldRepeaterCellAlignment`     |                 |
+| :-------------- | :-------------- |
+| Possible Values | `left`, `center`, `right`   |
+| Required        | no              |
+| Default Value   | `left`               |
+
+By setting `pdfFieldRepeaterCellAlignment` the cell alignment gets defined.
+
+``` typescript
+pdfFieldRepeaterCellAlignment: `right`,
+```
