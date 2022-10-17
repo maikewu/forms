@@ -1,0 +1,2767 @@
+{
+  "general": {
+    "name": {
+      "en": "Test report drying system",
+      "de": "Prüfbericht für Trocknungsanlagen"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "en": "Sign Service Report",
+        "de": "Unterschrift"
+      },
+      "popupDescription": {
+        "en": "Please sign the service report.",
+        "de": "Bitte unterschreiben Sie den Prüfbericht."
+      }
+    }
+  },
+  "formStructure": {
+    "01_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Customer",
+        "de": "Kunde"
+      },
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kundenauswahl",
+            "en": "Customer Select"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  },
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse Auftraggeber / Kunde",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "B1_signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation2": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse Anlagenstandort ",
+            "en": "Customer Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false
+        },
+        "technicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Prüfer",
+            "en": "Technician"
+          },
+          "width": 1,
+          "required": true,
+          "autofillCurrentUser": true,
+          "printEmailAddress": true
+        },
+        "phoneNumber": {
+          "fieldType": "REMBERG_PHONE",
+          "required": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Telefon",
+            "en": "Phone Number"
+          }
+        },
+        "email": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "E-Mail Adresse",
+            "en": "Email Address"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "required": false,
+          "validators": [
+            {
+              "type": "EMAIL"
+            }
+          ]
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 1,
+          "label": {
+            "de": "Anlage",
+            "en": "Machine number"
+          }
+        }
+      }
+    },
+    "02_assetDescription": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Asset Description",
+        "de": "Anlagenbeschreibung"
+      },
+      "children": {
+        "Sorptionsmodul": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "✓ wenn Bauteil vorhanden",
+            "en": "✓ if part is existing "
+          }
+        },
+        "cb": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sorptionsmodul (Heizung)",
+            "en": "Sorptionsmodul (Heater)"
+          }
+        },
+        "power": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW Prozessventilator"
+          }
+        },
+        "cb1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Prozessventilator"
+          }
+        },
+        "power1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Relative Feuchte /Taupunktsensor"
+          }
+        },
+        "powe2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Vorkühlermodul (Kühler)"
+          }
+        },
+        "power3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Umschaltklappe"
+          }
+        },
+        "power4": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Stellantrieb VK / NK"
+          }
+        },
+        "power6": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nachkühlermodul (Kühler)"
+          }
+        },
+        "power7": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kugelsiphon"
+          }
+        },
+        "power8": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Vorfilter / Nachfilter"
+          }
+        },
+        "power9": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nachheizer"
+          }
+        },
+        "power10": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kondensatpumpe"
+          }
+        },
+        "power11": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "cb12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "S7 / CP Baugruppe"
+          }
+        },
+        "power12": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Volumenstrom-/Drucksensor"
+          }
+        },
+        "power13": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        },
+        "cb14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Netzwerkschnittstelle"
+          }
+        },
+        "power14": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Leistung in kW",
+            "en": "Power in kW"
+          }
+        }
+      }
+    },
+    "03_visualCheck": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Visual Check",
+        "de": "Sichtprüfung"
+      },
+      "children": {
+        "cb1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Gehäuse Oberflächen"
+          }
+        },
+        "druckluft1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Prozessnachfilter"
+          }
+        },
+        "druckluft2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Aktorik: Ventilatoren"
+          }
+        },
+        "druckluft3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Gehäuse: Dichtheit"
+          }
+        },
+        "druckluft4": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kondensatpumpe / Siphon"
+          }
+        },
+        "druckluft5": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Aktorik: Stellantrieb VK"
+          }
+        },
+        "druckluft6": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sorptionsrad: Segmentdichtung"
+          }
+        },
+        "druckluft7": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sensorik:Feuchtesensor"
+          }
+        },
+        "druckluft8": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Aktorik: Stellantrieb NK"
+          }
+        },
+        "druckluft9": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sorptionsrad: Außendichtung"
+          }
+        },
+        "druckluft10": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sensorik:Druck / Volumenstrom"
+          }
+        },
+        "druckluft11": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Beschriftung Betriebsmittel"
+          }
+        },
+        "druckluft12": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sorptionsrad: Keilriemen"
+          }
+        },
+        "druckluft13": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Netzwerkausstattung"
+          }
+        },
+        "druckluft14": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Erdungsanlage"
+          }
+        },
+        "druckluft15": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Schaltschrankfilter"
+          }
+        },
+        "druckluft16": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Wärmedämmung"
+          }
+        },
+        "druckluft17": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb18": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Hauptstrom Querschnitt gem. SLP"
+          }
+        },
+        "druckluft18": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb19": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Regenerationsfilter"
+          }
+        },
+        "druckluft19": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb20": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Wärmetauscher Rotor"
+          }
+        },
+        "druckluft20": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb21": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Schaltschrank Klemmdosen Foto"
+          }
+        },
+        "druckluft21": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb22": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Prozessvorfilter"
+          }
+        },
+        "druckluft22": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb23": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Aktorik: Umschaltklappe"
+          }
+        },
+        "druckluft23": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb24": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Verdrahtung gemäß SLP"
+          }
+        },
+        "druckluft24": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        }
+      }
+    },
+    "04_functionalCheck": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Functional Check",
+        "de": "Funktionsprüfung"
+      },
+      "children": {
+        "Sorptionsmodul": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "✓ wenn Bauteil vorhanden",
+            "en": "✓ if part is existing "
+          }
+        },
+        "cb1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Steuerschnittstelle gem. SLP"
+          }
+        },
+        "druckluft1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Prozessventilator (Drehzahl)"
+          }
+        },
+        "druckluft2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nachheizer / Zusatzkühler"
+          }
+        },
+        "druckluft3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Steuerschnittstelle Netzwerk"
+          }
+        },
+        "druckluft4": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Regenerationsventilator (Drehzahl)"
+          }
+        },
+        "druckluft5": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kondensat Pumpe"
+          }
+        },
+        "druckluft6": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Meldeleuchten"
+          }
+        },
+        "druckluft7": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Stellantrieb Vorkühler"
+          }
+        },
+        "druckluft8": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Probelauf manueller Modus"
+          }
+        },
+        "druckluft9": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Anzeigewerte aller Sensoren "
+          }
+        },
+        "druckluft10": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Stellantrieb Nachkühler"
+          }
+        },
+        "druckluft11": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Probelauf automatischer Modus"
+          }
+        },
+        "druckluft12": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Fehler- / Warnmeldungen *"
+          }
+        },
+        "druckluft13": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Druck / Volumenstromreglung"
+          }
+        },
+        "druckluft14": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Antrieb Rotor (Motor,Spannfeder)"
+          }
+        },
+        "druckluft15": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Anlagenlayout auf HMI"
+          }
+        },
+        "druckluft16": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        },
+        "cb17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Klappe (n)"
+          }
+        },
+        "druckluft17": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zustand",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "i. O.",
+                "en": "OK"
+              }
+            },
+            {
+              "value": "m",
+              "text": {
+                "de": "mangelhaft",
+                "en": "deficient"
+              }
+            },
+            {
+              "value": "d",
+              "text": {
+                "de": "defekt",
+                "en": "defect"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": ""
+              }
+            }
+          ]
+        }
+      }
+    },
+    "05_Messergebnisse": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Measurment",
+        "de": "Messergebnisse"
+      },
+      "children": {
+        "fieldType": "H3",
+        "width": 1,
+        "text": {
+          "de": "Volumenstrom",
+          "en": "Volumstream"
+        },
+        "v1": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "vv1": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Prozess",
+            "en": "Prozess"
+          }
+        },
+        "vvv1": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in m³/h"
+          }
+        },
+        "v2": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "vv2": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Prozess",
+            "en": "Prozess"
+          }
+        },
+        "vvv2": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in m³/h"
+          }
+        },
+        "v3": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "vv3": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Regeneration",
+            "en": "Regeneration"
+          }
+        },
+        "vvv3": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in m³/h"
+          }
+        },
+        "v4": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "vv4": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Regeneration",
+            "en": "Regeneration"
+          }
+        },
+        "vvv4": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in m³/h"
+          }
+        },
+        "asset1": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Differenzdrücke Filter",
+            "en": "Differenzdrücke Filter"
+          }
+        },
+        "d1": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "dd1": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Prozess Vorfilter",
+            "en": "Prozes Vorfilter"
+          }
+        },
+        "ddd1": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in Pa"
+          }
+        },
+        "d12": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "dd12": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Prozess Nachfilter",
+            "en": "Prozes Nachfilter"
+          }
+        },
+        "ddd12": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in Pa"
+          }
+        },
+        "d13": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "dd13": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Regenerationsfilter",
+            "en": "Regenerationsfilter"
+          }
+        },
+        "ddd13": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in Pa"
+          }
+        },
+        "asset12": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Trocknung bei 100% Reg. u.Nennvol."
+          }
+        },
+        "t1": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "tt1": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Regen. Temperatur"
+          }
+        },
+        "ttt1": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in °C/°TD"
+          }
+        },
+        "t12": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "tt2": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Temperatur"
+          }
+        },
+        "ttt12": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in °C/°TD"
+          }
+        },
+        "t13": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "tt13": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Taupunkt"
+          }
+        },
+        "ttt13": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in °C/°TD"
+          }
+        },
+        "t14": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "Set"
+          }
+        },
+        "tt14": {
+          "fieldType": "HELP_TEXT",
+          "width": 0.3,
+          "text": {
+            "de": "Umgebung"
+          }
+        },
+        "ttt14": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.3,
+          "label": {
+            "de": "in °C/°TD"
+          }
+        }
+      }
+    },
+    "07_testResult": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Notes",
+        "de": "Bemerkungen"
+      },
+      "children": {
+        "richTextField": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Bemerkungen",
+            "en": "Notes"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "06_testResult": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Test Result",
+        "de": "Prüfergebnis"
+      },
+      "children": {
+        "dguv3": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Prüfung nach DGUV-V3 durchgeführt"
+          }
+        },
+        "anlageok1": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlage i. O."
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.3,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "ja",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "nein",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "repars1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Notwendige Reparaturen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "minRows": 1
+        },
+        "mechpruef": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Mechanische Prüfung durchgeführt",
+            "en": "Exchange oil filter"
+          }
+        },
+        "anlageok2": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlage i. O.",
+            "en": "Reason"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "width": 0.3,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "ja",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "nein",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "repars2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Notwendige Reparaturen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "minRows": 1
+        },
+        "pneupruef": {
+          "width": 0.3,
+          "fieldType": "CHECKBOX",
+          "hideInPdfIfEmpty": false,
+          "label": {
+            "de": "Pneumatische Prüfung durchgeführt",
+            "en": "Exchange oil filter"
+          }
+        },
+        "anlageok3": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Anlage i. O.",
+            "en": "Reason"
+          },
+          "width": 0.3,
+          "required": false,
+          "hideInPdfIfEmpty": false,
+          "options": [
+            {
+              "value": "ok",
+              "text": {
+                "de": "ja",
+                "en": "Repair"
+              }
+            },
+            {
+              "value": "no",
+              "text": {
+                "de": "nein",
+                "en": "Maintenance"
+              }
+            },
+            {
+              "value": "empty",
+              "text": {
+                "de": " ",
+                "en": "Maintenance"
+              }
+            }
+          ]
+        },
+        "repars3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Notwendige Reparaturen",
+            "en": "Comment"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.3,
+          "hideInPdfIfEmpty": false,
+          "minRows": 1
+        }
+      }
+    },
+    "B1_signatureTechnician": {
+      "isForm": true,
+      "unbreakable": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Prüfer"
+      },
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Prüfer",
+            "en": "Technician"
+          },
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "B2-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Kundenausfertigung als E-Mail senden/gesendet"
+      },
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "ULT Prüfbericht für Trocknungsanlagen",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Prüfbericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      }
+    }
+  }
+}

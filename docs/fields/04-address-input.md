@@ -1,16 +1,15 @@
 ---
-title: SingleLineTextInput
+title: AddressInput
 category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-The SingleLineTextInput field allows entering one line of unformatted text. It dosen't respects line breaks.
-
+The AddressInput contains various fields for every information of an address.
 # Configuration Overview
 
 | Property                                                                     | Description                      |
 | :--------------------------------------------------------------------------- | :--------------------------------|
-| [required](./24-general-properties/#required)                                | If this is set to `true`, the field is considered invalid as long as no value is entered. |
+| [required](#required)                                                        | Contains various sub-fields the can be set as mandatory fields. |
 | [disabled](./24-general-properties/#disabled)                                | Setting this to `true` permanently disables the field in the UI. |
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
@@ -19,88 +18,130 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 | [label](#label)                                                              | Configuration of the field label. |
 | [value](#value)                                                              | Configuration of the field value. |
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
-| [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed | 
+| [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
 ``` typescript (complete)
 {
-  id: 'exampleSingleLineInput_1',
-  type: FormFieldTypesEnum.SINGLE_LINE_INPUT,
+  id: 'exampleAddressInput_1',
+  type: FormFieldTypesEnum.ADDRESS_INPUT,
   config: {
-      required: true,
-      label: {
-          text: {
-              en: 'Single Line Input 1',
-              de: 'Einzeiliger Input 1',
-              tr: 'Single Line Input 1 [TR]',
-              fr: 'Single Line Input 1 [FR]',
-              es: 'Single Line Input 1 [ES]',
-              it: 'Single Line Input 1 [IT]',
-          },
-          pdfHide: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-          uiHide: false,
-      },
-      placeHolderText: {
-          en: 'Example Placeholder',
-          de: 'Platzhalter',
-          tr: 'Example Placeholder [TR]',
-          fr: 'Example Placeholder [FR]',
-          es: 'Example Placeholder [ES]',
-          it: 'Example Placeholder [IT]',
+      required: {
+          street: false,
+          streetNumber: false,
+          supplement: false,
+          zipPostCode: false,
+          city: false,
+          state: false,
+          country: false,
       },
       disabled: false,
       pdfHide: false,
       pdfHideIfValueIsEmpty: false,
-      uiHideInRepeaterCardDisplay: false,
+      pdfWidth: 1,
+      label: {
+          text: {
+              en: 'Address Input 1',
+              de: 'Anschrift Input 1',
+              tr: 'Address Input 1 [TR]',
+              fr: 'Address Input 1 [FR]',
+              es: 'Address Input 1 [ES]',
+              it: 'Address Input 1 [IT]',
+          },
+          pdfHide: false,
+          uiTextColor: '#facc2e',
+          pdfTextColor: '#facc2e',
+          pdfTextSize: 14,
+      },
       value: {
           pdfHide: false,
           pdfStartInNewLine: false,
+          pdfAddLineBreaks: false,
           pdfTextColor: '#facc2e',
           pdfTextSize: 14,
-          validators: {
-              emailAddress: false,
-              maxCharacters: 10,
-              minCharacters: 3,
-              regexPattern: '^[A-Z]*$',
-          },
       },
       prefill: {
           value: [
               {
-                  input: 'assetId',
+                  input: 'none',
                   steps: [
-                      'assetIdToAsset',
-                      'assetToAssetTypeNameString',
+                      [
+                          'staticAddress',
+                          {
+                              city: 'Default City',
+                              street: 'Default Street',
+                              streetNumber: '1',
+                              country: 'Default Country',
+                              other: 'Default supplement',
+                              countryProvince: 'Default state',
+                              company: 'Default Company',
+                          },
+                      ],
                   ],
               },
           ],
       },
+      onChange: [
+          {
+              steps: [ 'addressToCityString' ],
+              target: { id: 'exampleSignatureSection', propertyName: 'location' },
+          },
+      ],
   },
 },
 ```
 ``` typescript (minimal)
 {
-  id: 'exampleSingleLineInput_1',
-  type: FormFieldTypesEnum.SINGLE_LINE_INPUT,
+  id: 'exampleAddressInput_1',
+  type: FormFieldTypesEnum.ADDRESS_INPUT,
   config: {
+      required: {
+          street: true,
+      },
       label: {
           text: {
-              en: 'Single Line Input 1',
-              de: 'Einzeiliger Input 1',
-              tr: 'Single Line Input 1 [TR]',
-              fr: 'Single Line Input 1 [FR]',
-              es: 'Single Line Input 1 [ES]',
-              it: 'Single Line Input 1 [IT]',
-            },
-        },
-    },
-}
+              en: 'Address Input 1',
+              de: 'Anschrift Input 1',
+          },
+      },  
+      value: {
+          pdfTextColor: '#facc2e',
+      },
+   },
+},
 ```
 
 ---
 # Configuration Parameters
 
+## `required`
+
+| Property                                                    | Description                       |
+| :---------------------------------------------------------- | :-------------------------------- |
+| `street`                                                    | Setting this to `true` makes this field required  |
+| `streetNumber`                                              | Setting this to `true` makes this field required  |
+| `supplement`                                                | Setting this to `true` makes this field required  |
+| `company`                                                   | Setting this to `true` makes this field required  |
+| `zipPostCode`                                               | Setting this to `true` makes this field required  |
+| `city`                                                      | Setting this to `true` makes this field required  |
+| `state`                                                     | Setting this to `true` makes this field required  |
+| `country`                                                   | Setting this to `true` makes this field required  |
+
+The Address Input field has several different fields that can be individually set as mandatory fields.
+
+```typescript
+required: {
+    street: false,
+    streetNumber: false,
+    company: false,
+    supplement: false,
+    zipPostCode: false,
+    city: false,
+    state: false,
+    country: false,
+},
+```
+
+---
 ## `label`
 
 | Property                                                    | Description                       |
@@ -120,25 +161,22 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [validators.minCharacters](./24-general-properties/#validatorsmincharacters)    | Minimum number of characters for the input value to be valid.                                   |
-| [validators.maxCharacters](./24-general-properties/#validatorsmaxcharacters)    | Maximum number of characters for the input value to be valid.                                   |
-| [validators.emailAddress](#validatorsemailaddress)                              | Setting this to `true` forces the input to match email address format.                                              |
-| [validators.regexPattern](#validatorsregexpattern)                              | Defines regular expression that is valid                          |
+| [pdfAddLineBreaks](./24-general-properties/#pdfaddlinebreaks)                   | Setting this to `true` will add a linebreak in the PDF. |
 
 ---
-### `validators.emailAddress`
+### `supportedNonNumericCharacters`
 
-| `validators.emailAddress`     |                 |
+| `supportedNonNumericCharacters`     |                 |
 | :-------------- | :-------------- |
-| Possible Values | `true`, `false`     |
+| Possible Values | `String [Array]     |
 | Required        | no              |
-| Default Value   | `false`               |
+| Default Value   | empty [Array]               |
 
-By setting `emailAddress` to `true`, input must match email address format.
+By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
 
-``` typescript
+``` typescript (validators)
 validators:{
-emailAddress: true
+supportedNonNumericsCharacters: ["A", "I", "*"]
 }
 ```
 
@@ -149,9 +187,9 @@ emailAddress: true
 | :-------------- | :-------------- |
 | Possible Values | String     |
 | Required        | no              |
-| Default Value   | `NULL`              |
+| Default Value   | -              |
 
-By defining `validators.regexPattern`, you set a regular expression that is valid. 
+By defining `validators.regexPattern`, you set a expression for valid values.
 
 ``` typescript
 validators:{
@@ -169,33 +207,29 @@ regexPattern: ^[A-Z]*$
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-
-``` typescript (static string)
+``` typescript
 prefill: {
-        value: [
-            {
-                input: 'none',
-                steps: [
-                    [ 'staticString', 'Default \n Multi \n Line \n Text' ],
+    value: [
+        {
+            input: 'none',
+            steps: [
+                [
+                    'staticAddress',
+                    {
+                        city: 'Default City',
+                        street: 'Default Street',
+                        streetNumber: '1',
+                        country: 'Default Country',
+                        other: 'Default supplement',
+                        countryProvince: 'Default state',
+                        company: 'Default Company',
+                    },
                 ],
-            },
-        ],
-    },
+            ],
+        },
+    ],
+},
 ```
-``` typescript (asset type name)
-prefill: {
-        value: [
-            {
-                input: 'assetId',
-                steps: [
-                    'assetIdToAsset',
-                    'assetToAssetTypeNameString',
-                ],
-            },
-        ],
-    },
-```
-
 ---
 ## `onChange`
 
@@ -207,3 +241,12 @@ prefill: {
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
+```typescript
+onChange: [
+    {
+        steps: [ 'addressToCityString' ],
+        target: { id: 'exampleSignatureSection', propertyName: 'location' },
+    },
+],
+```
+

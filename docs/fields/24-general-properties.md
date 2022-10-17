@@ -30,7 +30,9 @@ On this page you will find a list of repeating fields.
 | [lable](#lable)                                    | Several configurations for the lable.                                                                 |
 | [values](#values)                                  | Several configurations for the values.                                                                 |
 | [prefill](#prefill)                                | Configuration to prefill the field with a value upon creation of the form instance.                     |
-| [onChange](#onchange)                              | ??? |
+| [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
+| [fields](#fields)                                  | Components of the field |
+
 
 ---
 # Configuration Parameters
@@ -281,12 +283,32 @@ requiredAmountOfEntries: 3,
 ---
 ### `pdfStartInNewLine`
 
-???
+| `pdfStartInNewLine` |                 |
+| :------------------------- | :-------------- |
+| Possible Values            | `true`, `false` |
+| Required                   | no              |
+| Default Value              | ``               |
+
+If `pdfStartInNewLine` is set to `true`, the field value starts below the field lable in the PDF.
+
+```typescript
+pdfStartInNewLine: true,
+```
 
 ---
 ### `pdfAddLineBreaks`
 
-???
+| `pdfAddLineBreaks` |                 |
+| :------------------------- | :-------------- |
+| Possible Values            | `true`, `false` |
+| Required                   | no              |
+| Default Value              | -               |
+
+If `pdfAddLineBreaks` is set to `true`, linebreaks are set after every value of the field in the PDF.
+
+```typescript
+pdfAddLineBreaks: true,
+```
 
 ---
 ### `validators.minCharacters`
@@ -323,24 +345,53 @@ validators: {
 ```
 
 ---
+## `fields`
+
+| Property                                         | Description                       |
+| :------------------------------------------------| :-------------------------------- |
+| [commentMultiLineTextInput](#commenmultilinetextinput)        | Defines a comment section as multiLineTextInput  |
+
+
+---
+### `commentMultiLineTextInput`
+
+| Property               | Description                                                                               |
+| :----------------------| :---------------------------------------------------------------------------------------- |
+| [required](./24-general-properties/#required)                                | If this is set to `true`, the field is considered invalid as long as no value is entered. |
+| [disabled](./24-general-properties/#disabled)                                | Setting this to `true` permanently disables the field in the UI. |
+| [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the label in the PDF. |
+
+---
+
+#### `enable`
+
+| `enable` |                 |
+| :------------------------- | :-------------- |
+| Possible Values            | `true`, `false` |
+| Required                   | yes              |
+| Default Value              | -               |
+
+If `enable` is set to `true`, the sub-property appears in the UI. 
+
+---
 ## `prefill`
 
 | `prefill`                  |                                                                     |
 | :------------------------- | :--------------                                                     |
-| Possible Values            | Array of [PrefillRules](#todo) that output a value of type `string` |
+| Possible Values            | Array of [PrefillRules](./25-prefill-rules)            |
 | Required                   | no                                                                  |
 | Default Value              | -                                                                   |
 
-This configuration follows the [general syntax for prefilling rules](#todo).
-The provided PrefillRules need to have an output value of type string.
+This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
 ---
 ## `onChange`
 
-| `onChange`                 |                   |
-| :------------------------- | ------------------|
-| Possible Values            | Array of Fuctions |
-| Required                   | no                |
-| Default Value              | -     |
+| `onChange`                 |                                                                        |
+| :------------------------- | :--------------                                                        |
+| Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
+| Required                   | no                                                                     |
+| Default Value              | -                                                                      |
 
-*???Description???*
+
+This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
