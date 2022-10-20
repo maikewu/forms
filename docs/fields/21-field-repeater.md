@@ -4,8 +4,10 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
- 
+ The fieldRepeater contains several fields, each field gets extra config options if it's part of a repeater.
+ They get the [uiHideInRepeaterCardDisplay](#uihideinrepeatercarddisplay) and [pdfFieldRepeaterCellAlignment](#pdffieldrepeatercellalignment) config option.
 # Configuration Overview
+
 
 | Property                                                                     | Description                      |
 | :--------------------------------------------------------------------------- | :--------------------------------|
@@ -19,9 +21,6 @@ parentDoc: 62ec01bd561bab0aa775efe4
 | [pdfFieldRepeaterCellAlignment](#pdffieldrepeatercellalignment)              | Configuration of the cell alignment. |
 | [label](#label)                                                              | Configuration of the field label. |
 | [fields](#fields)                                                            | Components of the field |
-
- uiHideInRepeaterCardDisplay?: boolean;
- pdfFieldRepeaterCellAlignment?:
 
 
 ```typescript (Complete repeater for SingleLineTextInput)
