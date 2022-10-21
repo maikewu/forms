@@ -31,10 +31,10 @@
         "customer": {
           "fieldType": "REMBERG_CUSTOMER_SELECT",
           "required": true,
-          "width": 0.5,
+          "width": 1,
           "label": {
-            "de": "Kunde",
-            "en": "Customer"
+            "de": "Auftraggeber",
+            "en": "Ordering party"
           },
           "messages": {
             "onChange": [
@@ -58,7 +58,7 @@
                         "_propertyName": "billingAddress"
                       },
                       "output": {
-                        "_field": "customerLocation"
+                        "_field": "orderCustomerLocation"
                       }
                     }
                   }
@@ -103,15 +103,25 @@
             ]
           }
         },
+        "orderCustomerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse Auftraggeber",
+            "en": "Address ordering party"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "required": false
+        },
         "customerLocation": {
           "fieldType": "REMBERG_ADDRESS",
           "label": {
-            "de": "Standort",
-            "en": "Location"
+            "de": "Adresse Warenempfänger",
+            "en": "Adress ship-to party"
           },
           "hideInPdfIfEmpty": true,
           "required": false,
-          "width": 0.5,
+          "width": 1,
           "messages": {
             "onChange": [
               {
@@ -165,16 +175,12 @@
                 "name": "PATCH_DATA",
                 "_dynamicData": {
                   "input": {
-                    "_field": {
-                      "_field": "ARGS",
-                      "_propertyName": "asset",
-                      "_functionName": "GET_PRODUCT"
-                    },
-                    "_propertyName": "customer"
+                    "_field": "ARGS",
+                    "_propertyName": "address"
                   },
                   "output": {
-                    "_field": "customer",
-                    "_propertyName": "customer"
+                    "_field": "customerLocation",
+                    "_propertyName": ""
                   }
                 }
               }
@@ -188,32 +194,35 @@
                 "_dynamicData": {
                   "input": {
                     "_field": "ARGS",
-                    "_propertyName": "address",
-                    "_functionName": "GET_ADDRESS"
+                    "_propertyName": "customerAddress"
                   },
                   "output": {
-                    "_field": "customerLocation",
+                    "_field": "orderCustomerLocation",
                     "_propertyName": ""
                   }
                 }
               }
             ]
-          }
-        ],
-        "onFinish": [
+          },
           {
             "to": "ROOT",
             "actions": [
               {
-                "name": "SAVE_TO_BACKEND"
-              }
-            ]
-          },
-          {
-            "to": "03_assetInformation",
-            "actions": [
-              {
-                "name": "PANEL_EXPAND"
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
               }
             ]
           }
