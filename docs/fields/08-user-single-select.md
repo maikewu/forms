@@ -23,50 +23,50 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 
 ```typescript (complete)
 {
-  id: 'exampleUserSingleSelect_1',
-  type: FormFieldTypesEnum.USER_SINGLE_SELECT,
-  config: {
-      required: true,
-      disabled: false,
-      pdfHide: false,
-      pdfHideIfValueIsEmpty: false,
-      label: {
-          text: {
-              en: 'User Select 1',
-              de: 'User Auswahl 1',
-              tr: 'User Select 1 [TR]',
-              fr: 'User Select 1 [FR]',
-              es: 'User Select 1 [ES]',
-              it: 'User Select 1 [IT]',
-          },
-          pdfHide: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-          uiHide: false,
-      },      
-      value: {
-          pdfHide: false,
-          pdfStartInNewLine: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-          pdfPrintEmailAddress: true,
-      },
-      prefill: {
-          value: [
+    "id": "exampleUserSingleSelect_1",
+    "type": "userSingleSelect",
+    "config": {
+        "required": true,
+        "disabled": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "label": {
+            "text": {
+                "en": "User Select 1",
+                "de": "User Auswahl 1",
+                "tr": "User Select 1 [TR]",
+                "fr": "User Select 1 [FR]",
+                "es": "User Select 1 [ES]",
+                "it": "User Select 1 [IT]"
+            },
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
+        },
+         "value": {
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "pdfPrintEmailAddress": true
+        },
+      "prefill": {
+          "value": [
               {
-                  input: 'currentUserId',
-                  steps: [],
+                  "input": "currentUserId",
+                  "steps": [],
               },
           ],
       },
-      onChange: [
+      "onChange": [
           {
-              steps: ['userToFullNameString'],
-              target: { id: 'exampleSignatureSection', propertyName: 'name' },
+              "steps": [ "userToFullNameString" ],
+              "target": { "id": "exampleSignatureSection", "propertyName": "name" },
           },
           {
-              steps: ['userInfoToUser', 'userToPhoneNumberString', 'phoneNumberStringToPhoneNumberObject'],
-              target: { id: 'examplePhoneNumberInput_1' },
+              "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
+              "target": { "id": "examplePhoneNumberInput_1" },
           },
       ],
   },
@@ -75,25 +75,20 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 
 ```typescript (minimal)
 {
-  id: 'exampleUserSingleSelect_1',
-  type: FormFieldTypesEnum.USER_SINGLE_SELECT,
-  config: {
-      required: true,
-      label: {
-          text: {
-              en: 'User Select 1',
-              de: 'User Auswahl 1',
-              tr: 'User Select 1 [TR]',
-              fr: 'User Select 1 [FR]',
-              es: 'User Select 1 [ES]',
-              it: 'User Select 1 [IT]',
-          },
-          pdfHide: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-          uiHide: false,
-      },
-  },
+    "id": "exampleUserSingleSelect_1",
+    "type": "userSingleSelect",
+    "config": {
+        "label": {
+            "text": {
+                "en": "User Select 1",
+                "de": "User Auswahl 1",
+                "tr": "User Select 1 [TR]",
+                "fr": "User Select 1 [FR]",
+                "es": "User Select 1 [ES]",
+                "it": "User Select 1 [IT]"
+            },
+        },
+    },
 },
 ```
 
@@ -134,7 +129,7 @@ By setting `printEmailAddress` to `true`, email address of the slected user will
 
 ``` typescript
 value:{
-printEmailAddress: true
+"printEmailAddress": true
 }
 ```
 
@@ -149,11 +144,11 @@ printEmailAddress: true
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript (current UserID)
-prefill: {
-    value: [
+"prefill": {
+    "value": [
         {
-            input: 'currentUserId',
-            steps: [],
+            "input": "currentUserId",
+            "steps": [],
         },
     ],
 },
@@ -170,14 +165,14 @@ prefill: {
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 ```typescript
-onChange: [
+"onChange": [
     {
-        steps: ['userToFullNameString'],
-        target: { id: 'exampleSignatureSection', propertyName: 'name' },
+        "steps": [ "userToFullNameString" ],
+        "target": { "id": "exampleSignatureSection", "propertyName": "name" },
     },
     {
-        steps: ['userInfoToUser', 'userToPhoneNumberString', 'phoneNumberStringToPhoneNumberObject'],
-        target: { id: 'examplePhoneNumberInput_1' },
+        "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
+        "target": { "id": "examplePhoneNumberInput_1" },
     },
 ],
 ```

@@ -22,91 +22,99 @@ The AddressInput contains various fields for every information of an address.
 
 ``` typescript (complete)
 {
-  id: 'exampleAddressInput_1',
-  type: FormFieldTypesEnum.ADDRESS_INPUT,
-  config: {
-      required: {
-          street: false,
-          streetNumber: false,
-          supplement: false,
-          zipPostCode: false,
-          city: false,
-          state: false,
-          country: false,
-      },
-      disabled: false,
-      pdfHide: false,
-      pdfHideIfValueIsEmpty: false,
-      pdfWidth: 1,
-      label: {
-          text: {
-              en: 'Address Input 1',
-              de: 'Anschrift Input 1',
-              tr: 'Address Input 1 [TR]',
-              fr: 'Address Input 1 [FR]',
-              es: 'Address Input 1 [ES]',
-              it: 'Address Input 1 [IT]',
-          },
-          pdfHide: false,
-          uiTextColor: '#facc2e',
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-      },
-      value: {
-          pdfHide: false,
-          pdfStartInNewLine: false,
-          pdfAddLineBreaks: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-      },
-      prefill: {
-          value: [
-              {
-                  input: 'none',
-                  steps: [
-                      [
-                          'staticAddress',
-                          {
-                              city: 'Default City',
-                              street: 'Default Street',
-                              streetNumber: '1',
-                              country: 'Default Country',
-                              other: 'Default supplement',
-                              countryProvince: 'Default state',
-                              company: 'Default Company',
-                          },
-                      ],
-                  ],
+    "id": "exampleAddressInput_1",
+    "type": "addressInput",
+    "config": {
+        "required": {
+            "street": false,
+            "streetNumber": false,
+            "company": false,
+            "supplement": false,
+            "zipPostCode": false,
+            "city": false,
+            "state": false,
+            "country": false
+        },
+        "pdfHide": false,
+        "uiTextColor": "#facc2e",
+        "pdfTextColor": "#facc2e",
+        "pdfTextSize": 14
+         "label": {
+              "text": {
+                "en": "Address Input 1",
+                "de": "Anschrift Input 1",
+                "tr": "Address Input 1 [TR]",
+                "fr": "Address Input 1 [FR]",
+                "es": "Address Input 1 [ES]",
+                "it": "Address Input 1 [IT]"
               },
-          ],
-      },
-      onChange: [
-          {
-              steps: [ 'addressToCityString' ],
-              target: { id: 'exampleSignatureSection', propertyName: 'location' },
-          },
-      ],
-  },
-},
+              "pdfHide": false,
+              "uiTextColor": "#facc2e",
+              "pdfTextColor": "#facc2e",
+              "pdfTextSize": 14
+        },
+        "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false,
+              "pdfTextColor": "#facc2e",
+              "pdfTextSize": 14
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "none",
+                  "steps": [
+                    [
+                      "staticAddress",
+                      {
+                        "city": "Default City",
+                        "street": "Default Street",
+                        "streetNumber": "1",
+                        "country": "Default Country",
+                        "other": "Default supplement",
+                        "countryProvince": "Default state",
+                        "company": "Default Company"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "steps": [
+                  "addressToCityString"
+                ],
+                "target": {
+                  "id": "exampleSignatureSection",
+                  "propertyName": "location"
+                }
+              }
+            ]
+          }
+        },
 ```
 ``` typescript (minimal)
 {
-  id: 'exampleAddressInput_1',
-  type: FormFieldTypesEnum.ADDRESS_INPUT,
-  config: {
-      required: {
-          street: true,
-      },
-      label: {
-          text: {
-              en: 'Address Input 1',
-              de: 'Anschrift Input 1',
-          },
-      },  
-      value: {
-          pdfTextColor: '#facc2e',
-      },
-   },
+    "id": "exampleAddressInput_2",
+    "type": "addressInput",
+    "config": {
+        "required": {
+        },
+         "label": {
+              "text": {
+                "en": "Address Input 1",
+                "de": "Anschrift Input 1",
+                "tr": "Address Input 1 [TR]",
+                "fr": "Address Input 1 [FR]",
+                "es": "Address Input 1 [ES]",
+                "it": "Address Input 1 [IT]"
+              },
+        },
+        "value": {
+        },
+    },
 },
 ```
 
@@ -129,15 +137,15 @@ The AddressInput contains various fields for every information of an address.
 The Address Input field has several different fields that can be individually set as mandatory fields.
 
 ```typescript
-required: {
-    street: false,
-    streetNumber: false,
-    company: false,
-    supplement: false,
-    zipPostCode: false,
-    city: false,
-    state: false,
-    country: false,
+"required": {
+    "street": false,
+    "streetNumber": false,
+    "company": false,
+    "supplement": false,
+    "zipPostCode": false,
+    "city": false,
+    "state": false,
+    "country": false
 },
 ```
 
@@ -175,8 +183,8 @@ required: {
 By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
 
 ``` typescript (validators)
-validators:{
-supportedNonNumericsCharacters: ["A", "I", "*"]
+"validators":{
+"supportedNonNumericsCharacters": ["A", "I", "*"]
 }
 ```
 
@@ -192,8 +200,8 @@ supportedNonNumericsCharacters: ["A", "I", "*"]
 By defining `validators.regexPattern`, you set a expression for valid values.
 
 ``` typescript
-validators:{
-regexPattern: ^[A-Z]*$
+"validators":{
+"regexPattern": "^[A-Z]*$"
 }
 ```
 
@@ -208,26 +216,28 @@ regexPattern: ^[A-Z]*$
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript
-prefill: {
-    value: [
-        {
-            input: 'none',
-            steps: [
-                [
-                    'staticAddress',
-                    {
-                        city: 'Default City',
-                        street: 'Default Street',
-                        streetNumber: '1',
-                        country: 'Default Country',
-                        other: 'Default supplement',
-                        countryProvince: 'Default state',
-                        company: 'Default Company',
-                    },
-                ],
-            ],
-        },
-    ],
+"prefill": {
+    "value": [
+    {
+        "input": "none",
+        "steps": [
+        [
+            "staticAddress",
+            {
+            "street": "Default Street",
+            "streetNumber": "1",
+            "company": "remberg GmbH",
+            "supplement": "Default Supplement",
+            "zipPostCode": "Default Zipcode",
+            "city": "Default City",
+            "state": "Default State",
+            "country": "Default Country"
+            "city": "Default City",
+            }
+        ]
+        ]
+    }
+    ]
 },
 ```
 ---
@@ -242,10 +252,10 @@ prefill: {
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 ```typescript
-onChange: [
+"onChange": [
     {
-        steps: [ 'addressToCityString' ],
-        target: { id: 'exampleSignatureSection', propertyName: 'location' },
+        "steps": [ "addressToCityString" ],
+        "target": { "id": "exampleSignatureSection", propertyName: 'location' },
     },
 ],
 ```
