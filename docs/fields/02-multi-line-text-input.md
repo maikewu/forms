@@ -23,55 +23,54 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 
 ``` typescript (complete)
 {
-    id: 'exampleMultiLineTextInput_1',
-    type: FormFieldTypesEnum.MULTI_LINE_TEXT_INPUT,
-    config: {
-        required: true,
-        label: {
-            text: {
-                en: 'MultiLine Input 1',
-                de: 'Mehrzeiliger Input 1',
-                tr: 'MultiLine Input 1 [TR]',
-                fr: 'MultiLine Input 1 [FR]',
-                es: 'MultiLine Input 1 [ES]',
-                it: 'MultiLine Input 1 [IT]',
+  "id": "exampleMultiLineTextInput_1",
+  "type": "multiLineTextInput",
+  "config": {
+      "required": true,
+      "disabled": false,
+      "pdfHide": false,
+      "pdfHideIfValueIsEmpty": false,
+      "placeHolderText": {
+        "en": "Example Placeholder",
+        "de": "Platzhalter",
+        "tr": "Example Placeholder [TR]",
+        "fr": "Example Placeholder [FR]",
+        "es": "Example Placeholder [ES]",
+        "it": "Example Placeholder [IT]"
+      },
+      "label": {
+          "text": {
+                "en": "Single Line Input 1",
+                "de": "Einzeiliger Input 1",
+                "tr": "Single Line Input 1 [TR]",
+                "fr": "Single Line Input 1 [FR]",
+                "es": "Single Line Input 1 [ES]",
+                "it": "Single Line Input 1 [IT]"
+          },
+          "pdfHide": false,
+          "pdfTextColor": '#facc2e',
+          "pdfTextSize": 14,
+          "uiHide": false,
+      },
+      "value": {
+          "pdfHide": false,
+          "pdfStartInNewLine": false,
+          "pdfTextColor": "#facc2e",
+          "pdfTextSize": 14,
+          "validators": {
+              "maxCharacters": 10,
+              "minCharacters": 3,
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
-            uiHide: false,
+            "uiMaxRows": 5,
+            "uiMinRows": 2,
         },
-        placeHolderText: {
-            en: 'Example Placeholder',
-            de: 'Platzhalter',
-            tr: 'Example Placeholder [TR]',
-            fr: 'Example Placeholder [FR]',
-            es: 'Example Placeholder [ES]',
-            it: 'Example Placeholder [IT]',
-        },
-        disabled: false,
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        uiHideInRepeaterCardDisplay: false,
-        value: {
-            pdfHide: false,
-            pdfStartInNewLine: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
-            validators: {
-                maxCharacters: 1000,
-                minCharacters: 3,
-            },
-            uiMaxRows: 5,
-            uiMinRows: 2,
-        },
-        prefill: {
-            value: [
+        "prefill": {
+            "value": [
                 {
-                    input: 'none',
-                    steps: [
+                    "input": "none",
+                    "steps": [
                         [
-                            'staticString',
+                            "staticString",
                             'Default \n Multi \n Line \n Text',
                         ],
                     ],
@@ -83,20 +82,22 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 ```
 ``` typescript (minimal)
 {
-    id: 'exampleMultiLineTextInput_1',
-    type: FormFieldTypesEnum.MULTI_LINE_TEXT_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'MultiLine Input 1',
-                de: 'Mehrzeiliger Input 1',
-                tr: 'MultiLine Input 1 [TR]',
-                fr: 'MultiLine Input 1 [FR]',
-                es: 'MultiLine Input 1 [ES]',
-                it: 'MultiLine Input 1 [IT]',
-            },
+  "id": "exampleMultiLineTextInput_2",
+  "type": "multiLineTextInput",
+  "config": {
+      "label": {
+          "text": {
+                "en": "Single Line Input 1",
+                "de": "Einzeiliger Input 1",
+                "tr": "Single Line Input 1 [TR]",
+                "fr": "Single Line Input 1 [FR]",
+                "es": "Single Line Input 1 [ES]",
+                "it": "Single Line Input 1 [IT]"
+          },
         },
-    },
+        "value": {
+        },
+    }
 }
 ```
 
@@ -140,7 +141,7 @@ By setting `uiMinRows`, the text input in he UI will always span at the least th
 If the content spans less lines, the size of the text input will not shrink further.
 
 ``` typescript
-uiMinRows: 5
+"uiMinRows": 5
 ```
 
 ---
@@ -156,7 +157,7 @@ By setting `uiMaxRows`, the text input in he UI will not grow further than the s
 If the content spans more lines than that maximum, there will be a scrollbar to access the additional lines.
 
 ``` typescript
-uiMaxRows: 15
+"uiMaxRows": 15
 ```
 ---
 ## `prefill`
@@ -169,30 +170,18 @@ uiMaxRows: 15
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript (static string)
-prefill: {
-        value: [
+"prefill": {
+        "value": [
             {
-                input: 'none',
-                steps: [
-                    [ 'staticString', 'Default \n Multi \n Line \n Text' ],
+                "input": "none",
+                "steps": [
+                    [ "staticString", 'Default \n Multi \n Line \n Text' ],
                 ],
             },
         ],
     },
 ```
-``` typescript (asset type name)
-prefill: {
-        value: [
-            {
-                input: 'assetId',
-                steps: [
-                    'assetIdToAsset',
-                    'assetToAssetTypeNameString',
-                ],
-            },
-        ],
-    },
-```
+
 
 ---
 ## `onChange`

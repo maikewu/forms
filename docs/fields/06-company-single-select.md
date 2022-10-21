@@ -23,63 +23,62 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
 
 ``` typescript (complete)
 {
-    id: 'exampleCompanySingleSelect_1',
-    type: FormFieldTypesEnum.COMPANY_SINGLE_SELECT,
-    config: {
-        disabled: false,
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        uiHideInRepeaterCardDisplay: false,
-        label: {
-            text: {
-                en: 'Company Single Select 1',
-                de: 'Einfache Unternehmensauswahl',
-                tr: 'Company Single Select 1 [TR]',
-                fr: 'Company Single Select 1 [FR]',
-                es: 'Company Single Select 1 [ES]',
-                it: 'Company Single Select 1 [IT]',
+    "id": "exampleCompanySingleSelect_1",
+    "type": "companySingleSelect",
+    "config": {
+        "disabled": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "label": {
+            "text": {
+                "en": "Company Single Select 1",
+                "de": "Einfache Unternehmensauswahl",
+                "tr": "Company Single Select 1 [TR]",
+                "fr": "Company Single Select 1 [FR]",
+                "es": "Company Single Select 1 [ES]",
+                "it": "Company Single Select 1 [IT]",
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
-            uiHide: false,
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false,
         },
-        value: {
-            disableCreation: false,
-            pdfPrintCompanyNumber: false,
-            pdfHide: false,
-            pdfStartInNewLine: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
+        "value": {
+            "disableCreation": false,
+            "pdfPrintCompanyNumber": false,
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
         },
-        prefill: {
-            [CompanySingleSelectPrefillTargetsEnum.SELECTED_COMPANY]: [
+        "prefill": {
+            [ "selectedCompany" ]: [
                 {
-                    input: 'currentAccountId',
-                    steps: [],
+                    "input": "currentAccountId",
+                    "steps": [],
                 },
             ],
         },
-        onChange: [
+        "onChange": [
             {
-                steps: ['accountInfoToCompanyName'],
-                target: { id: 'disabledSingleLineInput_1' },
+                "steps": ["accountInfoToCompanyName"],
+                "target": { "id": "disabledSingleLineInput_1" },
             },
             {
-                steps: ['accountInfoToAccount', 'accountToBillingAddressAddress'],
-                target: { id: 'exampleAddressInput_1' },
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
+                "target": { "id": "exampleAddressInput_1" },
             },
             {
-                steps: ['accountInfoToAccount', 'accountToBillingAddressAddress', 'addressToCityString'],
-                target: { id: 'exampleSignatureSection', propertyName: 'location' },
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
+                "target": { "id": "exampleSignatureSection", "propertyName": "location" },
             },
             {
-                steps: ['accountInfoToAccount', 'accountToPhoneNumberString' ],
-                target: { id: 'exampleSingleLineInput_2' },
+                "steps": ['"accountInfoToAccount"', "accountToPhoneNumberString" ],
+                "target": { "id": "exampleSingleLineInput_2" },
             },
             {
-                steps: ['accountInfoToAccount', 'accountToPhoneNumberString', 'phoneNumberStringToPhoneNumberObject'],
-                target: { id: 'examplePhoneNumberInput_1' },
+                "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
+                "target": { "id": "examplePhoneNumberInput_1" },
             },
         ],
     },
@@ -89,18 +88,18 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
 
 ``` typescript (minimal)
 {
-    id: 'exampleCompanySingleSelect_1',
-    type: FormFieldTypesEnum.COMPANY_SINGLE_SELECT,
-    config: {
-        label: {
-             text: {
-                 en: 'Company Single Select 1',
-                 de: 'Einfache Unternehmensauswahl',
-                 tr: 'Company Single Select 1 [TR]',
-                 fr: 'Company Single Select 1 [FR]',
-                 es: 'Company Single Select 1 [ES]',
-                 it: 'Company Single Select 1 [IT]',
-             },
+    "id": "exampleCompanySingleSelect_1",
+    "type": "companySingleSelect",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Company Single Select 1",
+                "de": "Einfache Unternehmensauswahl",
+                "tr": "Company Single Select 1 [TR]",
+                "fr": "Company Single Select 1 [FR]",
+                "es": "Company Single Select 1 [ES]",
+                "it": "Company Single Select 1 [IT]",
+            },
         },
     },
 }
@@ -142,7 +141,7 @@ Property                                                    | Description       
 If `disableCreation` is set to `true`, the creat button is hidden, so that no new companies can be created while working in forms.
 
 ``` typescript
-disableCreation: true
+"disableCreation": true
 ```
 
 ---
@@ -157,7 +156,7 @@ disableCreation: true
 If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed in the PDF in brackets behinde the company name.
 
 ``` typescript
-pdfPrintCompanyNumber: true
+"pdfPrintCompanyNumber": true
 ```
 
 ## `useAsFilterForFields`
@@ -172,7 +171,7 @@ pdfPrintCompanyNumber: true
 The `useAsFilterForFields` property can be used to filter the asset and user select field by entering the field id.
 
 ``` typescript
-useAsFilterForFields: [ 'exampleAssetSingleSelect_1' ]
+"useAsFilterForFields": [ "exampleAssetSingleSelect_1" ]
 ```
 ---
 
@@ -188,11 +187,11 @@ useAsFilterForFields: [ 'exampleAssetSingleSelect_1' ]
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript (currentAccountId)
-prefill: {
-    [CompanySingleSelectPrefillTargetsEnum.SELECTED_COMPANY]: [
+"prefill": {
+    [ "selectedCompany" ]: [
         {
-            input: 'currentAccountId',
-            steps: [],
+            "input": "currentAccountId",
+            "steps": [],
         },
     ],
 },
@@ -209,26 +208,26 @@ prefill: {
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 ```typescript
-onChange: [
+"onChange": [
     {
-        steps: ['accountInfoToCompanyName'],
-        target: { id: 'disabledSingleLineInput_1' },
+        "steps": ["accountInfoToCompanyName"],
+        "target": { "id": "disabledSingleLineInput_1" },
     },
     {
-        steps: ['accountInfoToAccount', 'accountToBillingAddressAddress'],
-        target: { id: 'exampleAddressInput_1' },
+        "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
+        "target": { "id": "exampleAddressInput_1" },
     },
     {
-        steps: ['accountInfoToAccount', 'accountToBillingAddressAddress', 'addressToCityString'],
-        target: { id: 'exampleSignatureSection', propertyName: 'location' },
+        "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
+        "target": { "id": "exampleSignatureSection", "propertyName": "location" },
     },
     {
-        steps: ['accountInfoToAccount', 'accountToPhoneNumberString' ],
-        target: { id: 'exampleSingleLineInput_2' },
+        "steps": ['"accountInfoToAccount"', "accountToPhoneNumberString" ],
+        "target": { "id": "exampleSingleLineInput_2" },
     },
     {
-        steps: ['accountInfoToAccount', 'accountToPhoneNumberString', 'phoneNumberStringToPhoneNumberObject'],
-        target: { id: 'examplePhoneNumberInput_1' },
+        "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
+        "target": { "id": "examplePhoneNumberInput_1" },
     },
 ],
 ```

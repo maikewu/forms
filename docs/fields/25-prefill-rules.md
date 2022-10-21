@@ -16,7 +16,7 @@ You get provided with different data types depending from which part of the app 
 
 ---
 From the Asset View you'll have: 
-
+|------|-----|
 | `assetId`  |  |  
 | `organizationId` 
 | `creationDateTime`  |  |  
@@ -28,6 +28,7 @@ From the Asset View you'll have:
 
 ---
 Form a Work Order you'll have: 
+|------|-----|
 | `relatedWorkOrderId`  |  |  
 | `organizationId`  | If WO has connected company |  
 | `assetId`  | If WO has assets |  
