@@ -20,69 +20,70 @@ The PersonListInput field allows to enter user.
 
 ``` typescript (complete)
 {
-    id: 'examplePersonList_1',
-    type: FormFieldTypesEnum.PERSON_LIST_INPUT,
-    config: {
-        disabled: false,
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        requiredAmountOfEntries: 1,
-        label: {
-            text: {
-                en: 'Person List 1',
-                de: 'Person Ersatzteilliste 1',
-                tr: 'Person List 1 [TR]',
-                fr: 'Person List 1 [FR]',
-                es: 'Person List 1 [ES]',
-                it: 'Person List 1 [IT]',
+    "id": "examplePersonList_1",
+    "type": "personListInput",
+    "config": {
+        "disabled": false,
+        "requiredAmountOfEntries": 1,
+        "pdfHide": false,
+        "pdfHideIfValuesIsEmpty": false,
+        "requiredAmountOfEntries": 1,
+        "label": {
+            "text": {
+                "en": "Person List 1",
+                "de": "Person Ersatzteilliste 1",
+                "tr": "Person List 1 [TR]",
+                "fr": "Person List 1 [FR]",
+                "es": "Person List 1 [ES]",
+                "it": "Person List 1 [IT]"
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14
         },
-        value: {
-            pdfHide: false,
-            pdfTextSize: 14,
-            pdfTextColor: '#facc2e',
-            pdfStartInNewLine: false,
-            pdfAddLineBreaks: true,
-            firstNameRequired: true,
-            lastNameRequired: true,
-            email: {
-                required: true,
-                pdfHide: false,
-                hide: false,
+        "value": {
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e",
+            "pdfStartInNewLine": false,
+            "pdfAddLineBreaks": true,
+            "firstNameRequired": true,
+            "lastNameRequired": true,
+            "email": {
+                "required": true,
+                "pdfHide": false,
+                "hide": false,
             },
-        },
-    },
+        }
+    }
 },
 ```
 
 ``` typescript (minimal)
 {
-    id: 'examplePersonList_1',
-    type: FormFieldTypesEnum.PERSON_LIST_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'Person List 1',
-                de: 'Person Ersatzteilliste 1',
-                tr: 'Person List 1 [TR]',
-                fr: 'Person List 1 [FR]',
-                es: 'Person List 1 [ES]',
-                it: 'Person List 1 [IT]',
+    "id": "examplePersonList_1",
+    "type": "personListInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Person List 1",
+                "de": "Person Ersatzteilliste 1",
+                "tr": "Person List 1 [TR]",
+                "fr": "Person List 1 [FR]",
+                "es": "Person List 1 [ES]",
+                "it": "Person List 1 [IT]"
             },
         },
-        value: {
-            firstNameRequired: true,
-            lastNameRequired: true,
-            email: {
-                required: true,
-                pdfHide: false,
-                hide: false,
+        "value": {
+            "firstNameRequired": true,
+            "lastNameRequired": true,
+            "email": {
+                "required": true,
+                "pdfHide": false,
+                "hide": false,
             },
-        },
-    },
+        }
+    }
 },
 ```
 
@@ -126,7 +127,7 @@ The PersonListInput field allows to enter user.
 If `firstNameRequired` is set to `true`, the field is not shown in the PDF at all. 
 
 ``` typescript
-firstNameRequired: true
+"firstNameRequired": true
 ```
 ---
 ## `lastNameRequired`
@@ -140,7 +141,7 @@ firstNameRequired: true
 If `lastNameRequired` is set to `true`, the field is considered invalid as long as no value is entered.
 
 ``` typescript
-lastNameRequired: true
+"lastNameRequired": true
 ```
 ---
 ## `hide`
@@ -154,7 +155,7 @@ lastNameRequired: true
 If `hide` is set to `true`, the field is not shown in the PDF and UI at all.
 
 ``` typescript
-hide: true
+"hide": true
 ```
 
 ## `prefill`

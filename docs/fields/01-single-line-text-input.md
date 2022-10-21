@@ -23,55 +23,54 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 
 ``` typescript (complete)
 {
-  id: 'exampleSingleLineInput_1',
-  type: FormFieldTypesEnum.SINGLE_LINE_INPUT,
-  config: {
-      required: true,
-      label: {
-          text: {
-              en: 'Single Line Input 1',
-              de: 'Einzeiliger Input 1',
-              tr: 'Single Line Input 1 [TR]',
-              fr: 'Single Line Input 1 [FR]',
-              es: 'Single Line Input 1 [ES]',
-              it: 'Single Line Input 1 [IT]',
+  "id": "exampleSingleLineInput_1",
+  "type": "singleLineInput",
+  "config": {
+      "required": true,
+      "disabled": false,
+      "pdfHide": false,
+      "pdfHideIfValueIsEmpty": false,
+      "placeHolderText": {
+        "en": "Example Placeholder",
+        "de": "Platzhalter",
+        "tr": "Example Placeholder [TR]",
+        "fr": "Example Placeholder [FR]",
+        "es": "Example Placeholder [ES]",
+        "it": "Example Placeholder [IT]"
+      },
+      "label": {
+          "text": {
+                "en": "Single Line Input 1",
+                "de": "Einzeiliger Input 1",
+                "tr": "Single Line Input 1 [TR]",
+                "fr": "Single Line Input 1 [FR]",
+                "es": "Single Line Input 1 [ES]",
+                "it": "Single Line Input 1 [IT]"
           },
-          pdfHide: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-          uiHide: false,
+          "pdfHide": false,
+          "pdfTextColor": '#facc2e',
+          "pdfTextSize": 14,
+          "uiHide": false,
       },
-      placeHolderText: {
-          en: 'Example Placeholder',
-          de: 'Platzhalter',
-          tr: 'Example Placeholder [TR]',
-          fr: 'Example Placeholder [FR]',
-          es: 'Example Placeholder [ES]',
-          it: 'Example Placeholder [IT]',
-      },
-      disabled: false,
-      pdfHide: false,
-      pdfHideIfValueIsEmpty: false,
-      uiHideInRepeaterCardDisplay: false,
-      value: {
-          pdfHide: false,
-          pdfStartInNewLine: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-          validators: {
-              emailAddress: false,
-              maxCharacters: 10,
-              minCharacters: 3,
-              regexPattern: '^[A-Z]*$',
+      "value": {
+          "pdfHide": false,
+          "pdfStartInNewLine": false,
+          "pdfTextColor": "#facc2e",
+          "pdfTextSize": 14,
+          "validators": {
+              "emailAddress": false,
+              "maxCharacters": 10,
+              "minCharacters": 3,
+              "regexPattern": "^[A-Z]*$",
           },
       },
-      prefill: {
-          value: [
+      "prefill": {
+          "value": [
               {
-                  input: 'assetId',
-                  steps: [
-                      'assetIdToAsset',
-                      'assetToAssetTypeNameString',
+                  "input": "assetId",
+                  "steps": [
+                      "assetIdToAsset",
+                      "assetToAssetTypeNameString",
                   ],
               },
           ],
@@ -81,21 +80,23 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 ```
 ``` typescript (minimal)
 {
-  id: 'exampleSingleLineInput_1',
-  type: FormFieldTypesEnum.SINGLE_LINE_INPUT,
-  config: {
-      label: {
-          text: {
-              en: 'Single Line Input 1',
-              de: 'Einzeiliger Input 1',
-              tr: 'Single Line Input 1 [TR]',
-              fr: 'Single Line Input 1 [FR]',
-              es: 'Single Line Input 1 [ES]',
-              it: 'Single Line Input 1 [IT]',
-            },
-        },
-    },
-}
+  "id": "exampleSingleLineInput_1",
+  "type": "singleLineInput",
+  "config": {
+      "label": {
+          "text": {
+                "en": "Single Line Input 1",
+                "de": "Einzeiliger Input 1",
+                "tr": "Single Line Input 1 [TR]",
+                "fr": "Single Line Input 1 [FR]",
+                "es": "Single Line Input 1 [ES]",
+                "it": "Single Line Input 1 [IT]"
+          },
+      },
+      "value": {
+      },
+  },
+},
 ```
 
 ---
@@ -137,8 +138,8 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 By setting `emailAddress` to `true`, input must match email address format.
 
 ``` typescript
-validators:{
-emailAddress: true
+"validators":{
+"emailAddress": true
 }
 ```
 
@@ -154,8 +155,8 @@ emailAddress: true
 By defining `validators.regexPattern`, you set a regular expression that is valid. 
 
 ``` typescript
-validators:{
-regexPattern: ^[A-Z]*$
+"validators":{
+"regexPattern": ^[A-Z]*$
 }
 ```
 
@@ -171,25 +172,25 @@ regexPattern: ^[A-Z]*$
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
 ``` typescript (static string)
-prefill: {
-        value: [
+"prefill": {
+        "value": [
             {
-                input: 'none',
-                steps: [
-                    [ 'staticString', 'Default \n Multi \n Line \n Text' ],
+                "input": "none",
+                "steps": [
+                    [ "staticString", "Default Single Line Text" ],
                 ],
             },
         ],
     },
 ```
 ``` typescript (asset type name)
-prefill: {
-        value: [
+"prefill": {
+        "value": [
             {
-                input: 'assetId',
-                steps: [
-                    'assetIdToAsset',
-                    'assetToAssetTypeNameString',
+                "input": "assetId",
+                "steps": [
+                    "assetIdToAsset",
+                    "assetToAssetTypeNameString",
                 ],
             },
         ],
