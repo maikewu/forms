@@ -84,7 +84,6 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
         ],
     },
 },
-
 ```
 
 ``` typescript (minimal)

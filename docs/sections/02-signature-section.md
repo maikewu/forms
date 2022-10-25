@@ -21,6 +21,7 @@ The SignatureSection contains all sigatures to finish the form.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 
 ```typescript
+
 {
     id: 'exampleSignatureSection',
     type: FormSectionTypesEnum.SIGNATURE_SECTION,

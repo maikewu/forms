@@ -23,6 +23,71 @@ The SignatureSection contains all sigatures to finish the form.
 
 ```typescript
 {
+    "id": "exampleEmailSection",
+    "type": "emailSection",
+    "config": {
+        "pdfHide": false,
+        "whitelistedDomains": [],
+        "headlineText": {
+            "en": "Example Email Section",
+            "de": "Beispiel Email Sektion",
+            "tr": "Example Email Section [TR]",
+            "fr": "Example Email Section [FR]",
+            "es": "Example Email Section [ES]",
+            "it": "Example Email Section [IT]"
+        },
+        "helpTextHtmlAbove": {
+            "en": "<b>Example HTML helptext before</b>",
+            "de": "<b>Beispiel HTML Hilfstext davor</b>",
+            "tr": "<b>Example HTML helptext before [TR]</b>",
+            "fr": "<b>Example HTML helptext before [FR]</b>",
+            "es": "<b>Example HTML helptext before [ES]</b>",
+            "it": "<b>Example HTML helptext before [IT]</b>"
+        },
+        "helpTextHtmlBelow": {
+            "en": "<b>Example HTML helptext below</b>",
+            "de": "<b>Beispiel HTML Hilfstext derunter</b>",
+            "tr": "<b>Example HTML helptext below [TR]</b>",
+            "fr": "<b>Example HTML helptext below [FR]</b>",
+            "es": "<b>Example HTML helptext below [ES]</b>",
+            "it": "<b>Example HTML helptext below [IT]</b>"
+        },
+        "allowSendingWhenRequiredFieldsMissing": false,
+        "requiredAmountOfOutgoingMails": 2,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+            "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": true,
+            "staticEmails": []
+            },
+            "cc": {
+            "assignee": false,
+            "creator": true,
+            "currentUser": false,
+            "staticEmails": []
+            },
+            "to": {
+            "assignee": true,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+            },
+            "body": {
+            "dynamic": "tbd",
+            "static": "Default Content"
+            },
+            "subject": {
+            "dynamic": "tbd",
+            "static": "Default Subject"
+            }
+        }
+    }
+}
+{
   id: 'exampleEmailSection',
   type: FormSectionTypesEnum.EMAIL_SECTION,
   config: {

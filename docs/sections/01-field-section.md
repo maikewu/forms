@@ -16,21 +16,21 @@ The FieldSection contains all field properties of the form.
 
 ```typescript
 {
-    sections: [
-        {
-            id: 'exampleFieldSection',
-            type: FormSectionTypesEnum.FIELD_SECTION,
-            config: {
-                headlineText: {
-                    en: 'Example Field Section',
-                    de: 'Beispiel Feld Sektion',
-                    tr: 'Example Field Section [TR]',
-                    fr: 'Example Field Section [FR]',
-                    es: 'Example Field Section [ES]',
-                    it: 'Example Field Section [IT]',
-                },
-            },
-            fields: [
+  "sections": [
+    {
+      "id": "exampleFieldSection",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Example Field Section",
+          "de": "Beispiel Feld Sektion",
+          "tr": "Example Field Section [TR]",
+          "fr": "Example Field Section [FR]",
+          "es": "Example Field Section [ES]",
+          "it": "Example Field Section [IT]"
+        }
+      },
+      "fields": [
                 {
                   ... // enter field properties
                 }

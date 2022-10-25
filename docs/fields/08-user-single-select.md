@@ -73,7 +73,6 @@ The UserSingleSelect field allows to select a user from the own or from a custom
   },
 },
 ```
-
 ```typescript (minimal)
 {
     "id": "exampleUserSingleSelect_1",
