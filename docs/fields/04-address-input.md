@@ -20,7 +20,7 @@ The AddressInput contains various fields for every information of an address.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+``` JSON (complete)
 {
     "id": "exampleAddressInput_1",
     "type": "addressInput",
@@ -93,7 +93,7 @@ The AddressInput contains various fields for every information of an address.
     }
 },
 ```
-``` typescript (minimal)
+``` JSON (minimal)
 {
     "id": "exampleAddressInput_2",
     "type": "addressInput",
@@ -134,7 +134,7 @@ The AddressInput contains various fields for every information of an address.
 
 The Address Input field has several different fields that can be individually set as mandatory fields.
 
-```typescript
+```JSON
 "required": {
     "street": false,
     "streetNumber": false,
@@ -180,7 +180,7 @@ The Address Input field has several different fields that can be individually se
 
 By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
 
-``` typescript (validators)
+``` JSON (validators)
 "validators":{
 "supportedNonNumericsCharacters": ["A", "I", "*"]
 }
@@ -197,7 +197,7 @@ By setting `supportedNonNumericCharacters`, the field will support a list of non
 
 By defining `validators.regexPattern`, you set a expression for valid values.
 
-``` typescript
+```JSON
 "validators":{
 "regexPattern": "^[A-Z]*$"
 }
@@ -213,7 +213,7 @@ By defining `validators.regexPattern`, you set a expression for valid values.
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript
+```JSON
 "prefill": {
     "value": [
     {
@@ -229,7 +229,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
             "zipPostCode": "Default Zipcode",
             "city": "Default City",
             "state": "Default State",
-            "country": "Default Country"
+            "country": "Default Country",
             "city": "Default City",
             }
         ]
@@ -249,11 +249,11 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```typescript
+```JSON
 "onChange": [
     {
         "steps": [ "addressToCityString" ],
-        "target": { "id": "exampleSignatureSection", propertyName: 'location' },
+        "target": { "id": "exampleSignatureSection", "propertyName": "location" },
     },
 ],
 ```

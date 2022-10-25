@@ -17,7 +17,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
 | [label](#label)                                                              | Configuration of the field label. |
 
 
-```typescript (complete)
+``` JSON (complete)
  {
     "id": "exampleTimeTrackingListInput_1",
     "type": "timeTrackingListInput",
@@ -25,7 +25,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
         "pdfWidth": 1,
-        "requiredAmountOfEntries": 3
+        "requiredAmountOfEntries": 3,
         "maximumDuration": 480,
         "label": {
             "text": {
@@ -79,7 +79,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
     }
 },
 ```
-```typescript (minimal)
+``` JSON (minimal)
  {
     "id": "exampleTimeTrackingListInput_1",
     "type": "timeTrackingListInput",
@@ -111,7 +111,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
 
  `maximumDuration` can be set in minutes. (e.g. 480; = 8h). If this duration (e.g. 8h working time) is exceeded by setting start and end datetime & breaks, input is considered invalid.
 
- ```typescript 
+ ``` JSON 
 "maximumDuration": 480; // = 8 h
 ```
 ---

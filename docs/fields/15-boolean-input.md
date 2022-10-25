@@ -19,7 +19,7 @@ The booleanInput allows the user to mark a checkbox true or false.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+``` JSON (complete)
 {
     "id": "exampleBooleanInput_1",
     "type": "booleanInput",
@@ -33,7 +33,7 @@ The booleanInput allows the user to mark a checkbox true or false.
             "pdfHide": false,
             "uiTextColor": "#facc2e",
             "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14
+            "pdfTextSize": 14,
             "text": {
                 "en": "Boolean input 1",
                 "de": "Boolean input 1 [DE]",
@@ -55,7 +55,7 @@ The booleanInput allows the user to mark a checkbox true or false.
     }
 },
 ```
-``` typescript (minimal)
+``` JSON (minimal)
 {
     "id": "exampleBooleanInput_1",
     "type": "booleanInput",
@@ -97,7 +97,7 @@ The booleanInput allows the user to mark a checkbox true or false.
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (static boolean)
+``` JSON (static boolean)
 "prefill": {
     "value": [{
         "input": "none",

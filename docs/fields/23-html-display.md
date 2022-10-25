@@ -14,14 +14,14 @@ The HtmlDisplay allows the user to enter html text.
 | [text](./24-general-properties/#text)                       | Localized label text of the field. Shown in the UI and the PDF. |#
 | [uiHide](./24-general-properties/#uihide)                   | Setting this to `true` hides the label in the UI. |
 
-```Typescript
+```JSON
 {
     "id": "exampleHtmlDisplay_1",
     "type": "htmlDisplay",
     "config": {
         "pdfHide": false,
         "pdfWidth": 1,
-        "uiHide": false
+        "uiHide": false,
         "text": {
             "en": "<h1>HTML Display 1</h1><p>This field is in: <b>EN</b></p><p><i>This should be an italic text</i></p>",
             "de": "<h1>HTML Display 1</h1><p>This field is in: <b>DE</b></p><p><i>This should be an italic text</i></p>",

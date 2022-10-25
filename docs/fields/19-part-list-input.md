@@ -17,7 +17,7 @@ With the PartListInput, the user can add parts to an form.
 | [fields](#fields)                                                            | Components of the field |
 
 
-```typescript (complete)
+``` JSON (complete)
 {
     "id": "exampleSparePartsList_1",
     "type": "partListInput",
@@ -88,7 +88,7 @@ With the PartListInput, the user can add parts to an form.
     }
 },
 ```
-```typescript (minimal)
+``` JSON (minimal)
 {
     "id": "exampleSparePartsList_1",
     "type": "partListInput",

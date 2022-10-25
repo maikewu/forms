@@ -175,77 +175,77 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 <details>
 <summary>Prefill examples of certain fields</summary>
 
-```Typescript (SignatureSection)
-prefill: {
-    name: [
+``` JSON (SignatureSection)
+"prefill": {
+    "name": [
         {
-            input: 'currentUser',
-            steps: [
-                'userToFullNameString',
+            "input": "currentUser",
+            "steps": [
+                "userToFullNameString",
             ],
         },
     ],
-    location: [
+    "location": [
         {
-            input: 'assetId',
-            steps: [
-                'assetIdToAsset',
-                'assetToLocationAddress',
-                'addressToCityString',
+            "input": "assetId",
+            "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString",
             ],
         },
         {
-            input: 'assetId',
-            steps: [
-                'assetIdToAsset',
-                'assetToCustomerAccountId',
-                'accountIdToAccount',
-                'accountToBillingAddressAddress',
-                'addressToCityString',
+            "input": "assetId",
+            "steps": [
+                "assetIdToAsset",
+                "assetToCustomerAccountId",
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString",
             ],
         },
         {
-            input: 'organizationId',
-            steps: [
-                'accountIdToAccount',
-                'accountToBillingAddressAddress',
-                'addressToCityString',
+            "input": "organizationId",
+            "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString",
             ],
         },
         {
-            input: 'none',
-            steps: [
+            "input": "none",
+            "steps": [
                 [
-                    'staticString',
-                    'Default Location',
+                    "staticString",
+                    "Default Location",
                 ],
             ],
         },
     ],
-    date: [
+    "date": [
         {
-            input: 'creationDateTime',
-            steps: ['dateTimeToDate'],
+            "input": "creationDateTime",
+            "steps": ["dateTimeToDate"],
         },
     ],
 },
 ```
-```Typescript (AddressInput)
-prefill: {
-    value: [
+``` JSON (AddressInput)
+"prefill": {
+    "value": [
         {
-            input: 'none',
-            steps: [
+            "input": "none",
+            "steps": [
                 [
-                    'staticAddress',
+                    "staticAddress",
                     {
-                        city: 'Default City',
-                        street: 'Default Street',
-                        streetNumber: '1',
-                        country: 'Default Country',
-                        other: 'Default supplement',
-                        countryProvince: 'Default state',
-                        company: 'Default Company',
+                        "city": "Default City",
+                        "street": "Default Street",
+                        "streetNumber": "1",
+                        "country": "Default Country",
+                        "other": "Default supplement",
+                        "countryProvince": "Default state",
+                        "company": "Default Company",
                     },
                 ],
             ],
@@ -253,54 +253,54 @@ prefill: {
     ],
 },
 ```
-```Typescript (AddressInput2)
-prefill: {
-    value: [
+``` JSON (AddressInput2)
+"prefill": {
+    "value": [
         {
-            input: 'workOrderId',
-            steps: [
-                'workOrderIdToWorkOrder',
-                'workOrderToLocationAddress',
+            "input": "workOrderId",
+            "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
             ],
         },
     ],
 },
 ```
-```Typescript (TaskListInput)
-prefill: {
-    entries: [
+``` JSON (TaskListInput)
+"prefill": {
+    "entries": [
         {
-            input: 'none',
-            steps: [
+            "input": "none",
+            "steps": [
                 [
-                    'staticTasks',
+                    "staticTasks",
                     [{
-                        done: false,
-                        title: 'Task 1',
-                        comment: 'This task was prefilled 1',
-                        highPriority: false,
-                        necessary: false,
+                        "done": false,
+                        "title": "Task 1",
+                        "comment": "This task was prefilled 1",
+                        "highPriority": false,
+                        "necessary": false,
                     },
                     {
-                        done: false,
-                        title: 'Task 2',
-                        comment: 'This task was prefilled 2',
-                        highPriority: true,
-                        necessary: true,
+                        "done": false,
+                        "title": "Task 2",
+                        "comment": "This task was prefilled 2",
+                        "highPriority": true,
+                        "necessary": true,
                     },
                     {
-                        done: true,
-                        title: 'Task 3',
-                        comment: 'This task was prefilled 3',
-                        highPriority: false,
-                        necessary: true,
+                        "done": true,
+                        "title": "Task 3",
+                        "comment": "This task was prefilled 3",
+                        "highPriority": false,
+                        "necessary": true,
                     },
                     {
-                        done: false,
-                        title: 'Task 4',
-                        comment: 'This task was prefilled 4',
-                        highPriority: true,
-                        necessary: false,
+                        "done": false,
+                        "title": "Task 4",
+                        "comment": "This task was prefilled 4",
+                        "highPriority": true,
+                        "necessary": false,
                     }],
                 ],
             ],
@@ -308,89 +308,89 @@ prefill: {
     ],
 },
 ```
-```Typescript (TaskListInput2)
-prefill: {
-    entries: [
+``` JSON (TaskListInput2)
+"prefill": {
+    "entries": [
         {
-            input: 'workOrderId',
-            steps: [ 'workOrderIdToWorkOrder', 'workOrderToTasks' ],
+            "input": "workOrderId",
+            "steps": [ "workOrderIdToWorkOrder", "workOrderToTasks" ],
         },
     ],
 },
 ```
-```Typescript (SingleLineTextInput)
-prefill: {
-    value: [
+``` JSON (SingleLineTextInput)
+"prefill": {
+    "value": [
         {
-            input: 'assetId',
-            steps: [
-                'assetIdToAsset',
-                'assetToAssetTypeNameString',
+            "input": "assetId",
+            "steps": [
+                "assetIdToAsset",
+                "assetToAssetTypeNameString",
             ],
         },
     ],
 },
 ```
-```Typescript (MultiLineTextInput)
-prefill: {
-    value: [{
-            input: 'none',
-            steps: [[
-                    'staticString',
-                    'Default \n Multi \n Line \n Text',
+``` JSON (MultiLineTextInput)
+"prefill": {
+    "value": [{
+            "input": "none",
+            "steps": [[
+                    "staticString",
+                    "Default \n Multi \n Line \n Text",
              ]],
      }],
 },
 ```
-```Typescript (RichTextInput)
-prefill: {
-    value: [
+``` JSON (RichTextInput)
+"prefill": {
+    "value": [
         {
-            input: 'none',
-            steps: [
+            "input": "none",
+            "steps": [
                 [
-                    'staticString',
-                    '<h1>Default rich text content</h1>',
+                    "staticString",
+                    "<h1>Default rich text content</h1>",
                 ],
             ],
         },
     ],
 },
 ```
-```Typescript (UserSingleSelect)
-prefill: {
-    value: [{
-            input: 'currentUserId',
-            steps: [],
+``` JSON (UserSingleSelect)
+"prefill": {
+    "value": [{
+            "input": "currentUserId",
+            "steps": [],
     }],
 },
 ```
-```Typescript (BooleanInput)
-prefill: {
-    value: [{
-        input: 'none',
-        steps: [['staticBoolean', true]],
+``` JSON (BooleanInput)
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [["staticBoolean", true]],
     }],
 },
 ```
-```Typescript (TimeInput)
-prefill: {
-    value: [{
-        input: 'none',
-        steps: [[
-            'staticTime',
-            '22:22',
+``` JSON (TimeInput)
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[
+            "staticTime",
+            "22:22",
         ]],
     }],
 },
 ```
-```Typescript (DateTimeInput)
-prefill: {
-    value: [{
-        input: 'none',
-        steps: [[
-            'staticDateTime',
-            '2022-02-22T22:22:00.000Z_Europe/Berlin',
+``` JSON (DateTimeInput)
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[
+            "staticDateTime",
+            "2022-02-22T22:22:00.000Z_Europe/Berlin",
         ]],
     }],
 },
@@ -399,20 +399,20 @@ prefill: {
 
 
 Schema:
-```Typescript (PreFill schema general)
-prefill: {
-    'target': [
+``` JSON (PreFill schema general)
+"prefill": {
+    "target": [
         {
-            input: 'rule1_value1',
-            steps: [
-                'step1-1',
+            "input": "rule1_value1",
+            "steps": [
+                "step1-1",
             ],
         },
         {
-            input: 'rule2_value2',
-            steps: [
-              'step2-1',
-              'step2-2',
+            "input": "rule2_value2",
+            "steps": [
+              "step2-1",
+              "step2-2",
             ],
         },
     ],

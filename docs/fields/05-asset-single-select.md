@@ -20,7 +20,7 @@ The AssetSingleSelect field allows to select an asset from the account or a cert
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+``` JSON (complete)
 {
     "id": "exampleAssetSingleSelect_1",
     "type": "assetSingleSelect",
@@ -122,7 +122,7 @@ The AssetSingleSelect field allows to select an asset from the account or a cert
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (assetID)
+``` JSON (assetID)
 "prefill": {
     "selectedAsset": [
         {
@@ -143,7 +143,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-``` typescript
+```JSON
 "onChange": [
     {
         "steps": [

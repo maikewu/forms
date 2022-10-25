@@ -21,7 +21,7 @@ The dateTimeInput field allows to enter a datetime.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+``` JSON (complete)
 {
     "id": "exampleDateTimeInput_1",
     "type": "dateTimeInput",
@@ -65,7 +65,7 @@ The dateTimeInput field allows to enter a datetime.
 },
 ```
 
-```typescript (minimal)
+``` JSON (minimal)
 {
     "id": "exampleDateTimeInput_1",
     "type": "dateTimeInput",
@@ -121,7 +121,7 @@ The dateTimeInput field allows to enter a datetime.
 
 `dropDownInterval` defines an interval between dropdown values in minutes.
 
-``` typescript
+```JSON
 "dropDownInterval": 6
 ```
 ---
@@ -134,7 +134,7 @@ The dateTimeInput field allows to enter a datetime.
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (static time)
+``` JSON (static time)
 "prefill": {
     "value": [{
         "input": "none",

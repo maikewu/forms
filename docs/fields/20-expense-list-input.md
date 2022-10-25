@@ -18,7 +18,7 @@ The Expense List Input allows the user to add expenses.
 | [fields](#fields)                                     | Components of the field |
 
 
-```typescript (complete)
+``` JSON (complete)
  {
     "id": "exampleExpenseListInput_1",
     "type": "expenseListInput",
@@ -84,7 +84,7 @@ The Expense List Input allows the user to add expenses.
     }
 },
 ```
-```typescript (minimal)
+``` JSON (minimal)
 {
     "id": "exampleExpenseListInput_1",
     "type": "expenseListInput",
@@ -160,7 +160,7 @@ The Expense List Input allows the user to add expenses.
 
 In `values` the content of the dropdown can be defined.
 
-``` typescript
+```JSON
 "values": {
     "exampleSelect_1": {
         "en": "Example select 1",

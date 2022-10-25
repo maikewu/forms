@@ -21,7 +21,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-```typescript (complete)
+```JSON (complete)
 {
     "id": "exampleUserSingleSelect_1",
     "type": "userSingleSelect",
@@ -73,7 +73,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
   },
 },
 ```
-```typescript (minimal)
+``` JSON (minimal)
 {
     "id": "exampleUserSingleSelect_1",
     "type": "userSingleSelect",
@@ -127,7 +127,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 
 By setting `printEmailAddress` to `true`, email address of the slected user will be printed in brackets next to the name in the PDF.
 
-``` typescript
+```JSON
 value:{
 "printEmailAddress": true
 }
@@ -143,7 +143,7 @@ value:{
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (current UserID)
+``` JSON (current UserID)
 "prefill": {
     "value": [
         {
@@ -164,7 +164,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```typescript
+```JSON
 "onChange": [
     {
         "steps": [ "userToFullNameString" ],

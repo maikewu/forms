@@ -21,7 +21,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
 | [prefill](#prefill)                             | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+``` JSON (complete)
 {
     "id": "exampleCompanySingleSelect_1",
     "type": "companySingleSelect",
@@ -74,7 +74,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
                 "target": { "id": "exampleSignatureSection", "propertyName": "location" },
             },
             {
-                "steps": ['"accountInfoToAccount"', "accountToPhoneNumberString" ],
+                "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],
                 "target": { "id": "exampleSingleLineInput_2" },
             },
             {
@@ -86,7 +86,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
 },
 ```
 
-``` typescript (minimal)
+``` JSON (minimal)
 {
     "id": "exampleCompanySingleSelect_1",
     "type": "companySingleSelect",
@@ -140,7 +140,7 @@ Property                                                    | Description       
 
 If `disableCreation` is set to `true`, the creat button is hidden, so that no new companies can be created while working in forms.
 
-``` typescript
+```JSON
 "disableCreation": true
 ```
 
@@ -155,7 +155,7 @@ If `disableCreation` is set to `true`, the creat button is hidden, so that no ne
 
 If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed in the PDF in brackets behinde the company name.
 
-``` typescript
+```JSON
 "pdfPrintCompanyNumber": true
 ```
 
@@ -170,7 +170,7 @@ If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed 
 
 The `useAsFilterForFields` property can be used to filter the asset and user select field by entering the field id.
 
-``` typescript
+```JSON
 "useAsFilterForFields": [ "exampleAssetSingleSelect_1" ]
 ```
 ---
@@ -186,7 +186,7 @@ The `useAsFilterForFields` property can be used to filter the asset and user sel
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (currentAccountId)
+``` JSON (currentAccountId)
 "prefill": {
     [ "selectedCompany" ]: [
         {
@@ -207,7 +207,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```typescript
+```JSON
 "onChange": [
     {
         "steps": ["accountInfoToCompanyName"],
@@ -222,7 +222,7 @@ This configuration follows the [general syntax for dynamic field actions](./26-o
         "target": { "id": "exampleSignatureSection", "propertyName": "location" },
     },
     {
-        "steps": ['"accountInfoToAccount"', "accountToPhoneNumberString" ],
+        "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],
         "target": { "id": "exampleSingleLineInput_2" },
     },
     {

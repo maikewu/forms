@@ -20,19 +20,19 @@ TaskListInput enables the user to create performed tasks.
 | [fields](#fields)                                     | Components of the field |
 
 
-```typescript (complete)
+``` JSON (complete)
  {
     "id": "exampleTaskListInput_1",
     "type": "taskListInput",
     "config": {
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
-        "pdfWidth": 1
+        "pdfWidth": 1,
         "requiredAmountOfEntries": 2,
         "label": {
             "pdfHide": false,
             "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14
+            "pdfTextSize": 14,
             "text": {
                 "en": "Boolean input 1",
                 "de": "Boolean input 1 [DE]",
@@ -104,7 +104,7 @@ TaskListInput enables the user to create performed tasks.
     }
 },
 ```
-```typescript (minimal)
+``` JSON (minimal)
  {
     "id": "exampleTaskListInput_2",
     "type": "taskListInput",
@@ -149,7 +149,7 @@ TaskListInput enables the user to create performed tasks.
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` typescript (set prefilled tasks)
+``` JSON (set prefilled tasks)
 "prefill": {
     "entries": [{
         "input": "none",
@@ -187,7 +187,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
         }]
 },
 ```
-``` typescript (set workorder tasks)
+``` JSON (set workorder tasks)
 "prefill": {
     "entries": [{
             "input": "workOrderId",

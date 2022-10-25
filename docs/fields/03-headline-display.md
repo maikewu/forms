@@ -21,7 +21,7 @@ The HeadlineDisplay is a field that displays headlines to structure content in t
 
 ---
 
-```typescript
+```JSON
 {
     "id": "exampleHeadlineDisplay_1",
     "type": "headlineDisplay",
@@ -56,6 +56,6 @@ The HeadlineDisplay is a field that displays headlines to structure content in t
 
 By setting `uiTextSize`, the field label will show up in the UI having the defined text size in pixels.
 
-``` typescript
+```JSON
 "uiTextSize": "H2"
 ```

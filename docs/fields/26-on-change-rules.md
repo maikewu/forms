@@ -30,19 +30,19 @@ The `singleLineTextInput` provides a `STRING` and the `mulitLineTextInput` expec
 
 But if you would like to transfer the name from `userSingleSelect` (provided type: `USER_INFO`) to the `name` property of the `signatureSection` (expected type: `STRING`) then you need to transform the data:
 
-```Typescript (Example: userSingleSelect)
-onChange: [
+``` JSON (Example: userSingleSelect)
+"onChange": [
     {
-      steps: ['userToFullNameString'],
-      target: { id: 'exampleSignatureSection', propertyName: 'name' },
+      "steps": ["userToFullNameString"],
+      "target": { "id": "exampleSignatureSection", "propertyName": "name" },
     },
 ]
 ```
-```Typescript (Example: singleLineTextInput)
-onChange: [
+``` JSON (Example: singleLineTextInput)
+"onChange": [
     {
-      steps: [],
-      target: { id: 'exampleMultiLineTextInput_1'},
+      "steps": [],
+      "target": { "id": "exampleMultiLineTextInput_1"},
     },
 ]
 ```
@@ -89,7 +89,7 @@ onChange: [
 
 You can find a list below, that contains all implemented `steps`, which can be used to transform data.
 
-```Typescript (All implemented steps)
+``` typescript (All implemented steps)
 // Account
   accountIdToAccount: {
       input: ACCOUNT_ID,
@@ -177,7 +177,7 @@ You can find a list below, that contains all implemented `steps`, which can be u
       output: ANY,
   },
 ```
-```Typescript (Account)
+``` typescript (Account)
 accountIdToAccount: {
     input: ACCOUNT_ID,
     output: ACCOUNT,
@@ -207,13 +207,13 @@ accountToPhoneNumberString: {
     output: STRING,
 },
 ```
-```Typescript (Address)
+``` typescript (Address)
 addressToCityString: {
     input: ADDRESS,
     output: STRING,
 },
 ```
-```Typescript (Asset)
+``` typescript (Asset)
 assetIdToAsset: {
     input: ASSET_ID,
     output: ASSET,
@@ -243,13 +243,13 @@ assetInfoToCustomerId: {
     output: ACCOUNT_ID,
 },
 ```
-```Typescript (Phone)
+``` typescript (Phone)
 phoneNumberStringToPhoneNumberObject: {
     input: STRING,
     output: PHONE_NUMBER,
 },
 ```
-```Typescript (User)
+``` typescript (User)
 userToFullNameString: {
     input: USER_INFO,
     output: STRING,
@@ -263,7 +263,7 @@ userToPhoneNumberString: {
     output: STRING,
 },
 ```
-```Typescript (Utils)
+``` typescript (Utils)
 logValue: {
     input: ANY,
     output: ANY,

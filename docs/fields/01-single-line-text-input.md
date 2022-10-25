@@ -21,7 +21,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed | 
 
-``` typescript (complete)
+``` JSON (complete)
 {
   "id": "exampleSingleLineInput_1",
   "type": "singleLineInput",
@@ -30,7 +30,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
       "disabled": false,
       "pdfHide": false,
       "pdfHideIfValueIsEmpty": false,
-      "pdfWidth": 0.5
+      "pdfWidth": 0.5,
       "placeHolderText": {
         "en": "Example Placeholder",
         "de": "Platzhalter",
@@ -49,7 +49,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
                 "it": "Single Line Input 1 [IT]"
           },
           "pdfHide": false,
-          "pdfTextColor": '#facc2e',
+          "pdfTextColor": "#facc2e",
           "pdfTextSize": 14,
           "uiHide": false,
       },
@@ -79,7 +79,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
   },
 },
 ```
-``` typescript (minimal)
+``` JSON (minimal)
 {
   "id": "exampleSingleLineInput_1",
   "type": "singleLineInput",
@@ -138,8 +138,8 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 
 By setting `emailAddress` to `true`, input must match email address format.
 
-``` typescript
-"validators":{
+```JSON
+"validators": {
 "emailAddress": true
 }
 ```
@@ -155,9 +155,9 @@ By setting `emailAddress` to `true`, input must match email address format.
 
 By defining `validators.regexPattern`, you set a regular expression that is valid. 
 
-``` typescript
+```JSON
 "validators":{
-"regexPattern": ^[A-Z]*$
+"regexPattern": "^[A-Z]*$"
 }
 ```
 
@@ -172,7 +172,7 @@ By defining `validators.regexPattern`, you set a regular expression that is vali
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` typescript (static string)
+``` JSON (static string)
 "prefill": {
         "value": [
             {
@@ -184,7 +184,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
         ],
     },
 ```
-``` typescript (asset type name)
+``` JSON (asset type name)
 "prefill": {
         "value": [
             {

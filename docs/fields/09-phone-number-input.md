@@ -20,7 +20,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+``` JSON (complete)
 {
     "id": "examplePhoneNumberInput_1",
     "type": "phoneNumberInput",
@@ -33,7 +33,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
         "label": {
             "pdfHide": false,
             "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14
+            "pdfTextSize": 14,
             "text": {
                 "en": "Phone number input required",
                 "de": "Phone number input required [DE]",
@@ -77,7 +77,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
     }
 }
 ```
-``` typescript (minimal)
+``` JSON (minimal)
 {
     "id": "examplePhoneNumberInput_1",
     "type": "phoneNumberInput",
@@ -134,7 +134,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 
 By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
 
-``` typescript (validators)
+``` JSON (validators)
 "validators":{
 "supportedNonNumericsCharacters": ["A", "I", "*"]
 }
@@ -151,7 +151,7 @@ By setting `supportedNonNumericCharacters`, the field will support a list of non
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` typescript (static phone number)
+``` JSON (static phone number)
 "prefill": {
     "value": [{
         "input": "none",

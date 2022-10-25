@@ -20,7 +20,7 @@ The fieldUpload field allows to upload files.
 | [acceptedFileTypes](#acceptedfiletypes)                                      | This configuration contains file types within an array, that are enabled for uploading |
 | [requiredAmountOfFiles](#requiredamountoffiles)                              | By setting this, the amount of files get limited to the defined value |
 
-``` typescript (complete)
+``` JSON (complete)
 {
     "id": "exampleFileUploadInput_1",
     "type": "fileUpload",
@@ -32,7 +32,7 @@ The fieldUpload field allows to upload files.
         "requiredAmountOfFiles": 0,
         "maximumSingleFileSize": 15000000, // ~15 MB
         "maximumAccumulatedFileSize": 150000000, // ~150 MB
-        "acceptedFileTypes": [ `application/pdf`, `image/png`],
+        "acceptedFileTypes": [ "application/pdf", "image/png"],
         "label": {
             "text": {
                 "en": "File Upload 1 [EN]",
@@ -57,7 +57,7 @@ The fieldUpload field allows to upload files.
 },
 ```
 
-``` typescript (minimal)
+``` JSON (minimal)
 {
     "id": "exampleFileUploadInput_1",
     "type": "fileUpload",
@@ -113,7 +113,7 @@ The fieldUpload field allows to upload files.
 
 By setting `maximumSingleFileSize`, the maximum file size that can be uploaded gets defined.  
 
-``` typescript
+```JSON
 "maximumSingleFileSize": 100000, // ~100 kb
 ```
 
@@ -128,7 +128,7 @@ By setting `maximumSingleFileSize`, the maximum file size that can be uploaded g
 
 By setting `maximumAccumulatedFileSize`, the maximum accumulated file size that can be uploaded gets defined.
 
-``` typescript
+```JSON
 "maximumAccumulatedFileSize": 1000000, // ~1 MB
 ```
 
@@ -145,8 +145,8 @@ By setting `maximumAccumulatedFileSize`, the maximum accumulated file size that 
 By setting `acceptedFileTypes`, the file types that can be uploaded gets defined in an array of strings.
 You can find a list with all possible values [here](https://www.iana.org/assignments/media-types/media-types.xhtml)
 
-``` typescript
-"acceptedFileTypes": [ `application/pdf`, `image/png`],
+```JSON
+"acceptedFileTypes": [ "application/pdf", "image/png"],
 ```
 
 ---
@@ -160,7 +160,7 @@ You can find a list with all possible values [here](https://www.iana.org/assignm
 | Default Value   | 0               |
 
 By setting `requiredAmountOfFiles`, the amount of required entries to fill the form gets defined
-``` typescript
+```JSON
 "requiredAmountOfFiles": 3,
 ```
 

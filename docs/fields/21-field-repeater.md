@@ -23,7 +23,7 @@ parentDoc: 62ec01bd561bab0aa775efe4
 | [fields](#fields)                                                            | Components of the field |
 
 
-```typescript (General repeater config without fields)
+``` JSON (General repeater config without fields)
 {
     "id": "exampleFieldRepeater_1",
     "type": "fieldRepeater",
@@ -63,7 +63,7 @@ parentDoc: 62ec01bd561bab0aa775efe4
             "it": "Example helptext after [IT]"
         },
         "fields": [
-          ...  // Add here all fields you want to repeate. You can find a list of all possible fields below.
+         "ENTER ENTIRES / FIELDS FOR THE REPEATER HERE. YOU FIND A LIST WITH ALL POSSIBLE FIELDS BELOW"
         ]
     }
 },
@@ -92,7 +92,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
 | [staticMultiSelect](./14-static-multi-select)            | The StaticMultiSelect field allows to choose one or more options of the dropdown. |
 | [booleanInput](./15-boolean-input)                       | The BooleanInput allows the user to mark a checkbox true or false. |
 
-```typescript (HeadlineDisplay)
+``` JSON (HeadlineDisplay)
 {
     "id": "exampleHeadlineDisplay_1",
     "type": "headlineDisplay",
@@ -106,7 +106,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
             "it": "Headline display element sample [IT]"
         },
         "uiHideInRepeaterCardDisplay": false,
-        "pdfFieldRepeaterCellAlignment": "right", // or "left", "center"
+        "pdfFieldRepeaterCellAlignment": "right", 
         "uiHide": false,
         "uiTextSize": "H1",
         "uiTextColor": "#facc2e",
@@ -117,16 +117,16 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-```typescript (HtmlDisplay)
+``` JSON (HtmlDisplay)
 {
     "id": "exampleHtmlDisplay_1",
     "type": "htmlDisplay",
     "config": {
         "pdfHide": false,
         "pdfWidth": 1,
-        "uiHide": false
+        "uiHide": false,
         "uiHideInRepeaterCardDisplay": false,
-        "pdfFieldRepeaterCellAlignment": "right", // or "left", "center"
+        "pdfFieldRepeaterCellAlignment": "right", 
         "text": {
             "en": "<h1>HTML Display 1</h1><p>This field is in: <b>EN</b></p><p><i>This should be an italic text</i></p>",
             "de": "<h1>HTML Display 1</h1><p>This field is in: <b>DE</b></p><p><i>This should be an italic text</i></p>",
@@ -138,7 +138,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-```typescript (SingleLineTextInput)
+``` JSON (SingleLineTextInput)
 {
     "id": "exampleSingleLineInput_1",
     "type": "singleLineInput",
@@ -147,9 +147,9 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
         "disabled": false,
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
-        "pdfWidth": 0.5
+        "pdfWidth": 0.5,
         "uiHideInRepeaterCardDisplay": false,
-        "pdfFieldRepeaterCellAlignment": "right", // or "left", "center"
+        "pdfFieldRepeaterCellAlignment": "right", 
         "placeHolderText": {
             "en": "Example Placeholder",
             "de": "Platzhalter",
@@ -168,7 +168,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
                     "it": "Single Line Input 1 [IT]"
             },
             "pdfHide": false,
-            "pdfTextColor": '#facc2e',
+            "pdfTextColor": "#facc2e",
             "pdfTextSize": 14,
             "uiHide": false,
         },
@@ -196,7 +196,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     },
 },
 ```
-```typescript (MultiLineTextInput)
+``` JSON (MultiLineTextInput)
 {
   "id": "exampleMultiLineTextInput_1",
   "type": "multiLineTextInput",
@@ -204,10 +204,10 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
       "required": true,
       "disabled": false,
       "pdfHide": false,
-      "pdfWidth": 0.5
+      "pdfWidth": 0.5,
       "pdfHideIfValueIsEmpty": false,
       "uiHideInRepeaterCardDisplay": false,
-      "pdfFieldRepeaterCellAlignment": "right", // or "left", "center"
+      "pdfFieldRepeaterCellAlignment": "right", 
       "placeHolderText": {
         "en": "Example Placeholder",
         "de": "Platzhalter",
@@ -226,7 +226,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
                 "it": "Single Line Input 1 [IT]"
           },
           "pdfHide": false,
-          "pdfTextColor": '#facc2e',
+          "pdfTextColor": "#facc2e",
           "pdfTextSize": 14,
           "uiHide": false,
       },
@@ -249,7 +249,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
                     "steps": [
                         [
                             "staticString",
-                            'Default \n Multi \n Line \n Text',
+                            "Default \n Multi \n Line \n Text",
                         ],
                     ],
                 },
@@ -258,7 +258,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     },
 }
 ```
-```typescript (AddressInput)
+``` JSON (AddressInput)
 {
     "id": "exampleAddressInput_1",
     "type": "addressInput",
@@ -278,7 +278,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
       "pdfHideIfValueIsEmpty": false,
       "pdfWidth": 1,
       "uiHideInRepeaterCardDisplay": false,
-      "pdfFieldRepeaterCellAlignment": "right", // or "left", "center"
+      "pdfFieldRepeaterCellAlignment": "right", 
       "label": {
         "text": { 
           "en": "Address Input 1",
@@ -333,7 +333,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-```typescript (AssetSingleSelect)
+``` JSON (AssetSingleSelect)
 {
     "id": "exampleAssetSingleSelect_1",
     "type": "assetSingleSelect",
@@ -344,7 +344,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
       "pdfHideIfValueIsEmpty": false,
       "pdfWidth": 1,
       "uiHideInRepeaterCardDisplay": false,
-      "pdfFieldRepeaterCellAlignment": "right", // or "left", "center"
+      "pdfFieldRepeaterCellAlignment": "right", 
       "label": {
             "text": {
             "en": "Asset Select 1",
@@ -403,7 +403,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     },
 },
 ```
-```typescript (CompanySingleSelect)
+``` JSON (CompanySingleSelect)
 {
     "id": "exampleCompanySingleSelect_1",
     "type": "companySingleSelect",
@@ -412,6 +412,8 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
         "pdfWidth": 1,
+        "uiHideInRepeaterCardDisplay": false,
+        "pdfFieldRepeaterCellAlignment": "right",
         "label": {
             "text": {
                 "en": "Company Single Select 1",
@@ -467,29 +469,431 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     },
 },
 ```
-```typescript (UserSingleSelect)
-
+``` JSON (UserSingleSelect)
+{
+    "id": "exampleUserSingleSelect_1",
+    "type": "userSingleSelect",
+    "config": {
+        "required": true,
+        "disabled": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "uiHideInRepeaterCardDisplay": false,
+        "pdfFieldRepeaterCellAlignment": "right", 
+        "label": {
+            "text": {
+                "en": "User Select 1",
+                "de": "User Auswahl 1",
+                "tr": "User Select 1 [TR]",
+                "fr": "User Select 1 [FR]",
+                "es": "User Select 1 [ES]",
+                "it": "User Select 1 [IT]"
+            },
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
+        },
+         "value": {
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "pdfPrintEmailAddress": true
+        },
+      "prefill": {
+          "value": [
+              {
+                  "input": "currentUserId",
+                  "steps": [],
+              },
+          ],
+      },
+      "onChange": [
+          {
+              "steps": [ "userToFullNameString" ],
+              "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+          },
+          {
+              "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
+              "target": { "id": "examplePhoneNumberInput_1" },
+          },
+      ],
+  },
+},
 ```
-```typescript (PhoneNumberInput)
-
+``` JSON (PhoneNumberInput)
+{
+    "id": "examplePhoneNumberInput_1",
+    "type": "phoneNumberInput",
+    "config": {
+        "disabled": false,
+        "required": true,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "uiHideInRepeaterCardDisplay": false,
+        "pdfFieldRepeaterCellAlignment": "right", 
+        "label": {
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14
+            "text": {
+                "en": "Phone number input required",
+                "de": "Phone number input required [DE]",
+                "tr": "Phone number input required [TR]",
+                "fr": "Phone number input required [FR]",
+                "es": "Phone number input required [ES]",
+                "it": "Phone number input required [IT]"
+            },
+        }, 
+       "placeHolderText": {
+            "en": "Phone number input placeholder",
+            "de": "Phone number input placeholder [DE]",
+            "tr": "Phone number input placeholder [TR]",
+            "fr": "Phone number input placeholder [FR]",
+            "es": "Phone number input placeholder [ES]",
+            "it": "Phone number input placeholder [IT]"
+        },
+        "value": {
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "validators": {
+                "minCharacters": 6,
+                "maxCharacters": 10,
+                "supportedNonNumericsCharacters": ["A", "I", "*"]   
+            }
+        },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticPhoneNumber",
+                    {
+                    "countryPrefix": "49",
+                    "number": "1753463937"
+                    }
+                ]]
+            }]
+        },
+    }
+}
 ```
-```typescript (DateInput)
-
+``` JSON (DateInput)
+{
+  "id": "exampleDateInput_1",
+  "type": "dateInput",
+  "config": {
+    "pdfHide": false,
+    "disabled": false,
+    "required": true,
+    "pdfWidth": 0.7,
+    "pdfHideIfValueIsEmpty": false,
+    "uiHideInRepeaterCardDisplay": false,
+    "pdfFieldRepeaterCellAlignment": "right", 
+    "label": {
+      "text": {
+        "en": "Date input 1",
+        "de": "Date input 1 [DE]",
+        "tr": "Date input 1 [TR]",
+        "fr": "Date input 1 [FR]",
+        "es": "Date input 1 [ES]",
+        "it": "Date input 1 [IT]"
+      },
+      "uiHide": false,
+      "pdfHide": false,
+      "pdfTextSize": 14,
+      "pdfTextColor": "#facc2e"
+    },
+    "value": {
+      "pdfHide": false,
+      "pdfTextSize": 14,
+      "pdfTextColor": "#facc2e",
+      "pdfStartInNewLine": false,
+      "validators": {
+        "minDate": "2000-02-22",
+        "maxDate": "2022-02-22"
+      }
+    },
+    "prefill": {
+      "value": [{
+          "input": "none",
+          "steps": [[
+              "staticDate",
+              "2022-02-22"
+            ]]
+        }]
+    }
+  }
+},
 ```
-```typescript (TimeInput)
-
+``` JSON (TimeInput)
+{
+    "id": "exampleTimeInput_1",
+    "type": "timeInput",
+    "config": {
+        "pdfHide": false,
+        "disabled": false,
+        "required": false,
+        "pdfWidth": 1,
+        "pdfHideIfValueIsEmpty": false,
+        "uiHideInRepeaterCardDisplay": false,
+        "pdfFieldRepeaterCellAlignment": "right", 
+        "label": {
+            "text": {
+                "en": "Time input 1",
+                "de": "Time input 1 [DE]",
+                "tr": "Time input 1 [TR]",
+                "fr": "Time input 1 [FR]",
+                "es": "Time input 1 [ES]",
+                "it": "Time input 1 [IT]"
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e"
+        },
+        "value": {
+            "dropdownInterval": 30,
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e",
+            "pdfStartInNewLine": false
+        },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticTime",
+                    "22:22"
+                ]]
+            }]
+        }
+    }
+},
 ```
-```typescript (DateTimeInput)
-
+``` JSON (DateTimeInput)
+{
+    "id": "exampleDateTimeInput_1",
+    "type": "dateTimeInput",
+    "config": {
+        "pdfHide": false,
+        "disabled": false,
+        "required": false,
+        "pdfWidth": 1,
+        "pdfHideIfValueIsEmpty": false,
+        "uiHideInRepeaterCardDisplay": false,
+        "pdfFieldRepeaterCellAlignment": "right", 
+        "label": {
+            "text": {
+                "en": "Date time input 1",
+                "de": "Date time input 1 [DE]",
+                "tr": "Date time input 1 [TR]",
+                "fr": "Date time input 1 [FR]",
+                "es": "Date time input 1 [ES]",
+                "it": "Date time input 1 [IT]"
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e"
+        },
+        "value": {
+            "dropdownInterval": 30,
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e",
+            "pdfStartInNewLine": false
+        },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticDateTime",
+                    "2022-02-22T22:22:00.000Z_Europe/Berlin"
+                ]]
+            }]
+        }
+    }
+},
 ```
-```typescript (StaticSingleSelect)
-
+``` JSON (StaticSingleSelect)
+ {
+    "id": "exampleStaticSingleSelect_1",
+    "type": "staticSingleSelect",
+    "config": {
+        "required": true,
+        "disabled": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "uiHideInRepeaterCardDisplay": false,
+        "pdfFieldRepeaterCellAlignment": "right", 
+        "label": {
+            "text": {
+                "en": "Static Single Select 1",
+                "de": "Static Single Select 1 [DE]",
+                "tr": "Static Single Select 1 [TR]",
+                "fr": "Static Single Select 1 [FR]",
+                "es": "Static Single Select 1 [ES]",
+                "it": "Static Single Select 1 [IT]"
+            },
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
+        },
+        "value": {
+            "options": {
+                "exampleOptionOne": {
+                    "en": "Example option 1",
+                    "de": "Example option 1 [DE]",
+                    "tr": "Example option 1 [TR]",
+                    "fr": "Example option 1 [FR]",
+                    "es": "Example option 1 [ES]",
+                    "it": "Example option 1 [IT]"
+                },
+                "exampleOptionTwo": {
+                    "en": "Example option 2",
+                    "de": "Example option 2 [DE]",
+                    "tr": "Example option 2 [TR]",
+                    "fr": "Example option 2 [FR]",
+                    "es": "Example option 2 [ES]",
+                    "it": "Example option 2 [IT]"
+                }
+            },
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14
+        },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticString",
+                    "exampleOptionOne"
+                ]]
+            }]
+        }
+    }
+},
 ```
-```typescript (StaticMultiSelect)
-
+``` JSON (StaticMultiSelect)
+{
+    "id": "exampleStaticMultiSelect_1",
+    "type": "staticMultiSelect",
+    "config": {
+        "disabled": false,
+        "pdfHide": false,
+        "pdfWidth": 1,
+        "pdfHidefValueIsEmpty": false,
+        "minAmountOfSelections": 2,
+        "maxAmountOfSelections": 3,
+        "uiHideInRepeaterCardDisplay": false,
+        "pdfFieldRepeaterCellAlignment": "right",      
+        "label": {
+            "text": {
+                "en": "Static Multi Select 1",
+                "de": "Static Multi Select 1 [DE]",
+                "tr": "Static Multi Select 1 [TR]",
+                "fr": "Static Multi Select 1 [FR]",
+                "es": "Static Multi Select 1 [ES]",
+                "it": "Static Multi Select 1 [IT]"
+            },
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
+        },
+        "value": {
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "pdfAddLineBreaks": true
+            "options": {
+                "exampleOptionOne": {
+                    "en": "Example option 1",
+                    "de": "Example option 1 [DE]",
+                    "tr": "Example option 1 [TR]",
+                    "fr": "Example option 1 [FR]",
+                    "es": "Example option 1 [ES]",
+                    "it": "Example option 1 [IT]"
+                },
+                "exampleOptionTwo": {
+                    "en": "Example option 2",
+                    "de": "Example option 2 [DE]",
+                    "tr": "Example option 2 [TR]",
+                    "fr": "Example option 2 [FR]",
+                    "es": "Example option 2 [ES]",
+                    "it": "Example option 2 [IT]"
+                },
+                "exampleOptionThree": {
+                    "en": "Example option 3",
+                    "de": "Example option 3 [DE]",
+                    "tr": "Example option 3 [TR]",
+                    "fr": "Example option 3 [FR]",
+                    "es": "Example option 3 [ES]",
+                    "it": "Example option 3 [IT]"
+                }
+            },
+        },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticStringArray",
+                    [
+                    "exampleOptionOne",
+                    "exampleOptionTwo"
+                    ]
+                ]]
+            }]
+        }
+    }
+},
 ```
-```typescript (BooleanInput)
-
+```JSON (BooleanInput)
+{
+    "id": "exampleBooleanInput_1",
+    "type": "booleanInput",
+    "config": {
+        "required": true,
+        "disabled": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "uiHideInRepeaterCardDisplay": false,
+        "pdfFieldRepeaterCellAlignment": "right", 
+        "label": {
+            "pdfHide": false,
+            "uiTextColor": "#facc2e",
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "text": {
+                "en": "Boolean input 1",
+                "de": "Boolean input 1 [DE]",
+                "tr": "Boolean input 1 [TR]",
+                "fr": "Boolean input 1 [FR]",
+                "es": "Boolean input 1 [ES]",
+                "it": "Boolean input 1 [IT]"
+            }
+        },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticBoolean",
+                    true
+                ]]
+            }]
+        }
+    }
+},
 ```
 
 ---
@@ -506,14 +910,14 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
 
 By setting `helptextBefore`, a text is dispalyed before the repeater.
 
-``` typescript
-      helptextBefore: {
-          en: 'Example helptext before',
-          de: 'Beispiel Hilfstext davor',
-          tr: 'Example helptext before [TR]',
-          fr: 'Example helptext before [FR]',
-          es: 'Example helptext before [ES]',
-          it: 'Example helptext before [IT]',
+```JSON
+      "helptextBefore": {
+          "en": "Example helptext before",
+          "de": "Beispiel Hilfstext davor",
+          "tr": "Example helptext before [TR]",
+          "fr": "Example helptext before [FR]",
+          "es": "Example helptext before [ES]",
+          "it": "Example helptext before [IT]",
       },
 ```
 
@@ -528,14 +932,13 @@ By setting `helptextBefore`, a text is dispalyed before the repeater.
 
 By setting `helptextAfter`, a text is dispalyed before the repeater.
 
-``` typescript
-      helptextAfter: {
-          en: 'Example helptext after',
-          de: 'Beispiel Hilfstext danach',
-          tr: 'Example helptext after [TR]',
-          fr: 'Example helptext after [FR]',
-          es: 'Example helptext after [ES]',
-          it: 'Example helptext after [IT]',
+``` JSON
+      "helptextAfter": {
+          "en": "Example helptext after",
+          "de": "Beispiel Hilfstext danach",
+          "tr": "Example helptext after [FR]",
+          "es": "Example helptext after [ES]",
+          "it": "Example helptext after [IT]",
       },
 ```
 ---
@@ -591,8 +994,8 @@ A list of a fields that can be used in the fieldRepeater.
 
 By setting `uiHideInRepeaterCardDisplay` to `true` the field isn't shown in the UI.
 
-``` typescript
-uiHideInRepeaterCardDisplay: true,
+```JSON
+"uiHideInRepeaterCardDisplay": true,
 ```
 
 ## `pdfFieldRepeaterCellAlignment`
@@ -608,6 +1011,6 @@ uiHideInRepeaterCardDisplay: true,
 
 By setting `pdfFieldRepeaterCellAlignment` the cell alignment gets defined.
 
-``` typescript
-pdfFieldRepeaterCellAlignment: `right`,
+```JSON
+"pdfFieldRepeaterCellAlignment": "right",
 ```
