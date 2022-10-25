@@ -22,50 +22,59 @@ The fieldUpload field allows to upload files.
 
 ``` typescript (complete)
 {
-    id: 'exampleFileUploadInput_1',
-    type: FormFieldTypesEnum.FILE_UPLOAD,
-    config: {
-        pdfHide: false,
-        disabled: false,
-        pdfHideIfValueIsEmpty: false,
-        requiredAmountOfFiles: 0,
-        maximumSingleFileSize: 10000, // ~10 kb
-        maximumAccumulatedFileSize: 100000, // ~100 kb
-        acceptedFileTypes: [],
-        label: {
-            text: {
-                en: 'File Upload 1 [EN]',
-                de: 'File Upload 1 [DE]',
-                tr: 'File Upload 1 [TR]',
-                fr: 'File Upload 1 [FR]',
-                es: 'File Upload 1 [ES]',
-                it: 'File Upload 1 [IT]',
+    "id": "exampleFileUploadInput_1",
+    "type": "fileUpload",
+    "config": {
+        "disabled": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "requiredAmountOfFiles": 0,
+        "maximumSingleFileSize": 15000000, // ~15 MB
+        "maximumAccumulatedFileSize": 150000000, // ~150 MB
+        "acceptedFileTypes": [ `application/pdf`, `image/png`],
+        "label": {
+            "text": {
+                "en": "File Upload 1 [EN]",
+                "de": "File Upload 1 [DE]",
+                "tr": "File Upload 1 [TR]",
+                "fr": "File Upload 1 [FR]",
+                "es": "File Upload 1 [ES]",
+                "it": "File Upload 1 [IT]"
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14
         },
-        value: {
-            pdfHide: false,
-            pdfTextSize: 12,
-            pdfStartInNewLine: false,
-        },
-    },
+        "value": {
+            "pdfHide": false,
+            "pdfTextSize": 12,
+            "pdfTextColor": "#facc2e",
+            "pdfStartInNewLine": false,
+            "pdfAddLineBreaks": true
+        }
+    }
 },
 ```
 
 ``` typescript (minimal)
 {
-    id: 'exampleFileUploadInput_1',
-    type: FormFieldTypesEnum.FILE_UPLOAD,
-    config: {
-        label: {
-            text: {
-                en: 'File Upload 1 [EN]',
-                de: 'File Upload 1 [DE]',
+    "id": "exampleFileUploadInput_1",
+    "type": "fileUpload",
+    "config": {
+        "label": {
+            "text": {
+                "en": "File Upload 1 [EN]",
+                "de": "File Upload 1 [DE]",
+                "tr": "File Upload 1 [TR]",
+                "fr": "File Upload 1 [FR]",
+                "es": "File Upload 1 [ES]",
+                "it": "File Upload 1 [IT]"
             },
         },
-    },
+        "value": {
+        }
+    }
 },
 ```
 
@@ -105,7 +114,7 @@ The fieldUpload field allows to upload files.
 By setting `maximumSingleFileSize`, the maximum file size that can be uploaded gets defined.  
 
 ``` typescript
-maximumSingleFileSize: 100000, // ~100 kb
+"maximumSingleFileSize": 100000, // ~100 kb
 ```
 
 ---
@@ -120,7 +129,7 @@ maximumSingleFileSize: 100000, // ~100 kb
 By setting `maximumAccumulatedFileSize`, the maximum accumulated file size that can be uploaded gets defined.
 
 ``` typescript
-maximumAccumulatedFileSize: 1000000, // ~1 MB
+"maximumAccumulatedFileSize": 1000000, // ~1 MB
 ```
 
 ---
@@ -137,7 +146,7 @@ By setting `acceptedFileTypes`, the file types that can be uploaded gets defined
 You can find a list with all possible values [here](https://www.iana.org/assignments/media-types/media-types.xhtml)
 
 ``` typescript
-acceptedFileTypes: [ `application/pdf`, `image/png`],
+"acceptedFileTypes": [ `application/pdf`, `image/png`],
 ```
 
 ---
@@ -152,7 +161,7 @@ acceptedFileTypes: [ `application/pdf`, `image/png`],
 
 By setting `requiredAmountOfFiles`, the amount of required entries to fill the form gets defined
 ``` typescript
-requiredAmountOfFiles: 3,
+"requiredAmountOfFiles": 3,
 ```
 
 ---

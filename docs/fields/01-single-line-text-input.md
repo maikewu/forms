@@ -30,6 +30,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
       "disabled": false,
       "pdfHide": false,
       "pdfHideIfValueIsEmpty": false,
+      "pdfWidth": 0.5
       "placeHolderText": {
         "en": "Example Placeholder",
         "de": "Platzhalter",

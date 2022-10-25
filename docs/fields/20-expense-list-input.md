@@ -19,63 +19,88 @@ The Expense List Input allows the user to add expenses.
 
 
 ```typescript (complete)
-{
-    id: 'exampleExpenseListInput_1',
-    type: FormFieldTypesEnum.EXPENSE_LIST_INPUT,
-    config: {
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        requiredAmountOfEntries: 2,
-        fields: {
-            dateInput: {
-                pdfHide: false,
-                disabled: false,
-                required: true,
+ {
+    "id": "exampleExpenseListInput_1",
+    "type": "expenseListInput",
+    "config": {
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,  
+        "requiredAmountOfEntries": 2,
+        "label": {
+            "text": {
+                "en": "Expense List 1",
+                "de": "Ausgabenliste 1",
+                "tr": "Expense List 1 [TR]",
+                "fr": "Expense List 1 [FR]",
+                "es": "Expense List 1 [ES]",
+                "it": "Expense List 1 [IT]"
             },
-            commentMultiLineTextInput: {
-                pdfHide: false,
-                disabled: false,
-                required: true,
-            },
-            expenseAmountNumericInput: {
-                pdfHide: false,
-                disabled: false,
-                required: true,
-            },
-            expenseTypeSingleSelectInput: {
-                pdfHide: false,
-                disabled: false,
-                required: true,
-                values: {
-                    exampleSelect_1: {
-                        en: 'Example select 1',
-                        de: 'Example select 1 [DE]',
-                        tr: 'Example select 1 [TR]',
-                        fr: 'Example select 1 [FR]',
-                        es: 'Example select 1 [ES]',
-                        it: 'Example select 1 [IT]',
-                    },
-                    exampleSelect_2: {
-                        en: 'Example select 2',
-                        de: 'Example select 2 [DE]',
-                        tr: 'Example select 2 [TR]',
-                        fr: 'Example select 2 [FR]',
-                        es: 'Example select 2 [ES]',
-                        it: 'Example select 2 [IT]',
-                    },
-                },
-            },
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
         },
-    },
+        "fields": {
+            "dateInput": {
+            "pdfHide": false,
+            "disabled": false,
+            "required": true
+            },
+            "commentMultiLineTextInput": {
+            "pdfHide": false,
+            "disabled": false,
+            "required": true
+            },
+            "expenseAmountNumericInput": {
+            "pdfHide": false,
+            "disabled": false,
+            "required": true
+            },
+            "expenseTypeSingleSelectInput": {
+            "pdfHide": false,
+            "disabled": false,
+            "required": true,
+            "values": {
+                "exampleSelect_1": {
+                    "en": "Example select 1",
+                    "de": "Example select 1 [DE]",
+                    "tr": "Example select 1 [TR]",
+                    "fr": "Example select 1 [FR]",
+                    "es": "Example select 1 [ES]",
+                    "it": "Example select 1 [IT]"
+                    },
+                "exampleSelect_2": {
+                    "en": "Example select 2",
+                    "de": "Example select 2 [DE]",
+                    "tr": "Example select 2 [TR]",
+                    "fr": "Example select 2 [FR]",
+                    "es": "Example select 2 [ES]",
+                    "it": "Example select 2 [IT]"
+                    }
+                }
+            }
+        }
+    }
 },
-
 ```
-
 ```typescript (minimal)
 {
-  id: 'exampleExpenseListInput_1',
-  type: FormFieldTypesEnum.EXPENSE_LIST_INPUT,
-}
+    "id": "exampleExpenseListInput_1",
+    "type": "expenseListInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Expense List 1",
+                "de": "Ausgabenliste 1",
+                "tr": "Expense List 1 [TR]",
+                "fr": "Expense List 1 [FR]",
+                "es": "Expense List 1 [ES]",
+                "it": "Expense List 1 [IT]"
+            },
+        },
+    }
+},
 ```
 ## `label`
 
@@ -136,24 +161,24 @@ The Expense List Input allows the user to add expenses.
 In `values` the content of the dropdown can be defined.
 
 ``` typescript
-values: {
-    exampleSelect_1: {
-        en: 'Example select 1',
-        de: 'Example select 1 [DE]',
-        tr: 'Example select 1 [TR]',
-        fr: 'Example select 1 [FR]',
-        es: 'Example select 1 [ES]',
-        it: 'Example select 1 [IT]',
-    },
-    exampleSelect_2: {
-        en: 'Example select 2',
-        de: 'Example select 2 [DE]',
-        tr: 'Example select 2 [TR]',
-        fr: 'Example select 2 [FR]',
-        es: 'Example select 2 [ES]',
-        it: 'Example select 2 [IT]',
-    },
-},
+"values": {
+    "exampleSelect_1": {
+        "en": "Example select 1",
+        "de": "Example select 1 [DE]",
+        "tr": "Example select 1 [TR]",
+        "fr": "Example select 1 [FR]",
+        "es": "Example select 1 [ES]",
+        "it": "Example select 1 [IT]"
+        },
+    "exampleSelect_2": {
+        "en": "Example select 2",
+        "de": "Example select 2 [DE]",
+        "tr": "Example select 2 [TR]",
+        "fr": "Example select 2 [FR]",
+        "es": "Example select 2 [ES]",
+        "it": "Example select 2 [IT]"
+    }
+}
 ```
 
 

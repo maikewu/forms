@@ -30,6 +30,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
         "disabled": false,
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
         "label": {
             "text": {
                 "en": "User Select 1",

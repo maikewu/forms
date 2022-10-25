@@ -25,75 +25,73 @@ The AddressInput contains various fields for every information of an address.
     "id": "exampleAddressInput_1",
     "type": "addressInput",
     "config": {
-        "required": {
-            "street": false,
-            "streetNumber": false,
-            "company": false,
-            "supplement": false,
-            "zipPostCode": false,
-            "city": false,
-            "state": false,
-            "country": false
+      "required": {
+        "street": false,
+        "streetNumber": false,
+        "company": false,
+        "supplement": false,
+        "zipPostCode": false,
+        "city": false,
+        "state": false,
+        "country": false
+      },
+      "disabled": false,
+      "pdfHide": false,
+      "pdfHideIfValueIsEmpty": false,
+      "pdfWidth": 1,
+      "label": {
+        "text": { 
+          "en": "Address Input 1",
+          "de": "Anschrift Input 1",
+          "tr": "Address Input 1 [TR]",
+          "fr": "Address Input 1 [FR]",
+          "es": "Address Input 1 [ES]",
+          "it": "Address Input 1 [IT]"
         },
         "pdfHide": false,
         "uiTextColor": "#facc2e",
         "pdfTextColor": "#facc2e",
         "pdfTextSize": 14
-         "label": {
-              "text": {
-                "en": "Address Input 1",
-                "de": "Anschrift Input 1",
-                "tr": "Address Input 1 [TR]",
-                "fr": "Address Input 1 [FR]",
-                "es": "Address Input 1 [ES]",
-                "it": "Address Input 1 [IT]"
-              },
-              "pdfHide": false,
-              "uiTextColor": "#facc2e",
-              "pdfTextColor": "#facc2e",
-              "pdfTextSize": 14
-        },
-        "value": {
-              "pdfHide": false,
-              "pdfStartInNewLine": false,
-              "pdfAddLineBreaks": false,
-              "pdfTextColor": "#facc2e",
-              "pdfTextSize": 14
-            },
-            "prefill": {
-              "value": [
+      },
+      "value": {
+        "pdfHide": false,
+        "pdfStartInNewLine": false,
+        "pdfAddLineBreaks": false,
+        "pdfTextColor": "#facc2e",
+        "pdfTextSize": 14
+      },
+      "prefill": {
+        "value": [
+          {
+            "input": "none",
+            "steps": [
+              [
+                "staticAddress",
                 {
-                  "input": "none",
-                  "steps": [
-                    [
-                      "staticAddress",
-                      {
-                        "city": "Default City",
-                        "street": "Default Street",
-                        "streetNumber": "1",
-                        "country": "Default Country",
-                        "other": "Default supplement",
-                        "countryProvince": "Default state",
-                        "company": "Default Company"
-                      }
-                    ]
-                  ]
+                  "city": "Default City",
+                  "street": "Default Street",
+                  "streetNumber": "1",
+                  "country": "Default Country",
+                  "other": "Default supplement",
+                  "countryProvince": "Default state",
+                  "company": "Default Company"
                 }
               ]
-            },
-            "onChange": [
-              {
-                "steps": [
-                  "addressToCityString"
-                ],
-                "target": {
-                  "id": "exampleSignatureSection",
-                  "propertyName": "location"
-                }
-              }
             ]
           }
-        },
+        ]
+      },
+      "onChange": [{
+          "steps": [
+            "addressToCityString"
+          ],
+          "target": {
+            "id": "exampleSignatureSection",
+            "propertyName": "location"
+          }
+        }]
+    }
+},
 ```
 ``` typescript (minimal)
 {

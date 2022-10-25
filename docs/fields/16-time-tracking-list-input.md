@@ -16,80 +16,85 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
 | [maximumDuration](#maximumduration)                                          | Configuration of a maximum duration that can be set in minutes. |
 | [label](#label)                                                              | Configuration of the field label. |
 
+
 ```typescript (complete)
-{
-  id: 'exampleTimeTrackingListInput_1',
-  type: FormFieldTypesEnum.TIME_TRACKING_LIST_INPUT,
-  config: {
-    pdfHide: false,
-    pdfHideIfValueIsEmpty: false,
-    requiredAmountOfEntries: 0,
-    maximumDuration: 480,
-    label: {
-        text: {
-            en: 'Time Tracking',
-            de: 'Time Tracking [DE]',
-            tr: 'Time Tracking [TR]',
-            fr: 'Time Tracking [FR]',
-            es: 'Time Tracking [ES]',
-            it: 'Time Tracking [IT]',
+ {
+    "id": "exampleTimeTrackingListInput_1",
+    "type": "timeTrackingListInput",
+    "config": {
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "requiredAmountOfEntries": 3
+        "maximumDuration": 480,
+        "label": {
+            "text": {
+                "en": "Time tracking input 1",
+                "de": "Time tracking input 1 [DE]",
+                "tr": "Time tracking input 1 [TR]",
+                "fr": "Time tracking input 1 [FR]",
+                "es": "Time tracking input 1 [ES]",
+                "it": "Time tracking input 1 [IT]"
+            },
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e"
         },
-    },
-    fields: {
-        timeTrackingTypeStaticSingleSelect: {
-            pdfHide: false,
-        },
-        startDateTimeInput: {
-            pdfHide: false,
-        },
-        endDateTimeInput: {
-            pdfHide: false,
-        },
-        breakNumericInput: {
-            disabled: false,
-            required: true,
-            pdfHide: false,
-        },
-        durationDisplay: {
-            disabled: false,
-            pdfHide: false,
-        },
-        distanceNumericInput: {
-            disabled: false,
-            required: true,
-            pdfHide: false,
-        },
-        technicianUserSingleSelect: {
-            disabled: false,
-            required: true,
-            pdfHide: false,
-            pdfPrintEmailAddress: true,
-        },
-        commentMultiLineTextInput: {
-            disabled: false,
-            required: true,
-            pdfHide: false,
-        },
-    },
-  },
+        "fields": {
+            "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+            },
+            "startDateTimeInput": {
+                "pdfHide": false
+            },
+            "endDateTimeInput": {
+                "pdfHide": false
+            },
+            "breakNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+            },
+            "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+            },
+            "distanceNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+            },
+            "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+            },
+            "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+            }
+        }
+    }
 },
 ```
 ```typescript (minimal)
-{
-  id: 'exampleTimeTrackingListInput_2',
-  type: FormFieldTypesEnum.TIME_TRACKING_LIST_INPUT,
-  config: {
-    label: {
-        text: {
-            en: 'Time Tracking',
-            de: 'Time Tracking [DE]',
-            tr: 'Time Tracking [TR]',
-            fr: 'Time Tracking [FR]',
-            es: 'Time Tracking [ES]',
-            it: 'Time Tracking [IT]',
+ {
+    "id": "exampleTimeTrackingListInput_1",
+    "type": "timeTrackingListInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Time tracking input 1",
+                "de": "Time tracking input 1 [DE]",
+                "tr": "Time tracking input 1 [TR]",
+                "fr": "Time tracking input 1 [FR]",
+                "es": "Time tracking input 1 [ES]",
+                "it": "Time tracking input 1 [IT]"
+            },
         },
-    },
-  },
+    }
 },
 ```
 
@@ -107,7 +112,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
  `maximumDuration` can be set in minutes. (e.g. 480; = 8h). If this duration (e.g. 8h working time) is exceeded by setting start and end datetime & breaks, input is considered invalid.
 
  ```typescript 
-maximumDuration: 480; // = 8 h
+"maximumDuration": 480; // = 8 h
 ```
 ---
 ## `label`

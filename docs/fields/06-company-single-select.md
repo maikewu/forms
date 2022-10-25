@@ -29,6 +29,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
         "disabled": false,
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
         "label": {
             "text": {
                 "en": "Company Single Select 1",

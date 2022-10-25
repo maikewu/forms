@@ -21,91 +21,110 @@ TaskListInput enables the user to create performed tasks.
 
 
 ```typescript (complete)
-{
-  id: 'exampleTaskListInput_1',
-  type: FormFieldTypesEnum.TASK_LIST_INPUT,
-  config: {
-      pdfHide: false,
-      pdfHideIfValueIsEmpty: false,
-      requiredAmountOfEntries: 2,
-      fields: {
-          checkboxBooleanInput: {
-              checkedByDefault: false,
-              pdfHide: false,
-          },
-          titleSingleLineTextInput: {
-              required: false,
-              pdfHide: false,
-          },
-          commentMultiLineTextInput: {
-              disabled: false,
-              required: false,
-              pdfHide: false,
-          },
-          highPrioBooleanInput: {
-              disabled: false,
-              pdfHide: false,
-          },
-          notNecessaryBooleanInput: {
-              disabled: false,
-              pdfHide: false,
-          },
-      },
-      prefill: {
-          entries: [
-              {
-                  input: 'none',
-                  steps: [
-                      [
-                          'staticTasks',
-                          [{
-                              done: false,
-                              title: 'Task 1',
-                              comment: 'This task was prefilled 1',
-                              highPriority: false,
-                              necessary: false,
-                          },
-                          {
-                              done: false,
-                              title: 'Task 2',
-                              comment: 'This task was prefilled 2',
-                              highPriority: true,
-                              necessary: true,
-                          },
-                          {
-                              done: true,
-                              title: 'Task 3',
-                              comment: 'This task was prefilled 3',
-                              highPriority: false,
-                              necessary: true,
-                          },
-                          {
-                              done: false,
-                              title: 'Task 4',
-                              comment: 'This task was prefilled 4',
-                              highPriority: true,
-                              necessary: false,
-                          }],
-                      ],
-                  ],
-              },
-          ],
-      },
-  },
+ {
+    "id": "exampleTaskListInput_1",
+    "type": "taskListInput",
+    "config": {
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1
+        "requiredAmountOfEntries": 2,
+        "label": {
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14
+            "text": {
+                "en": "Boolean input 1",
+                "de": "Boolean input 1 [DE]",
+                "tr": "Boolean input 1 [TR]",
+                "fr": "Boolean input 1 [FR]",
+                "es": "Boolean input 1 [ES]",
+                "it": "Boolean input 1 [IT]"
+            }
+        },
+        "fields": {
+            "checkboxBooleanInput": {
+                "checkedByDefault": false,
+                "pdfHide": false
+            },
+            "titleSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false
+            },
+            "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+            },
+            "highPrioBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
+            },
+            "notNecessaryBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
+            }
+        },
+        "prefill": {
+            "entries": [{
+                "input": "none",
+                "steps": [[
+                    "staticTasks",
+                    [{
+                        "done": false,
+                        "title": "Task 1",
+                        "comment": "This task was prefilled 1",
+                        "highPriority": false,
+                        "necessary": false
+                        },
+                        {
+                        "done": false,
+                        "title": "Task 2",
+                        "comment": "This task was prefilled 2",
+                        "highPriority": true,
+                        "necessary": true
+                        },
+                        {
+                        "done": true,
+                        "title": "Task 3",
+                        "comment": "This task was prefilled 3",
+                        "highPriority": false,
+                        "necessary": true
+                        },
+                        {
+                        "done": false,
+                        "title": "Task 4",
+                        "comment": "This task was prefilled 4",
+                        "highPriority": true,
+                        "necessary": false
+                        }]
+                    ]]
+                }]
+        }
+    }
 },
 ```
-
 ```typescript (minimal)
-{
-  id: 'exampleTaskListInput_1',
-  type: FormFieldTypesEnum.TASK_LIST_INPUT,
-  config: {
-    fields: {
-      checkboxBooleanInput: {
-          checkedByDefault: false,
-      },
-    },
-  },
+ {
+    "id": "exampleTaskListInput_2",
+    "type": "taskListInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Boolean input 1",
+                "de": "Boolean input 1 [DE]",
+                "tr": "Boolean input 1 [TR]",
+                "fr": "Boolean input 1 [FR]",
+                "es": "Boolean input 1 [ES]",
+                "it": "Boolean input 1 [IT]"
+            }
+        },
+        "fields": {
+            "checkboxBooleanInput": {
+                "checkedByDefault": false,
+            },
+        },
+    }
 },
 ```
 
@@ -131,56 +150,49 @@ TaskListInput enables the user to create performed tasks.
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
 ``` typescript (set prefilled tasks)
-prefill: {
-    entries: [
-        {
-            input: 'none',
-            steps: [
-                [
-                    'staticTasks',
-                    [{
-                        done: false,
-                        title: 'Task 1',
-                        comment: 'This task was prefilled 1',
-                        highPriority: false,
-                        necessary: false,
-                    },
-                    {
-                        done: false,
-                        title: 'Task 2',
-                        comment: 'This task was prefilled 2',
-                        highPriority: true,
-                        necessary: true,
-                    },
-                    {
-                        done: true,
-                        title: 'Task 3',
-                        comment: 'This task was prefilled 3',
-                        highPriority: false,
-                        necessary: true,
-                    },
-                    {
-                        done: false,
-                        title: 'Task 4',
-                        comment: 'This task was prefilled 4',
-                        highPriority: true,
-                        necessary: false,
-                    }],
-                ],
-            ],
-        },
-    ],
+"prefill": {
+    "entries": [{
+        "input": "none",
+        "steps": [[
+            "staticTasks",
+            [{
+                "done": false,
+                "title": "Task 1",
+                "comment": "This task was prefilled 1",
+                "highPriority": false,
+                "necessary": false
+                },
+                {
+                "done": false,
+                "title": "Task 2",
+                "comment": "This task was prefilled 2",
+                "highPriority": true,
+                "necessary": true
+                },
+                {
+                "done": true,
+                "title": "Task 3",
+                "comment": "This task was prefilled 3",
+                "highPriority": false,
+                "necessary": true
+                },
+                {
+                "done": false,
+                "title": "Task 4",
+                "comment": "This task was prefilled 4",
+                "highPriority": true,
+                "necessary": false
+                }]
+            ]]
+        }]
 },
 ```
-
 ``` typescript (set workorder tasks)
-prefill: {
-    entries: [
-        {
-            input: 'workOrderId',
-            steps: [ 'workOrderIdToWorkOrder', 'workOrderToTasks' ],
-        },
-    ],
+"prefill": {
+    "entries": [{
+            "input": "workOrderId",
+            "steps": [ "workOrderIdToWorkOrder", "workOrderToTasks" ],
+        }]
 },
 ```
 

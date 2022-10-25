@@ -29,6 +29,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
       "required": true,
       "disabled": false,
       "pdfHide": false,
+      "pdfWidth": 0.5
       "pdfHideIfValueIsEmpty": false,
       "placeHolderText": {
         "en": "Example Placeholder",

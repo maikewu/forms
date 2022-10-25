@@ -29,6 +29,7 @@ The AssetSingleSelect field allows to select an asset from the account or a cert
       "disabled": false,
       "pdfHide": false,
       "pdfHideIfValueIsEmpty": false,
+      "pdfWidth": 1,
       "label": {
             "text": {
             "en": "Asset Select 1",

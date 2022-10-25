@@ -24,7 +24,7 @@ The PersonListInput field allows to enter user.
     "type": "personListInput",
     "config": {
         "disabled": false,
-        "requiredAmountOfEntries": 1,
+        "pdfWidth": 1,
         "pdfHide": false,
         "pdfHideIfValuesIsEmpty": false,
         "requiredAmountOfEntries": 1,

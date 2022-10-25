@@ -19,137 +19,136 @@ With the PartListInput, the user can add parts to an form.
 
 ```typescript (complete)
 {
-    id: 'exampleSparePartsList_1',
-    type: FormFieldTypesEnum.PART_LIST_INPUT,
-    config: {
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        pdfWidth: 1,
-        requiredAmountOfEntries: 3,
-        label: {
-            text: {
-                en: 'Part List 1',
-                de: 'Ersatzteilliste 1',
-                tr: 'Part List 1 [TR]',
-                fr: 'Part List 1 [FR]',
-                es: 'Part List 1 [ES]',
-                it: 'Part List 1 [IT]',
+    "id": "exampleSparePartsList_1",
+    "type": "partListInput",
+    "config": {
+        "pdfHide": false,
+        "pdfHideIfValuesIsEmpty": false,  
+        "pdfWidth": 1,  
+        "requiredAmountOfEntries": 3,
+        "label": {
+            "text": {
+                "en": "Part List 1",
+                "de": "Ersatzteilliste 1",
+                "tr": "Part List 1 [TR]",
+                "fr": "Part List 1 [FR]",
+                "es": "Part List 1 [ES]",
+                "it": "Part List 1 [IT]"
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
         },
-
-        fields: {
-            partNumberSingleLineTextInput: {
-                required: true,
-                pdfHide: false,
-                placeHolderText: {
-                    en: 'Part Number Placeholder Text',
-                    de: 'Part Number Placeholder Text',
-                    tr: 'Part Number Placeholder Text',
-                    fr: 'Part Number Placeholder Text',
-                    es: 'Part Number Placeholder Text',
-                    it: 'Part Number Placeholder Text',
-                },
+        "fields": {
+            "partNumberSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                    "en": "Part Number Placeholder Text",
+                    "de": "Part Number Placeholder Text",
+                    "tr": "Part Number Placeholder Text",
+                    "fr": "Part Number Placeholder Text",
+                    "es": "Part Number Placeholder Text",
+                    "it": "Part Number Placeholder Text"
+                }
             },
-            quantityNumericInput: {
-                required: true,
-                pdfHide: false,
+            "quantityNumericInput": {
+                "required": true,
+                "pdfHide": false
             },
-            descriptionMultiLineTextInput: {
-                enable: true,
-                required: true,
-                pdfHide: false,
-                placeHolderText: {
-                    en: 'Description Placeholder Text',
-                    de: 'Description Placeholder Text',
-                    tr: 'Description Placeholder Text',
-                    fr: 'Description Placeholder Text',
-                    es: 'Description Placeholder Text',
-                    it: 'Description Placeholder Text',
-                },
+            "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                    "en": "Description Placeholder Text",
+                    "de": "Description Placeholder Text",
+                    "tr": "Description Placeholder Text",
+                    "fr": "Description Placeholder Text",
+                    "es": "Description Placeholder Text",
+                    "it": "Description Placeholder Text"
+                }
             },
-            deliverToStaticSingleSelect: {
-                enable: true,
-                required: true,
-                pdfHide: false,
+            "deliverToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
             },
-            invoiceToStaticSingleSelect: {
-                enable: true,
-                required: true,
-                pdfHide: false,
+            "invoiceToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
             },
-            warrantyBooleanInput: {
-                enable: true,
-                pdfHide: false,
-            },
-        },
-    },
+            "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+            }
+        }
+    }
 },
 ```
-
 ```typescript (minimal)
 {
-    id: 'exampleSparePartsList_1',
-    type: FormFieldTypesEnum.PART_LIST_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'Part List 1',
-                de: 'Ersatzteilliste 1',
-                tr: 'Part List 1 [TR]',
-                fr: 'Part List 1 [FR]',
-                es: 'Part List 1 [ES]',
-                it: 'Part List 1 [IT]',
+    "id": "exampleSparePartsList_1",
+    "type": "partListInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Part List 1",
+                "de": "Ersatzteilliste 1",
+                "tr": "Part List 1 [TR]",
+                "fr": "Part List 1 [FR]",
+                "es": "Part List 1 [ES]",
+                "it": "Part List 1 [IT]"
             },
         },
-        fields: {
-            partNumberSingleLineTextInput: {
-                required: true,
-                pdfHide: false,
-                placeHolderText: {
-                    en: 'Part Number Placeholder Text',
-                    de: 'Part Number Placeholder Text',
-                    tr: 'Part Number Placeholder Text',
-                    fr: 'Part Number Placeholder Text',
-                    es: 'Part Number Placeholder Text',
-                    it: 'Part Number Placeholder Text',
-                },
+        "fields": {
+            "partNumberSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                    "en": "Part Number Placeholder Text",
+                    "de": "Part Number Placeholder Text",
+                    "tr": "Part Number Placeholder Text",
+                    "fr": "Part Number Placeholder Text",
+                    "es": "Part Number Placeholder Text",
+                    "it": "Part Number Placeholder Text"
+                }
             },
-            quantityNumericInput: {
-                required: true,
-                pdfHide: false,
+            "quantityNumericInput": {
+                "required": true,
+                "pdfHide": false
             },
-            descriptionMultiLineTextInput: {
-                enable: true,
-                required: true,
-                pdfHide: false,
-                placeHolderText: {
-                    en: 'Description Placeholder Text',
-                    de: 'Description Placeholder Text',
-                    tr: 'Description Placeholder Text',
-                    fr: 'Description Placeholder Text',
-                    es: 'Description Placeholder Text',
-                    it: 'Description Placeholder Text',
-                },
+            "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                    "en": "Description Placeholder Text",
+                    "de": "Description Placeholder Text",
+                    "tr": "Description Placeholder Text",
+                    "fr": "Description Placeholder Text",
+                    "es": "Description Placeholder Text",
+                    "it": "Description Placeholder Text"
+                }
             },
-            deliverToStaticSingleSelect: {
-                enable: true,
-                required: true,
-                pdfHide: false,
+            "deliverToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
             },
-            invoiceToStaticSingleSelect: {
-                enable: true,
-                required: true,
-                pdfHide: false,
+            "invoiceToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
             },
-            warrantyBooleanInput: {
-                enable: true,
-                pdfHide: false,
-            },
-        },
-    },
+            "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+            }
+        }
+    }
 },
 ```
 # Configuration Parameters

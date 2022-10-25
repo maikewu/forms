@@ -5,44 +5,13 @@ parentDoc: 62ec01bd561bab0aa775efe4
 ---
 ## Concept
 
-Prefill allows you to prepopulate fields with values when creating a new form instance. 
-For this purpose, prefill rules must be defined for the respective fields in the form code. The schema of the prefill rule contains targets, inputs and steps. 
-- `target` specifies the property to which data is to be written
-- `input` can be a seperate source that already contains informations or a own defined input value,
-that should be prepopulate to the form
-- `steps` can be used to transform the data type if the `input` data type does not match the expected data type of the `target`.
+Prefill allows you to prepopulate fields with values when creating a new form instance.
+To do this, prefill rules must be defined in the form code for the respective fields. 
+The prefill rule schema contains targets, inputs and steps. 
 
-You get provided with different data types depending from which part of the app you creat a new form instance.
-
----
-From the Asset View you'll have: 
-|------|-----|
-| `assetId`  |  |  
-| `organizationId` 
-| `creationDateTime`  |  |  
-| `currentUser`  |  |  
-| `currentUserId`  |  |  
-| `currentAccount`  |  |  
-| `currentAccountId`  |  |  
-| `assidnedUserId`  | Optional |  
-
----
-Form a Work Order you'll have: 
-|------|-----|
-| `relatedWorkOrderId`  |  |  
-| `organizationId`  | If WO has connected company |  
-| `assetId`  | If WO has assets |  
-| `creationDateTime`  |  |  
-| `currentUser`  |  |  
-| `currentUserId`  |  |  
-| `currentAccount`  |  |  
-| `currentAccountId`  |  |  
-| `assidnedUserId`  | Optional |  
----
-## Properties
-
-<details>
-<summary>All available <code>target</code> values </summary>
+--- 
+`target` locates the property to which data is to be written
+<details> <summary>All available <code>target</code> values </summary>
 
 | Section                  |      `target`      |
 | :------------------------- | :--------------|
@@ -64,8 +33,12 @@ Form a Work Order you'll have:
 |DateTimeInput| `value`
 |TaskListInput| `entries`
 |UserSingleSelect| `value`
-|CompanySingleSelect| `selectedCompany`
+|CompanySingleSelect| `selectedCompany` 
 </details>
+
+---
+`input` can be a seperate source that already contains informations, e.g. a work order, or a own defined input value,
+that should be prepopulate to the form
 
 <details>
 <summary>All available <code>input</code> sources, their values and data types</summary>
@@ -86,6 +59,80 @@ Form a Work Order you'll have:
 | - | `none`| `NONE`
 
 </details>
+
+---
+`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`.
+
+<details>
+<summary>All available <code>steps</code> and their input and output data type </summary>
+
+`steps` have an input (expected) data type and an output (provided) data type. 
+By chaining steps, the desired data type can be achieved "step by step". 
+
+| `steps`               | input data type  | output data type |
+| :----------------------------- | :----- | :-----|
+| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
+| `assetIdToUser` | `ASSET_ID`| `ASSET`
+| `userIdToUser` | `USER_ID`| `USER_INFO`
+| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
+| `userToFullNameString` | `USER_INFO` | `STRING`
+| `assetToLocationAddress` | `ASSET`| `ADDRESS`
+| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
+| `assetToAssetTypeNameString` | `ASSET`| `STRING`
+| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
+| `addressToCityString` | `ADDRESS`| `STRING`
+| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
+| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
+| `workOrderToTasks` | `WORK_ORDER`| `TASKS`
+| `staticString` | `[NONE, STRING]`| `STRING`
+| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
+| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
+| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS`
+| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE`
+| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME`
+| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
+| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
+| `staticTasks` | `[NONE, TASKS]`| `TASKS`
+
+</details>
+
+---
+## Asset View
+If you create a new forms instance from an asset (Asset View), the following data is provided:
+
+| Data | Condition | Description |
+| :------------------------- | :--------------| :---- |
+| `assetId`  |  |  The ID of the asset form which the new form is created
+| `organizationId` | | The ID of the company to which the asset belongs
+| `creationDateTime`  |  | The creation date time of ??? 
+| `currentUser`  |  |  	Information about the current user, including the name, ID, etc.
+| `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
+| `currentAccount`  |  |  Information about the current space, including the name, address, ID, etc.
+| `currentAccountId`  |  |  	The ID of the current space
+| `assidnedUserId`  | Optional |  The ID of the user who is assigned to the asset
+
+---
+ ## Work Order
+If you create a new forms instance from a work order, the following data is provided:
+
+
+| Data | Condition | Description |
+| :------------------------- | :--------------| :---- |
+| `relatedWorkOrderId`  |  |  The ID of the work order from which the form is created
+| `organizationId`  | If WO has connected company | The ID of the company (contact) which is connected to the work order
+| `assetId`  | If WO has assets |  The ID of the asset which is part of the work order
+| `currentUser`  |  | Information about the current user, including the name, ID, etc.
+| `currentUserId`  |  | The ID of the user who is logged in and creates the form instance
+| `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
+| `currentAccountId`  |  | The ID of the current space 
+| `assignedUserId`  | Optional | The ID of the user who is assigned to the work order
+
+---
+## Properties
+
+
+
+
 
 <details>
 <summary>All available <code>steps</code> and their input and output data type </summary>

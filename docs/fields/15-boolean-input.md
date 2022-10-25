@@ -21,45 +21,56 @@ The booleanInput allows the user to mark a checkbox true or false.
 
 ``` typescript (complete)
 {
-    id: 'exampleBooleanInput_1',
-    type: FormFieldTypesEnum.BOOLEAN_INPUT,
-    config: {
-        required: true,
-        disabled: false,
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        uiHideInRepeaterCardDisplay: false,
-         label: {
-            text: {
-                en: 'Boolean input 1',
-                de: 'Boolean input 1 [DE]',
-                tr: 'Boolean input 1 [TR]',
-                fr: 'Boolean input 1 [FR]',
-                es: 'Boolean input 1 [ES]',
-                it: 'Boolean input 1 [IT]',
-            },
+    "id": "exampleBooleanInput_1",
+    "type": "booleanInput",
+    "config": {
+        "required": true,
+        "disabled": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "label": {
+            "pdfHide": false,
+            "uiTextColor": "#facc2e",
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14
+            "text": {
+                "en": "Boolean input 1",
+                "de": "Boolean input 1 [DE]",
+                "tr": "Boolean input 1 [TR]",
+                "fr": "Boolean input 1 [FR]",
+                "es": "Boolean input 1 [ES]",
+                "it": "Boolean input 1 [IT]"
+            }
         },
-        prefill: {
-            value: [{
-                input: 'none',
-                steps: [['staticBoolean', true]],
-            }],
-        },
-    },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticBoolean",
+                    true
+                ]]
+            }]
+        }
+    }
 },
 ```
 ``` typescript (minimal)
 {
-    id: 'exampleBooleanInput_1',
-    type: FormFieldTypesEnum.BOOLEAN_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'Boolean input 1',
-                de: 'Boolean input 1 [DE]',
-            },
+    "id": "exampleBooleanInput_1",
+    "type": "booleanInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Boolean input 1",
+                "de": "Boolean input 1 [DE]",
+                "tr": "Boolean input 1 [TR]",
+                "fr": "Boolean input 1 [FR]",
+                "es": "Boolean input 1 [ES]",
+                "it": "Boolean input 1 [IT]"
+            }
         },
-    },
+    }
 },
 ```
 ---
@@ -87,13 +98,14 @@ The booleanInput allows the user to mark a checkbox true or false.
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript (static boolean)
-prefill: {
-        prefill: {
-            value: [{
-                input: 'none',
-                steps: [['staticBoolean', true]],
-            }],
-        },
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[
+            "staticBoolean",
+            true
+        ]]
+    }]
 }
 ```
 ---

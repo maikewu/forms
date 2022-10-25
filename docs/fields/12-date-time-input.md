@@ -23,60 +23,66 @@ The dateTimeInput field allows to enter a datetime.
 
 ``` typescript (complete)
 {
-    id: 'exampleDateTimeInput_1',
-    type: FormFieldTypesEnum.DATE_TIME_INPUT,
-    config: {
-        pdfHide: false,
-        disabled: false,
-        required: false,
-        pdfWidth: 1,
-        pdfHideIfValueIsEmpty: false,
-        label: {
-            text: {
-                en: 'Date time input 1',
-                de: 'Date time input 1 [DE]',
-                tr: 'Date time input 1 [TR]',
-                fr: 'Date time input 1 [FR]',
-                es: 'Date time input 1 [ES]',
-                it: 'Date time input 1 [IT]',
+    "id": "exampleDateTimeInput_1",
+    "type": "dateTimeInput",
+    "config": {
+        "pdfHide": false,
+        "disabled": false,
+        "required": false,
+        "pdfWidth": 1,
+        "pdfHideIfValueIsEmpty": false,
+        "label": {
+            "text": {
+                "en": "Date time input 1",
+                "de": "Date time input 1 [DE]",
+                "tr": "Date time input 1 [TR]",
+                "fr": "Date time input 1 [FR]",
+                "es": "Date time input 1 [ES]",
+                "it": "Date time input 1 [IT]"
             },
-            uiHide: false,
-            pdfHide: false,
-            pdfTextSize: 14,
-            pdfTextColor: '#facc2e',
+            "uiHide": false,
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e"
         },
-        value: {
-            dropdownInterval: 30,
-            pdfHide: false,
-            pdfTextSize: 14,
-            pdfTextColor: '#facc2e',
-            pdfStartInNewLine: false,
+        "value": {
+            "dropdownInterval": 30,
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e",
+            "pdfStartInNewLine": false
         },
-        prefill: {
-            value: [{
-                input: 'none',
-                steps: [[
-                    'staticDateTime',
-                    '2022-02-22T22:22:00.000Z_Europe/Berlin',
-                ]],
-            }],
-        },
-    },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticDateTime",
+                    "2022-02-22T22:22:00.000Z_Europe/Berlin"
+                ]]
+            }]
+        }
+    }
 },
 ```
 
 ```typescript (minimal)
 {
-    id: 'exampleDateTimeInput_1',
-    type: FormFieldTypesEnum.DATE_TIME_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'Date time input 1',
-                de: 'Date time input 1 [DE]',
+    "id": "exampleDateTimeInput_1",
+    "type": "dateTimeInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Date time input 1",
+                "de": "Date time input 1 [DE]",
+                "tr": "Date time input 1 [TR]",
+                "fr": "Date time input 1 [FR]",
+                "es": "Date time input 1 [ES]",
+                "it": "Date time input 1 [IT]"
             },
         },
-    },
+        "value": {
+        },
+    }
 },
 ```
 
@@ -116,7 +122,7 @@ The dateTimeInput field allows to enter a datetime.
 `dropDownInterval` defines an interval between dropdown values in minutes.
 
 ``` typescript
-dropDownInterval: 6
+"dropDownInterval": 6
 ```
 ---
 ## `prefill`
@@ -129,14 +135,14 @@ dropDownInterval: 6
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ``` typescript (static time)
-prefill: {
-    value: [{
-        input: 'none',
-        steps: [[
-              'staticDateTime',
-              '2022-02-22T22:22:00.000Z_Europe/Berlin',
-        ]],
-    }],
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[
+            "staticDateTime",
+            "2022-02-22T22:22:00.000Z_Europe/Berlin"
+        ]]
+    }]
 }
 ```
 ---
