@@ -7,10 +7,33 @@ parentDoc: 62ec01bd561bab0aa775efe4
 
 Prefill allows you to prepopulate fields with values when creating a new form instance.
 To do this, prefill rules must be defined in the form code for the respective fields. 
-The prefill rule schema contains targets, inputs and steps. 
+The prefill rule schema contains targets, inputs and steps.
+
+Each field can have multiple prefill rules. When a form is created, the backend tries to execute all the prefill rules successively until one of them can be fully applied because the required data is available.
+
+Schema:
+``` JSON (Prefill schema)
+"prefill": {
+    "target": [
+        { // These brackets contain the first prefill rule
+            "input": "rule1_value1", 
+            "steps": [
+                "step1-1", // step to transform the data type
+            ],
+        },
+        { // These brackets contain the second prefill rule, which got only applied when the first input value "rule1_value1" isn't available
+            "input": "rule2_value2",
+            "steps": [
+              "step2-1", // steps to transform the data type
+              "step2-2",
+            ],
+        },
+    ],
+},
+```
 
 --- 
-`target` locates the property to which data is to be written
+`target` locates the property to which data is to be written. The target name has to be writtin to the `"input":` section of the prefill rule
 <details> <summary>All available <code>target</code> values </summary>
 
 | Section                  |      `target`      |
@@ -47,15 +70,15 @@ that should be prepopulate to the form
 
 | Source               | `input` (provided) value | Data type |
 | :----------------------------- | :----- | :-----|
-| Asset view | `assetId`| `ASSET_ID` (equals `STRING`)
+| [Asset view](#asset-view) | `assetId`| `ASSET_ID` (equals `STRING`)
 | Selected organization |`organizationId` | `ACCOUNT_ID` (equals `STRING`)
 | Form creation date time |`creationDateTime` | `REMBERG_DATE`
 | Current user | `currentUser` | `USER_INFO`
 | Current user | `currentUserId` | `USER_ID` (equals `STRING`)
 | Current account | `currentAccount` | `ACCOUNT`
 | Current account  |`currentAccountId` | `ACCOUNT_ID` (equals `STRING`)
-| WorkOrder view |`assignedUserId` | `USER_ID` (equals `STRING`)
-| WorkOrder view |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
+| [WorkOrder view](#work-order-view) |`assignedUserId` | `USER_ID` (equals `STRING`)
+| [WorkOrder view](#work-order-view) |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
 
 </details>
@@ -104,7 +127,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | :------------------------- | :--------------| :---- |
 | `assetId`  |  |  The ID of the asset form which the new form is created
 | `organizationId` | | The ID of the company to which the asset belongs
-| `creationDateTime`  |  | The creation date time of ??? 
+| `creationDateTime`  |  | The creation date time of form 
 | `currentUser`  |  |  	Information about the current user, including the name, ID, etc.
 | `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  |  Information about the current space, including the name, address, ID, etc.
@@ -112,7 +135,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | `assidnedUserId`  | Optional |  The ID of the user who is assigned to the asset
 
 ---
- ## Work Order
+ ## Work Order View
 If you create a new forms instance from a work order, the following data is provided:
 
 
@@ -176,12 +199,14 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 <summary>Prefill examples of certain fields</summary>
 
 ``` JSON (SignatureSection)
-// Prefill 
+// Do not copy comments!
+// Prefills signature section with name of the current user
+// There are four different prefill rules for the location. 1. To enter the asset location 2. To enter the location of the costumer which the asset belongs to 3. To enter the customers location 4. To enter a default location
 
 "prefill": {
     "name": [
         {
-            "input": "currentUser", // test comment
+            "input": "currentUser", 
             "steps": [
                 "userToFullNameString",
             ],
@@ -233,6 +258,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (AddressInput)
+// Do not copy comments!
+// Prefills AddressInput with a default address when the form is created
+
 "prefill": {
     "value": [
         {
@@ -256,6 +284,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (AddressInput2)
+// Do not copy comments!
+// Prefills the address of the work order of the connected company 
+
 "prefill": {
     "value": [
         {
@@ -269,6 +300,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (TaskListInput)
+// Do not copy comments!
+// Prefills predefined task to the Tasklist
+
 "prefill": {
     "entries": [
         {
@@ -311,6 +345,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (TaskListInput2)
+// Do not copy comments!
+// Prefills task of the work order 
+
 "prefill": {
     "entries": [
         {
@@ -321,6 +358,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (SingleLineTextInput)
+// Do not copy comments!
+// Prefills the name of the asset as a STRING 
+
 "prefill": {
     "value": [
         {
@@ -334,6 +374,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (MultiLineTextInput)
+// Do not copy comments!
+// Prefills a default multi line text
+
 "prefill": {
     "value": [{
             "input": "none",
@@ -345,6 +388,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (RichTextInput)
+// Do not copy comments!
+// Prefills a default HTML text
+
 "prefill": {
     "value": [
         {
@@ -360,6 +406,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (UserSingleSelect)
+// Do not copy comments!
+// Prefills the current user
+
 "prefill": {
     "value": [{
             "input": "currentUserId",
@@ -368,6 +417,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (BooleanInput)
+// Do not copy comments!
+// Prefills `true` 
+
 "prefill": {
     "value": [{
         "input": "none",
@@ -376,6 +428,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (TimeInput)
+// Do not copy comments!
+// Prefills a default time 
+
 "prefill": {
     "value": [{
         "input": "none",
@@ -387,6 +442,9 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 },
 ```
 ``` JSON (DateTimeInput)
+// Do not copy comments!
+// Prefills a default date time with of certain time timezone
+
 "prefill": {
     "value": [{
         "input": "none",
@@ -400,23 +458,3 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 </details>
 
 
-Schema:
-``` JSON (PreFill schema general)
-"prefill": {
-    "target": [
-        {
-            "input": "rule1_value1",
-            "steps": [
-                "step1-1",
-            ],
-        },
-        {
-            "input": "rule2_value2",
-            "steps": [
-              "step2-1",
-              "step2-2",
-            ],
-        },
-    ],
-},
-```

@@ -63,7 +63,7 @@ parentDoc: 62ec01bd561bab0aa775efe4
             "it": "Example helptext after [IT]"
         },
         "fields": [
-         "ENTER ENTIRES / FIELDS FOR THE REPEATER HERE. YOU FIND A LIST WITH ALL POSSIBLE FIELDS BELOW"
+         "ENTER ENTRIES / FIELDS FOR THE REPEATER HERE. A LIST WITH ALL POSSIBLE FIELDS CAN BE FOUND BELOW"
         ]
     }
 },
