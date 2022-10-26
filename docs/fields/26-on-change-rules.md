@@ -62,51 +62,61 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
     "steps": [ "assetInfoToAsset","assetToLocationAddress"]
 }],
 ```
-``` JSON (AssetS name to STRING)
+``` JSON (Asset name to STRING)
 "onChange": [{
     "target": {"id": "exampleMultiLineTextInput_1"},
     "steps": ["assetToAssetTypeNameString"]
+}]
+```
+``` JSON (Company to Asset)
+"onChange": [{
+    "target": {"id": "exampleAssetSingleSelec_1"},
+    "steps": ["??? Need list from Uwe"]
 }]
 ```
 ``` JSON (Company name to STRING)
 "onChange": [{
     "target": { "id": "disabledSingleLineInput_1" },
     "steps": ["accountInfoTioCompanyName"],
-},
+}],
 ```
 ``` JSON (Company phone number to STRING)
 "onChange": [{
     "target": { "id": "exampleSingleLineInput_2" },
     "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],                
-}
+}],
 ```
 ``` JSON (Company address to AddressInput)
 "onChange": [{
     "target": { "id": "exampleAddressInput_1" },
     "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
-},
+}],
 ```
 ``` JSON (Company city to signature location)
 "onChange": [{
     "target": { "id": "exampleSignatureSection", "propertyName": "location" },
     "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
-}
+}],
 ```
-``` JSON (Company )
+``` JSON (Company phone to phoneNumber )
 "onChange": [{
     "target": { "id": "examplePhoneNumberInput_1" },
     "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
-}
+}],
 ```
-``` JSON
+``` JSON (User name to signature name)
+"onChange": [{
+        "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+        "steps": [ "userToFullNameString" ],
+}],
+```
+``` JSON (User to phoneNumberInput)
+"onChange": [{
+    "target": { "id": "examplePhoneNumberInput_1" },
+    "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
+}],
+```
 
-```
-``` JSON
-
-```
-``` JSON
-
-```
 ``` JSON
 
 ```

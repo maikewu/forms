@@ -53,23 +53,19 @@ The UserSingleSelect field allows to select a user from the own or from a custom
             "pdfPrintEmailAddress": true
         },
       "prefill": {
-          "value": [
-              {
+          "value": [{
                   "input": "currentUserId",
                   "steps": [],
-              },
-          ],
+              }]
       },
-      "onChange": [
-          {
-              "steps": [ "userToFullNameString" ],
-              "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+      "onChange": [{
+            "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+            "steps": [ "userToFullNameString" ],
           },
           {
-              "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
-              "target": { "id": "examplePhoneNumberInput_1" },
-          },
-      ],
+            "target": { "id": "examplePhoneNumberInput_1" },
+            "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
+          }],
   },
 },
 ```
@@ -165,14 +161,8 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 ```JSON
-"onChange": [
-    {
-        "steps": [ "userToFullNameString" ],
+"onChange": [{
         "target": { "id": "exampleSignatureSection", "propertyName": "name" },
-    },
-    {
-        "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
-        "target": { "id": "examplePhoneNumberInput_1" },
-    },
-],
+        "steps": [ "userToFullNameString" ],
+    }],
 ```

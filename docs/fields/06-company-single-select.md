@@ -62,24 +62,24 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
         },
         "onChange": [
             {
-                "steps": ["accountInfoToCompanyName"],
                 "target": { "id": "disabledSingleLineInput_1" },
+                "steps": ["accountInfoToCompanyName"],
             },
             {
-                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
                 "target": { "id": "exampleAddressInput_1" },
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
             },
             {
-                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
                 "target": { "id": "exampleSignatureSection", "propertyName": "location" },
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
             },
             {
-                "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],
                 "target": { "id": "exampleSingleLineInput_2" },
+                "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],
             },
             {
-                "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
                 "target": { "id": "examplePhoneNumberInput_1" },
+                "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
             },
         ],
     },
