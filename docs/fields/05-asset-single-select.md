@@ -22,70 +22,55 @@ The AssetSingleSelect field allows to select an asset from the account or a cert
 
 ``` JSON (complete)
 {
-    "id": "exampleAssetSingleSelect_1",
-    "type": "assetSingleSelect",
-    "config": {
-      "required": true,
-      "disabled": false,
+  "id": "exampleAssetSingleSelect_1",
+  "type": "assetSingleSelect",
+  "config": {
+    "required": true,
+    "disabled": false,
+    "pdfHide": false,
+    "pdfHideIfValueIsEmpty": false,
+    "pdfWidth": 1,
+    "label": {
+      "text": {
+        "en": "Asset Select 1",
+        "de": "Asset Auswahl 1",
+        "tr": "Asset Select 1 [TR]",
+        "fr": "Asset Select 1 [FR]",
+        "es": "Asset Select 1 [ES]",
+        "it": "Asset Select 1 [IT]"
+      },
       "pdfHide": false,
-      "pdfHideIfValueIsEmpty": false,
-      "pdfWidth": 1,
-      "label": {
-            "text": {
-            "en": "Asset Select 1",
-            "de": "Asset Auswahl 1",
-            "tr": "Asset Select 1 [TR]",
-            "fr": "Asset Select 1 [FR]",
-            "es": "Asset Select 1 [ES]",
-            "it": "Asset Select 1 [IT]"
-            },
-            "pdfHide": false,
-            "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14,
-            "uiHide": false
-        },
-        "value": {
-              "disableAssetFormInstanceRelationship": false,
-              "disableCreation": false,
-              "pdfHide": false,
-              "pdfStartInNewLine": false,
-              "pdfTextColor": "#facc2e",
-              "pdfTextSize": 14
-        },
-            "prefill": {
-              "selectedAsset": [
-                {
-                  "input": "assetId",
-                  "steps": []
-                }
-              ],
-              "accountFilter": [
-                {
-                  "input": "organizationId",
-                  "steps": []
-                }
-              ]
-            },
-            "onChange": [
-              {
-                "steps": [
-                  "assetInfoToAsset",
-                  "assetToLocationAddress"
-                ],
-                "target": {
-                  "id": "exampleAddressInput_1"
-                }
-              },
-              {
-                "steps": [
-                  "assetToAssetTypeNameString"
-                ],
-                "target": {
-                  "id": "exampleMultiLineTextInput_1"
-                }
-            }
-        ]
-    },
+      "pdfTextColor": "#facc2e",
+      "pdfTextSize": 14,
+      "uiHide": false
+      },
+      "value": {
+        "disableAssetFormInstanceRelationship": false,
+        "disableCreation": false,
+        "pdfHide": false,
+        "pdfStartInNewLine": false,
+        "pdfTextColor": "#facc2e",
+        "pdfTextSize": 14
+      },
+      "prefill": {
+        "selectedAsset": [{
+            "input": "assetId",
+            "steps": []
+        }],
+        "accountFilter": [{
+            "input": "organizationId",
+            "steps": []
+        }]
+      },
+      "onChange": [{
+          "target": {"id": "exampleAddressInput_1"},
+          "steps": [ "assetInfoToAsset","assetToLocationAddress"]
+          },
+          {
+          "target": {"id": "exampleMultiLineTextInput_1"},
+          "steps": ["assetToAssetTypeNameString"]
+      }]
+  },
 },
 ```
 
@@ -144,21 +129,8 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 ```JSON
-"onChange": [
-    {
-        "steps": [
-            "assetInfoToAsset",
-            [ "assetToCustomPropertyValue", 5 ], // 5 - propertyId of the customer property that exists in your system
-        ],
-        "target": { "id": "exampleMultiLineTextInput_1" },
-    },
-    {
-        "steps": [
-            "assetInfoToCustomerId",
-            "accountIdToAccount",
-            "accountToAccountInfo",
-        ],
-        "target": { "id": "exampleCompanySingleSelect_1" },
-    },
-],
+"onChange": [{
+    "target": {"id": "exampleAddressInput_1"},
+    "steps": [ "assetInfoToAsset","assetToLocationAddress"]
+}],
 ```

@@ -82,14 +82,9 @@ The AddressInput contains various fields for every information of an address.
         ]
       },
       "onChange": [{
-          "steps": [
-            "addressToCityString"
-          ],
-          "target": {
-            "id": "exampleSignatureSection",
-            "propertyName": "location"
-          }
-        }]
+          "target": { "id": "exampleSignatureSection", "propertyName": "location" },    
+          "steps": ["addressToCityString"]
+      }]
     }
 },
 ```
@@ -250,11 +245,9 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
 ```JSON
-"onChange": [
-    {
-        "steps": [ "addressToCityString" ],
-        "target": { "id": "exampleSignatureSection", "propertyName": "location" },
-    },
-],
+"onChange": [{
+    "target": { "id": "exampleSignatureSection", "propertyName": "location" },    
+    "steps": ["addressToCityString"]
+}]
 ```
 

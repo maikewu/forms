@@ -33,30 +33,102 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 ``` JSON (Example: userSingleSelect)
 "onChange": [
     {
-      "steps": ["userToFullNameString"],
       "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+      "steps": ["userToFullNameString"]
     },
 ]
 ```
 ``` JSON (Example: singleLineTextInput)
 "onChange": [
     {
-      "steps": [],
-      "target": { "id": "exampleMultiLineTextInput_1"},
+      "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+      "steps": []
     },
 ]
 ```
 ---
 ### More Examples
 
-> 🚧 In progess
-> 
-> More real code examples will be added
+``` JSON (Address to signatureSection location)
+"onChange": [{
+    "target": { "id": "exampleSignatureSection", "propertyName": "location" },    
+    "steps": ["addressToCityString"]
+}]
+```
+``` JSON (Asset location to addressInput location)
+"onChange": [{
+    "target": {"id": "exampleAddressInput_1"},
+    "steps": [ "assetInfoToAsset","assetToLocationAddress"]
+}],
+```
+``` JSON (AssetS name to STRING)
+"onChange": [{
+    "target": {"id": "exampleMultiLineTextInput_1"},
+    "steps": ["assetToAssetTypeNameString"]
+}]
+```
+``` JSON (Company name to STRING)
+"onChange": [{
+    "target": { "id": "disabledSingleLineInput_1" },
+    "steps": ["accountInfoTioCompanyName"],
+},
+```
+``` JSON (Company phone number to STRING)
+"onChange": [{
+    "target": { "id": "exampleSingleLineInput_2" },
+    "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],                
+}
+```
+``` JSON (Company address to AddressInput)
+"onChange": [{
+    "target": { "id": "exampleAddressInput_1" },
+    "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
+},
+```
+``` JSON (Company city to signature location)
+"onChange": [{
+    "target": { "id": "exampleSignatureSection", "propertyName": "location" },
+    "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
+}
+```
+``` JSON (Company )
+"onChange": [{
+    "target": { "id": "examplePhoneNumberInput_1" },
+    "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
+}
+```
+``` JSON
 
+```
+``` JSON
+
+```
+``` JSON
+
+```
+``` JSON
+
+```
+``` JSON
+
+```
+``` JSON
+
+```
+``` JSON
+
+```
+``` JSON
+
+```
+``` JSON
+
+```
+
+---
 ## Data type per field / section
 
-<details>
-<summary>Fields and data type</summary>
+### Fields and data type
 
 | Field name               | Provided / expected data type                   |
 | :----------------------------- | :---------------------------|
@@ -74,10 +146,10 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 | `userSingleSelect` | `USER_INFO`|
 | `phoneNumberInput` | `PHONE_NUMBER`|
 | `companySingleSelect` | `ACCOUNT_INFO`|
-</details>
 
-<details>
-<summary>SignatureSection and data type</summary>
+---
+
+### SignatureSection and data type
 
 | Property name               | Provided / expected data type                   |
 | :----------------------------- | :---------------------------|
@@ -86,7 +158,6 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 | `location`| `STRING`|
 | `name` | `STRING`|
 | `signature` | `STRING`|
-</details>
 
 ---
 
