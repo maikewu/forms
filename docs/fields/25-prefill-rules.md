@@ -169,17 +169,19 @@ By chaining steps, the desired data type can be achieved "step by step".
 
 
 --- 
-### Schema & Examples
+### Schema and Examples
 
 Prefill can have severeal rules for a target, which get executed sequenctially until on rule can be applied when the required input data is available.
 <details>
 <summary>Prefill examples of certain fields</summary>
 
 ``` JSON (SignatureSection)
+// Prefill 
+
 "prefill": {
     "name": [
         {
-            "input": "currentUser",
+            "input": "currentUser", // test comment
             "steps": [
                 "userToFullNameString",
             ],
