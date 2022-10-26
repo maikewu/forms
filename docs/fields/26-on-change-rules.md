@@ -94,183 +94,25 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 
 You can find a list below, that contains all implemented `steps`, which can be used to transform data.
 
-``` typescript (All implemented steps)
-// Account
-  accountIdToAccount: {
-      input: ACCOUNT_ID,
-      output: ACCOUNT,
-  },
-  accountToBillingAddressAddress: {
-      input: ACCOUNT,
-      output: ADDRESS,
-  },
-  accountInfoToCompanyName: {
-      input: ACCOUNT_INFO,
-      output: STRING,
-  },
-  accountInfoToCustomerNumber: {
-      input: ACCOUNT_INFO,
-      output: STRING,
-  },
-  accountToAccountInfo: {
-      input: ACCOUNT,
-      output: ACCOUNT_INFO,
-  },
-  accountInfoToAccount: {
-      input: ACCOUNT_INFO,
-      output: ACCOUNT,
-  },
-  accountToPhoneNumberString: {
-      input: ACCOUNT,
-      output: STRING,
-  },
-// Address
-  addressToCityString: {
-      input: ADDRESS,
-      output: STRING,
-  },
-// Asset
-  assetIdToAsset: {
-      input: ASSET_ID,
-      output: ASSET,
-  },
-  assetInfoToAsset: {
-      input: ASSET_INFO,
-      output: ASSET,
-  },
-  assetToAssetTypeNameString: {
-      input: ASSET_INFO,
-      output: STRING,
-  },
-  assetToCustomerAccountId: {
-      input: ASSET,
-      output: STRING,
-  },
-  assetToLocationAddress: {
-      input: ASSET,
-      output: ADDRESS,
-  },
-  assetToCustomPropertyValue: {
-      input: [ ASSET, NUMBER ],
-      output: ANY,
-  },
-  assetInfoToCustomerId: {
-      input: ASSET_INFO,
-      output: ACCOUNT_ID,
-  },
-// Phone
-  phoneNumberStringToPhoneNumberObject: {
-      input: STRING,
-      output: PHONE_NUMBER,
-  }, 
-// User
-  userToFullNameString: {
-      input: USER_INFO,
-      output: STRING,
-  },
-  userInfoToUser: {
-    input: USER_INFO,
-    output: USER,
-  }, 
-  userToPhoneNumberString: {
-      input: USER,
-      output: STRING,
-  },
-// Utils
-  logValue: {
-      input: ANY,
-      output: ANY,
-  },
-```
-``` typescript (Account)
-accountIdToAccount: {
-    input: ACCOUNT_ID,
-    output: ACCOUNT,
-},
-accountToBillingAddressAddress: {
-    input: ACCOUNT,
-    output: ADDRESS,
-},
-accountInfoToCompanyName: {
-    input: ACCOUNT_INFO,
-    output: STRING,
-},
-accountInfoToCustomerNumber: {
-    input: ACCOUNT_INFO,
-    output: STRING,
-},
-accountToAccountInfo: {
-    input: ACCOUNT,
-    output: ACCOUNT_INFO,
-},
-accountInfoToAccount: {
-    input: ACCOUNT_INFO,
-    output: ACCOUNT,
-},
-accountToPhoneNumberString: {
-    input: ACCOUNT,
-    output: STRING,
-},
-```
-``` typescript (Address)
-addressToCityString: {
-    input: ADDRESS,
-    output: STRING,
-},
-```
-``` typescript (Asset)
-assetIdToAsset: {
-    input: ASSET_ID,
-    output: ASSET,
-},
-assetInfoToAsset: {
-    input: ASSET_INFO,
-    output: ASSET,
-},
-assetToAssetTypeNameString: {
-    input: ASSET_INFO,
-    output: STRING,
-},
-assetToCustomerAccountId: {
-    input: ASSET,
-    output: STRING,
-},
-assetToLocationAddress: {
-    input: ASSET,
-    output: ADDRESS,
-},
-assetToCustomPropertyValue: {
-    input: [ ASSET, NUMBER ],
-    output: ANY,
-},
-assetInfoToCustomerId: {
-    input: ASSET_INFO,
-    output: ACCOUNT_ID,
-},
-```
-``` typescript (Phone)
-phoneNumberStringToPhoneNumberObject: {
-    input: STRING,
-    output: PHONE_NUMBER,
-},
-```
-``` typescript (User)
-userToFullNameString: {
-    input: USER_INFO,
-    output: STRING,
-},
-userInfoToUser: {
-    input: USER_INFO,
-    output: USER,
-},
-userToPhoneNumberString: {
-    input: USER,
-    output: STRING,
-},
-```
-``` typescript (Utils)
-logValue: {
-    input: ANY,
-    output: ANY,
-},
-```
+| `dynamic action steps`               | input data type  | output data type |
+| :----------------------------- | :----- | :-----|
+| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT` |
+| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS` |
+| `accountInfoToCompanyName` | `ACCOUNT_INFO`| `STRING` |
+| `accountInfoToCustomerNumber` | `ACCOUNT_INFO` | `STRING`|
+| `accountToAccountInfo` | `ACCOUNT`| `ACCOUNT_INFO` |
+| `accountInfoToAccount` | `ACCOUNT_INFO`| `ACCOUNT` |
+| `accountToPhoneNumberString` | `ACCOUNT`| `STRING` |
+| `addressToCityString` | `ADDRESS`| `STRING` |
+| `assetIdToAsset` | `ASSET_ID`| `ASSET` |
+| `assetInfoToAsset` | `ASSET_INFO`| `ASSET` |
+| `assetToAssetTypeNameString` | `ASSET_INFO`| `STRING` |
+| `assetToCustomerAccountId` | `ASSET`| `STRING` |
+| `assetToLocationAddress` | `ASSET`| `ADDRESS` |
+| `assetToCustomPropertyValue` | `[ ASSET, NUMBER ]` | `ANY` |
+| `assetInfoToCustomerId` | `ASSET_INFO` | `ACCOUNT_ID` |
+| `phoneNumberStringToPhoneNumberObject` | `STRING` | `PHONE_NUMBER` |
+| `userToFullNameString` | `USER_INFO` | `STRING` |
+| `userInfoToUser` | `USER_INFO` | `USER` |
+| `userToPhoneNumberString` | `USER`| `STRING` |
+| `logValue` | `ANY`| `ANY` |
