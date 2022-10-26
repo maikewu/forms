@@ -4,7 +4,7 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-The CompanySingleSelect field allows the user to choose one of the customer companys.
+The CompanySingleSelect field allows the user to choose one of the customer companies.
 
 # Configuration Overview
 
@@ -126,8 +126,8 @@ Property                                                    | Description       
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [disableCreation](#disablecreation)             | Hides the creat button, so that no new companies can be created.                                                                                            |
-| [pdfPrintCompanyNumber](#pdfprintcompanynumber) | Setting this to `true` printes the company number in the PDF.                                                                                             |
+| [disableCreation](#disablecreation)             | Hides the create button, so that no new companies can be created.                                                                                            |
+| [pdfPrintCompanyNumber](#pdfprintcompanynumber) | Setting this to `true` prints the company number in the PDF.                                                                                             |
 
 ---
 ### `value.disableCreation`
@@ -138,7 +138,7 @@ Property                                                    | Description       
 | Required          | no              |
 | Default Value     | `false`         |
 
-If `disableCreation` is set to `true`, the creat button is hidden, so that no new companies can be created while working in forms.
+If `disableCreation` is set to `true`, the create button is hidden, so that no new companies can be created while working in forms.
 
 ```JSON
 "disableCreation": true
@@ -153,7 +153,7 @@ If `disableCreation` is set to `true`, the creat button is hidden, so that no ne
 | Required                | no              |
 | Default Value           | `false`         |
 
-If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed in the PDF in brackets behinde the company name.
+If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed in the PDF in brackets behind the company name.
 
 ```JSON
 "pdfPrintCompanyNumber": true

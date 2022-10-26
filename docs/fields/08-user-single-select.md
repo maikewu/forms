@@ -4,7 +4,7 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd561bab0aa775efe4
 ---
 
-The UserSingleSelect field allows to select a user from the own or from a customers organisation.
+The UserSingleSelect field allows to select a user from the own or from a customers organization.
 
 # Configuration Overview
 
@@ -110,7 +110,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [printEmailAddress](#printemailaddress)                                         | Setting this to `true` printes the email address of the selected user in the PDF. |
+| [printEmailAddress](#printemailaddress)                                         | Setting this to `true` prints the email address of the selected user in the PDF. |
 
 ---
 ### `printEmailAddress`
@@ -121,7 +121,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 | Required        | no              |
 | Default Value   | `false`               |
 
-By setting `printEmailAddress` to `true`, email address of the slected user will be printed in brackets next to the name in the PDF.
+By setting `printEmailAddress` to `true`, email address of the selected user will be printed in brackets next to the name in the PDF.
 
 ```JSON
 value:{

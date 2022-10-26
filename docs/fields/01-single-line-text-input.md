@@ -66,15 +66,10 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
           },
       },
       "prefill": {
-          "value": [
-              {
-                  "input": "assetId",
-                  "steps": [
-                      "assetIdToAsset",
-                      "assetToAssetTypeNameString",
-                  ],
-              },
-          ],
+        "value": [{
+                "input": "assetId",
+                "steps": [ "assetIdToAsset", "assetToAssetTypeNameString"],
+        }], 
       },
   },
 },
@@ -154,7 +149,6 @@ By setting `emailAddress` to `true`, input must match email address format.
 | Default Value   | `NULL`              |
 
 By defining `validators.regexPattern`, you set a regular expression that is valid. 
-
 ```JSON
 "validators":{
 "regexPattern": "^[A-Z]*$"
@@ -174,28 +168,19 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 ``` JSON (static string)
 "prefill": {
-        "value": [
-            {
+        "value": [{
                 "input": "none",
-                "steps": [
-                    [ "staticString", "Default Single Line Text" ],
-                ],
-            },
-        ],
+                "steps": [[ "staticString", "Default Single Line Text" ]]
+        }]
     },
 ```
 ``` JSON (asset type name)
 "prefill": {
-        "value": [
-            {
+        "value": [{
                 "input": "assetId",
-                "steps": [
-                    "assetIdToAsset",
-                    "assetToAssetTypeNameString",
-                ],
-            },
-        ],
-    },
+                "steps": [ "assetIdToAsset", "assetToAssetTypeNameString"],
+        }],
+},
 ```
 
 ---

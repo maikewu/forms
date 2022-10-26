@@ -132,7 +132,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 | Required        | no              |
 | Default Value   | empty [Array]               |
 
-By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
+By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The characters are case sensitive.
 
 ``` JSON (validators)
 "validators":{

@@ -23,8 +23,8 @@ On this page you will find a list of repeating fields.
 | [text](#text)                                      | Localized text of the field. Shown in the UI and the PDF.                                               |
 | [uiHide](#uihide)                                  | Setting this to `true` hides the field in the UI.                                                       |
 | [uiTextColor](#uitextcolor)                        | Text color of a certain field in the UI.                                                                |
-| [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are requried to fill the form.                  |                                                                             |
-| [lable](#lable)                                    | Several configurations for the lable.                                                                 |
+| [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are required to fill the form.                  |                                                                             |
+| [label](#lable)                                    | Several configurations for the label.                                                                 |
 | [values](#values)                                  | Several configurations for the values.                                                                 |
 | [prefill](#prefill)                                | Configuration to prefill the field with a value upon creation of the form instance.                     |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
@@ -97,11 +97,11 @@ pdfHideIfValueIsEmpty: true
 ---
 ## `pdfWidth`
 
-| `pdfWdith`                 |                           |
+| `pdfWidth`                 |                           |
 | :------------------------- | :-------------------------|
 | Possible Values            | Values between `0` - `1`  |
 | Required                   | no                        |
-| Default Value              | `1 (full wdith)`          |
+| Default Value              | `1 (full width)`          |
 
 The value of `pdfWidth` defines the width of a field in the pdf layout.
 `1` represent the full row in the pdf, e.g. `0.5` represent the half row / 50 % of the row.
@@ -225,7 +225,7 @@ By setting `uiTextColor`, the field label in the UI will have the defined color.
 | Required                   | no              |
 | Default Value              | `0`             |
 
-By setting `requiredAmountOfEntries`, it specify how many repeating entries are requried to fill the form.
+By setting `requiredAmountOfEntries`, it specify how many repeating entries are required to fill the form.
 
 ```JSON
 "requiredAmountOfEntries": 3,
@@ -286,7 +286,7 @@ By setting `requiredAmountOfEntries`, it specify how many repeating entries are 
 | Required                   | no              |
 | Default Value              | ``               |
 
-If `pdfStartInNewLine` is set to `true`, the field value starts below the field lable in the PDF.
+If `pdfStartInNewLine` is set to `true`, the field value starts below the field label in the PDF.
 
 ```JSON
 "pdfStartInNewLine": true,
@@ -301,7 +301,7 @@ If `pdfStartInNewLine` is set to `true`, the field value starts below the field 
 | Required                   | no              |
 | Default Value              | -               |
 
-If `pdfAddLineBreaks` is set to `true`, linebreaks are set after every value of the field in the PDF.
+If `pdfAddLineBreaks` is set to `true`, a linebreak is set after every value of the field in the PDF.
 
 ```JSON
 "pdfAddLineBreaks": true,

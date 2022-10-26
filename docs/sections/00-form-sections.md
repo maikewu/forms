@@ -6,7 +6,7 @@ category: 62ebf4654ae80e09e468624b
 
 Welcome to the sections :)
 
-You can find a list below, that contains all fields.
+You can find a list below, that contains all sections.
 
 | Property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |

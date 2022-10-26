@@ -12,7 +12,7 @@ With the PartListInput, the user can add parts to an form.
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
-| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are requried to fill the form.                                                                                        |
+| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are required to fill the form.                                                                                        |
 | [label](#label)                                                              | Configuration of the field label. |
 | [fields](#fields)                                                            | Components of the field |
 
@@ -172,7 +172,7 @@ With the PartListInput, the user can add parts to an form.
 | [descriptionMultiLineTextInput](#descriptionMultiLineTextInput)        | Multi line input field in the UI to enter a description of the part  |
 | [deliverToStaticSingleSelect](#deliverToStaticSingleSelect)         | A single select field in the UI to choose the delivery destination |
 | [invoiceToStaticSingleSelect](#invoiceToStaticSingleSelect)         | A single select field in the UI to choose the invoice destination |
-| [warrantyBooleanInput](#warrantyBooleanInput)         | A checkbox in the UI to mark "Coverd under warranty" |
+| [warrantyBooleanInput](#warrantyBooleanInput)         | A checkbox in the UI to mark "Covered under warranty" |
 
 ---
 
@@ -200,14 +200,14 @@ With the PartListInput, the user can add parts to an form.
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [required](./24-general-properties/#required)                                | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 | [placeHolderText](./24-general-properties/#placeholdertext)                  | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
-| [enable](./24-general-properties/#enable)                  | Setting this to `true` enables the poperty in the UI |
+| [enable](./24-general-properties/#enable)                  | Setting this to `true` enables the property in the UI |
 
 ---
 ### `deliverToStaticSingleSelect`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the poperty in the UI |
+| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |
 | [required](./24-general-properties/#required)                 | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 
@@ -216,7 +216,7 @@ With the PartListInput, the user can add parts to an form.
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the poperty in the UI |
+| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |
 | [required](./24-general-properties/#required)                 | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 
@@ -225,5 +225,5 @@ With the PartListInput, the user can add parts to an form.
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the poperty in the UI |
+| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |

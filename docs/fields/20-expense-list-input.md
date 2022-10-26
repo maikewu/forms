@@ -13,7 +13,7 @@ The Expense List Input allows the user to add expenses.
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
-| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are requried to fill the form.                                                                                        |
+| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are required to fill the form.                                                                                        |
 | [label](#label)                                                              | Configuration of the field label. |
 | [fields](#fields)                                     | Components of the field |
 
@@ -116,7 +116,7 @@ The Expense List Input allows the user to add expenses.
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [dateInput](#dateinput)                                       | Date selcetion is part of the field |
+| [dateInput](#dateinput)                                       | Date selection is part of the field |
 | [expenseTypeSingleSelectInput](#expensetypesingleselectinput) | Defines a set of types which can be selected as the kind of entry (expense) |
 | [commentMultiLineTextInput](./24-general-properties/#commenmultilinetextinput)        | Defines a comment section as multiLineTextInput  |
 | [expenseAmountNumericInput](#expenseamountnumericinput)       | Defines a input section where the amount of the expense can be entered |

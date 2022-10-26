@@ -17,7 +17,7 @@ and edges of the graph represent actions themselves:
 
 ## Data transfer between fields / sections
 
-Data entered in fields / sections can be transferred in between. Each field or section povides and expects a specific data type. 
+Data entered in fields / sections can be transferred in between. Each field or section provides and expects a specific data type. 
 When the provided data type doesn't match the expected data type, transformation by using `steps` is necessary.
 
 `steps` have an input (expected) data type and an output (provided) data type. 
@@ -26,7 +26,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 After transforming the data, the `target` field must be defined by entering a field `id`. Fields with several properties need a `propertyName` additional.
 
 ### Example:
-The `singleLineTextInput` provides a `STRING` and the `mulitLineTextInput` expects a `STRING` ([List of expected / provided data types per field](#fields-and-data-type)). Therefore no transformation is necessary to send the data to the target field.
+The `singleLineTextInput` provides a `STRING` and the `multiLineTextInput` expects a `STRING` ([List of expected / provided data types per field](#fields-and-data-type)). Therefore no transformation is necessary to send the data to the target field.
 
 But if you would like to transfer the name from `userSingleSelect` (provided type: `USER_INFO`) to the `name` property of the `signatureSection` (expected type: `STRING`) then you need to transform the data:
 
@@ -70,7 +70,7 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 ```
 ``` JSON (Company to Asset)
 "onChange": [{
-    "target": {"id": "exampleAssetSingleSelec_1"},
+    "target": {"id": "exampleAssetSingleSelect_1"},
     "steps": ["??? Need list from Uwe"]
 }]
 ```
@@ -144,7 +144,7 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 | Field name               | Provided / expected data type                   |
 | :----------------------------- | :---------------------------|
 | `singleLineTextInput` | `STRING` |
-| `mutliLineTextInput` | `STRING` |
+| `multiLineTextInput` | `STRING` |
 | `booleanInput`| `BOOLEAN`|
 | `assetSingleSelect` | `ASSET_INFO`|
 | `addressInput` | `ADDRESS`|

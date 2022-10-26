@@ -30,7 +30,7 @@ The RichTextInput is a text field that allows text formatting.
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
         "pdfWidth": 1,
-        "placeHolderText": "<h1>Wirte some rich text</h1>",
+        "placeHolderText": "<h1>Write some rich text</h1>",
         "label": {
             "pdfHide": false,
             "pdfTextColor": "#facc2e",
@@ -55,10 +55,7 @@ The RichTextInput is a text field that allows text formatting.
         "prefill": {
             "value": [{
                 "input": "none",
-                "steps": [[
-                    "staticString",
-                    "<h1>Default rich text content</h1>"
-                ]]
+                "steps": [[ "staticString", "<h1>Default rich text content</h1>"]]
             }]
         }
     }
@@ -122,9 +119,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 "prefill": {
     "value": [{
         "input": "none",
-        "steps": [[
-            "staticString",
-            "<h1>Default rich text content</h1>"
+        "steps": [[ "staticString", "<h1>Default rich text content</h1>"
         ]]
     }]
 }

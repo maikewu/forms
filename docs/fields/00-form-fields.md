@@ -4,9 +4,9 @@ excerpt: Collection of Form Fields
 category: 62ebf4654ae80e09e468624b
 ---
 
-Welcome to the fields :)
+Welcome to fields :)
 
-You can find a list below, that contains all fields.
+You find all available fields in the list below.
 
 | Property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |

@@ -4,7 +4,7 @@ category: 62ebf4654ae80e09e468624b
 parentDoc: 62ec01bd8854e3076580c823
 ---
 
-The FieldSection contains all field properties of the form.
+The FieldSection contains all fields of the form.
 
 # Configuration Overview
 

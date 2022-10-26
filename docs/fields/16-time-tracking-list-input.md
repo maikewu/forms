@@ -12,7 +12,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
-| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are requried to fill the form.                                                                                        |
+| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are required to fill the form.                                                                                        |
 | [maximumDuration](#maximumduration)                                          | Configuration of a maximum duration that can be set in minutes. |
 | [label](#label)                                                              | Configuration of the field label. |
 
@@ -136,7 +136,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
 | [breakNumericInput](#breaknumericinput)                       | UI section to enter break time|
 | [durationDisplay](#durationdisplay)                           | Displays the duration of the entered times in the UI |
 | [distanceNumericInput](#distancenumericinput)                 | UI input field to enter a distance in km |
-| [technicianUserSingleSelect](#technicianusersingleselect)     | UI section where the usere can selecte the respective technican |
+| [technicianUserSingleSelect](#technicianusersingleselect)     | UI section where the user can select the respective technician |
 | [commentMultiLineTextInput](./24-general-properties/#commenmultilinetextinput)        | Defines a comment section as multiLineTextInput  |
 
 ---

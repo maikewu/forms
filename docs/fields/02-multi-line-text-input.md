@@ -69,12 +69,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
             "value": [
                 {
                     "input": "none",
-                    "steps": [
-                        [
-                            "staticString",
-                            "Default \n Multi \n Line \n Text",
-                        ],
-                    ],
+                    "steps": [["staticString","Default \n Multi \n Line \n Text"]],
                 },
             ],
         },
@@ -175,9 +170,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
         "value": [
             {
                 "input": "none",
-                "steps": [
-                    [ "staticString", "Default \n Multi \n Line \n Text" ],
-                ],
+                "steps": [[ "staticString", "Default \n Multi \n Line \n Text" ]]
             },
         ],
     },

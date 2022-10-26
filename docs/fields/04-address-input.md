@@ -173,7 +173,7 @@ The Address Input field has several different fields that can be individually se
 | Required        | no              |
 | Default Value   | empty [Array]               |
 
-By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
+By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The characters are case sensitive.
 
 ``` JSON (validators)
 "validators":{
@@ -221,7 +221,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
             "streetNumber": "1",
             "company": "remberg GmbH",
             "supplement": "Default Supplement",
-            "zipPostCode": "Default Zipcode",
+            "zipPostCode": "Default Zip-code",
             "city": "Default City",
             "state": "Default State",
             "country": "Default Country",

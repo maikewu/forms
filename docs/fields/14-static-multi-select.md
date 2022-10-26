@@ -31,7 +31,7 @@ The StaticMultiSelect field allows to choose one or more options of the dropdown
         "disabled": false,
         "pdfHide": false,
         "pdfWidth": 1,
-        "pdfHidefValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": false,
         "minAmountOfSelections": 2,
         "maxAmountOfSelections": 3,        
         "label": {

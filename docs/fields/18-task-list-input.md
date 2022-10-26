@@ -14,7 +14,7 @@ TaskListInput enables the user to create performed tasks.
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
-| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are requried to fill the form.                                                                                        |
+| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are required to fill the form.                                                                                        |
 | [label](#label)                                                              | Configuration of the field label. |
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [fields](#fields)                                     | Components of the field |
@@ -149,7 +149,7 @@ TaskListInput enables the user to create performed tasks.
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` JSON (set prefilled tasks)
+``` JSON (set predefined tasks)
 "prefill": {
     "entries": [{
         "input": "none",
@@ -187,7 +187,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
         }]
 },
 ```
-``` JSON (set workorder tasks)
+``` JSON (set tasks from work order)
 "prefill": {
     "entries": [{
             "input": "workOrderId",
@@ -201,8 +201,8 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [checkboxBooleanInput](#checkboxbooleaninput)                 | Checkbox, that can be set checked per dafault |
-| [titleSingleLineTextInput](#titlesinglelinetextinput)         | Titel of the task that is shown in the UI and PDF |
+| [checkboxBooleanInput](#checkboxbooleaninput)                 | Checkbox, that can be set checked per default |
+| [titleSingleLineTextInput](#titlesinglelinetextinput)         | Title of the task that is shown in the UI and PDF |
 | [commentMultiLineTextInput](./24-general-properties/#commenmultilinetextinput)        | Defines a comment section as multiLineTextInput  |
 | [highPrioBooleanInput](#highpriobooleaninput)         | `High prio` checkbox of the task that is shown in the UI and PDF |
 | [notNecessaryBooleanInput](#notnecessarybooleaninput)         | `Not necessary` checkbox of the task that is shown in the UI and PDF |

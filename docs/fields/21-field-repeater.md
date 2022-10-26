@@ -14,9 +14,9 @@ parentDoc: 62ec01bd561bab0aa775efe4
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
-| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are requried to fill the form.                                                                                        |
+| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are required to fill the form.                                                                                        |
 | [helptextBefore](#helptextbefore)                                            | Text that is displayed before the repeater |
-| [helptextAfter](#helptextafter)                                              | Text that is dispalyed after the repeater |
+| [helptextAfter](#helptextafter)                                              | Text that is displayed after the repeater |
 | [uiHideInRepeaterCardDisplay](#uihideinrepeatercarddisplay)                  | Setting this to `true` hides the field in the UI. |
 | [pdfFieldRepeaterCellAlignment](#pdffieldrepeatercellalignment)              | Configuration of the cell alignment. |
 | [label](#label)                                                              | Configuration of the field label. |
@@ -76,14 +76,14 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [headlineDisplay](./03-headline-display) (not displayed in the PDF)                 | The HeadlineDisplay is a field that displays headlines to structure content in the form and provisde information.|
+| [headlineDisplay](./03-headline-display) (not displayed in the PDF)                 | The HeadlineDisplay is a field that displays headlines to structure content in the form and provide information.|
 | [htmlDisplay](./23-html-display)   (not displayed in the PDF)                      | The HtmlDisplay allows the user to enter html text. |
 | [singleLineTextInput](./01-single-line-text-input)       | The SingleLineTextInput field allows entering one line of unformatted text. |
 | [multiLineTextInput](./02-mutli-line-text-input)         | The MultiLineTextInput field allows entering larger amounts of unformatted text.  |
 | [addressInput](./04-address-input)                       | The AddressInput contains various fields for every information of an address. |
 | [assetSingleSelect](./05-asset-single-select)            | The AssetSingleSelect field allows to select an asset from the account or a certain costumer.  |
-| [companySingleSelect](./06-company-single-select)        | The CompanySingleSelect field allows the user to choose one of the customer companys. |
-| [userSingleSelect](./08-user-single-select)              | The UserSingleSelect field allows to select a user from the own or from a customers organisation. |
+| [companySingleSelect](./06-company-single-select)        | The CompanySingleSelect field allows the user to choose one of the customer companies. |
+| [userSingleSelect](./08-user-single-select)              | The UserSingleSelect field allows to select a user from the own or from a customers organization. |
 | [phoneNumberInput](./09-phone-number-input)              | The PhoneNumberInput field allows to input telephone numbers in the common format. | 
 | [dateInput](./10-date-input)                             | The DateInput field allows to input a date. |
 | [timeInput](./11-time-input)                             | The TimeInput field allows to enter a time. |
@@ -458,7 +458,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
                 "target": { "id": "exampleSignatureSection", "propertyName": "location" },
             },
             {
-                "steps": ['"accountInfoToAccount"', "accountToPhoneNumberString" ],
+                "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],
                 "target": { "id": "exampleSingleLineInput_2" },
             },
             {
@@ -538,7 +538,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
         "label": {
             "pdfHide": false,
             "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14
+            "pdfTextSize": 14,
             "text": {
                 "en": "Phone number input required",
                 "de": "Phone number input required [DE]",
@@ -790,7 +790,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
         "disabled": false,
         "pdfHide": false,
         "pdfWidth": 1,
-        "pdfHidefValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": false,
         "minAmountOfSelections": 2,
         "maxAmountOfSelections": 3,
         "uiHideInRepeaterCardDisplay": false,
@@ -814,7 +814,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
             "pdfStartInNewLine": false,
             "pdfTextColor": "#facc2e",
             "pdfTextSize": 14,
-            "pdfAddLineBreaks": true
+            "pdfAddLineBreaks": true,
             "options": {
                 "exampleOptionOne": {
                     "en": "Example option 1",
@@ -908,7 +908,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
 | Required        | no              |
 | Default Value   | -               |
 
-By setting `helptextBefore`, a text is dispalyed before the repeater.
+By setting `helptextBefore`, a text is displayed before the repeater.
 
 ```JSON
       "helptextBefore": {
@@ -930,7 +930,7 @@ By setting `helptextBefore`, a text is dispalyed before the repeater.
 | Required        | no              |
 | Default Value   | -               |
 
-By setting `helptextAfter`, a text is dispalyed before the repeater.
+By setting `helptextAfter`, a text is displayed before the repeater.
 
 ``` JSON
       "helptextAfter": {
@@ -966,14 +966,14 @@ A list of a fields that can be used in the fieldRepeater.
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [headlineDisplay](./03-headline-display) (not displayed in the PDF)                 | The HeadlineDisplay is a field that displays headlines to structure content in the form and provisde information.|
+| [headlineDisplay](./03-headline-display) (not displayed in the PDF)                 | The HeadlineDisplay is a field that displays headlines to structure content in the form and provide information.|
 | [htmlDisplay](./23-html-display)   (not displayed in the PDF)                      | The HtmlDisplay allows the user to enter html text. |
 | [singleLineTextInput](./01-single-line-text-input)       | The SingleLineTextInput field allows entering one line of unformatted text. |
 | [multiLineTextInput](./02-mutli-line-text-input)         | The MultiLineTextInput field allows entering larger amounts of unformatted text.  |
 | [addressInput](./04-address-input)                       | The AddressInput contains various fields for every information of an address. |
 | [assetSingleSelect](./05-asset-single-select)            | The AssetSingleSelect field allows to select an asset from the account or a certain costumer.  |
-| [companySingleSelect](./06-company-single-select)        | The CompanySingleSelect field allows the user to choose one of the customer companys. |
-| [userSingleSelect](./08-user-single-select)              | The UserSingleSelect field allows to select a user from the own or from a customers organisation. |
+| [companySingleSelect](./06-company-single-select)        | The CompanySingleSelect field allows the user to choose one of the customer companies. |
+| [userSingleSelect](./08-user-single-select)              | The UserSingleSelect field allows to select a user from the own or from a customers organization. |
 | [phoneNumberInput](./09-phone-number-input)              | The PhoneNumberInput field allows to input telephone numbers in the common format. | 
 | [dateInput](./10-date-input)                             | The DateInput field allows to input a date. |
 | [timeInput](./11-time-input)                             | The TimeInput field allows to enter a time. |
@@ -984,7 +984,7 @@ A list of a fields that can be used in the fieldRepeater.
 
 ## `uiHideInRepeaterCardDisplay`
 
-**This propertie can be part of every field config of the repeated fields.**
+**This property can be part of every field config of the repeated fields.**
 
 | `uiHideInRepeaterCardDisplay`     |                 |
 | :-------------- | :-------------- |
@@ -1000,7 +1000,7 @@ By setting `uiHideInRepeaterCardDisplay` to `true` the field isn't shown in the 
 
 ## `pdfFieldRepeaterCellAlignment`
 
-**This propertie can be part of every field config of the repeated fields.**
+**This property can be part of every field config of the repeated fields.**
 
 
 | `pdfFieldRepeaterCellAlignment`     |                 |

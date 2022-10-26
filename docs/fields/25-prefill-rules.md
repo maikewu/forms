@@ -33,7 +33,7 @@ Schema:
 ```
 
 --- 
-`target` locates the property to which data is to be written. The target name has to be writtin to the `"input":` section of the prefill rule
+`target` locates the property to which data is to be written. The target name has to be written to the `"input":` section of the prefill rule
 <details> <summary>All available <code>target</code> values </summary>
 
 | Section                  |      `target`      |
@@ -60,7 +60,7 @@ Schema:
 </details>
 
 ---
-`input` can be a seperate source that already contains informations, e.g. a work order, or a own defined input value,
+`input` can be a separate source that already contains information, e.g. a work order, or a own defined input value,
 that should be prepopulate to the form
 
 <details>
@@ -132,7 +132,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  |  Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  |  	The ID of the current space
-| `assidnedUserId`  | Optional |  The ID of the user who is assigned to the asset
+| `assignedUserId`  | Optional |  The ID of the user who is assigned to the asset
 
 ---
  ## Work Order View
@@ -194,7 +194,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 --- 
 ### Schema and Examples
 
-Prefill can have severeal rules for a target, which get executed sequenctially until on rule can be applied when the required input data is available.
+Prefill can have several rules for a target, which get executed sequentially until on rule can be applied when the required input data is available.
 <details>
 <summary>Prefill examples of certain fields</summary>
 
@@ -301,7 +301,7 @@ Prefill can have severeal rules for a target, which get executed sequenctially u
 ```
 ``` JSON (TaskListInput)
 // Do not copy comments!
-// Prefills predefined task to the Tasklist
+// Prefills predefined task to the taskList
 
 "prefill": {
     "entries": [
