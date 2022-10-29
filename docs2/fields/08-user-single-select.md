@@ -1,7 +1,7 @@
 ---
 title: UserSingleSelect
 category: 635ce1e7775bc60045570ffb
-parentDoc: 635ce3a98eac79008251739a
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The UserSingleSelect field allows to select a user from the own or from a customers organization.

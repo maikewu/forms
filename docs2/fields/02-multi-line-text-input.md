@@ -1,7 +1,7 @@
 ---
 title: MultiLineTextInput
 category: 635ce1e7775bc60045570ffb
-parentDoc: 635ce3a98eac79008251739a
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The MultiLineTextInput field allows entering larger amounts of unformatted text. It respects line breaks and can be configured to limit the possible content length.

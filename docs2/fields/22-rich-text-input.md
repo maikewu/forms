@@ -1,7 +1,7 @@
 ---
 title: RichTextInput
 category: 635ce1e7775bc60045570ffb
-parentDoc: 635ce3a98eac79008251739a
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The RichTextInput is a text field that allows text formatting.

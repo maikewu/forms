@@ -1,7 +1,7 @@
 ---
 title: FieldRepeater
 category: 635ce1e7775bc60045570ffb
-parentDoc: 635ce3a98eac79008251739a
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
  The fieldRepeater contains several fields which gonna be used to create a table of customer properties, each field gets extra config options if it's part of a repeater.
