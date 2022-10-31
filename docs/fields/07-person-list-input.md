@@ -18,7 +18,7 @@ The PersonListInput field allows to enter user.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
     "id": "examplePersonList_1",
     "type": "personListInput",
@@ -59,7 +59,7 @@ The PersonListInput field allows to enter user.
 },
 ```
 
-``` JSON (minimal)
+```json (minimal)
 {
     "id": "examplePersonList_1",
     "type": "personListInput",
@@ -126,7 +126,7 @@ The PersonListInput field allows to enter user.
 
 If `firstNameRequired` is set to `true`, the field is not shown in the PDF at all. 
 
-```JSON
+```json
 "firstNameRequired": true
 ```
 ---
@@ -140,7 +140,7 @@ If `firstNameRequired` is set to `true`, the field is not shown in the PDF at al
 
 If `lastNameRequired` is set to `true`, the field is considered invalid as long as no value is entered.
 
-```JSON
+```json
 "lastNameRequired": true
 ```
 ---
@@ -154,7 +154,7 @@ If `lastNameRequired` is set to `true`, the field is considered invalid as long 
 
 If `hide` is set to `true`, the field is not shown in the PDF and UI at all.
 
-```JSON
+```json
 "hide": true
 ```
 

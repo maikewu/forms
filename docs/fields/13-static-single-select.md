@@ -21,7 +21,7 @@ The StaticSingleSelect field allows to choose one option of the dropdown.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
  {
     "id": "exampleStaticSingleSelect_1",
     "type": "staticSingleSelect",
@@ -81,7 +81,7 @@ The StaticSingleSelect field allows to choose one option of the dropdown.
     }
 },
 ```
-``` JSON (minimal)
+```json (minimal)
  {
     "id": "exampleStaticSingleSelect_1",
     "type": "staticSingleSelect",
@@ -156,7 +156,7 @@ The StaticSingleSelect field allows to choose one option of the dropdown.
 
 In `options` the content of the dropdown can be defined.
 
-```JSON
+```json
 "options": {
     "exampleOptionOne": {
         "en": "Example option 1",
@@ -186,7 +186,7 @@ In `options` the content of the dropdown can be defined.
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` JSON (static time)
+```json (static time)
 "prefill": {
     "value": [{
         "input": "none",

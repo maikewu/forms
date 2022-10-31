@@ -21,7 +21,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
   "id": "exampleMultiLineTextInput_1",
   "type": "multiLineTextInput",
@@ -76,7 +76,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
     },
 }
 ```
-``` JSON (minimal)
+```json (minimal)
 {
   "id": "exampleMultiLineTextInput_2",
   "type": "multiLineTextInput",
@@ -136,7 +136,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 By setting `uiMinRows`, the text input in he UI will always span at the least the configured amount of lines.
 If the content spans less lines, the size of the text input will not shrink further.
 
-```JSON
+```json
 "uiMinRows": 5
 ```
 
@@ -152,7 +152,7 @@ If the content spans less lines, the size of the text input will not shrink furt
 By setting `uiMaxRows`, the text input in he UI will not grow further than the specified amount of lines.
 If the content spans more lines than that maximum, there will be a scrollbar to access the additional lines.
 
-```JSON
+```json
 "uiMaxRows": 15
 ```
 ---
@@ -165,7 +165,7 @@ If the content spans more lines than that maximum, there will be a scrollbar to 
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` JSON (static string)
+```json (static string)
 "prefill": {
         "value": [
             {

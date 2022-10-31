@@ -14,7 +14,7 @@ The HtmlDisplay allows the user to enter html text.
 | [text](./24-general-properties/#text)                       | Localized label text of the field. Shown in the UI and the PDF. |#
 | [uiHide](./24-general-properties/#uihide)                   | Setting this to `true` hides the label in the UI. |
 
-```JSON
+```json
 {
     "id": "exampleHtmlDisplay_1",
     "type": "htmlDisplay",

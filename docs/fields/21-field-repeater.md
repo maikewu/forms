@@ -23,7 +23,7 @@ parentDoc: 635ce486ae5fac003cef279e
 | [fields](#fields)                                                            | Components of the field |
 
 
-``` JSON (General repeater config without fields)
+```json (General repeater config without fields)
 {
     "id": "exampleFieldRepeater_1",
     "type": "fieldRepeater",
@@ -92,7 +92,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
 | [staticMultiSelect](./14-static-multi-select)            | The StaticMultiSelect field allows to choose one or more options of the dropdown. |
 | [booleanInput](./15-boolean-input)                       | The BooleanInput allows the user to mark a checkbox true or false. |
 
-``` JSON (HeadlineDisplay)
+```json (HeadlineDisplay)
 {
     "id": "exampleHeadlineDisplay_1",
     "type": "headlineDisplay",
@@ -117,7 +117,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-``` JSON (HtmlDisplay)
+```json (HtmlDisplay)
 {
     "id": "exampleHtmlDisplay_1",
     "type": "htmlDisplay",
@@ -138,7 +138,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-``` JSON (SingleLineTextInput)
+```json (SingleLineTextInput)
 {
     "id": "exampleSingleLineInput_1",
     "type": "singleLineInput",
@@ -196,7 +196,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     },
 },
 ```
-``` JSON (MultiLineTextInput)
+```json (MultiLineTextInput)
 {
   "id": "exampleMultiLineTextInput_1",
   "type": "multiLineTextInput",
@@ -258,7 +258,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     },
 }
 ```
-``` JSON (AddressInput)
+```json (AddressInput)
 {
     "id": "exampleAddressInput_1",
     "type": "addressInput",
@@ -333,7 +333,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-``` JSON (AssetSingleSelect)
+```json (AssetSingleSelect)
 {
     "id": "exampleAssetSingleSelect_1",
     "type": "assetSingleSelect",
@@ -403,7 +403,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     },
 },
 ```
-``` JSON (CompanySingleSelect)
+```json (CompanySingleSelect)
 {
     "id": "exampleCompanySingleSelect_1",
     "type": "companySingleSelect",
@@ -469,7 +469,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     },
 },
 ```
-``` JSON (UserSingleSelect)
+```json (UserSingleSelect)
 {
     "id": "exampleUserSingleSelect_1",
     "type": "userSingleSelect",
@@ -523,7 +523,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
   },
 },
 ```
-``` JSON (PhoneNumberInput)
+```json (PhoneNumberInput)
 {
     "id": "examplePhoneNumberInput_1",
     "type": "phoneNumberInput",
@@ -582,7 +582,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 }
 ```
-``` JSON (DateInput)
+```json (DateInput)
 {
   "id": "exampleDateInput_1",
   "type": "dateInput",
@@ -630,7 +630,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
   }
 },
 ```
-``` JSON (TimeInput)
+```json (TimeInput)
 {
     "id": "exampleTimeInput_1",
     "type": "timeInput",
@@ -675,7 +675,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-``` JSON (DateTimeInput)
+```json (DateTimeInput)
 {
     "id": "exampleDateTimeInput_1",
     "type": "dateTimeInput",
@@ -720,7 +720,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-``` JSON (StaticSingleSelect)
+```json (StaticSingleSelect)
  {
     "id": "exampleStaticSingleSelect_1",
     "type": "staticSingleSelect",
@@ -782,7 +782,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-``` JSON (StaticMultiSelect)
+```json (StaticMultiSelect)
 {
     "id": "exampleStaticMultiSelect_1",
     "type": "staticMultiSelect",
@@ -857,7 +857,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
     }
 },
 ```
-```JSON (BooleanInput)
+```json (BooleanInput)
 {
     "id": "exampleBooleanInput_1",
     "type": "booleanInput",
@@ -910,7 +910,7 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
 
 By setting `helptextBefore`, a text is displayed before the repeater.
 
-```JSON
+```json
       "helptextBefore": {
           "en": "Example helptext before",
           "de": "Beispiel Hilfstext davor",
@@ -932,7 +932,7 @@ By setting `helptextBefore`, a text is displayed before the repeater.
 
 By setting `helptextAfter`, a text is displayed before the repeater.
 
-``` JSON
+```json
       "helptextAfter": {
           "en": "Example helptext after",
           "de": "Beispiel Hilfstext danach",
@@ -994,7 +994,7 @@ A list of a fields that can be used in the fieldRepeater.
 
 By setting `uiHideInRepeaterCardDisplay` to `true` the field isn't shown in the UI.
 
-```JSON
+```json
 "uiHideInRepeaterCardDisplay": true,
 ```
 
@@ -1011,6 +1011,6 @@ By setting `uiHideInRepeaterCardDisplay` to `true` the field isn't shown in the 
 
 By setting `pdfFieldRepeaterCellAlignment` the cell alignment gets defined.
 
-```JSON
+```json
 "pdfFieldRepeaterCellAlignment": "right",
 ```

@@ -23,7 +23,7 @@ The StaticMultiSelect field allows to choose one or more options of the dropdown
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
     "id": "exampleStaticMultiSelect_1",
     "type": "staticMultiSelect",
@@ -96,7 +96,7 @@ The StaticMultiSelect field allows to choose one or more options of the dropdown
     }
 },
 ```
-``` JSON (minimal)
+```json (minimal)
 {
     "id": "exampleStaticMultiSelect_1",
     "type": "staticMultiSelect",
@@ -180,7 +180,7 @@ The StaticMultiSelect field allows to choose one or more options of the dropdown
 
 In `options` the content of the dropdown can be defined.
 
-```JSON
+```json
 "options": {
     "exampleOptionOne": {
         "en": "Example option 1",
@@ -219,7 +219,7 @@ In `options` the content of the dropdown can be defined.
 
 By setting `minAmountOfSelections` the minimum number of values that must be selected get defined.
 
-```JSON
+```json
 "minAmountOfSelections": 2
 ```
 
@@ -234,7 +234,7 @@ By setting `minAmountOfSelections` the minimum number of values that must be sel
 
 By setting `maxAmountOfSelections` the maximum number of values that must be selected get defined.
 
-```JSON
+```json
 "maxAmountOfSelections": 2
 ```
 
@@ -249,7 +249,7 @@ By setting `maxAmountOfSelections` the maximum number of values that must be sel
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` JSON (static time)
+```json (static time)
 "prefill": {
     "value": [{
         "input": "none",

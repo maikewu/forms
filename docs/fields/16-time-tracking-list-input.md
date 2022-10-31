@@ -17,7 +17,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
 | [label](#label)                                                              | Configuration of the field label. |
 
 
-``` JSON (complete)
+```json (complete)
  {
     "id": "exampleTimeTrackingListInput_1",
     "type": "timeTrackingListInput",
@@ -79,7 +79,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
     }
 },
 ```
-``` JSON (minimal)
+```json (minimal)
  {
     "id": "exampleTimeTrackingListInput_1",
     "type": "timeTrackingListInput",
@@ -111,7 +111,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
 
  `maximumDuration` can be set in minutes. (e.g. 480; = 8h). If this duration (e.g. 8h working time) is exceeded by setting start and end datetime & breaks, input is considered invalid.
 
- ``` JSON 
+ ```json 
 "maximumDuration": 480; // = 8 h
 ```
 ---

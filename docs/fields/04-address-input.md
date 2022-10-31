@@ -20,7 +20,7 @@ The AddressInput contains various fields for every information of an address.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
     "id": "exampleAddressInput_1",
     "type": "addressInput",
@@ -88,7 +88,7 @@ The AddressInput contains various fields for every information of an address.
     }
 },
 ```
-``` JSON (minimal)
+```json (minimal)
 {
     "id": "exampleAddressInput_2",
     "type": "addressInput",
@@ -129,7 +129,7 @@ The AddressInput contains various fields for every information of an address.
 
 The Address Input field has several different fields that can be individually set as mandatory fields.
 
-```JSON
+```json
 "required": {
     "street": false,
     "streetNumber": false,
@@ -175,7 +175,7 @@ The Address Input field has several different fields that can be individually se
 
 By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The characters are case sensitive.
 
-``` JSON (validators)
+```json (validators)
 "validators":{
 "supportedNonNumericsCharacters": ["A", "I", "*"]
 }
@@ -192,7 +192,7 @@ By setting `supportedNonNumericCharacters`, the field will support a list of non
 
 By defining `validators.regexPattern`, you set a expression for valid values.
 
-```JSON
+```json
 "validators":{
 "regexPattern": "^[A-Z]*$"
 }
@@ -208,7 +208,7 @@ By defining `validators.regexPattern`, you set a expression for valid values.
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-```JSON
+```json
 "prefill": {
     "value": [
     {
@@ -244,7 +244,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```JSON
+```json
 "onChange": [{
     "target": { "id": "exampleSignatureSection", "propertyName": "location" },    
     "steps": ["addressToCityString"]

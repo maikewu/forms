@@ -20,7 +20,7 @@ The RichTextInput is a text field that allows text formatting.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
     "id": "richTextInput_1",
     "type": "richTextInput",
@@ -61,7 +61,7 @@ The RichTextInput is a text field that allows text formatting.
     }
 },
 ```
-``` JSON (minimal)
+```json (minimal)
 {
     "id": "richTextInput_1",
     "type": "richTextInput",
@@ -115,7 +115,7 @@ The RichTextInput is a text field that allows text formatting.
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` JSON 
+```json 
 "prefill": {
     "value": [{
         "input": "none",

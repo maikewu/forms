@@ -20,7 +20,7 @@ The DateInput field allows to input a date.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
   "id": "exampleDateInput_1",
   "type": "dateInput",
@@ -66,7 +66,7 @@ The DateInput field allows to input a date.
   }
 },
 ```
-``` JSON (minimal)
+```json (minimal)
 {
   "id": "exampleDateInput_1",
   "type": "dateInput",
@@ -124,7 +124,7 @@ The DateInput field allows to input a date.
 
 By setting `validators.minDate`, the field will be marked as invalid if the date is later than the specified one.
 
-```JSON
+```json
 "validators": {
     "minDate": "2000-02-22"
 }
@@ -141,7 +141,7 @@ By setting `validators.minDate`, the field will be marked as invalid if the date
 
 By setting `validators.maxDate`, the field will be marked as invalid if the date is earlier than the specified one.
 
-```JSON
+```json
 "validators": {
     "maxDate": "2022-02-22"
 }
@@ -158,7 +158,7 @@ By setting `validators.maxDate`, the field will be marked as invalid if the date
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` JSON (static date)
+```json (static date)
 "prefill": {
   "value": [{
       "input": "none",

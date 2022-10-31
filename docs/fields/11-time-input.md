@@ -21,7 +21,7 @@ The TimeInput field allows to enter a time.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
     "id": "exampleTimeInput_1",
     "type": "timeInput",
@@ -65,7 +65,7 @@ The TimeInput field allows to enter a time.
 },
 ```
 
-``` JSON (minimal)
+```json (minimal)
 {
     "id": "exampleTimeInput_1",
     "type": "timeInput",
@@ -121,7 +121,7 @@ The TimeInput field allows to enter a time.
 
 `dropDownInterval` defines an interval between dropdown values in minutes.
 
-```JSON
+```json
 "dropDownInterval": 6
 ```
 ---
@@ -134,7 +134,7 @@ The TimeInput field allows to enter a time.
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` JSON (static time)
+```json (static time)
 "prefill": {
     "value": [{
         "input": "none",

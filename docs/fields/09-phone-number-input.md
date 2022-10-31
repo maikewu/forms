@@ -20,7 +20,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
     "id": "examplePhoneNumberInput_1",
     "type": "phoneNumberInput",
@@ -77,7 +77,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
     }
 }
 ```
-``` JSON (minimal)
+```json (minimal)
 {
     "id": "examplePhoneNumberInput_1",
     "type": "phoneNumberInput",
@@ -134,7 +134,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 
 By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The characters are case sensitive.
 
-``` JSON (validators)
+```json (validators)
 "validators":{
 "supportedNonNumericsCharacters": ["A", "I", "*"]
 }
@@ -151,7 +151,7 @@ By setting `supportedNonNumericCharacters`, the field will support a list of non
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` JSON (static phone number)
+```json (static phone number)
 "prefill": {
     "value": [{
         "input": "none",

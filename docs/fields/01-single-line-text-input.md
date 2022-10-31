@@ -21,7 +21,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed | 
 
-``` JSON (complete)
+```json (complete)
 {
   "id": "exampleSingleLineInput_1",
   "type": "singleLineInput",
@@ -74,7 +74,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
   },
 },
 ```
-``` JSON (minimal)
+```json (minimal)
 {
   "id": "exampleSingleLineInput_1",
   "type": "singleLineInput",
@@ -133,7 +133,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 
 By setting `emailAddress` to `true`, input must match email address format.
 
-```JSON
+```json
 "validators": {
 "emailAddress": true
 }
@@ -149,7 +149,7 @@ By setting `emailAddress` to `true`, input must match email address format.
 | Default Value   | `NULL`              |
 
 By defining `validators.regexPattern`, you set a regular expression that is valid. 
-```JSON
+```json
 "validators":{
 "regexPattern": "^[A-Z]*$"
 }
@@ -166,7 +166,7 @@ By defining `validators.regexPattern`, you set a regular expression that is vali
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` JSON (static string)
+```json (static string)
 "prefill": {
         "value": [{
                 "input": "none",
@@ -174,7 +174,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
         }]
     },
 ```
-``` JSON (asset type name)
+```json (asset type name)
 "prefill": {
         "value": [{
                 "input": "assetId",

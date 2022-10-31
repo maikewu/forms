@@ -20,7 +20,7 @@ TaskListInput enables the user to create performed tasks.
 | [fields](#fields)                                     | Components of the field |
 
 
-``` JSON (complete)
+```json (complete)
  {
     "id": "exampleTaskListInput_1",
     "type": "taskListInput",
@@ -104,7 +104,7 @@ TaskListInput enables the user to create performed tasks.
     }
 },
 ```
-``` JSON (minimal)
+```json (minimal)
  {
     "id": "exampleTaskListInput_2",
     "type": "taskListInput",
@@ -149,7 +149,7 @@ TaskListInput enables the user to create performed tasks.
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` JSON (set predefined tasks)
+```json (set predefined tasks)
 "prefill": {
     "entries": [{
         "input": "none",
@@ -187,7 +187,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
         }]
 },
 ```
-``` JSON (set tasks from work order)
+```json (set tasks from work order)
 "prefill": {
     "entries": [{
             "input": "workOrderId",

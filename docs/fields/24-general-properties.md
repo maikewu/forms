@@ -44,7 +44,7 @@ On this page you will find a list of repeating fields.
 
 If `required` is set to `true`, the field is considered invalid as long as no value is entered.
 
-```JSON
+```json
 "required": true
 ```
 
@@ -59,7 +59,7 @@ If `required` is set to `true`, the field is considered invalid as long as no va
 
 If `disabled` is set to `true`, the field is permanently disabled in the UI. It can still be modified during initial prefilling or dynamic field actions but directly modifying the value in the UI is not possible.
 
-```JSON
+```json
 "disabled": true
 ```
 
@@ -74,7 +74,7 @@ If `disabled` is set to `true`, the field is permanently disabled in the UI. It 
 
 If `pdfHide` is set to `true`, the field is not shown in the PDF at all. This takes precedence over `pdfHideIfValueIsEmpty`.
 
-```JSON
+```json
 "pdfHide": true
 ```
 
@@ -90,7 +90,7 @@ If `pdfHide` is set to `true`, the field is not shown in the PDF at all. This ta
 If `pdfHideIfValueIsEmpty` is set to `true` and the field value is empty, the field is not shown in the PDF at all.
 If the field value is not empty, the field will still be shown (unless `pdfHide` is not set to `true`). 
 
-```JSON
+```json
 pdfHideIfValueIsEmpty: true
 ```
 
@@ -106,7 +106,7 @@ pdfHideIfValueIsEmpty: true
 The value of `pdfWidth` defines the width of a field in the pdf layout.
 `1` represent the full row in the pdf, e.g. `0.5` represent the half row / 50 % of the row.
 
-```JSON
+```json
 "pdfWidth": 0.5
 ```
 
@@ -123,7 +123,7 @@ Placeholder text that is shown in the UI when the field is focused but does not 
 
 Important: If the field is not focused and does not have a value, `label.text` is shown instead.
 
-```JSON
+```json
 "placeHolderText": {
     "en": "Example Placeholder",
     "de": "Platzhalter",
@@ -145,7 +145,7 @@ Important: If the field is not focused and does not have a value, `label.text` i
 
 By setting `pdfTextSize`, the field label will show up in the PDF having the defined text size in pixels.
 
-```JSON
+```json
 "pdfTextSize": 20
 ```
 
@@ -160,7 +160,7 @@ By setting `pdfTextSize`, the field label will show up in the PDF having the def
 
 By setting `pdfTextColor`, the field label in the PDF will have the defined color.
 
-```JSON
+```json
 "pdfTextColor": "#F1F8F1"
 ```
 
@@ -174,7 +174,7 @@ By setting `pdfTextColor`, the field label in the PDF will have the defined colo
 
 Label text that is shown in the UI and the PDF to identify the field. 
 
-```JSON
+```json
 "text": {
     "en": "Example Text",
     "de": "Platzhalter",
@@ -195,7 +195,7 @@ Label text that is shown in the UI and the PDF to identify the field.
 
 If `uiHide` is set to `true`, the label is not shown in the UI.
 
-```JSON
+```json
 "uiHide": true
 ```
 
@@ -210,7 +210,7 @@ If `uiHide` is set to `true`, the label is not shown in the UI.
 
 By setting `uiTextColor`, the field label in the UI will have the defined color.
 
-```JSON
+```json
 "uiTextColor": "#F1F8F1"
 ```
 
@@ -227,7 +227,7 @@ By setting `uiTextColor`, the field label in the UI will have the defined color.
 
 By setting `requiredAmountOfEntries`, it specify how many repeating entries are required to fill the form.
 
-```JSON
+```json
 "requiredAmountOfEntries": 3,
 ```
 
@@ -241,7 +241,7 @@ By setting `requiredAmountOfEntries`, it specify how many repeating entries are 
 
  Allows to display text in the pdf in different languages.
 
-```JSON
+```json
 {
  "en": "Example MultiLanguageText",
  "de": "Beispiel Mehrfachsprachen Text",
@@ -288,7 +288,7 @@ By setting `requiredAmountOfEntries`, it specify how many repeating entries are 
 
 If `pdfStartInNewLine` is set to `true`, the field value starts below the field label in the PDF.
 
-```JSON
+```json
 "pdfStartInNewLine": true,
 ```
 
@@ -303,7 +303,7 @@ If `pdfStartInNewLine` is set to `true`, the field value starts below the field 
 
 If `pdfAddLineBreaks` is set to `true`, a linebreak is set after every value of the field in the PDF.
 
-```JSON
+```json
 "pdfAddLineBreaks": true,
 ```
 
@@ -318,7 +318,7 @@ If `pdfAddLineBreaks` is set to `true`, a linebreak is set after every value of 
 
 By setting `validators.minCharacters`, the field will be marked as invalid if the value contains less characters than the specified number.
 
-```JSON
+```json
 "validators": {
     "minCharacters": 10
 }
@@ -335,7 +335,7 @@ By setting `validators.minCharacters`, the field will be marked as invalid if th
 
 By setting `validators.maxCharacters`, the field will be marked as invalid if the value contains more characters than the specified number.
 
-```JSON
+```json
 "validators": {
     "maxCharacters": 100
 }
@@ -370,7 +370,7 @@ By setting `validators.maxCharacters`, the field will be marked as invalid if th
 
 If `enable` is set to `true`, the sub-property appears in the UI. 
 
-```JSON
+```json
  "enable": true
 
 ```

@@ -19,7 +19,7 @@ The booleanInput allows the user to mark a checkbox true or false.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` JSON (complete)
+```json (complete)
 {
     "id": "exampleBooleanInput_1",
     "type": "booleanInput",
@@ -55,7 +55,7 @@ The booleanInput allows the user to mark a checkbox true or false.
     }
 },
 ```
-``` JSON (minimal)
+```json (minimal)
 {
     "id": "exampleBooleanInput_1",
     "type": "booleanInput",
@@ -97,7 +97,7 @@ The booleanInput allows the user to mark a checkbox true or false.
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` JSON (static boolean)
+```json (static boolean)
 "prefill": {
     "value": [{
         "input": "none",

@@ -12,7 +12,7 @@ The prefill rule schema contains targets, inputs and steps.
 Each field can have multiple prefill rules. When a form is created, the backend tries to execute all the prefill rules successively until one of them can be fully applied because the required data is available.
 
 Schema:
-``` JSON (Prefill schema)
+```json (Prefill schema)
 "prefill": {
     "target": [
         { // These brackets contain the first prefill rule
@@ -198,7 +198,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
 <details>
 <summary>Prefill examples of certain fields</summary>
 
-``` JSON (SignatureSection)
+```json (SignatureSection)
 // Do not copy comments!
 // Prefills signature section with name of the current user
 // There are four different prefill rules for the location. 1. To enter the asset location 2. To enter the location of the costumer which the asset belongs to 3. To enter the customers location 4. To enter a default location
@@ -257,7 +257,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     ],
 },
 ```
-``` JSON (AddressInput)
+```json (AddressInput)
 // Do not copy comments!
 // Prefills AddressInput with a default address when the form is created
 
@@ -283,7 +283,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     ],
 },
 ```
-``` JSON (AddressInput2)
+```json (AddressInput2)
 // Do not copy comments!
 // Prefills the address of the work order of the connected company 
 
@@ -299,7 +299,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     ],
 },
 ```
-``` JSON (TaskListInput)
+```json (TaskListInput)
 // Do not copy comments!
 // Prefills predefined task to the taskList
 
@@ -344,7 +344,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     ],
 },
 ```
-``` JSON (TaskListInput2)
+```json (TaskListInput2)
 // Do not copy comments!
 // Prefills task of the work order 
 
@@ -357,7 +357,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     ],
 },
 ```
-``` JSON (SingleLineTextInput)
+```json (SingleLineTextInput)
 // Do not copy comments!
 // Prefills the name of the asset as a STRING 
 
@@ -373,7 +373,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     ],
 },
 ```
-``` JSON (MultiLineTextInput)
+```json (MultiLineTextInput)
 // Do not copy comments!
 // Prefills a default multi line text
 
@@ -387,7 +387,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
      }],
 },
 ```
-``` JSON (RichTextInput)
+```json (RichTextInput)
 // Do not copy comments!
 // Prefills a default HTML text
 
@@ -405,7 +405,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     ],
 },
 ```
-``` JSON (UserSingleSelect)
+```json (UserSingleSelect)
 // Do not copy comments!
 // Prefills the current user
 
@@ -416,7 +416,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     }],
 },
 ```
-``` JSON (BooleanInput)
+```json (BooleanInput)
 // Do not copy comments!
 // Prefills `true` 
 
@@ -427,7 +427,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     }],
 },
 ```
-``` JSON (TimeInput)
+```json (TimeInput)
 // Do not copy comments!
 // Prefills a default time 
 
@@ -441,7 +441,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
     }],
 },
 ```
-``` JSON (DateTimeInput)
+```json (DateTimeInput)
 // Do not copy comments!
 // Prefills a default date time with of certain time timezone
 
