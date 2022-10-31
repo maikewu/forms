@@ -1,0 +1,735 @@
+{
+  "general": {
+    "name": {
+      "en": "5-Why Method - Customer Complaint Recording",
+      "de": "5-Why Methode - Kundenreklamation"
+    }
+  },
+  "formStructure":{
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "General Information",
+        "de": "Allgemeine Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "06-signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": {
+                                "_field": "customer",
+                                "_propertyName": "customer"
+                              },
+                              "_functionName": "GET_ACCOUNT"
+                            },
+                            "_propertyName": "company"
+                          },
+                          "_propertyName": "billingAddress"
+                        },
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          }
+        },
+        "reclamation_number": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Reklamation-Nr.",
+            "en": "Complaint No."
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5
+        },
+        "reclamation_Date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum Reklamationseingang",
+            "en": "Date complaint receipt"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_problem_1": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "1. Impact",
+        "de": "1. Auswirkung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "1-description": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Was ist das aufgetretene Problem? Welche Störungen treten auf?",
+            "en": "What is the problem that has occurred? What malfunctions are occurring?"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "problem_description_1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Problembeschreibung",
+            "en": "Problem description"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "03_problem_2": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "2. Direct Cause",
+        "de": "2. Direkte Ursache"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "2-description": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Warum tritt das Problem auf? Was ist die direkte technische Ursache des Problems?",
+            "en": "Why does the problem occur? What is the direct technical cause of the problem?"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "problem_description_2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Warum",
+            "en": "Why"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "04_problem_3": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "3. Deeper Cause",
+        "de": "3. Tiefere Ursache"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "3-description": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Warum gibt es zur direkten Ursache noch ein technisches Problem (weitere Ursache) im Hintergrund?",
+            "en": "Why is there a technical problem (another cause) in the background in addition to the direct cause?"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "problem_description_3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Warum",
+            "en": "Why"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "05_problem_4": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "4. Organisational Deficiency",
+        "de": "4. Organisationsmangel"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "4-description": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Was hätte präventiv getan werden müssen, um das Problem zu verhindern?",
+            "en": "What should have been done preemptively to prevent the problem?"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "problem_description_4": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Warum",
+            "en": "Why"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "06_problem_5": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "5. System Deficiency",
+        "de": "5. Systemmangel"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "5-description": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Durch welche systematische Lösung würde die Präventivmaßnahme sichergestellt?",
+            "en": "What systematic solution would ensure preventive action?"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "problem_description_5": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Warum",
+            "en": "Why"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "07_problem_6": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "6. Measures",
+        "de": "6. Maßnahmen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "measure_1": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "a)",
+            "en": "a)"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "measure_2": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "b)",
+            "en": "b)"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "measure_3": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "c)",
+            "en": "c)"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        }
+      }
+    },
+    "08_responsibiliy_1": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Responsibilities",
+        "de": "Verantwortung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "measure_1_respons": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "a)",
+            "en": "a)"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "required": false,
+          "width": 1
+        },
+        "measure_1_due": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Erledigung bis",
+            "en": "Due date"
+          },
+          "required": false,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        },
+        "measure_1_done": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Erledigt am",
+            "en": "Completion date"
+          },
+          "required": false,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        }
+      }
+    },
+    "08-responsibility_1_signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": " ",
+        "de": " "
+      },
+      "children": {
+        "signature_approver_1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Verantwortlicher",
+            "en": "Responsible Person"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "disableDateAutofill": true,
+          "hideLocation": true,
+          "required": false
+        }
+      }
+    },
+    "08_responsibiliy_2": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Responsibilities",
+        "de": "Verantwortung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "measure_2_respons": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "b)",
+            "en": "b)"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "required": false,
+          "width": 1
+        },
+        "measure_2_due": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Erledigung bis",
+            "en": "Due date"
+          },
+          "required": false,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        },
+        "measure_2_done": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Erledigt am",
+            "en": "Completion date"
+          },
+          "required": false,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        }
+      }
+    },
+    "08-responsibility_2_signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": " ",
+        "de": " "
+      },
+      "children": {
+        "signature_approver_2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Verantwortlicher",
+            "en": "Responsible Person"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "disableDateAutofill": true,
+          "hideLocation": true,
+          "required": false
+        }
+      }
+    },
+    "08_responsibiliy_3": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Responsibilities",
+        "de": "Verantwortung"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "measure_3_respons": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "c)",
+            "en": "c)"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "required": false,
+          "width": 1
+        },
+        "measure_3_due": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Erledigung bis",
+            "en": "Due date"
+          },
+          "required": false,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        },
+        "measure_3_done": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Erledigt am",
+            "en": "Completion date"
+          },
+          "required": false,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        }
+      }
+    },
+    "08-responsibility_3_signature": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": " ",
+        "de": " "
+      },
+      "children": {
+        "signature_approver_3": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Verantwortlicher",
+            "en": "Responsible Person"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "disableDateAutofill": true,
+          "hideLocation": true,
+          "required": false
+        }
+      }
+    },
+    "09_wirksamkeit": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Proof of effectiveness",
+        "de": "Wirksamkeitsnachweis"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "efficient_yes": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Ja. Wie nachgewiesen?",
+            "en": "Yes. Proven how?"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "efficient_no": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Nein. Warum nicht?",
+            "en": "No. Why not?"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "efficient_date": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Wirksamkeit geprüft am",
+            "en": "Effectiveness proofen on"
+          },
+          "required": false,
+          "autofillCurrentDate": false,
+          "width": 0.5
+        }
+      }
+    },
+    "10-signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": " ",
+        "de": " "
+      },
+      "children": {
+        "signature_approver_4": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Teamleiter After-Sales",
+            "en": "Teamleader After-Sales"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "disableDateAutofill": true,
+          "hideLocation": false,
+          "autofillLocation": "Lich",
+          "required": true
+        }
+      }
+    },
+    "11-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send2": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Kundenreklamation",
+            "content": "Sehr geehrte Damen und Herren,\n\nes ist eine Reklamation von unseren Kunden eingegangen.\nBitte veranlassen Sie weitere Maßnhamen, dass dieses Problem schnellstmöglich behoben wird.\n\nMit freundlichen Grüßen,",
+            "to": {
+              "currentUser": false,
+              "others": [
+                "aftersales@merz-system.de"
+              ]
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false,
+              "others": [
+                "qmm@merz-system.de"
+              ]
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
