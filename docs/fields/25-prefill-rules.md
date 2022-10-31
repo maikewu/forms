@@ -92,6 +92,8 @@ that should be prepopulate to the form
 `steps` have an input (expected) data type and an output (provided) data type. 
 By chaining steps, the desired data type can be achieved "step by step". 
 
+**Note:** `OrganizationID` is can use the same steps which convert the `accountID` datatype.
+
 | `steps`               | input data type  | output data type |
 | :----------------------------- | :----- | :-----|
 | `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`

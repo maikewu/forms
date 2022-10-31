@@ -4,7 +4,7 @@ category: 635ce1e7775bc60045570ffb
 parentDoc: 635ce4870b9fa40081aaa430
 ---
 
-The GeneralSection contains ???
+The GeneralSection contains the overall form config. The name of the form can be set in the admin interface in remberg.
 
 # Configuration Overview
 
@@ -12,7 +12,7 @@ You can find a list below, that contains all sections.
 
 | general property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |
-| [singleInstanceForm](#singleinstanceform)                  | ??? |
+| [singleInstanceForm](#singleinstanceform)                  | If this is set to `true`, no new form can be created if the previous one is not completed. |
 | [timezone](#timezone)                                       | Defines the timezone of the form
 
 | sections property                                                 | Description                                                                                                  |
@@ -24,7 +24,7 @@ You can find a list below, that contains all sections.
 ```json
 {
   "general": {
-      "singleInstanceForm": true,
+      "singleInstanceForm": false,
       "timezone": "Europe/Berlin",
   },
   "sections": [
@@ -56,7 +56,7 @@ You can find a list below, that contains all sections.
 | Required        | no              |
 | Default Value   | -             |
 
-If `singleInstanceForm` is set to `true`, the ???
+Setting the `singleInstanceForm` config option to `true` allows only one instance of this form type to be in progress at any given time. 
 
 ```json
 "singleInstanceForm": false
