@@ -116,26 +116,9 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
     "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
 }],
 ```
-
-```json
-
+```json (...)
+"More examples can be added."
 ```
-```json
-
-```
-```json
-
-```
-```json
-
-```
-```json
-
-```
-```json
-
-```
-
 ---
 ## Data type per field / section
 

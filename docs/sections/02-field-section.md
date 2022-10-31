@@ -15,8 +15,7 @@ The FieldSection contains all fields of the form.
 
 
 ```json
-{
-  "sections": [
+"sections": [
     {
       "id": "exampleFieldSection",
       "type": "fieldSection",
@@ -37,7 +36,6 @@ The FieldSection contains all fields of the form.
             ]
         }
     ]
-}
 ```
 ---
 
