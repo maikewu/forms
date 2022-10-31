@@ -14,7 +14,7 @@ The FieldSection contains all fields of the form.
 | [fields](#fields)                                                            | Field properties of a form. |
 
 
-```typescript
+```json
 {
   "sections": [
     {

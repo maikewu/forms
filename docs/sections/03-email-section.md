@@ -21,7 +21,7 @@ The EmailSection contains fields to send the finshed form.
 | [whitelistedDomains](#whitelisteddomains)                                              | Defining domains that are whitelisted to as recipients |
 | [emailDialogPrefill](#emaildialogprefill)                                              | Configuration the email prefill after the FormEmailPrefillConfig. |
 
-```typescript
+```json
 {
     "id": "exampleEmailSection",
     "type": "emailSection",

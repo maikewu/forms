@@ -20,109 +20,109 @@ The SignatureSection contains field to sign and to finish the form.
 | [fields](#fields) (Required!)                                                    | Field properties of a form. |
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 
-```typescript
+```json
 
 {
-    id: 'exampleSignatureSection',
-    type: FormSectionTypesEnum.SIGNATURE_SECTION,
-    config: {
-        required: true,
-        headlineText: {
-            en: 'Example Signature Section',
-            de: 'Beispiel Signatur Sektion',
-            tr: 'Example Signature Section [TR]',
-            fr: 'Example Signature Section [FR]',
-            es: 'Example Signature Section [ES]',
-            it: 'Example Signature Section [IT]',
+    "id": "exampleSignatureSection",
+    "type": "signatureSection",
+    "config": {
+        "required": true,
+        "headlineText": {
+            "en": "Example Signature Section",
+            "de": "Beispiel Signatur Sektion",
+            "tr": "Example Signature Section [TR]",
+            "fr": "Example Signature Section [FR]",
+            "es": "Example Signature Section [ES]",
+            "it": "Example Signature Section [IT]",
         },
-        helpTextHtmlAbove: {
-            en: '<b>Example HTML helptext before</b>',
-            de: '<b>Beispiel HTML Hilfstext davor</b>',
-            tr: '<b>Example HTML helptext before [TR]</b>',
-            fr: '<b>Example HTML helptext before [FR]</b>',
-            es: '<b>Example HTML helptext before [ES]</b>',
-            it: '<b>Example HTML helptext before [IT]</b>',
+        "helpTextHtmlAbove": {
+            "en": "<b>Example HTML helptext before</b>",
+            "de": "<b>Beispiel HTML Hilfstext davor</b>",
+            "tr": "<b>Example HTML helptext before [TR]</b>",
+            "fr": "<b>Example HTML helptext before [FR]</b>",
+            "es": "<b>Example HTML helptext before [ES]</b>",
+            "it": "<b>Example HTML helptext before [IT]</b>",
         },
-        helpTextHtmlBelow: {
-            en: '<b>Example HTML helptext below</b>',
-            de: '<b>Beispiel HTML Hilfstext derunter</b>',
-            tr: '<b>Example HTML helptext below [TR]</b>',
-            fr: '<b>Example HTML helptext below [FR]</b>',
-            es: '<b>Example HTML helptext below [ES]</b>',
-            it: '<b>Example HTML helptext below [IT]</b>',
+        "helpTextHtmlBelow": {
+            "en": "<b>Example HTML helptext below</b>",
+            "de": "<b>Beispiel HTML Hilfstext derunter</b>",
+            "tr": "<b>Example HTML helptext below [TR]</b>",
+            "fr": "<b>Example HTML helptext below [FR]</b>",
+            "es": "<b>Example HTML helptext below [ES]</b>",
+            "it": "<b>Example HTML helptext below [IT]</b>",
         },
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,    
-        hideDownloadPdfButton: false,
-        hidePreviewPdfButton: false,
-        fields: {
-            dateInput: {
-                disable: false,
-                pdfHide: false,
-                required: false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,    
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "fields": {
+            "dateInput": {
+                "disable": false,
+                "pdfHide": false,
+                "required": false,
             },
-            locationSingleLineTextInput: {
-                disable: false,
-                pdfHide: false,
-                required: false,
+            "locationSingleLineTextInput": {
+                "disable": false,
+                "pdfHide": false,
+                "required": false,
             },
-            nameSingleLineTextInput: {
-                disable: false,
-                pdfHide: false,
-                capitalizeFirstLetterOfEveryWord: false,
-                required: false,
+            "nameSingleLineTextInput": {
+                "disable": false,
+                "pdfHide": false,
+                "capitalizeFirstLetterOfEveryWord": false,
+                "required": false,
             },
         },
-        prefill: {
-            name: [
+        "prefill": {
+            "name": [
                 {
-                    input: 'currentUser',
-                    steps: [
-                        'userToFullNameString',
+                    "input": "currentUser",
+                    "steps": [
+                        "userToFullNameString",
                     ],
                 },
             ],
-            location: [
+            "location": [
                 {
-                    input: 'assetId',
-                    steps: [
-                        'assetIdToAsset',
-                        'assetToLocationAddress',
-                        'addressToCityString',
+                    "input": "assetId",
+                    "steps": [
+                        "assetIdToAsset",
+                        "assetToLocationAddress",
+                        "addressToCityString",
                     ],
                 },
                 {
-                    input: 'assetId',
-                    steps: [
-                        'assetIdToAsset',
-                        'assetToCustomerAccountId',
-                        'accountIdToAccount',
-                        'accountToBillingAddressAddress',
-                        'addressToCityString',
+                    "input": "assetId",
+                    "steps": [
+                        "assetIdToAsset",
+                        "assetToCustomerAccountId",
+                        "accountIdToAccount",
+                        "accountToBillingAddressAddress",
+                        "addressToCityString",
                     ],
                 },
                 {
-                    input: 'organizationId',
-                    steps: [
-                        'accountIdToAccount',
-                        'accountToBillingAddressAddress',
-                        'addressToCityString',
+                    "input": "organizationId",
+                    "steps": [
+                        "accountIdToAccount",
+                        "accountToBillingAddressAddress",
+                        "addressToCityString",
                     ],
                 },
                 {
-                    input: 'none',
-                    steps: [
+                    "input": "none",
+                    "steps": [
                         [
-                            'staticString',
-                            'Default Location',
+                            "staticString",
+                            "Default Location",
                         ],
                     ],
                 },
             ],
-            date: [
+            "date": [
                 {
-                    input: 'creationDateTime',
-                    steps: ['dateTimeToDate'],
+                    "input": "creationDateTime",
+                    "steps": ["dateTimeToDate"],
                 },
             ],
         },
@@ -145,12 +145,12 @@ The SignatureSection contains field to sign and to finish the form.
 
  ```typescript 
 helpTextHtmlAbove: {
-    en: '<b>Example HTML helptext before</b>',
-    de: '<b>Beispiel HTML Hilfstext davor</b>',
-    tr: '<b>Example HTML helptext before [TR]</b>',
-    fr: '<b>Example HTML helptext before [FR]</b>',
-    es: '<b>Example HTML helptext before [ES]</b>',
-    it: '<b>Example HTML helptext before [IT]</b>',
+    en: "<b>Example HTML helptext before</b>",
+    de: "<b>Beispiel HTML Hilfstext davor</b>",
+    tr: "<b>Example HTML helptext before [TR]</b>",
+    fr: "<b>Example HTML helptext before [FR]</b>",
+    es: "<b>Example HTML helptext before [ES]</b>",
+    it: "<b>Example HTML helptext before [IT]</b>",
 },
 ```
 ---
@@ -166,12 +166,12 @@ helpTextHtmlAbove: {
 
  ```typescript 
 helpTextHtmlBelow: {
-    en: '<b>Example HTML helptext below</b>',
-    de: '<b>Beispiel HTML Hilfstext derunter</b>',
-    tr: '<b>Example HTML helptext below [TR]</b>',
-    fr: '<b>Example HTML helptext below [FR]</b>',
-    es: '<b>Example HTML helptext below [ES]</b>',
-    it: '<b>Example HTML helptext below [IT]</b>',
+    en: "<b>Example HTML helptext below</b>",
+    de: "<b>Beispiel HTML Hilfstext derunter</b>",
+    tr: "<b>Example HTML helptext below [TR]</b>",
+    fr: "<b>Example HTML helptext below [FR]</b>",
+    es: "<b>Example HTML helptext below [ES]</b>",
+    it: "<b>Example HTML helptext below [IT]</b>",
 },
 ```
 ---
@@ -274,53 +274,53 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 prefill: {
     name: [
         {
-            input: 'currentUser',
+            input: "currentUser",
             steps: [
-                'userToFullNameString',
+                "userToFullNameString",
             ],
         },
     ],
     location: [
         {
-            input: 'assetId',
+            input: "assetId",
             steps: [
-                'assetIdToAsset',
-                'assetToLocationAddress',
-                'addressToCityString',
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString",
             ],
         },
         {
-            input: 'assetId',
+            input: "assetId",
             steps: [
-                'assetIdToAsset',
-                'assetToCustomerAccountId',
-                'accountIdToAccount',
-                'accountToBillingAddressAddress',
-                'addressToCityString',
+                "assetIdToAsset",
+                "assetToCustomerAccountId",
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString",
             ],
         },
         {
-            input: 'organizationId',
+            input: "organizationId",
             steps: [
-                'accountIdToAccount',
-                'accountToBillingAddressAddress',
-                'addressToCityString',
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString",
             ],
         },
         {
-            input: 'none',
+            input: "none",
             steps: [
                 [
-                    'staticString',
-                    'Default Location',
+                    "staticString",
+                    "Default Location",
                 ],
             ],
         },
     ],
     date: [
         {
-            input: 'creationDateTime',
-            steps: ['dateTimeToDate'],
+            input: "creationDateTime",
+            steps: ["dateTimeToDate"],
         },
     ],
 },
