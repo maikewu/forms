@@ -1,7 +1,7 @@
 ---
 title: SingleLineTextInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The SingleLineTextInput field allows entering one line of unformatted text. It dosen't respects line breaks.
