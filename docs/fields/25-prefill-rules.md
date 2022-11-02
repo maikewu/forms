@@ -128,7 +128,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | Data | Condition | Description |
 | :------------------------- | :--------------| :---- |
 | `assetId`  |  |  The ID of the asset form which the new form is created
-| `organizationId` | | The ID of the company to which the asset belongs
+| `organizationId` | | The ID of the assigned company in the work order or from the asset
 | `creationDateTime`  |  | The creation date time of form 
 | `currentUser`  |  |  	Information about the current user, including the name, ID, etc.
 | `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
