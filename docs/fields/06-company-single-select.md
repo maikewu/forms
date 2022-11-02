@@ -26,6 +26,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
     "id": "exampleCompanySingleSelect_1",
     "type": "companySingleSelect",
     "config": {
+        "required": false,
         "disabled": false,
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
