@@ -11,7 +11,7 @@
       "headlineText": {
         "en": "Customer Information",
         "de": "Kundeninformationen"
-      },
+      }
     },
     "fields": [{
       "id": "customer",
@@ -198,7 +198,36 @@
             "en": "Customer"
           }
         },
-
+        "prefill": {
+          "selectedCompany": [
+            {
+              "input": "organizationId",
+              "steps": []
+            }
+          ]
+        },
+        "onChange": [{
+          "target": {
+            "id": "customerLocation"
+          },
+          "steps": [
+            "accountInfoToAccount",
+            "accountToBillingAddressAddress"
+          ]
+        }]
+      }
+    }, {
+      "id": "customerLocation",
+      "type": "addressInput",
+      "config": {
+        "label": {
+          "text": {
+            "de": "Adresse",
+            "en": "Address"
+          }
+        },
+        "pdfHideIfValueIsEmpty": true,
+        "pdfWidth": 0.5
       }
     }]
   }, {
@@ -210,7 +239,46 @@
         "de": "3. Unsere derzeit gültigen Kundendienstsätze"
       }
     },
-    "fields": []
+    "fields": [{
+      "id": "workHour",
+      "type": "singleLineInput",
+      "config": {
+        "label": {
+          "text": {
+            "de": "Arbeitszeit (EUR / Stunde)",
+            "en": "Maintenance Lump-Sum"
+          }
+        },
+        "pdfWidth": 0.3,
+        "pdfHideIfValueIsEmpty": true
+      }
+    }, {
+      "id": "travelHour",
+      "type": "singleLineInput",
+      "config": {
+        "label": {
+          "text": {
+            "de": "Reisezeit (EUR / Stunde)",
+            "en": "Travel hour Lump-Sum"
+          }
+        },
+        "pdfHideIfValueIsEmpty": true,
+        "pdfWidth": 0.3
+      }
+    }, {
+      "id": "smallParts",
+      "type": "singleLineInput",
+      "config": {
+        "label": {
+          "text": {
+            "de": "Fahrtkosten (EUR / km)",
+            "en": "Maintenance Lump-Sum"
+          }
+        },
+        "pdfWidth": 0.3,
+        "pdfHideIfValueIsEmpty": true
+      }
+    }]
   }, {
     "id": "05_paymentterms",
     "type": "fieldSection",
@@ -220,7 +288,17 @@
         "de": "4. Zahlungsbedingungen"
       }
     },
-    "fields": []
+    "fields": [{
+      "id": "zahlbed",
+      "type": "htmlDisplay",
+      "config": {
+        "text": {
+          "de": "Zahlungsbedingungen: 10 Tage netto\nSteuerfrei nach §6a UStG",
+          "en": "Terms of Payment: 10 days netto"
+        },
+        "pdfWidth": 1
+      }
+    }]
   }, {
     "id": "07_suppliercontact",
     "type": "fieldSection",
@@ -230,7 +308,37 @@
         "de": "5. Kontakt Servicelieferant"
       }
     },
-    "fields": []
+    "fields": [{
+      "id": "phone",
+      "type": "htmlDisplay",
+      "config": {
+        "text": {
+          "de": "Telefon: +49 8381 186 - 8903",
+          "en": "Phone: +49 8381 186 - 8903"
+        },
+        "pdfWidth": 1
+      }
+    }, {
+      "id": "fax",
+      "type": "htmlDisplay",
+      "config": {
+        "text": {
+          "de": "Fax: +49 8381 186 - 52",
+          "en": "Fax: +49 8381 186 - 52"
+        },
+        "pdfWidth": 1
+      }
+    }, {
+      "id": "mail",
+      "type": "htmlDisplay",
+      "config": {
+        "text": {
+          "de": "E-Mail: service@remberg.de",
+          "en": "Email: service@remberg.de"
+        },
+        "pdfWidth": 1
+      }
+    }]
   }, {
     "id": "09_01_ending",
     "type": "fieldSection",
@@ -240,14 +348,66 @@
         "de": " "
       }
     },
-    "fields": []
+    "fields": [{
+      "id": "helptext",
+      "type": "htmlDisplay",
+      "config": {
+        "text": {
+          "de": "An dieses Angebot binden wir uns zwei Wochen.\n\nRückantwort bitte an service@remberg.de.",
+          "en": "We are bound to this offer for two weeks.\n\nPlease send your reply to service@remberg.de."
+        },
+        "pdfWidth": 1
+      }
+    }]
   }, {
     "id": "09-signature",
     "type": "signatureSection",
     "config": {
+      "required": true,
       "headlineText": {
         "en": "Signature Service Supplier",
         "de": "Unterschrift Servicelieferant"
+      },
+      "fields": {
+        "dateInput": {
+          "disable": false,
+          "required": true,
+          "pdfHide": false
+        },
+        "locationSingleLineTextInput": {
+          "disable": false,
+          "required": true,
+          "pdfHide": false
+        },
+        "nameSingleLineTextInput": {
+          "disable": false,
+          "required": true,
+          "pdfHide": false,
+          "capitalizeFirstLetterOfEveryWord": false
+        }
+      },
+      "hideDownloadPdfButton": false,
+      "hidePreviewPdfButton": false,
+      "pdfHide": false,
+      "pdfHideIfValueIsEmpty": false,
+      "prefill": {
+        "name": [
+          {
+            "input": "assignedUserId",
+            "steps": [
+              "userIdToUser",
+              "userToFullNameString"
+            ]
+          }
+        ],
+        "location": [
+          {
+            "input": "none",
+            "steps": [
+              ["staticString", "Münsingen"]
+            ]
+          }
+        ]
       }
     }
   }, {
@@ -257,15 +417,54 @@
       "headlineText": {
         "en": "Signature Service Customer",
         "de": "Unterschrift Servicekunde"
-      }
+      },
+      "fields": {
+        "dateInput": {
+          "disable": false,
+          "required": false,
+          "pdfHide": false
+        },
+        "locationSingleLineTextInput": {
+          "disable": false,
+          "required": false,
+          "pdfHide": false
+        },
+        "nameSingleLineTextInput": {
+          "disable": false,
+          "required": false,
+          "pdfHide": false,
+          "capitalizeFirstLetterOfEveryWord": false
+        }
+      },
+      "required": false,
+      "helpTextHtmlAbove": {},
+      "helpTextHtmlBelow": {},
+      "hideDownloadPdfButton": false,
+      "hidePreviewPdfButton": false,
+      "pdfHide": false,
+      "pdfHideIfValueIsEmpty": false
     }
   }, {
     "id": "11-send",
     "type": "emailSection",
     "config": {
+      "hideDownloadPdfButton": false,
+      "hidePreviewPdfButton": false,
       "headlineText": {
         "en": "Send/sent filled out offer",
         "de": "Ausgefülltes Angebot senden/gesendet"
+      },
+      "pdfHide": true,
+      "emailDialogPrefill": {
+        "subject": {
+          "static": "remberg GmbH: Angebot"
+        },
+        "body": {
+          "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n\nSehr geehrte Damen und Herren,\n\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma remberg GmbH.\n\nIm Anhang finden Sie unser Angebot.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen"
+        },
+        "bcc": {
+          "currentUser": true
+        }
       }
     }
   }]
