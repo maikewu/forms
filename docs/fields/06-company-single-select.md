@@ -26,6 +26,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
     "id": "exampleCompanySingleSelect_1",
     "type": "companySingleSelect",
     "config": {
+        "required": false,
         "disabled": false,
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
@@ -37,12 +38,12 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
                 "tr": "Company Single Select 1 [TR]",
                 "fr": "Company Single Select 1 [FR]",
                 "es": "Company Single Select 1 [ES]",
-                "it": "Company Single Select 1 [IT]",
+                "it": "Company Single Select 1 [IT]"
             },
             "pdfHide": false,
             "pdfTextColor": "#facc2e",
             "pdfTextSize": 14,
-            "uiHide": false,
+            "uiHide": false
         },
         "value": {
             "disableCreation": false,
@@ -50,40 +51,40 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
             "pdfHide": false,
             "pdfStartInNewLine": false,
             "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14,
+            "pdfTextSize": 14
         },
         "prefill": {
             [ "selectedCompany" ]: [
                 {
                     "input": "currentAccountId",
-                    "steps": [],
-                },
-            ],
+                    "steps": []
+                }
+            ]
         },
         "onChange": [
             {
                 "target": { "id": "disabledSingleLineInput_1" },
-                "steps": ["accountInfoToCompanyName"],
+                "steps": ["accountInfoToCompanyName"]
             },
             {
                 "target": { "id": "exampleAddressInput_1" },
-                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"]
             },
             {
                 "target": { "id": "exampleSignatureSection", "propertyName": "location" },
-                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"]
             },
             {
                 "target": { "id": "exampleSingleLineInput_2" },
-                "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],
+                "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ]
             },
             {
                 "target": { "id": "examplePhoneNumberInput_1" },
-                "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
-            },
-        ],
-    },
-},
+                "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ]
+            }
+        ]
+    }
+}
 ```
 
 ```json (minimal)
@@ -98,10 +99,10 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
                 "tr": "Company Single Select 1 [TR]",
                 "fr": "Company Single Select 1 [FR]",
                 "es": "Company Single Select 1 [ES]",
-                "it": "Company Single Select 1 [IT]",
-            },
-        },
-    },
+                "it": "Company Single Select 1 [IT]"
+            }
+        }
+    }
 }
 ```
 ---
@@ -191,10 +192,10 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
     [ "selectedCompany" ]: [
         {
             "input": "currentAccountId",
-            "steps": [],
-        },
-    ],
-},
+            "steps": []
+        }
+    ]
+}
 ```
 ---
 ## `onChange`
@@ -211,23 +212,23 @@ This configuration follows the [general syntax for dynamic field actions](./26-o
 "onChange": [
     {
         "steps": ["accountInfoToCompanyName"],
-        "target": { "id": "disabledSingleLineInput_1" },
+        "target": { "id": "disabledSingleLineInput_1" }
     },
     {
         "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
-        "target": { "id": "exampleAddressInput_1" },
+        "target": { "id": "exampleAddressInput_1" }
     },
     {
         "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
-        "target": { "id": "exampleSignatureSection", "propertyName": "location" },
+        "target": { "id": "exampleSignatureSection", "propertyName": "location" }
     },
     {
         "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],
-        "target": { "id": "exampleSingleLineInput_2" },
+        "target": { "id": "exampleSingleLineInput_2" }
     },
     {
         "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
-        "target": { "id": "examplePhoneNumberInput_1" },
-    },
-],
+        "target": { "id": "examplePhoneNumberInput_1" }
+    }
+]
 ```
