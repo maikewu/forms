@@ -25,7 +25,7 @@ You can find a list below, that contains all sections.
 {
   "general": {
       "singleInstanceForm": false,
-      "timezone": "Europe/Berlin",
+      "timezone": "Europe/Berlin"
   },
   "sections": [
     {

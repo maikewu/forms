@@ -92,7 +92,7 @@ that should be prepopulate to the form
 `steps` have an input (expected) data type and an output (provided) data type. 
 By chaining steps, the desired data type can be achieved "step by step". 
 
-**Note:** `OrganizationID` is can use the same steps which convert the `accountID` datatype.
+**Note:** `OrganizationID` can use the same steps which convert the `accountID` datatype.
 
 | `steps`               | input data type  | output data type |
 | :----------------------------- | :----- | :-----|
@@ -128,7 +128,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | Data | Condition | Description |
 | :------------------------- | :--------------| :---- |
 | `assetId`  |  |  The ID of the asset form which the new form is created
-| `organizationId` | | The ID of the company to which the asset belongs
+| `organizationId` | | The ID of the assigned company in the work order or from the asset
 | `creationDateTime`  |  | The creation date time of form 
 | `currentUser`  |  |  	Information about the current user, including the name, ID, etc.
 | `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
