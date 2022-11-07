@@ -1,10 +1,10 @@
 ---
 title: HeadlineDisplay
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
-The HeadlineDisplay is a field that displays headlines to structure content in the form and provisde information.
+The HeadlineDisplay is a field that displays headlines to structure content in the form.
 
 # Configuration Overview
 
@@ -21,7 +21,7 @@ The HeadlineDisplay is a field that displays headlines to structure content in t
 
 ---
 
-```typescript
+```json
 {
     "id": "exampleHeadlineDisplay_1",
     "type": "headlineDisplay",
@@ -56,6 +56,6 @@ The HeadlineDisplay is a field that displays headlines to structure content in t
 
 By setting `uiTextSize`, the field label will show up in the UI having the defined text size in pixels.
 
-``` typescript
+```json
 "uiTextSize": "H2"
 ```

@@ -1,10 +1,10 @@
 ---
 title: UserSingleSelect
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
-The UserSingleSelect field allows to select a user from the own or from a customers organisation.
+The UserSingleSelect field allows to select a user from the own or from a customers organization.
 
 # Configuration Overview
 
@@ -21,7 +21,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-```typescript (complete)
+```json (complete)
 {
     "id": "exampleUserSingleSelect_1",
     "type": "userSingleSelect",
@@ -30,6 +30,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
         "disabled": false,
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
         "label": {
             "text": {
                 "en": "User Select 1",
@@ -52,28 +53,23 @@ The UserSingleSelect field allows to select a user from the own or from a custom
             "pdfPrintEmailAddress": true
         },
       "prefill": {
-          "value": [
-              {
+          "value": [{
                   "input": "currentUserId",
                   "steps": [],
-              },
-          ],
+              }]
       },
-      "onChange": [
-          {
-              "steps": [ "userToFullNameString" ],
-              "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+      "onChange": [{
+            "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+            "steps": [ "userToFullNameString" ],
           },
           {
-              "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
-              "target": { "id": "examplePhoneNumberInput_1" },
-          },
-      ],
+            "target": { "id": "examplePhoneNumberInput_1" },
+            "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
+          }],
   },
 },
 ```
-
-```typescript (minimal)
+```json (minimal)
 {
     "id": "exampleUserSingleSelect_1",
     "type": "userSingleSelect",
@@ -114,7 +110,7 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [printEmailAddress](#printemailaddress)                                         | Setting this to `true` printes the email address of the selected user in the PDF. |
+| [printEmailAddress](#printemailaddress)                                         | Setting this to `true` prints the email address of the selected user in the PDF. |
 
 ---
 ### `printEmailAddress`
@@ -125,9 +121,9 @@ The UserSingleSelect field allows to select a user from the own or from a custom
 | Required        | no              |
 | Default Value   | `false`               |
 
-By setting `printEmailAddress` to `true`, email address of the slected user will be printed in brackets next to the name in the PDF.
+By setting `printEmailAddress` to `true`, email address of the selected user will be printed in brackets next to the name in the PDF.
 
-``` typescript
+```json
 value:{
 "printEmailAddress": true
 }
@@ -143,7 +139,7 @@ value:{
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (current UserID)
+```json (current UserID)
 "prefill": {
     "value": [
         {
@@ -164,15 +160,9 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```typescript
-"onChange": [
-    {
-        "steps": [ "userToFullNameString" ],
+```json
+"onChange": [{
         "target": { "id": "exampleSignatureSection", "propertyName": "name" },
-    },
-    {
-        "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
-        "target": { "id": "examplePhoneNumberInput_1" },
-    },
-],
+        "steps": [ "userToFullNameString" ],
+    }],
 ```

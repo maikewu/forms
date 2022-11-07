@@ -1,7 +1,7 @@
 ---
 title: RichTextInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The RichTextInput is a text field that allows text formatting.
@@ -20,65 +20,65 @@ The RichTextInput is a text field that allows text formatting.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
-    id: 'richTextInput_1',
-    type: FormFieldTypesEnum.RICH_TEXT_INPUT,
-    config: {
-        required: true,
-        disabled: false,
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: true,
-        pdfWidht: 1,
-        placeHolderText: 'Write some rich text',
-        label: {
-            text: {
-                en: 'Rich Text Input 1',
-                de: 'Rich Text Eingabe 1',
-                tr: 'Rich Text Input 1 [TR]',
-                fr: 'Rich Text Input 1 [FR]',
-                es: 'Rich Text Input 1 [ES]',
-                it: 'Rich Text Input 1 [IT]',
-            },
+    "id": "richTextInput_1",
+    "type": "richTextInput",
+    "config": {
+        "disabled": false,
+        "required": true,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "placeHolderText": "<h1>Write some rich text</h1>",
+        "label": {
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false,
+            "text": {
+                "en": "Rich Text Input 1",
+                "de": "Rich Text Eingabe 1",
+                "tr": "Rich Text Input 1 [TR]",
+                "fr": "Rich Text Input 1 [FR]",
+                "es": "Rich Text Input 1 [ES]",
+                "it": "Rich Text Input 1 [IT]"
+            }
         },
-        value: {
-            validators: {
-                minCharacters: 10,
-                maxCharacters: 200,
-            },
+        "value": {
+            "pdfHide": false,
+            "validators": {
+                "minCharacters": 10,
+                "maxCharacters": 200
+            }
         },
-        prefill: {
-            value: [
-                {
-                    input: 'none',
-                    steps: [
-                        [
-                            'staticString',
-                            '<h1>Default rich text content</h1>',
-                        ],
-                    ],
-                },
-            ],
-        },
-    },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[ "staticString", "<h1>Default rich text content</h1>"]]
+            }]
+        }
+    }
 },
 ```
-``` typescript (minimal)
+```json (minimal)
 {
-    id: 'richTextInput_1',
-    type: FormFieldTypesEnum.RICH_TEXT_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'Rich Text Input 1',
-                de: 'Rich Text Eingabe 1',
-                tr: 'Rich Text Input 1 [TR]',
-                fr: 'Rich Text Input 1 [FR]',
-                es: 'Rich Text Input 1 [ES]',
-                it: 'Rich Text Input 1 [IT]',
-            },
+    "id": "richTextInput_1",
+    "type": "richTextInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Rich Text Input 1",
+                "de": "Rich Text Eingabe 1",
+                "tr": "Rich Text Input 1 [TR]",
+                "fr": "Rich Text Input 1 [FR]",
+                "es": "Rich Text Input 1 [ES]",
+                "it": "Rich Text Input 1 [IT]"
+            }
         },
-    },
+        "value": {
+        },
+    }
 },
 ```
 
@@ -115,20 +115,14 @@ The RichTextInput is a text field that allows text formatting.
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` typescript 
-prefill: {
-    value: [
-        {
-            input: 'none',
-            steps: [
-                [
-                    'staticString',
-                    '<h1>Default rich text content</h1>',
-                ],
-            ],
-        },
-    ],
-},
+```json 
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[ "staticString", "<h1>Default rich text content</h1>"
+        ]]
+    }]
+}
 ```
 ---
 ## `onChange`

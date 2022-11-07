@@ -1,12 +1,12 @@
 ---
 title: Form Fields
 excerpt: Collection of Form Fields
-category: 62ebf4654ae80e09e468624b
+category: 635ce1e7775bc60045570ffb
 ---
 
-Welcome to the fields :)
+Welcome to fields :)
 
-You can find a list below, that contains all fields.
+You find all available fields in the list below.
 
 | Property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |

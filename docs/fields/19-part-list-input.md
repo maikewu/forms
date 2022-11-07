@@ -1,7 +1,7 @@
 ---
 title: PartListInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 With the PartListInput, the user can add parts to an form.
@@ -12,144 +12,143 @@ With the PartListInput, the user can add parts to an form.
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
-| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are requried to fill the form.                                                                                        |
+| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are required to fill the form.                                                                                        |
 | [label](#label)                                                              | Configuration of the field label. |
 | [fields](#fields)                                                            | Components of the field |
 
 
-```typescript (complete)
+```json (complete)
 {
-    id: 'exampleSparePartsList_1',
-    type: FormFieldTypesEnum.PART_LIST_INPUT,
-    config: {
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        pdfWidth: 1,
-        requiredAmountOfEntries: 3,
-        label: {
-            text: {
-                en: 'Part List 1',
-                de: 'Ersatzteilliste 1',
-                tr: 'Part List 1 [TR]',
-                fr: 'Part List 1 [FR]',
-                es: 'Part List 1 [ES]',
-                it: 'Part List 1 [IT]',
+    "id": "exampleSparePartsList_1",
+    "type": "partListInput",
+    "config": {
+        "pdfHide": false,
+        "pdfHideIfValuesIsEmpty": false,  
+        "pdfWidth": 1,  
+        "requiredAmountOfEntries": 3,
+        "label": {
+            "text": {
+                "en": "Part List 1",
+                "de": "Ersatzteilliste 1",
+                "tr": "Part List 1 [TR]",
+                "fr": "Part List 1 [FR]",
+                "es": "Part List 1 [ES]",
+                "it": "Part List 1 [IT]"
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
         },
-
-        fields: {
-            partNumberSingleLineTextInput: {
-                required: true,
-                pdfHide: false,
-                placeHolderText: {
-                    en: 'Part Number Placeholder Text',
-                    de: 'Part Number Placeholder Text',
-                    tr: 'Part Number Placeholder Text',
-                    fr: 'Part Number Placeholder Text',
-                    es: 'Part Number Placeholder Text',
-                    it: 'Part Number Placeholder Text',
-                },
+        "fields": {
+            "partNumberSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                    "en": "Part Number Placeholder Text",
+                    "de": "Part Number Placeholder Text",
+                    "tr": "Part Number Placeholder Text",
+                    "fr": "Part Number Placeholder Text",
+                    "es": "Part Number Placeholder Text",
+                    "it": "Part Number Placeholder Text"
+                }
             },
-            quantityNumericInput: {
-                required: true,
-                pdfHide: false,
+            "quantityNumericInput": {
+                "required": true,
+                "pdfHide": false
             },
-            descriptionMultiLineTextInput: {
-                enable: true,
-                required: true,
-                pdfHide: false,
-                placeHolderText: {
-                    en: 'Description Placeholder Text',
-                    de: 'Description Placeholder Text',
-                    tr: 'Description Placeholder Text',
-                    fr: 'Description Placeholder Text',
-                    es: 'Description Placeholder Text',
-                    it: 'Description Placeholder Text',
-                },
+            "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                    "en": "Description Placeholder Text",
+                    "de": "Description Placeholder Text",
+                    "tr": "Description Placeholder Text",
+                    "fr": "Description Placeholder Text",
+                    "es": "Description Placeholder Text",
+                    "it": "Description Placeholder Text"
+                }
             },
-            deliverToStaticSingleSelect: {
-                enable: true,
-                required: true,
-                pdfHide: false,
+            "deliverToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
             },
-            invoiceToStaticSingleSelect: {
-                enable: true,
-                required: true,
-                pdfHide: false,
+            "invoiceToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
             },
-            warrantyBooleanInput: {
-                enable: true,
-                pdfHide: false,
-            },
-        },
-    },
+            "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+            }
+        }
+    }
 },
 ```
-
-```typescript (minimal)
+```json (minimal)
 {
-    id: 'exampleSparePartsList_1',
-    type: FormFieldTypesEnum.PART_LIST_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'Part List 1',
-                de: 'Ersatzteilliste 1',
-                tr: 'Part List 1 [TR]',
-                fr: 'Part List 1 [FR]',
-                es: 'Part List 1 [ES]',
-                it: 'Part List 1 [IT]',
+    "id": "exampleSparePartsList_1",
+    "type": "partListInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Part List 1",
+                "de": "Ersatzteilliste 1",
+                "tr": "Part List 1 [TR]",
+                "fr": "Part List 1 [FR]",
+                "es": "Part List 1 [ES]",
+                "it": "Part List 1 [IT]"
             },
         },
-        fields: {
-            partNumberSingleLineTextInput: {
-                required: true,
-                pdfHide: false,
-                placeHolderText: {
-                    en: 'Part Number Placeholder Text',
-                    de: 'Part Number Placeholder Text',
-                    tr: 'Part Number Placeholder Text',
-                    fr: 'Part Number Placeholder Text',
-                    es: 'Part Number Placeholder Text',
-                    it: 'Part Number Placeholder Text',
-                },
+        "fields": {
+            "partNumberSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                    "en": "Part Number Placeholder Text",
+                    "de": "Part Number Placeholder Text",
+                    "tr": "Part Number Placeholder Text",
+                    "fr": "Part Number Placeholder Text",
+                    "es": "Part Number Placeholder Text",
+                    "it": "Part Number Placeholder Text"
+                }
             },
-            quantityNumericInput: {
-                required: true,
-                pdfHide: false,
+            "quantityNumericInput": {
+                "required": true,
+                "pdfHide": false
             },
-            descriptionMultiLineTextInput: {
-                enable: true,
-                required: true,
-                pdfHide: false,
-                placeHolderText: {
-                    en: 'Description Placeholder Text',
-                    de: 'Description Placeholder Text',
-                    tr: 'Description Placeholder Text',
-                    fr: 'Description Placeholder Text',
-                    es: 'Description Placeholder Text',
-                    it: 'Description Placeholder Text',
-                },
+            "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                    "en": "Description Placeholder Text",
+                    "de": "Description Placeholder Text",
+                    "tr": "Description Placeholder Text",
+                    "fr": "Description Placeholder Text",
+                    "es": "Description Placeholder Text",
+                    "it": "Description Placeholder Text"
+                }
             },
-            deliverToStaticSingleSelect: {
-                enable: true,
-                required: true,
-                pdfHide: false,
+            "deliverToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
             },
-            invoiceToStaticSingleSelect: {
-                enable: true,
-                required: true,
-                pdfHide: false,
+            "invoiceToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
             },
-            warrantyBooleanInput: {
-                enable: true,
-                pdfHide: false,
-            },
-        },
-    },
+            "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+            }
+        }
+    }
 },
 ```
 # Configuration Parameters
@@ -173,7 +172,7 @@ With the PartListInput, the user can add parts to an form.
 | [descriptionMultiLineTextInput](#descriptionMultiLineTextInput)        | Multi line input field in the UI to enter a description of the part  |
 | [deliverToStaticSingleSelect](#deliverToStaticSingleSelect)         | A single select field in the UI to choose the delivery destination |
 | [invoiceToStaticSingleSelect](#invoiceToStaticSingleSelect)         | A single select field in the UI to choose the invoice destination |
-| [warrantyBooleanInput](#warrantyBooleanInput)         | A checkbox in the UI to mark "Coverd under warranty" |
+| [warrantyBooleanInput](#warrantyBooleanInput)         | A checkbox in the UI to mark "Covered under warranty" |
 
 ---
 
@@ -201,14 +200,14 @@ With the PartListInput, the user can add parts to an form.
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [required](./24-general-properties/#required)                                | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 | [placeHolderText](./24-general-properties/#placeholdertext)                  | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
-| [enable](./24-general-properties/#enable)                  | Setting this to `true` enables the poperty in the UI |
+| [enable](./24-general-properties/#enable)                  | Setting this to `true` enables the property in the UI |
 
 ---
 ### `deliverToStaticSingleSelect`
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the poperty in the UI |
+| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |
 | [required](./24-general-properties/#required)                 | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 
@@ -217,7 +216,7 @@ With the PartListInput, the user can add parts to an form.
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the poperty in the UI |
+| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |
 | [required](./24-general-properties/#required)                 | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 
@@ -226,5 +225,5 @@ With the PartListInput, the user can add parts to an form.
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the poperty in the UI |
+| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |

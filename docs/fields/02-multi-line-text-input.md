@@ -1,7 +1,7 @@
 ---
 title: MultiLineTextInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The MultiLineTextInput field allows entering larger amounts of unformatted text. It respects line breaks and can be configured to limit the possible content length.
@@ -21,7 +21,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
   "id": "exampleMultiLineTextInput_1",
   "type": "multiLineTextInput",
@@ -29,6 +29,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
       "required": true,
       "disabled": false,
       "pdfHide": false,
+      "pdfWidth": 0.5,
       "pdfHideIfValueIsEmpty": false,
       "placeHolderText": {
         "en": "Example Placeholder",
@@ -48,7 +49,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
                 "it": "Single Line Input 1 [IT]"
           },
           "pdfHide": false,
-          "pdfTextColor": '#facc2e',
+          "pdfTextColor": "#facc2e",
           "pdfTextSize": 14,
           "uiHide": false,
       },
@@ -68,19 +69,14 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
             "value": [
                 {
                     "input": "none",
-                    "steps": [
-                        [
-                            "staticString",
-                            'Default \n Multi \n Line \n Text',
-                        ],
-                    ],
+                    "steps": [["staticString","Default \n Multi \n Line \n Text"]],
                 },
             ],
         },
     },
 }
 ```
-``` typescript (minimal)
+```json (minimal)
 {
   "id": "exampleMultiLineTextInput_2",
   "type": "multiLineTextInput",
@@ -140,7 +136,7 @@ The MultiLineTextInput field allows entering larger amounts of unformatted text.
 By setting `uiMinRows`, the text input in he UI will always span at the least the configured amount of lines.
 If the content spans less lines, the size of the text input will not shrink further.
 
-``` typescript
+```json
 "uiMinRows": 5
 ```
 
@@ -156,7 +152,7 @@ If the content spans less lines, the size of the text input will not shrink furt
 By setting `uiMaxRows`, the text input in he UI will not grow further than the specified amount of lines.
 If the content spans more lines than that maximum, there will be a scrollbar to access the additional lines.
 
-``` typescript
+```json
 "uiMaxRows": 15
 ```
 ---
@@ -169,14 +165,12 @@ If the content spans more lines than that maximum, there will be a scrollbar to 
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (static string)
+```json (static string)
 "prefill": {
         "value": [
             {
                 "input": "none",
-                "steps": [
-                    [ "staticString", 'Default \n Multi \n Line \n Text' ],
-                ],
+                "steps": [[ "staticString", "Default \n Multi \n Line \n Text" ]]
             },
         ],
     },

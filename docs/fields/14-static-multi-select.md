@@ -1,7 +1,7 @@
 ---
 title: StaticMultiSelect
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 
@@ -23,125 +23,123 @@ The StaticMultiSelect field allows to choose one or more options of the dropdown
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
-    id: 'exampleStaticMultiSelect_1',
-    type: FormFieldTypesEnum.STATIC_MULTI_SELECT,
-    config: {
-        disabled: false,
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        uiHideInRepeaterCardDisplay: false,
-        minAmountOfSelections: 2,
-        maxAmountOfSelections: 3,
-        label: {
-            text: {
-                en: 'Static Multi Select 1',
-                de: 'Static Multi Select 1 [DE]',
-                tr: 'Static Multi Select 1 [TR]',
-                fr: 'Static Multi Select 1 [FR]',
-                es: 'Static Multi Select 1 [ES]',
-                it: 'Static Multi Select 1 [IT]',
+    "id": "exampleStaticMultiSelect_1",
+    "type": "staticMultiSelect",
+    "config": {
+        "disabled": false,
+        "pdfHide": false,
+        "pdfWidth": 1,
+        "pdfHideIfValueIsEmpty": false,
+        "minAmountOfSelections": 2,
+        "maxAmountOfSelections": 3,        
+        "label": {
+            "text": {
+                "en": "Static Multi Select 1",
+                "de": "Static Multi Select 1 [DE]",
+                "tr": "Static Multi Select 1 [TR]",
+                "fr": "Static Multi Select 1 [FR]",
+                "es": "Static Multi Select 1 [ES]",
+                "it": "Static Multi Select 1 [IT]"
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
-            uiHide: false,
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
         },
-        value: {
-            options: {
-                exampleOptionOne: {
-                    en: 'Example option 1',
-                    de: 'Example option 1 [DE]',
-                    tr: 'Example option 1 [TR]',
-                    fr: 'Example option 1 [FR]',
-                    es: 'Example option 1 [ES]',
-                    it: 'Example option 1 [IT]',
+        "value": {
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "pdfAddLineBreaks": true,
+            "options": {
+                "exampleOptionOne": {
+                    "en": "Example option 1",
+                    "de": "Example option 1 [DE]",
+                    "tr": "Example option 1 [TR]",
+                    "fr": "Example option 1 [FR]",
+                    "es": "Example option 1 [ES]",
+                    "it": "Example option 1 [IT]"
                 },
-                exampleOptionTwo: {
-                    en: 'Example option 2',
-                    de: 'Example option 2 [DE]',
-                    tr: 'Example option 2 [TR]',
-                    fr: 'Example option 2 [FR]',
-                    es: 'Example option 2 [ES]',
-                    it: 'Example option 2 [IT]',
+                "exampleOptionTwo": {
+                    "en": "Example option 2",
+                    "de": "Example option 2 [DE]",
+                    "tr": "Example option 2 [TR]",
+                    "fr": "Example option 2 [FR]",
+                    "es": "Example option 2 [ES]",
+                    "it": "Example option 2 [IT]"
                 },
-                exampleOptionThree: {
-                    en: 'Example option 3',
-                    de: 'Example option 3 [DE]',
-                    tr: 'Example option 3 [TR]',
-                    fr: 'Example option 3 [FR]',
-                    es: 'Example option 3 [ES]',
-                    it: 'Example option 3 [IT]',
-                },
+                "exampleOptionThree": {
+                    "en": "Example option 3",
+                    "de": "Example option 3 [DE]",
+                    "tr": "Example option 3 [TR]",
+                    "fr": "Example option 3 [FR]",
+                    "es": "Example option 3 [ES]",
+                    "it": "Example option 3 [IT]"
+                }
             },
-            pdfHide: false,
-            pdfStartInNewLine: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
-            pdfAddLineBreaks: true,
         },
-        prefill: {
-            [StaticMultiSelectPrefillTargetsEnum.VALUE]: [
-                {
-                    input: 'none',
-                    steps: [
-                        [
-                            'staticStringArray',
-                            ['exampleOptionOne', 'exampleOptionTwo'],
-                        ],
-                    ],
-                },
-            ],
-        },
-    },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticStringArray",
+                    [
+                    "exampleOptionOne",
+                    "exampleOptionTwo"
+                    ]
+                ]]
+            }]
+        }
+    }
 },
 ```
-
-```typescript (minimal)
+```json (minimal)
 {
-    id: 'exampleStaticMultiSelect_1',
-    type: FormFieldTypesEnum.STATIC_MULTI_SELECT,
-    config: {
-        label: {
-            text: {
-                en: 'Static Multi Select 1',
-                de: 'Static Multi Select 1 [DE]',
-                tr: 'Static Multi Select 1 [TR]',
-                fr: 'Static Multi Select 1 [FR]',
-                es: 'Static Multi Select 1 [ES]',
-                it: 'Static Multi Select 1 [IT]',
+    "id": "exampleStaticMultiSelect_1",
+    "type": "staticMultiSelect",
+    "config": {        
+        "label": {
+            "text": {
+                "en": "Static Multi Select 1",
+                "de": "Static Multi Select 1 [DE]",
+                "tr": "Static Multi Select 1 [TR]",
+                "fr": "Static Multi Select 1 [FR]",
+                "es": "Static Multi Select 1 [ES]",
+                "it": "Static Multi Select 1 [IT]"
             },
         },
-        value: {
-            options: {
-                exampleOptionOne: {
-                    en: 'Example option 1',
-                    de: 'Example option 1 [DE]',
-                    tr: 'Example option 1 [TR]',
-                    fr: 'Example option 1 [FR]',
-                    es: 'Example option 1 [ES]',
-                    it: 'Example option 1 [IT]',
+        "value": {
+            "options": {
+                "exampleOptionOne": {
+                    "en": "Example option 1",
+                    "de": "Example option 1 [DE]",
+                    "tr": "Example option 1 [TR]",
+                    "fr": "Example option 1 [FR]",
+                    "es": "Example option 1 [ES]",
+                    "it": "Example option 1 [IT]"
                 },
-                exampleOptionTwo: {
-                    en: 'Example option 2',
-                    de: 'Example option 2 [DE]',
-                    tr: 'Example option 2 [TR]',
-                    fr: 'Example option 2 [FR]',
-                    es: 'Example option 2 [ES]',
-                    it: 'Example option 2 [IT]',
+                "exampleOptionTwo": {
+                    "en": "Example option 2",
+                    "de": "Example option 2 [DE]",
+                    "tr": "Example option 2 [TR]",
+                    "fr": "Example option 2 [FR]",
+                    "es": "Example option 2 [ES]",
+                    "it": "Example option 2 [IT]"
                 },
-                exampleOptionThree: {
-                    en: 'Example option 3',
-                    de: 'Example option 3 [DE]',
-                    tr: 'Example option 3 [TR]',
-                    fr: 'Example option 3 [FR]',
-                    es: 'Example option 3 [ES]',
-                    it: 'Example option 3 [IT]',
-                },
+                "exampleOptionThree": {
+                    "en": "Example option 3",
+                    "de": "Example option 3 [DE]",
+                    "tr": "Example option 3 [TR]",
+                    "fr": "Example option 3 [FR]",
+                    "es": "Example option 3 [ES]",
+                    "it": "Example option 3 [IT]"
+                }
             },
         },
-    },
+    }
 },
 ```
 
@@ -182,24 +180,32 @@ The StaticMultiSelect field allows to choose one or more options of the dropdown
 
 In `options` the content of the dropdown can be defined.
 
-``` typescript
-options: {
-    exampleOptionOne: {
-        en: 'Example option 1',
-        de: 'Example option 1 [DE]',
-        tr: 'Example option 1 [TR]',
-        fr: 'Example option 1 [FR]',
-        es: 'Example option 1 [ES]',
-        it: 'Example option 1 [IT]',
+```json
+"options": {
+    "exampleOptionOne": {
+        "en": "Example option 1",
+        "de": "Example option 1 [DE]",
+        "tr": "Example option 1 [TR]",
+        "fr": "Example option 1 [FR]",
+        "es": "Example option 1 [ES]",
+        "it": "Example option 1 [IT]"
     },
-    exampleOptionTwo: {
-        en: 'Example option 2',
-        de: 'Example option 2 [DE]',
-        tr: 'Example option 2 [TR]',
-        fr: 'Example option 2 [FR]',
-        es: 'Example option 2 [ES]',
-        it: 'Example option 2 [IT]',
+    "exampleOptionTwo": {
+        "en": "Example option 2",
+        "de": "Example option 2 [DE]",
+        "tr": "Example option 2 [TR]",
+        "fr": "Example option 2 [FR]",
+        "es": "Example option 2 [ES]",
+        "it": "Example option 2 [IT]"
     },
+    "exampleOptionThree": {
+        "en": "Example option 3",
+        "de": "Example option 3 [DE]",
+        "tr": "Example option 3 [TR]",
+        "fr": "Example option 3 [FR]",
+        "es": "Example option 3 [ES]",
+        "it": "Example option 3 [IT]"
+    }
 },
 ```
 ---
@@ -213,8 +219,8 @@ options: {
 
 By setting `minAmountOfSelections` the minimum number of values that must be selected get defined.
 
-``` typescript
-minAmountOfSelections: 2
+```json
+"minAmountOfSelections": 2
 ```
 
 ---
@@ -228,8 +234,8 @@ minAmountOfSelections: 2
 
 By setting `maxAmountOfSelections` the maximum number of values that must be selected get defined.
 
-``` typescript
-maxAmountOfSelections: 2
+```json
+"maxAmountOfSelections": 2
 ```
 
 ---
@@ -243,20 +249,19 @@ maxAmountOfSelections: 2
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (static time)
-prefill: {
-    [StaticMultiSelectPrefillTargetsEnum.VALUE]: [
-        {
-            input: 'none',
-            steps: [
-                [
-                    'staticStringArray',
-                    ['exampleOptionOne', 'exampleOptionTwo'],
-                ],
-            ],
-        },
-    ],
-},
+```json (static time)
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[
+            "staticStringArray",
+            [
+            "exampleOptionOne",
+            "exampleOptionTwo"
+            ]
+        ]]
+    }]
+}
 ```
 ---
 ## `onChange`

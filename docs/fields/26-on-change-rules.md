@@ -1,7 +1,7 @@
 ---
 title: DynamicFieldActions
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 # Dynamic Field Actions (onChange)
@@ -17,7 +17,7 @@ and edges of the graph represent actions themselves:
 
 ## Data transfer between fields / sections
 
-Data entered in fields / sections can be transferred in between. Each field or section povides and expects a specific data type. 
+Data entered in fields / sections can be transferred in between. Each field or section provides and expects a specific data type. 
 When the provided data type doesn't match the expected data type, transformation by using `steps` is necessary.
 
 `steps` have an input (expected) data type and an output (provided) data type. 
@@ -25,38 +25,109 @@ By chaining steps, the desired data type can be achieved "step by step".
 
 After transforming the data, the `target` field must be defined by entering a field `id`. Fields with several properties need a `propertyName` additional.
 
-### **Example**:
-The `singleLineTextInput` provides a `STRING` and the `mulitLineTextInput` expects a `STRING`. Therefore no transformation is necessary to send the data to the target field.
+### Example:
+The `singleLineTextInput` provides a `STRING` and the `multiLineTextInput` expects a `STRING` ([List of expected / provided data types per field](#fields-and-data-type)). Therefore no transformation is necessary to send the data to the target field.
 
 But if you would like to transfer the name from `userSingleSelect` (provided type: `USER_INFO`) to the `name` property of the `signatureSection` (expected type: `STRING`) then you need to transform the data:
 
-```Typescript (Example: userSingleSelect)
-onChange: [
+```json (Example: singleLineTextInput)
+"onChange": [
     {
-      steps: ['userToFullNameString'],
-      target: { id: 'exampleSignatureSection', propertyName: 'name' },
+      "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+      "steps": []
     },
 ]
 ```
-```Typescript (Example: singleLineTextInput)
-onChange: [
+```json (Example: userSingleSelect)
+"onChange": [
     {
-      steps: [],
-      target: { id: 'exampleMultiLineTextInput_1'},
+      "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+      "steps": ["userToFullNameString"]
     },
 ]
+```
+
+---
+### More Examples
+
+```json (Address to signatureSection location)
+"onChange": [{
+    "target": { "id": "exampleSignatureSection", "propertyName": "location" },    
+    "steps": ["addressToCityString"]
+}]
+```
+```json (Asset location to addressInput location)
+"onChange": [{
+    "target": {"id": "exampleAddressInput_1"},
+    "steps": [ "assetInfoToAsset","assetToLocationAddress"]
+}],
+```
+```json (Asset name to STRING)
+"onChange": [{
+    "target": {"id": "exampleMultiLineTextInput_1"},
+    "steps": ["assetToAssetTypeNameString"]
+}]
+```
+```json (Company to Asset)
+"onChange": [{
+    "target": {"id": "exampleAssetSingleSelect_1"},
+    "steps": ["??? Need list from Uwe"]
+}]
+```
+```json (Company name to STRING)
+"onChange": [{
+    "target": { "id": "disabledSingleLineInput_1" },
+    "steps": ["accountInfoTioCompanyName"],
+}],
+```
+```json (Company phone number to STRING)
+"onChange": [{
+    "target": { "id": "exampleSingleLineInput_2" },
+    "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],                
+}],
+```
+```json (Company address to AddressInput)
+"onChange": [{
+    "target": { "id": "exampleAddressInput_1" },
+    "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
+}],
+```
+```json (Company city to signature location)
+"onChange": [{
+    "target": { "id": "exampleSignatureSection", "propertyName": "location" },
+    "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
+}],
+```
+```json (Company phone to phoneNumber )
+"onChange": [{
+    "target": { "id": "examplePhoneNumberInput_1" },
+    "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
+}],
+```
+```json (User name to signature name)
+"onChange": [{
+        "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+        "steps": [ "userToFullNameString" ],
+}],
+```
+```json (User to phoneNumberInput)
+"onChange": [{
+    "target": { "id": "examplePhoneNumberInput_1" },
+    "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
+}],
+```
+```json (...)
+"More examples can be added."
 ```
 ---
-
 ## Data type per field / section
 
-<details>
-<summary>Fields and data type</summary>
+### Fields and data type
 
 | Field name               | Provided / expected data type                   |
 | :----------------------------- | :---------------------------|
 | `singleLineTextInput` | `STRING` |
-| `mutliLineTextInput` | `STRING` |
+| `multiLineTextInput` | `STRING` |
 | `booleanInput`| `BOOLEAN`|
 | `assetSingleSelect` | `ASSET_INFO`|
 | `addressInput` | `ADDRESS`|
@@ -69,10 +140,10 @@ onChange: [
 | `userSingleSelect` | `USER_INFO`|
 | `phoneNumberInput` | `PHONE_NUMBER`|
 | `companySingleSelect` | `ACCOUNT_INFO`|
-</details>
 
-<details>
-<summary>SignatureSection and data type</summary>
+---
+
+### SignatureSection and data type
 
 | Property name               | Provided / expected data type                   |
 | :----------------------------- | :---------------------------|
@@ -81,7 +152,6 @@ onChange: [
 | `location`| `STRING`|
 | `name` | `STRING`|
 | `signature` | `STRING`|
-</details>
 
 ---
 
@@ -89,183 +159,25 @@ onChange: [
 
 You can find a list below, that contains all implemented `steps`, which can be used to transform data.
 
-```Typescript (All implemented steps)
-// Account
-  accountIdToAccount: {
-      input: ACCOUNT_ID,
-      output: ACCOUNT,
-  },
-  accountToBillingAddressAddress: {
-      input: ACCOUNT,
-      output: ADDRESS,
-  },
-  accountInfoToCompanyName: {
-      input: ACCOUNT_INFO,
-      output: STRING,
-  },
-  accountInfoToCustomerNumber: {
-      input: ACCOUNT_INFO,
-      output: STRING,
-  },
-  accountToAccountInfo: {
-      input: ACCOUNT,
-      output: ACCOUNT_INFO,
-  },
-  accountInfoToAccount: {
-      input: ACCOUNT_INFO,
-      output: ACCOUNT,
-  },
-  accountToPhoneNumberString: {
-      input: ACCOUNT,
-      output: STRING,
-  },
-// Address
-  addressToCityString: {
-      input: ADDRESS,
-      output: STRING,
-  },
-// Asset
-  assetIdToAsset: {
-      input: ASSET_ID,
-      output: ASSET,
-  },
-  assetInfoToAsset: {
-      input: ASSET_INFO,
-      output: ASSET,
-  },
-  assetToAssetTypeNameString: {
-      input: ASSET_INFO,
-      output: STRING,
-  },
-  assetToCustomerAccountId: {
-      input: ASSET,
-      output: STRING,
-  },
-  assetToLocationAddress: {
-      input: ASSET,
-      output: ADDRESS,
-  },
-  assetToCustomPropertyValue: {
-      input: [ ASSET, NUMBER ],
-      output: ANY,
-  },
-  assetInfoToCustomerId: {
-      input: ASSET_INFO,
-      output: ACCOUNT_ID,
-  },
-// Phone
-  phoneNumberStringToPhoneNumberObject: {
-      input: STRING,
-      output: PHONE_NUMBER,
-  }, 
-// User
-  userToFullNameString: {
-      input: USER_INFO,
-      output: STRING,
-  },
-  userInfoToUser: {
-    input: USER_INFO,
-    output: USER,
-  }, 
-  userToPhoneNumberString: {
-      input: USER,
-      output: STRING,
-  },
-// Utils
-  logValue: {
-      input: ANY,
-      output: ANY,
-  },
-```
-```Typescript (Account)
-accountIdToAccount: {
-    input: ACCOUNT_ID,
-    output: ACCOUNT,
-},
-accountToBillingAddressAddress: {
-    input: ACCOUNT,
-    output: ADDRESS,
-},
-accountInfoToCompanyName: {
-    input: ACCOUNT_INFO,
-    output: STRING,
-},
-accountInfoToCustomerNumber: {
-    input: ACCOUNT_INFO,
-    output: STRING,
-},
-accountToAccountInfo: {
-    input: ACCOUNT,
-    output: ACCOUNT_INFO,
-},
-accountInfoToAccount: {
-    input: ACCOUNT_INFO,
-    output: ACCOUNT,
-},
-accountToPhoneNumberString: {
-    input: ACCOUNT,
-    output: STRING,
-},
-```
-```Typescript (Address)
-addressToCityString: {
-    input: ADDRESS,
-    output: STRING,
-},
-```
-```Typescript (Asset)
-assetIdToAsset: {
-    input: ASSET_ID,
-    output: ASSET,
-},
-assetInfoToAsset: {
-    input: ASSET_INFO,
-    output: ASSET,
-},
-assetToAssetTypeNameString: {
-    input: ASSET_INFO,
-    output: STRING,
-},
-assetToCustomerAccountId: {
-    input: ASSET,
-    output: STRING,
-},
-assetToLocationAddress: {
-    input: ASSET,
-    output: ADDRESS,
-},
-assetToCustomPropertyValue: {
-    input: [ ASSET, NUMBER ],
-    output: ANY,
-},
-assetInfoToCustomerId: {
-    input: ASSET_INFO,
-    output: ACCOUNT_ID,
-},
-```
-```Typescript (Phone)
-phoneNumberStringToPhoneNumberObject: {
-    input: STRING,
-    output: PHONE_NUMBER,
-},
-```
-```Typescript (User)
-userToFullNameString: {
-    input: USER_INFO,
-    output: STRING,
-},
-userInfoToUser: {
-    input: USER_INFO,
-    output: USER,
-},
-userToPhoneNumberString: {
-    input: USER,
-    output: STRING,
-},
-```
-```Typescript (Utils)
-logValue: {
-    input: ANY,
-    output: ANY,
-},
-```
+| `dynamic action steps`               | input data type  | output data type |
+| :----------------------------- | :----- | :-----|
+| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT` |
+| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS` |
+| `accountInfoToCompanyName` | `ACCOUNT_INFO`| `STRING` |
+| `accountInfoToCustomerNumber` | `ACCOUNT_INFO` | `STRING`|
+| `accountToAccountInfo` | `ACCOUNT`| `ACCOUNT_INFO` |
+| `accountInfoToAccount` | `ACCOUNT_INFO`| `ACCOUNT` |
+| `accountToPhoneNumberString` | `ACCOUNT`| `STRING` |
+| `addressToCityString` | `ADDRESS`| `STRING` |
+| `assetIdToAsset` | `ASSET_ID`| `ASSET` |
+| `assetInfoToAsset` | `ASSET_INFO`| `ASSET` |
+| `assetToAssetTypeNameString` | `ASSET_INFO`| `STRING` |
+| `assetToCustomerAccountId` | `ASSET`| `STRING` |
+| `assetToLocationAddress` | `ASSET`| `ADDRESS` |
+| `assetToCustomPropertyValue` | `[ ASSET, NUMBER ]` | `ANY` |
+| `assetInfoToCustomerId` | `ASSET_INFO` | `ACCOUNT_ID` |
+| `phoneNumberStringToPhoneNumberObject` | `STRING` | `PHONE_NUMBER` |
+| `userToFullNameString` | `USER_INFO` | `STRING` |
+| `userInfoToUser` | `USER_INFO` | `USER` |
+| `userToPhoneNumberString` | `USER`| `STRING` |
+| `logValue` | `ANY`| `ANY` |

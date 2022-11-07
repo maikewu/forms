@@ -1,7 +1,7 @@
 ---
 title: SingleLineTextInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The SingleLineTextInput field allows entering one line of unformatted text. It dosen't respects line breaks.
@@ -21,7 +21,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed | 
 
-``` typescript (complete)
+```json (complete)
 {
   "id": "exampleSingleLineInput_1",
   "type": "singleLineInput",
@@ -30,6 +30,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
       "disabled": false,
       "pdfHide": false,
       "pdfHideIfValueIsEmpty": false,
+      "pdfWidth": 0.5,
       "placeHolderText": {
         "en": "Example Placeholder",
         "de": "Platzhalter",
@@ -48,7 +49,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
                 "it": "Single Line Input 1 [IT]"
           },
           "pdfHide": false,
-          "pdfTextColor": '#facc2e',
+          "pdfTextColor": "#facc2e",
           "pdfTextSize": 14,
           "uiHide": false,
       },
@@ -65,20 +66,15 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
           },
       },
       "prefill": {
-          "value": [
-              {
-                  "input": "assetId",
-                  "steps": [
-                      "assetIdToAsset",
-                      "assetToAssetTypeNameString",
-                  ],
-              },
-          ],
+        "value": [{
+                "input": "assetId",
+                "steps": [ "assetIdToAsset", "assetToAssetTypeNameString"],
+        }], 
       },
   },
 },
 ```
-``` typescript (minimal)
+```json (minimal)
 {
   "id": "exampleSingleLineInput_1",
   "type": "singleLineInput",
@@ -137,8 +133,8 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 
 By setting `emailAddress` to `true`, input must match email address format.
 
-``` typescript
-"validators":{
+```json
+"validators": {
 "emailAddress": true
 }
 ```
@@ -153,10 +149,9 @@ By setting `emailAddress` to `true`, input must match email address format.
 | Default Value   | `NULL`              |
 
 By defining `validators.regexPattern`, you set a regular expression that is valid. 
-
-``` typescript
+```json
 "validators":{
-"regexPattern": ^[A-Z]*$
+"regexPattern": "^[A-Z]*$"
 }
 ```
 
@@ -171,30 +166,21 @@ By defining `validators.regexPattern`, you set a regular expression that is vali
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` typescript (static string)
+```json (static string)
 "prefill": {
-        "value": [
-            {
+        "value": [{
                 "input": "none",
-                "steps": [
-                    [ "staticString", "Default Single Line Text" ],
-                ],
-            },
-        ],
+                "steps": [[ "staticString", "Default Single Line Text" ]]
+        }]
     },
 ```
-``` typescript (asset type name)
+```json (asset type name)
 "prefill": {
-        "value": [
-            {
+        "value": [{
                 "input": "assetId",
-                "steps": [
-                    "assetIdToAsset",
-                    "assetToAssetTypeNameString",
-                ],
-            },
-        ],
-    },
+                "steps": [ "assetIdToAsset", "assetToAssetTypeNameString"],
+        }],
+},
 ```
 
 ---

@@ -1,10 +1,10 @@
 ---
 title: CompanySingleSelect
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
-The CompanySingleSelect field allows the user to choose one of the customer companys.
+The CompanySingleSelect field allows the user to choose one of the customer companies.
 
 # Configuration Overview
 
@@ -21,14 +21,16 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
 | [prefill](#prefill)                             | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
     "id": "exampleCompanySingleSelect_1",
     "type": "companySingleSelect",
     "config": {
+        "required": false,
         "disabled": false,
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
         "label": {
             "text": {
                 "en": "Company Single Select 1",
@@ -36,12 +38,12 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
                 "tr": "Company Single Select 1 [TR]",
                 "fr": "Company Single Select 1 [FR]",
                 "es": "Company Single Select 1 [ES]",
-                "it": "Company Single Select 1 [IT]",
+                "it": "Company Single Select 1 [IT]"
             },
             "pdfHide": false,
             "pdfTextColor": "#facc2e",
             "pdfTextSize": 14,
-            "uiHide": false,
+            "uiHide": false
         },
         "value": {
             "disableCreation": false,
@@ -49,44 +51,43 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
             "pdfHide": false,
             "pdfStartInNewLine": false,
             "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14,
+            "pdfTextSize": 14
         },
         "prefill": {
             [ "selectedCompany" ]: [
                 {
                     "input": "currentAccountId",
-                    "steps": [],
-                },
-            ],
+                    "steps": []
+                }
+            ]
         },
         "onChange": [
             {
-                "steps": ["accountInfoToCompanyName"],
                 "target": { "id": "disabledSingleLineInput_1" },
+                "steps": ["accountInfoToCompanyName"]
             },
             {
-                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
                 "target": { "id": "exampleAddressInput_1" },
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"]
             },
             {
-                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
                 "target": { "id": "exampleSignatureSection", "propertyName": "location" },
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"]
             },
             {
-                "steps": ['"accountInfoToAccount"', "accountToPhoneNumberString" ],
                 "target": { "id": "exampleSingleLineInput_2" },
+                "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ]
             },
             {
-                "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
                 "target": { "id": "examplePhoneNumberInput_1" },
-            },
-        ],
-    },
-},
-
+                "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ]
+            }
+        ]
+    }
+}
 ```
 
-``` typescript (minimal)
+```json (minimal)
 {
     "id": "exampleCompanySingleSelect_1",
     "type": "companySingleSelect",
@@ -98,10 +99,10 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
                 "tr": "Company Single Select 1 [TR]",
                 "fr": "Company Single Select 1 [FR]",
                 "es": "Company Single Select 1 [ES]",
-                "it": "Company Single Select 1 [IT]",
-            },
-        },
-    },
+                "it": "Company Single Select 1 [IT]"
+            }
+        }
+    }
 }
 ```
 ---
@@ -126,8 +127,8 @@ Property                                                    | Description       
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [disableCreation](#disablecreation)             | Hides the creat button, so that no new companies can be created.                                                                                            |
-| [pdfPrintCompanyNumber](#pdfprintcompanynumber) | Setting this to `true` printes the company number in the PDF.                                                                                             |
+| [disableCreation](#disablecreation)             | Hides the create button, so that no new companies can be created.                                                                                            |
+| [pdfPrintCompanyNumber](#pdfprintcompanynumber) | Setting this to `true` prints the company number in the PDF.                                                                                             |
 
 ---
 ### `value.disableCreation`
@@ -138,9 +139,9 @@ Property                                                    | Description       
 | Required          | no              |
 | Default Value     | `false`         |
 
-If `disableCreation` is set to `true`, the creat button is hidden, so that no new companies can be created while working in forms.
+If `disableCreation` is set to `true`, the create button is hidden, so that no new companies can be created while working in forms.
 
-``` typescript
+```json
 "disableCreation": true
 ```
 
@@ -153,9 +154,9 @@ If `disableCreation` is set to `true`, the creat button is hidden, so that no ne
 | Required                | no              |
 | Default Value           | `false`         |
 
-If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed in the PDF in brackets behinde the company name.
+If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed in the PDF in brackets behind the company name.
 
-``` typescript
+```json
 "pdfPrintCompanyNumber": true
 ```
 
@@ -170,7 +171,7 @@ If `pdfPrintCompanyNumber` is set to `true`, the company number will be printed 
 
 The `useAsFilterForFields` property can be used to filter the asset and user select field by entering the field id.
 
-``` typescript
+```json
 "useAsFilterForFields": [ "exampleAssetSingleSelect_1" ]
 ```
 ---
@@ -186,15 +187,15 @@ The `useAsFilterForFields` property can be used to filter the asset and user sel
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (currentAccountId)
+```json (currentAccountId)
 "prefill": {
     [ "selectedCompany" ]: [
         {
             "input": "currentAccountId",
-            "steps": [],
-        },
-    ],
-},
+            "steps": []
+        }
+    ]
+}
 ```
 ---
 ## `onChange`
@@ -207,27 +208,27 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```typescript
+```json
 "onChange": [
     {
         "steps": ["accountInfoToCompanyName"],
-        "target": { "id": "disabledSingleLineInput_1" },
+        "target": { "id": "disabledSingleLineInput_1" }
     },
     {
         "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
-        "target": { "id": "exampleAddressInput_1" },
+        "target": { "id": "exampleAddressInput_1" }
     },
     {
         "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
-        "target": { "id": "exampleSignatureSection", "propertyName": "location" },
+        "target": { "id": "exampleSignatureSection", "propertyName": "location" }
     },
     {
-        "steps": ['"accountInfoToAccount"', "accountToPhoneNumberString" ],
-        "target": { "id": "exampleSingleLineInput_2" },
+        "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],
+        "target": { "id": "exampleSingleLineInput_2" }
     },
     {
         "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
-        "target": { "id": "examplePhoneNumberInput_1" },
-    },
-],
+        "target": { "id": "examplePhoneNumberInput_1" }
+    }
+]
 ```

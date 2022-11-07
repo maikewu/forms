@@ -1,0 +1,483 @@
+{
+  "$schema": "https://pastebin.com/raw/19EgpgEK",
+  "general": {
+    "singleInstanceForm": false,
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_general_Information",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "General Information",
+          "de": "Allgemeine Informationen"
+        }
+      },
+      "fields": [        
+        {
+          "id": "serviceauftrag",
+          "type": "singleLineInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 1.0,
+            "label": {
+              "text": {
+                "de": "Serviceauftrag",
+                "en": "Service Order"
+              }
+            }
+          }
+        },        
+        {
+          "id": "techniker",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Techniker",
+                "en": "Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },        
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Maschine",
+                "en": "Machine"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
+          }
+        },          
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer_phone"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToPhoneNumberString",
+                  "phoneNumberStringToPhoneNumberObject"
+                ]
+              },
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },        
+        {
+          "id": "name_orderer",
+          "type": "singleLineInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Name des Bestellers",
+                "en": "Name of Orderer"
+              }
+            }
+          }
+        },        
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "required": {
+              "city": false,
+              "company": false,
+              "country": false,
+              "state": false,
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "zipPostCode": false
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer Address"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },        
+        {
+          "id": "requester",
+          "type": "singleLineInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Anforderung von",
+                "en": "Requested by"
+              }
+            }
+          }
+        },        
+        {
+          "id": "customer_phone",
+          "type": "singleLineInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Telefonnummer",
+                "en": "Telephone Number"
+              }
+            }
+          }
+        },        
+        {
+          "id": "order_number",
+          "type": "singleLineInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Auftrag / Bestellnummer",
+                "en": "Order Number"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_work_times",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Travel and Working Times",
+          "de": "Reise- und Arbeitszeiten"
+        }
+      },
+      "fields": [        
+        {
+          "id": "tavelAndWorkingTimes",
+          "type": "timeTrackingListInput",
+          "config": {
+            "requiredAmountOfEntries": 0,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Reise- und Arbeitszeiten",
+                "en": "Travel and Working Times"
+              }
+            }
+          }
+        },        
+        {
+          "id": "comment_times",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_performed_tasks",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Type of Work",
+          "de": "Art der Arbeiten"
+        }
+      },
+      "fields": [
+        {
+          "id": "tasks",
+          "type": "taskListInput",
+          "config": {
+            "requiredAmountOfEntries": 0,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Durchgeführte Arbeiten",
+                "en": "Performed Tasks"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_tasks",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            }
+          }
+        },
+        {
+          "id": "customer_remarks",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Kundenwünsche",
+                "en": "Customer Remarks"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_spare_parts",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Articles / Services",
+          "de": "Artikel / Dienstleistungen"
+        }
+      },
+      "fields": [
+        {
+          "id": "spareParts",
+          "type": "singleLineInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Land",
+                "en": "Country"
+              }
+            }
+          }
+        },
+        {
+          "id": "sparePartsComment",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            }
+          }
+        },
+        {
+          "id": "helptext",
+          "type":"htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "pdfHide": true,
+            "text": {
+              "de": "Die vorstehend aufgeführten Leistungen und die aufgezeichneten Arbeitszeiten wurden in meinem/unseren Auftrag zu den bekannten Geschäfts-, Liefer- und Montagebedingungen der Firma WIWA Wilhelm Wagner GmbH & Co. KG ausgeführt, was nach eingehender Überprüfung hierdurch unterschriftlich bestätigt wird. Auf nachträgliche Spezifikation der oben aufgeführten Montagearbeiten und sonstigen Leistungen wird ausdrücklich verzichtet. Die aufgeführten Arbeitsstunden werden als Abrechnungsgrundlage anerkannt.",
+              "en": "The services and recorded working hours listed above were carried out on my/our behalf according to the known business, delivery and assembly conditions of the company WIWA Wilhelm Wagner GmbH & Co. KG, which is hereby confirmed by signature after thorough inspection. Subsequent specification of the assembly work and other services listed above is expressly waived. The listed working hours are accepted as the basis for invoicing."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "signatureTechnician",
+      "type": "signatureSection",
+      "config": {
+        "required": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "headlineText": {
+          "en": "Signature Technician",
+          "de": "Unterschrift Monteur"
+        },
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "capitalizeFirstLetterOfEveryWord": true,
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUserId",
+              "steps": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "required": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "headlineText": {
+          "en": "Signature Customer",
+          "de": "Unterschrift Kunde"
+        },
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "capitalizeFirstLetterOfEveryWord": true,
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          }
+        }
+      }
+    },
+    {
+      "id": "08-send",
+      "type": "emailSection",
+      "config": {
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "pdfHide": true,
+        "headlineText": {
+          "en": "Send/sent form as E-Mail",
+          "de": "Bericht als E-Mail senden/gesendet"
+        },
+        "emailDialogPrefill": {
+          "to": {
+              "assignee": false,
+              "creator": false,
+              "currentUser": false,
+              "staticEmails": []
+          },
+          "cc": {
+              "assignee": false,
+              "creator": false,
+              "currentUser": false,
+              "staticEmails": []
+          },
+          "bcc": {
+              "assignee": false,
+              "creator": false,
+              "currentUser": false,
+              "staticEmails": []
+          },
+          "subject": {
+              "static": ""
+          },
+          "body": {
+              "static": ""
+          }
+        }
+      }
+    }
+  ]
+}

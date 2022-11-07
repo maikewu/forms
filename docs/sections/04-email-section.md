@@ -1,10 +1,10 @@
 ---
 title: Email Section
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd8854e3076580c823
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce4870b9fa40081aaa430
 ---
 
-The SignatureSection contains all sigatures to finish the form.
+The EmailSection contains fields to send the finshed form.
 # Configuration Overview
 
 | Property                                                                     | Description                      |
@@ -21,72 +21,72 @@ The SignatureSection contains all sigatures to finish the form.
 | [whitelistedDomains](#whitelisteddomains)                                              | Defining domains that are whitelisted to as recipients |
 | [emailDialogPrefill](#emaildialogprefill)                                              | Configuration the email prefill after the FormEmailPrefillConfig. |
 
-```typescript
+```json
 {
-  id: 'exampleEmailSection',
-  type: FormSectionTypesEnum.EMAIL_SECTION,
-  config: {
-      pdfHide: false,
-      pdfHideIfValueIsEmpty: false,
-      requiredAmountOfOutgoingMails: 2,
-      hidePreviewPdfButton: false,
-      hideDownloadPdfButton: false,
-      allowSendingWhenRequiredFieldsMissing: false,
-      whitelistedDomains: [],
-      headlineText: {
-          en: 'Example Email Section',
-          de: 'Beispiel Email Sektion',
-          tr: 'Example Email Section [TR]',
-          fr: 'Example Email Section [FR]',
-          es: 'Example Email Section [ES]',
-          it: 'Example Email Section [IT]',
-      },
-      helpTextHtmlAbove: {
-          en: '<b>Example HTML helptext before</b>',
-          de: '<b>Beispiel HTML Hilfstext davor</b>',
-          tr: '<b>Example HTML helptext before [TR]</b>',
-          fr: '<b>Example HTML helptext before [FR]</b>',
-          es: '<b>Example HTML helptext before [ES]</b>',
-          it: '<b>Example HTML helptext before [IT]</b>',
-      },
-      helpTextHtmlBelow: {
-          en: '<b>Example HTML helptext below</b>',
-          de: '<b>Beispiel HTML Hilfstext derunter</b>',
-          tr: '<b>Example HTML helptext below [TR]</b>',
-          fr: '<b>Example HTML helptext below [FR]</b>',
-          es: '<b>Example HTML helptext below [ES]</b>',
-          it: '<b>Example HTML helptext below [IT]</b>',
-      },
-      emailDialogPrefill: {
-          to: {
-              assignee: true,
-              creator: false,
-              currentUser: false,
-              staticEmails: [],
-          },
-          cc: {
-              assignee: false,
-              creator: true,
-              currentUser: false,
-              staticEmails: [],
-          },
-          bcc: {
-              assignee: false,
-              creator: false,
-              currentUser: true,
-              staticEmails: [],
-          },
-          body: {
-              dynamic: 'tbd',
-              static: 'Default Content',
-          },
-          subject: {
-              dynamic: 'tbd',
-              static: 'Default Subject',
-          },
-      },
-  },
-},
+    "id": "exampleEmailSection",
+    "type": "emailSection",
+    "config": {
+        "pdfHide": false,
+        "whitelistedDomains": [],
+        "headlineText": {
+            "en": "Example Email Section",
+            "de": "Beispiel Email Sektion",
+            "tr": "Example Email Section [TR]",
+            "fr": "Example Email Section [FR]",
+            "es": "Example Email Section [ES]",
+            "it": "Example Email Section [IT]"
+        },
+        "helpTextHtmlAbove": {
+            "en": "<b>Example HTML helptext before</b>",
+            "de": "<b>Beispiel HTML Hilfstext davor</b>",
+            "tr": "<b>Example HTML helptext before [TR]</b>",
+            "fr": "<b>Example HTML helptext before [FR]</b>",
+            "es": "<b>Example HTML helptext before [ES]</b>",
+            "it": "<b>Example HTML helptext before [IT]</b>"
+        },
+        "helpTextHtmlBelow": {
+            "en": "<b>Example HTML helptext below</b>",
+            "de": "<b>Beispiel HTML Hilfstext derunter</b>",
+            "tr": "<b>Example HTML helptext below [TR]</b>",
+            "fr": "<b>Example HTML helptext below [FR]</b>",
+            "es": "<b>Example HTML helptext below [ES]</b>",
+            "it": "<b>Example HTML helptext below [IT]</b>"
+        },
+        "allowSendingWhenRequiredFieldsMissing": false,
+        "requiredAmountOfOutgoingMails": 2,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+            "bcc": {
+                "assignee": false,
+                "creator": false,
+                "currentUser": true,
+                "staticEmails": []
+            },
+            "cc": {
+                "assignee": false,
+                "creator": true,
+                "currentUser": false,
+                "staticEmails": []
+            },
+            "to": {
+                "assignee": true,
+                "creator": false,
+                "currentUser": false,
+                "staticEmails": []
+            },
+            "body": {
+                "dynamic": "tbd",
+                "static": "Default Content"
+            },
+            "subject": {
+                "dynamic": "tbd",
+                "static": "Default Subject"
+            }
+        }
+    }
+}
 ```
 
 # Configuration Parameters
@@ -99,9 +99,9 @@ The SignatureSection contains all sigatures to finish the form.
 | Required                   | no              |
 | Default Value              | `0`             |
 
-By setting `requiredAmountOfOutgoingMails`, it specify how many mails have to be sent or marked for sending. One mail with several recipients is still one mail, even in to, cc or bcc.
+By setting `requiredAmountOfOutgoingMails`, you define the amount of mails which have to be sent or marked for sending. One mail with several recipients is still one mail, even in to, cc or bcc.
 ```typescript
-requiredAmountOfOutgoingMails: 3,
+"requiredAmountOfOutgoingMails": 3,
 ```
 
 ---
@@ -114,10 +114,10 @@ requiredAmountOfOutgoingMails: 3,
 | Required                   | no              |
 | Default Value              | `false`             |
 
-By setting `allowSendingWhenRequiredFieldsMissing` to `true`the use is able to send the mail without all required fields having been filled.
+By setting `allowSendingWhenRequiredFieldsMissing` to `true` the user is able to send the mail without all required fields having been filled.
 
 ```typescript
-allowSendingWhenRequiredFieldsMissing: true,
+"allowSendingWhenRequiredFieldsMissing": true,
 ```
 ---
 ## `whitelistedDomains`
@@ -129,10 +129,10 @@ allowSendingWhenRequiredFieldsMissing: true,
 | Required                   | no              |
 | Default Value              | -             |
 
-By setting `whitelistedDomains` you ensure that mails are only sent to recipients with a specific email domain. It's a security mechanism to avoid sensitve data.
+By setting `whitelistedDomains` you ensure that mails are only sent to recipients with a specific email domain. It's a security mechanism to avoid sending sensitve data to the wrong destination.
 
 ```typescript
-whitelistedDomains: [ 'remberg.de', 'remberg.com'],
+"whitelistedDomains": [ "remberg.de", "remberg.com"],
 ```
 
 ---
@@ -144,7 +144,7 @@ whitelistedDomains: [ 'remberg.de', 'remberg.com'],
 | Possible Values            | [FormEmailPrefillConfig](#formemailprefillconfig)  |
 | Required                   | no              |
 
-By setting `emailDialogPrefill` you ensure that mails are only sent to recipients with a specific email domain
+By setting `emailDialogPrefill` you ensure that mails are only sent to recipients with a specific email domain.
 
 ## `FormEmailPrefillConfig`
 
@@ -157,32 +157,34 @@ By setting `emailDialogPrefill` you ensure that mails are only sent to recipient
 | [subject](#section)                                         | Property to enter a date|
 
 ```typescript
-emailDialogPrefill: {
-    to: {
-        assignee: true,
-        creator: false,
-        currentUser: false,
-        staticEmails: [],
+"emailDialogPrefill": {
+    "to": {
+        "assignee": true,
+        "creator": false,
+        "currentUser": false,
+        "staticEmails": []
     },
-    cc: {
-        assignee: false,
-        creator: true,
-        currentUser: false,
-        staticEmails: [],
+    "cc": {
+        "assignee": false,
+        "creator": true,
+        "currentUser": false,
+        "staticEmails": []
     },
-    bcc: {
-        assignee: false,
-        creator: false,
-        currentUser: true,
-        staticEmails: [],
+    "bcc": {
+        "assignee": false,
+        "creator": false,
+        "currentUser": true,
+        "staticEmails": []
     },
-    body: {
-        static: 'Default Content',
+    "subject": {
+        "dynamic": "tbd",
+        "static": "Default Subject"
     },
-    subject: {
-        static: 'Default Subject',
-    },
-},
+    "body": {
+        "dynamic": "tbd",
+        "static": "Default Content"
+    }
+}
 ```
 
 ---
@@ -198,11 +200,11 @@ Duplications happens when currentUser=assignee=creator!
 | [staticEmails]                                 | Defines list of email addresses |
 
 ```typescript
-to: {
-    assignee: false,
-    creator: false,
-    currentUser: true,
-    staticEmails: [],
+"to": {
+    "assignee": true,
+    "creator": false,
+    "currentUser": false,
+    "staticEmails": []
 },
 ```
 ---
@@ -218,11 +220,11 @@ Duplications happens when currentUser=assignee=creator!
 | [staticEmails]                                 | Defines list of email addresses |
 
 ```typescript
-cc: {
-    assignee: false,
-    creator: false,
-    currentUser: true,
-    staticEmails: [],
+"cc": {
+    "assignee": false,
+    "creator": true,
+    "currentUser": false,
+    "staticEmails": []
 },
 ```
 ---
@@ -238,28 +240,13 @@ Duplications happens when currentUser=assignee=creator!
 | [staticEmails]                                 | Defines list of email addresses |
 
 ```typescript
-bcc: {
-    assignee: false,
-    creator: false,
-    currentUser: true,
-    staticEmails: [],
+"bcc": {
+    "assignee": false,
+    "creator": false,
+    "currentUser": true,
+    "staticEmails": []
 },
 ```
----
-### `body`
-
-| Property                                                      | Description                       |
-| :------------------------------------------------------------ | :-------------------------------- |
-| [static]                                                      | Static text input that can be used to predefine the value of the `body`. |
-
-Allows to predefine a message in the body. 
-
-```typescript
-body: {
-    static: 'Default Content',
-},
-```
-
 ---
 
 ### `subject`
@@ -272,7 +259,23 @@ body: {
 Allows to predefine the subject of the mail. If the subject is empty the form name is used as subject. 
 
 ```typescript
-subject: {
-    static: 'Default Subject',
+"subject": {
+    "dynamic": "tbd",
+    "static": "Default Subject"
 },
+```
+---
+### `body`
+
+| Property                                                      | Description                       |
+| :------------------------------------------------------------ | :-------------------------------- |
+| [static]                                                      | Static text input that can be used to predefine the value of the `body`. |
+
+Allows to predefine a message in the body. 
+
+```typescript
+"body": {
+    "dynamic": "tbd",
+    "static": "Default Content"
+}
 ```

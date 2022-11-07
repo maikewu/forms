@@ -1,7 +1,7 @@
 ---
 title: AssetSingleSelect
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The AssetSingleSelect field allows to select an asset from the account or a certain costumer.
@@ -20,71 +20,57 @@ The AssetSingleSelect field allows to select an asset from the account or a cert
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
-    "id": "exampleAssetSingleSelect_1",
-    "type": "assetSingleSelect",
-    "config": {
-      "required": true,
-      "disabled": false,
+  "id": "exampleAssetSingleSelect_1",
+  "type": "assetSingleSelect",
+  "config": {
+    "required": true,
+    "disabled": false,
+    "pdfHide": false,
+    "pdfHideIfValueIsEmpty": false,
+    "pdfWidth": 1,
+    "label": {
+      "text": {
+        "en": "Asset Select 1",
+        "de": "Asset Auswahl 1",
+        "tr": "Asset Select 1 [TR]",
+        "fr": "Asset Select 1 [FR]",
+        "es": "Asset Select 1 [ES]",
+        "it": "Asset Select 1 [IT]"
+      },
       "pdfHide": false,
-      "pdfHideIfValueIsEmpty": false,
-      "label": {
-            "text": {
-            "en": "Asset Select 1",
-            "de": "Asset Auswahl 1",
-            "tr": "Asset Select 1 [TR]",
-            "fr": "Asset Select 1 [FR]",
-            "es": "Asset Select 1 [ES]",
-            "it": "Asset Select 1 [IT]"
-            },
-            "pdfHide": false,
-            "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14,
-            "uiHide": false
-        },
-        "value": {
-              "disableAssetFormInstanceRelationship": false,
-              "disableCreation": false,
-              "pdfHide": false,
-              "pdfStartInNewLine": false,
-              "pdfTextColor": "#facc2e",
-              "pdfTextSize": 14
-        },
-            "prefill": {
-              "selectedAsset": [
-                {
-                  "input": "assetId",
-                  "steps": []
-                }
-              ],
-              "accountFilter": [
-                {
-                  "input": "organizationId",
-                  "steps": []
-                }
-              ]
-            },
-            "onChange": [
-              {
-                "steps": [
-                  "assetInfoToAsset",
-                  "assetToLocationAddress"
-                ],
-                "target": {
-                  "id": "exampleAddressInput_1"
-                }
-              },
-              {
-                "steps": [
-                  "assetToAssetTypeNameString"
-                ],
-                "target": {
-                  "id": "exampleMultiLineTextInput_1"
-                }
-            }
-        ]
-    },
+      "pdfTextColor": "#facc2e",
+      "pdfTextSize": 14,
+      "uiHide": false
+      },
+      "value": {
+        "disableAssetFormInstanceRelationship": false,
+        "disableCreation": false,
+        "pdfHide": false,
+        "pdfStartInNewLine": false,
+        "pdfTextColor": "#facc2e",
+        "pdfTextSize": 14
+      },
+      "prefill": {
+        "selectedAsset": [{
+            "input": "assetId",
+            "steps": []
+        }],
+        "accountFilter": [{
+            "input": "organizationId",
+            "steps": []
+        }]
+      },
+      "onChange": [{
+          "target": {"id": "exampleAddressInput_1"},
+          "steps": [ "assetInfoToAsset","assetToLocationAddress"]
+          },
+          {
+          "target": {"id": "exampleMultiLineTextInput_1"},
+          "steps": ["assetToAssetTypeNameString"]
+      }]
+  },
 },
 ```
 
@@ -121,7 +107,7 @@ The AssetSingleSelect field allows to select an asset from the account or a cert
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (assetID)
+```json (assetID)
 "prefill": {
     "selectedAsset": [
         {
@@ -142,22 +128,9 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-``` typescript
-"onChange": [
-    {
-        "steps": [
-            "assetInfoToAsset",
-            [ "assetToCustomPropertyValue", 5 ], // 5 - propertyId of the customer property that exists in your system
-        ],
-        "target": { "id": "exampleMultiLineTextInput_1" },
-    },
-    {
-        "steps": [
-            "assetInfoToCustomerId",
-            "accountIdToAccount",
-            "accountToAccountInfo",
-        ],
-        "target": { "id": "exampleCompanySingleSelect_1" },
-    },
-],
+```json
+"onChange": [{
+    "target": {"id": "exampleAddressInput_1"},
+    "steps": [ "assetInfoToAsset","assetToLocationAddress"]
+}],
 ```

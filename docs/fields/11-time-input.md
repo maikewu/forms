@@ -1,7 +1,7 @@
 ---
 title: TimeInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 
@@ -21,62 +21,68 @@ The TimeInput field allows to enter a time.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
-    id: 'exampleTimeInput_1',
-    type: FormFieldTypesEnum.TIME_INPUT,
-    config: {
-        disabled: false,
-        required: false,
-        pdfHide: false,
-        pdfWidth: 1,
-        pdfHideIfValueIsEmpty: false,
-        label: {
-            text: {
-                en: 'Time input 1',
-                de: 'Time input 1 [DE]',
-                tr: 'Time input 1 [TR]',
-                fr: 'Time input 1 [FR]',
-                es: 'Time input 1 [ES]',
-                it: 'Time input 1 [IT]',
+    "id": "exampleTimeInput_1",
+    "type": "timeInput",
+    "config": {
+        "pdfHide": false,
+        "disabled": false,
+        "required": false,
+        "pdfWidth": 1,
+        "pdfHideIfValueIsEmpty": false,
+        "label": {
+            "text": {
+                "en": "Time input 1",
+                "de": "Time input 1 [DE]",
+                "tr": "Time input 1 [TR]",
+                "fr": "Time input 1 [FR]",
+                "es": "Time input 1 [ES]",
+                "it": "Time input 1 [IT]"
             },
-            uiHide: false,
-            pdfHide: false,
-            pdfTextSize: 14,
-            pdfTextColor: '#facc2e',
+            "uiHide": false,
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e"
         },
-        value: {
-            dropdownInterval: 30,
-            pdfHide: false,
-            pdfTextSize: 14,
-            pdfTextColor: '#facc2e',
-            pdfStartInNewLine: false,
+        "value": {
+            "dropdownInterval": 30,
+            "pdfHide": false,
+            "pdfTextSize": 14,
+            "pdfTextColor": "#facc2e",
+            "pdfStartInNewLine": false
         },
-        prefill: {
-            value: [{
-                input: 'none',
-                steps: [[
-                    'staticTime',
-                    '22:22',
-                ]],
-            }],
-        },
-    },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticTime",
+                    "22:22"
+                ]]
+            }]
+        }
+    }
 },
 ```
 
-```typescript (minimal)
+```json (minimal)
 {
-    id: 'exampleTimeInput_1',
-    type: FormFieldTypesEnum.TIME_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'Time input 1',
-                de: 'Time input 1 [DE]',
+    "id": "exampleTimeInput_1",
+    "type": "timeInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Time input 1",
+                "de": "Time input 1 [DE]",
+                "tr": "Time input 1 [TR]",
+                "fr": "Time input 1 [FR]",
+                "es": "Time input 1 [ES]",
+                "it": "Time input 1 [IT]"
             },
         },
-    },
+        "value": {
+        },
+    }
 },
 ```
 
@@ -115,8 +121,8 @@ The TimeInput field allows to enter a time.
 
 `dropDownInterval` defines an interval between dropdown values in minutes.
 
-``` typescript
-dropDownInterval: 6
+```json
+"dropDownInterval": 6
 ```
 ---
 ## `prefill`
@@ -128,15 +134,15 @@ dropDownInterval: 6
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (static time)
-prefill: {
-    value: [{
-        input: 'none',
-        steps: [[
-            'staticTime',
-            '22:22',
-        ]],
-    }],
+```json (static time)
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[
+            "staticTime",
+            "22:22"
+        ]]
+    }]
 }
 ```
 ---

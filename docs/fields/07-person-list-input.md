@@ -1,7 +1,7 @@
 ---
 title: PersonListInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The PersonListInput field allows to enter user.
@@ -18,13 +18,13 @@ The PersonListInput field allows to enter user.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
     "id": "examplePersonList_1",
     "type": "personListInput",
     "config": {
         "disabled": false,
-        "requiredAmountOfEntries": 1,
+        "pdfWidth": 1,
         "pdfHide": false,
         "pdfHideIfValuesIsEmpty": false,
         "requiredAmountOfEntries": 1,
@@ -59,7 +59,7 @@ The PersonListInput field allows to enter user.
 },
 ```
 
-``` typescript (minimal)
+```json (minimal)
 {
     "id": "examplePersonList_1",
     "type": "personListInput",
@@ -126,7 +126,7 @@ The PersonListInput field allows to enter user.
 
 If `firstNameRequired` is set to `true`, the field is not shown in the PDF at all. 
 
-``` typescript
+```json
 "firstNameRequired": true
 ```
 ---
@@ -140,7 +140,7 @@ If `firstNameRequired` is set to `true`, the field is not shown in the PDF at al
 
 If `lastNameRequired` is set to `true`, the field is considered invalid as long as no value is entered.
 
-``` typescript
+```json
 "lastNameRequired": true
 ```
 ---
@@ -154,7 +154,7 @@ If `lastNameRequired` is set to `true`, the field is considered invalid as long 
 
 If `hide` is set to `true`, the field is not shown in the PDF and UI at all.
 
-``` typescript
+```json
 "hide": true
 ```
 

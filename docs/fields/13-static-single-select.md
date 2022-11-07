@@ -1,7 +1,7 @@
 ---
 title: StaticSingleSelect
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 
@@ -21,107 +21,102 @@ The StaticSingleSelect field allows to choose one option of the dropdown.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
-{
-    id: 'exampleStaticSingleSelect_1',
-    type: FormFieldTypesEnum.STATIC_SINGLE_SELECT,
-    config: {
-        disabled: false,
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        uiHideInRepeaterCardDisplay: false,
-        required: true,
-        label: {
-            text: {
-                en: 'Static Single Select 1',
-                de: 'Static Single Select 1 [DE]',
-                tr: 'Static Single Select 1 [TR]',
-                fr: 'Static Single Select 1 [FR]',
-                es: 'Static Single Select 1 [ES]',
-                it: 'Static Single Select 1 [IT]',
+```json (complete)
+ {
+    "id": "exampleStaticSingleSelect_1",
+    "type": "staticSingleSelect",
+    "config": {
+        "required": true,
+        "disabled": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "label": {
+            "text": {
+                "en": "Static Single Select 1",
+                "de": "Static Single Select 1 [DE]",
+                "tr": "Static Single Select 1 [TR]",
+                "fr": "Static Single Select 1 [FR]",
+                "es": "Static Single Select 1 [ES]",
+                "it": "Static Single Select 1 [IT]"
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
-            uiHide: false,
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "uiHide": false
         },
-        value: {
-            options: {
-                exampleOptionOne: {
-                    en: 'Example option 1',
-                    de: 'Example option 1 [DE]',
-                    tr: 'Example option 1 [TR]',
-                    fr: 'Example option 1 [FR]',
-                    es: 'Example option 1 [ES]',
-                    it: 'Example option 1 [IT]',
+        "value": {
+            "options": {
+                "exampleOptionOne": {
+                    "en": "Example option 1",
+                    "de": "Example option 1 [DE]",
+                    "tr": "Example option 1 [TR]",
+                    "fr": "Example option 1 [FR]",
+                    "es": "Example option 1 [ES]",
+                    "it": "Example option 1 [IT]"
                 },
-                exampleOptionTwo: {
-                    en: 'Example option 2',
-                    de: 'Example option 2 [DE]',
-                    tr: 'Example option 2 [TR]',
-                    fr: 'Example option 2 [FR]',
-                    es: 'Example option 2 [ES]',
-                    it: 'Example option 2 [IT]',
-                },
+                "exampleOptionTwo": {
+                    "en": "Example option 2",
+                    "de": "Example option 2 [DE]",
+                    "tr": "Example option 2 [TR]",
+                    "fr": "Example option 2 [FR]",
+                    "es": "Example option 2 [ES]",
+                    "it": "Example option 2 [IT]"
+                }
             },
-            pdfHide: false,
-            pdfStartInNewLine: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14
         },
-        prefill: {
-            [StaticSingleSelectPrefillTargetsEnum.VALUE]: [
-                {
-                    input: 'none',
-                    steps: [
-                        [
-                            'staticString',
-                            'exampleOptionOne',
-                        ],
-                    ],
-                },
-            ],
-        },
-    },
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticString",
+                    "exampleOptionOne"
+                ]]
+            }]
+        }
+    }
 },
 ```
-
-```typescript (minimal)
-{
-    id: 'exampleStaticSingleSelect_1',
-    type: FormFieldTypesEnum.STATIC_SINGLE_SELECT,
-    config: {
-        label: {
-            text: {
-                en: 'Static Single Select 1',
-                de: 'Static Single Select 1 [DE]',
-                tr: 'Static Single Select 1 [TR]',
-                fr: 'Static Single Select 1 [FR]',
-                es: 'Static Single Select 1 [ES]',
-                it: 'Static Single Select 1 [IT]',
+```json (minimal)
+ {
+    "id": "exampleStaticSingleSelect_1",
+    "type": "staticSingleSelect",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Static Single Select 1",
+                "de": "Static Single Select 1 [DE]",
+                "tr": "Static Single Select 1 [TR]",
+                "fr": "Static Single Select 1 [FR]",
+                "es": "Static Single Select 1 [ES]",
+                "it": "Static Single Select 1 [IT]"
             },
         },
-        value: {
-            options: {
-                exampleOptionOne: {
-                    en: 'Example option 1',
-                    de: 'Example option 1 [DE]',
-                    tr: 'Example option 1 [TR]',
-                    fr: 'Example option 1 [FR]',
-                    es: 'Example option 1 [ES]',
-                    it: 'Example option 1 [IT]',
+        "value": {
+            "options": {
+                "exampleOptionOne": {
+                    "en": "Example option 1",
+                    "de": "Example option 1 [DE]",
+                    "tr": "Example option 1 [TR]",
+                    "fr": "Example option 1 [FR]",
+                    "es": "Example option 1 [ES]",
+                    "it": "Example option 1 [IT]"
                 },
-                exampleOptionTwo: {
-                    en: 'Example option 2',
-                    de: 'Example option 2 [DE]',
-                    tr: 'Example option 2 [TR]',
-                    fr: 'Example option 2 [FR]',
-                    es: 'Example option 2 [ES]',
-                    it: 'Example option 2 [IT]',
-                },
+                "exampleOptionTwo": {
+                    "en": "Example option 2",
+                    "de": "Example option 2 [DE]",
+                    "tr": "Example option 2 [TR]",
+                    "fr": "Example option 2 [FR]",
+                    "es": "Example option 2 [ES]",
+                    "it": "Example option 2 [IT]"
+                }
             },
         },
-    },
+    }
 },
 ```
 
@@ -161,24 +156,24 @@ The StaticSingleSelect field allows to choose one option of the dropdown.
 
 In `options` the content of the dropdown can be defined.
 
-``` typescript
-options: {
-    exampleOptionOne: {
-        en: 'Example option 1',
-        de: 'Example option 1 [DE]',
-        tr: 'Example option 1 [TR]',
-        fr: 'Example option 1 [FR]',
-        es: 'Example option 1 [ES]',
-        it: 'Example option 1 [IT]',
+```json
+"options": {
+    "exampleOptionOne": {
+        "en": "Example option 1",
+        "de": "Example option 1 [DE]",
+        "tr": "Example option 1 [TR]",
+        "fr": "Example option 1 [FR]",
+        "es": "Example option 1 [ES]",
+        "it": "Example option 1 [IT]"
     },
-    exampleOptionTwo: {
-        en: 'Example option 2',
-        de: 'Example option 2 [DE]',
-        tr: 'Example option 2 [TR]',
-        fr: 'Example option 2 [FR]',
-        es: 'Example option 2 [ES]',
-        it: 'Example option 2 [IT]',
-    },
+    "exampleOptionTwo": {
+        "en": "Example option 2",
+        "de": "Example option 2 [DE]",
+        "tr": "Example option 2 [TR]",
+        "fr": "Example option 2 [FR]",
+        "es": "Example option 2 [ES]",
+        "it": "Example option 2 [IT]"
+    }
 },
 ```
 ---
@@ -191,20 +186,16 @@ options: {
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (static time)
-prefill: {
-    [StaticSingleSelectPrefillTargetsEnum.VALUE]: [
-        {
-            input: 'none',
-            steps: [
-                [
-                    'staticString',
-                    'exampleOptionOne',
-                ],
-            ],
-        },
-    ],
-},
+```json (static time)
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[
+            "staticString",
+            "exampleOptionOne"
+        ]]
+    }]
+}
 ```
 ---
 ## `onChange`

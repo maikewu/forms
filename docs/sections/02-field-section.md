@@ -1,10 +1,10 @@
 ---
 title: Field Section
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd8854e3076580c823
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce4870b9fa40081aaa430
 ---
 
-The FieldSection contains all field properties of the form.
+The FieldSection contains all fields of the form.
 
 # Configuration Overview
 
@@ -14,30 +14,28 @@ The FieldSection contains all field properties of the form.
 | [fields](#fields)                                                            | Field properties of a form. |
 
 
-```typescript
-{
-    sections: [
-        {
-            id: 'exampleFieldSection',
-            type: FormSectionTypesEnum.FIELD_SECTION,
-            config: {
-                headlineText: {
-                    en: 'Example Field Section',
-                    de: 'Beispiel Feld Sektion',
-                    tr: 'Example Field Section [TR]',
-                    fr: 'Example Field Section [FR]',
-                    es: 'Example Field Section [ES]',
-                    it: 'Example Field Section [IT]',
-                },
-            },
-            fields: [
+```json
+"sections": [
+    {
+      "id": "exampleFieldSection",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Example Field Section",
+          "de": "Beispiel Feld Sektion",
+          "tr": "Example Field Section [TR]",
+          "fr": "Example Field Section [FR]",
+          "es": "Example Field Section [ES]",
+          "it": "Example Field Section [IT]"
+        }
+      },
+      "fields": [
                 {
                   ... // enter field properties
                 }
             ]
         }
     ]
-}
 ```
 ---
 

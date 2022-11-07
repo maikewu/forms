@@ -1,14 +1,11 @@
 ---
 title: Repeating fields
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 On this page you will find a list of repeating fields.
 
->🚧 
->
-> In progress
 
 ---
 # Configuration Overview
@@ -26,8 +23,8 @@ On this page you will find a list of repeating fields.
 | [text](#text)                                      | Localized text of the field. Shown in the UI and the PDF.                                               |
 | [uiHide](#uihide)                                  | Setting this to `true` hides the field in the UI.                                                       |
 | [uiTextColor](#uitextcolor)                        | Text color of a certain field in the UI.                                                                |
-| [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are requried to fill the form.                  |                                                                             |
-| [lable](#lable)                                    | Several configurations for the lable.                                                                 |
+| [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are required to fill the form.                  |                                                                             |
+| [label](#lable)                                    | Several configurations for the label.                                                                 |
 | [values](#values)                                  | Several configurations for the values.                                                                 |
 | [prefill](#prefill)                                | Configuration to prefill the field with a value upon creation of the form instance.                     |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
@@ -47,8 +44,8 @@ On this page you will find a list of repeating fields.
 
 If `required` is set to `true`, the field is considered invalid as long as no value is entered.
 
-``` typescript
-required: true
+```json
+"required": true
 ```
 
 ---
@@ -62,8 +59,8 @@ required: true
 
 If `disabled` is set to `true`, the field is permanently disabled in the UI. It can still be modified during initial prefilling or dynamic field actions but directly modifying the value in the UI is not possible.
 
-``` typescript
-disabled: true
+```json
+"disabled": true
 ```
 
 ---
@@ -77,8 +74,8 @@ disabled: true
 
 If `pdfHide` is set to `true`, the field is not shown in the PDF at all. This takes precedence over `pdfHideIfValueIsEmpty`.
 
-``` typescript
-pdfHide: true
+```json
+"pdfHide": true
 ```
 
 ---
@@ -93,24 +90,24 @@ pdfHide: true
 If `pdfHideIfValueIsEmpty` is set to `true` and the field value is empty, the field is not shown in the PDF at all.
 If the field value is not empty, the field will still be shown (unless `pdfHide` is not set to `true`). 
 
-``` typescript
+```json
 pdfHideIfValueIsEmpty: true
 ```
 
 ---
 ## `pdfWidth`
 
-| `pdfWdith`                 |                           |
+| `pdfWidth`                 |                           |
 | :------------------------- | :-------------------------|
 | Possible Values            | Values between `0` - `1`  |
 | Required                   | no                        |
-| Default Value              | `1 (full wdith)`          |
+| Default Value              | `1 (full width)`          |
 
 The value of `pdfWidth` defines the width of a field in the pdf layout.
 `1` represent the full row in the pdf, e.g. `0.5` represent the half row / 50 % of the row.
 
-``` typescript
-pdfWidth: 0.5
+```json
+"pdfWidth": 0.5
 ```
 
 ---
@@ -126,14 +123,14 @@ Placeholder text that is shown in the UI when the field is focused but does not 
 
 Important: If the field is not focused and does not have a value, `label.text` is shown instead.
 
-``` typescript
-placeHolderText: {
-    en: 'Example Placeholder',
-    de: 'Platzhalter',
-    tr: 'Example Placeholder [TR]',
-    fr: 'Example Placeholder [FR]',
-    es: 'Example Placeholder [ES]',
-    it: 'Example Placeholder [IT]',
+```json
+"placeHolderText": {
+    "en": "Example Placeholder",
+    "de": "Platzhalter",
+    "tr": "Example Placeholder [TR]",
+    "fr": "Example Placeholder [FR]",
+    "es": "Example Placeholder [ES]",
+    "it": "Example Placeholder [IT]",
 }
 ```
 
@@ -148,8 +145,8 @@ placeHolderText: {
 
 By setting `pdfTextSize`, the field label will show up in the PDF having the defined text size in pixels.
 
-``` typescript
-pdfTextSize: 20
+```json
+"pdfTextSize": 20
 ```
 
 ---
@@ -163,8 +160,8 @@ pdfTextSize: 20
 
 By setting `pdfTextColor`, the field label in the PDF will have the defined color.
 
-``` typescript
-pdfTextColor: #F1F8F1
+```json
+"pdfTextColor": "#F1F8F1"
 ```
 
 ---
@@ -177,14 +174,14 @@ pdfTextColor: #F1F8F1
 
 Label text that is shown in the UI and the PDF to identify the field. 
 
-``` typescript
-text: {
-    en: 'Example Placeholder',
-    de: 'Platzhalter',
-    tr: 'Example Placeholder [TR]',
-    fr: 'Example Placeholder [FR]',
-    es: 'Example Placeholder [ES]',
-    it: 'Example Placeholder [IT]',
+```json
+"text": {
+    "en": "Example Text",
+    "de": "Platzhalter",
+    "tr": "Example Text [TR]",
+    "fr": "Example Text [FR]",
+    "es": "Example Text [ES]",
+    "it": "Example Text [IT]",
 }
 ```
 
@@ -198,8 +195,8 @@ text: {
 
 If `uiHide` is set to `true`, the label is not shown in the UI.
 
-``` typescript
-uiHide: true
+```json
+"uiHide": true
 ```
 
 ---
@@ -213,8 +210,8 @@ uiHide: true
 
 By setting `uiTextColor`, the field label in the UI will have the defined color.
 
-``` typescript
-uiTextColor: #F1F8F1
+```json
+"uiTextColor": "#F1F8F1"
 ```
 
 ---
@@ -228,10 +225,10 @@ uiTextColor: #F1F8F1
 | Required                   | no              |
 | Default Value              | `0`             |
 
-By setting `requiredAmountOfEntries`, it specify how many repeating entries are requried to fill the form.
+By setting `requiredAmountOfEntries`, it specify how many repeating entries are required to fill the form.
 
-```typescript
-requiredAmountOfEntries: 3,
+```json
+"requiredAmountOfEntries": 3,
 ```
 
 ---
@@ -244,14 +241,14 @@ requiredAmountOfEntries: 3,
 
  Allows to display text in the pdf in different languages.
 
-``` typescript
+```json
 {
- en: 'Example Placeholder',
- de: 'Platzhalter',
- tr: 'Example Placeholder [TR]',
- fr: 'Example Placeholder [FR]',
- es: 'Example Placeholder [ES]',
- it: 'Example Placeholder [IT]',
+ "en": "Example MultiLanguageText",
+ "de": "Beispiel Mehrfachsprachen Text",
+ "tr": "Example MultiLanguageText [TR]",
+ "fr": "Example MultiLanguageText [FR]",
+ "es": "Example MultiLanguageText [ES]",
+ "it": "Example MultiLanguageText [IT]",
 }
 ```
 
@@ -275,10 +272,10 @@ requiredAmountOfEntries: 3,
 | [pdfHide](#pdfhide)                                       | Setting this to `true` hides the label in the PDF. |
 | [pdfTextSize](#pdftextsize)                               | Text size of the label in the PDF. |
 | [pdfTextColor](#pdftextcolor)                             | Text color of the label in the PDF. |
-| [pdfStartInNewLine](#pdfstartinnewline)                   | ???|
-| [pdfAddLineBreak](#pdfaddlinebreak)                       | ???|
+| [pdfStartInNewLine](#pdfstartinnewline)                   | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
+| [pdfAddLineBreak](#pdfaddlinebreak)                       | Setting this to `true` will add a linebreak in the PDF. |
 | [validators.maxCharacters](#validatorsmaxcharacters)      | Maximum number of characters for the input value to be valid.                                   |
-| [validators.minCharacters](#validatorsmincharacters)      | Minimum number
+| [validators.minCharacters](#validatorsmincharacters)      | Minimum number of characters for the input value to be valid.
 
 ---
 ### `pdfStartInNewLine`
@@ -289,10 +286,10 @@ requiredAmountOfEntries: 3,
 | Required                   | no              |
 | Default Value              | ``               |
 
-If `pdfStartInNewLine` is set to `true`, the field value starts below the field lable in the PDF.
+If `pdfStartInNewLine` is set to `true`, the field value starts below the field label in the PDF.
 
-```typescript
-pdfStartInNewLine: true,
+```json
+"pdfStartInNewLine": true,
 ```
 
 ---
@@ -304,10 +301,10 @@ pdfStartInNewLine: true,
 | Required                   | no              |
 | Default Value              | -               |
 
-If `pdfAddLineBreaks` is set to `true`, linebreaks are set after every value of the field in the PDF.
+If `pdfAddLineBreaks` is set to `true`, a linebreak is set after every value of the field in the PDF.
 
-```typescript
-pdfAddLineBreaks: true,
+```json
+"pdfAddLineBreaks": true,
 ```
 
 ---
@@ -321,9 +318,9 @@ pdfAddLineBreaks: true,
 
 By setting `validators.minCharacters`, the field will be marked as invalid if the value contains less characters than the specified number.
 
-``` typescript
-validators: {
-    minCharacters: 10
+```json
+"validators": {
+    "minCharacters": 10
 }
 ```
 
@@ -338,9 +335,9 @@ validators: {
 
 By setting `validators.maxCharacters`, the field will be marked as invalid if the value contains more characters than the specified number.
 
-``` typescript
-validators: {
-    maxCharacters: 100
+```json
+"validators": {
+    "maxCharacters": 100
 }
 ```
 
@@ -373,6 +370,10 @@ validators: {
 
 If `enable` is set to `true`, the sub-property appears in the UI. 
 
+```json
+ "enable": true
+
+```
 ---
 ## `prefill`
 

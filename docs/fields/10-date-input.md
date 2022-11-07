@@ -1,7 +1,7 @@
 ---
 title: DateInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 
@@ -20,68 +20,70 @@ The DateInput field allows to input a date.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
-  id: 'exampleDateInput_1',
-    type: FormFieldTypesEnum.DATE_INPUT,
-    config: {
-        pdfHide: false,
-        disabled: false,
-        required: true,
-        pdfWidth: 1,
-        pdfHideIfValueIsEmpty: false,
-        label: {
-            text: {
-                en: 'Date input 1',
-                de: 'Date input 1 [DE]',
-                tr: 'Date input 1 [TR]',
-                fr: 'Date input 1 [FR]',
-                es: 'Date input 1 [ES]',
-                it: 'Date input 1 [IT]',
-            },
-            uiHide: false,
-            pdfHide: false,
-            pdfTextSize: 14,
-            pdfTextColor: '#facc2e',
-        },
-        value: {
-            pdfHide: false,
-            pdfTextSize: 14,
-            pdfTextColor: '#facc2e',
-            pdfStartInNewLine: false,
-            validators: {
-                minDate: '2000-02-22',
-                maxDate: '2022-02-22',
-            },
-        },
-        prefill: {
-            value: [
-              {
-                input: 'none',
-                steps: [
-                  [
-                    'staticDate',
-                    '2022-02-22',
-                  ]
-                ],
-              }
-            ],
-        },
+  "id": "exampleDateInput_1",
+  "type": "dateInput",
+  "config": {
+    "pdfHide": false,
+    "disabled": false,
+    "required": true,
+    "pdfWidth": 0.7,
+    "pdfHideIfValueIsEmpty": false,
+    "label": {
+      "text": {
+        "en": "Date input 1",
+        "de": "Date input 1 [DE]",
+        "tr": "Date input 1 [TR]",
+        "fr": "Date input 1 [FR]",
+        "es": "Date input 1 [ES]",
+        "it": "Date input 1 [IT]"
+      },
+      "uiHide": false,
+      "pdfHide": false,
+      "pdfTextSize": 14,
+      "pdfTextColor": "#facc2e"
     },
+    "value": {
+      "pdfHide": false,
+      "pdfTextSize": 14,
+      "pdfTextColor": "#facc2e",
+      "pdfStartInNewLine": false,
+      "validators": {
+        "minDate": "2000-02-22",
+        "maxDate": "2022-02-22"
+      }
+    },
+    "prefill": {
+      "value": [{
+          "input": "none",
+          "steps": [[
+              "staticDate",
+              "2022-02-22"
+            ]]
+        }]
+    }
+  }
 },
 ```
-``` typescript (minimal)
+```json (minimal)
 {
-  id: 'exampleDateInput_1',
-    type: FormFieldTypesEnum.DATE_INPUT,
-    config: {
-        label: {
-            text: {
-                en: 'Date input 1',
-                de: 'Date input 1 [DE]',
-            },
-        },
+  "id": "exampleDateInput_1",
+  "type": "dateInput",
+  "config": {
+    "label": {
+      "text": {
+        "en": "Date input 1",
+        "de": "Date input 1 [DE]",
+        "tr": "Date input 1 [TR]",
+        "fr": "Date input 1 [FR]",
+        "es": "Date input 1 [ES]",
+        "it": "Date input 1 [IT]"
+      },
     },
+    "value": {
+    },
+  }
 },
 ```
 
@@ -122,9 +124,9 @@ The DateInput field allows to input a date.
 
 By setting `validators.minDate`, the field will be marked as invalid if the date is later than the specified one.
 
-``` typescript
-validators: {
-    minDate: '2000-02-22'
+```json
+"validators": {
+    "minDate": "2000-02-22"
 }
 ```
 
@@ -139,9 +141,9 @@ validators: {
 
 By setting `validators.maxDate`, the field will be marked as invalid if the date is earlier than the specified one.
 
-``` typescript
-validators: {
-    maxDate: '2022-02-22'
+```json
+"validators": {
+    "maxDate": "2022-02-22"
 }
 ```
 
@@ -156,20 +158,16 @@ validators: {
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript (static date)
-prefill: {
-    value: [
-      {
-        input: 'none',
-        steps: [
-          [
-            'staticDate',
-            '2022-02-22',
-          ]
-        ],
-      }
-    ],
-},
+```json (static date)
+"prefill": {
+  "value": [{
+      "input": "none",
+      "steps": [[
+          "staticDate",
+          "2022-02-22"
+        ]]
+    }]
+}
 ```
 ---
 ## `onChange`

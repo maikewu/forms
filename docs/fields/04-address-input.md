@@ -1,7 +1,7 @@
 ---
 title: AddressInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The AddressInput contains various fields for every information of an address.
@@ -20,82 +20,75 @@ The AddressInput contains various fields for every information of an address.
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
     "id": "exampleAddressInput_1",
     "type": "addressInput",
     "config": {
-        "required": {
-            "street": false,
-            "streetNumber": false,
-            "company": false,
-            "supplement": false,
-            "zipPostCode": false,
-            "city": false,
-            "state": false,
-            "country": false
+      "required": {
+        "street": false,
+        "streetNumber": false,
+        "company": false,
+        "supplement": false,
+        "zipPostCode": false,
+        "city": false,
+        "state": false,
+        "country": false
+      },
+      "disabled": false,
+      "pdfHide": false,
+      "pdfHideIfValueIsEmpty": false,
+      "pdfWidth": 1,
+      "label": {
+        "text": { 
+          "en": "Address Input 1",
+          "de": "Anschrift Input 1",
+          "tr": "Address Input 1 [TR]",
+          "fr": "Address Input 1 [FR]",
+          "es": "Address Input 1 [ES]",
+          "it": "Address Input 1 [IT]"
         },
         "pdfHide": false,
         "uiTextColor": "#facc2e",
         "pdfTextColor": "#facc2e",
         "pdfTextSize": 14
-         "label": {
-              "text": {
-                "en": "Address Input 1",
-                "de": "Anschrift Input 1",
-                "tr": "Address Input 1 [TR]",
-                "fr": "Address Input 1 [FR]",
-                "es": "Address Input 1 [ES]",
-                "it": "Address Input 1 [IT]"
-              },
-              "pdfHide": false,
-              "uiTextColor": "#facc2e",
-              "pdfTextColor": "#facc2e",
-              "pdfTextSize": 14
-        },
-        "value": {
-              "pdfHide": false,
-              "pdfStartInNewLine": false,
-              "pdfAddLineBreaks": false,
-              "pdfTextColor": "#facc2e",
-              "pdfTextSize": 14
-            },
-            "prefill": {
-              "value": [
+      },
+      "value": {
+        "pdfHide": false,
+        "pdfStartInNewLine": false,
+        "pdfAddLineBreaks": false,
+        "pdfTextColor": "#facc2e",
+        "pdfTextSize": 14
+      },
+      "prefill": {
+        "value": [
+          {
+            "input": "none",
+            "steps": [
+              [
+                "staticAddress",
                 {
-                  "input": "none",
-                  "steps": [
-                    [
-                      "staticAddress",
-                      {
-                        "city": "Default City",
-                        "street": "Default Street",
-                        "streetNumber": "1",
-                        "country": "Default Country",
-                        "other": "Default supplement",
-                        "countryProvince": "Default state",
-                        "company": "Default Company"
-                      }
-                    ]
-                  ]
+                  "city": "Default City",
+                  "street": "Default Street",
+                  "streetNumber": "1",
+                  "country": "Default Country",
+                  "other": "Default supplement",
+                  "countryProvince": "Default state",
+                  "company": "Default Company"
                 }
               ]
-            },
-            "onChange": [
-              {
-                "steps": [
-                  "addressToCityString"
-                ],
-                "target": {
-                  "id": "exampleSignatureSection",
-                  "propertyName": "location"
-                }
-              }
             ]
           }
-        },
+        ]
+      },
+      "onChange": [{
+          "target": { "id": "exampleSignatureSection", "propertyName": "location" },    
+          "steps": ["addressToCityString"]
+      }]
+    }
+},
 ```
-``` typescript (minimal)
+```json (minimal)
 {
     "id": "exampleAddressInput_2",
     "type": "addressInput",
@@ -136,7 +129,7 @@ The AddressInput contains various fields for every information of an address.
 
 The Address Input field has several different fields that can be individually set as mandatory fields.
 
-```typescript
+```json
 "required": {
     "street": false,
     "streetNumber": false,
@@ -180,9 +173,9 @@ The Address Input field has several different fields that can be individually se
 | Required        | no              |
 | Default Value   | empty [Array]               |
 
-By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
+By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The characters are case sensitive.
 
-``` typescript (validators)
+```json (validators)
 "validators":{
 "supportedNonNumericsCharacters": ["A", "I", "*"]
 }
@@ -199,7 +192,7 @@ By setting `supportedNonNumericCharacters`, the field will support a list of non
 
 By defining `validators.regexPattern`, you set a expression for valid values.
 
-``` typescript
+```json
 "validators":{
 "regexPattern": "^[A-Z]*$"
 }
@@ -215,7 +208,7 @@ By defining `validators.regexPattern`, you set a expression for valid values.
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-``` typescript
+```json
 "prefill": {
     "value": [
     {
@@ -228,10 +221,10 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
             "streetNumber": "1",
             "company": "remberg GmbH",
             "supplement": "Default Supplement",
-            "zipPostCode": "Default Zipcode",
+            "zipPostCode": "Default Zip-code",
             "city": "Default City",
             "state": "Default State",
-            "country": "Default Country"
+            "country": "Default Country",
             "city": "Default City",
             }
         ]
@@ -251,12 +244,10 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```typescript
-"onChange": [
-    {
-        "steps": [ "addressToCityString" ],
-        "target": { "id": "exampleSignatureSection", propertyName: 'location' },
-    },
-],
+```json
+"onChange": [{
+    "target": { "id": "exampleSignatureSection", "propertyName": "location" },    
+    "steps": ["addressToCityString"]
+}]
 ```
 

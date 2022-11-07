@@ -1,0 +1,536 @@
+{
+  "general": {
+    "name": {
+      "en": "Maintenance Report",
+      "de": "Wartungsbericht"
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "serviceTechnician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service Technician"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Anlage",
+            "en": "Machine"
+          },
+          "registerAssetChange": true,
+          "required": true,
+          "width": 0.5
+        },
+        "constructionDate": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Herstellungsdatum",
+            "en": "Construction Date"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": false,
+          "required": false
+        },
+        "address": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "06_signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "location",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signatureTechnician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07_signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "location",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signatureCustomer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "address"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_maintenanceInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Wartungsinformationen",
+        "en": "Maintenance Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "maintenanceType": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Wartungstyp",
+            "en": "Maintenance Type"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Vorausschauende Wartung",
+                "en": "Foresighted Maintenance"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Geplante Wartung gemäß Service-Vertrag",
+                "en": "Planned Maintenance According To Service Contract"
+              }
+            },
+            {
+              "value": "3",
+              "text": {
+                "de": "Frühzeitige Wartung gemäß Service-Vertrag",
+                "en": "Early Maintenance According To Service Contract"
+              }
+            },
+            {
+              "value": "4",
+              "text": {
+                "de": "Notfallreperatur",
+                "en": "Emergency Repair"
+              }
+            },
+            {
+              "value": "5",
+              "text": {
+                "de": "Teileaustausch",
+                "en": "Spare Parts Change"
+              }
+            }
+          ]
+        },
+        "maintenanceStatus": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Wartungsstatus",
+            "en": "Maintenance Status"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Abgeschlossen",
+                "en": "Completed"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "In Bearbeitung",
+                "en": "In Process"
+              }
+            }
+          ]
+        },
+        "helptext": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Wenn In Bearbeitung gewählt, bitte spezifizieren:",
+            "en": "If Selected In Process, please specify:"
+          }
+        },
+        "maintenanceCompletion": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Fortschritt (in %)",
+            "en": "Process (in %)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "lastMaintenanceDate": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Datum der letzten Wartung",
+            "en": "Date Of Last Maintenance"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentDate": false,
+          "required": false
+        }
+      }
+    },
+    "03_tasks": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Durchgeführte Tätigkeiten",
+        "en": "Performed Tasks"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Aufgaben",
+            "en": "Tasks"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "04_spareParts": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Spare Parts",
+        "de": "Material"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Verwendete Ersatzteile",
+            "en": "Used Spare Parts"
+          },
+          "required": false,
+          "invoiceFields": true,
+          "hideWarrantyField": false,
+          "hiddenInPdf": false,
+          "width": 1
+        }
+      }
+    },
+    "05_times": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Working & Travel Times",
+        "de": "Arbeits- & Reisezeiten"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "times": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Zeiten",
+            "en": "Times"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "required": false
+        }
+      }
+    },
+    "06_signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift Servicetechniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signatureTechnician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Servicetechniker",
+            "en": "Service Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "07_signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signatureCustomer": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "08_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "tavelAndWorkingTimes2": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Rückreisezeiten",
+            "en": "Backward journey times & corrections"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": true
+        }
+      }
+    },
+    "09_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent maintenance report as E-Mail",
+        "de": "Wartungsbericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "",
+            "content": "",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

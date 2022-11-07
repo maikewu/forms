@@ -1,7 +1,7 @@
 ---
 title: PhoneNumberInput
-category: 62ebf4654ae80e09e468624b
-parentDoc: 62ec01bd561bab0aa775efe4
+category: 635ce1e7775bc60045570ffb
+parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The PhoneNumberInput field allows to input telephone numbers in the common format.
@@ -20,97 +20,82 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 | [prefill](#prefill)                                                          | Configuration to prefill the field with a value upon creation of the form instance. |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 
-``` typescript (complete)
+```json (complete)
 {
-    id: 'examplePhoneNumberInput_1',
-    type: FormFieldTypesEnum.PHONE_NUMBER_INPUT,
-    config: {
-        disabled: false,
-        required: true,
-        pdfHide: false,
-        pdfHideIfValueIsEmpty: false,
-        uiHideInRepeaterCardDisplay: false,
-        pdfWidth: 0.5,
-        placeHolderText: {
-            en: 'Phone number input placeholder',
-            de: 'Phone number input placeholder [DE]',
-            tr: 'Phone number input placeholder [TR]',
-            fr: 'Phone number input placeholder [FR]',
-            es: 'Phone number input placeholder [ES]',
-            it: 'Phone number input placeholder [IT]',
-        },
-        label: {
-            text: {
-                en: 'Phone number input required',
-                de: 'Phone number input required [DE]',
-                tr: 'Phone number input required [TR]',
-                fr: 'Phone number input required [FR]',
-                es: 'Phone number input required [ES]',
-                it: 'Phone number input required [IT]',
+    "id": "examplePhoneNumberInput_1",
+    "type": "phoneNumberInput",
+    "config": {
+        "disabled": false,
+        "required": true,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "pdfWidth": 1,
+        "label": {
+            "pdfHide": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "text": {
+                "en": "Phone number input required",
+                "de": "Phone number input required [DE]",
+                "tr": "Phone number input required [TR]",
+                "fr": "Phone number input required [FR]",
+                "es": "Phone number input required [ES]",
+                "it": "Phone number input required [IT]"
             },
-            pdfHide: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
+        }, 
+       "placeHolderText": {
+            "en": "Phone number input placeholder",
+            "de": "Phone number input placeholder [DE]",
+            "tr": "Phone number input placeholder [TR]",
+            "fr": "Phone number input placeholder [FR]",
+            "es": "Phone number input placeholder [ES]",
+            "it": "Phone number input placeholder [IT]"
         },
-        value: {
-            pdfHide: false,
-            pdfStartInNewLine: false,
-            pdfTextColor: '#facc2e',
-            pdfTextSize: 14,
-            validators: {
-                maxCharacters: 11,
-            },
+        "value": {
+            "pdfHide": false,
+            "pdfStartInNewLine": false,
+            "pdfTextColor": "#facc2e",
+            "pdfTextSize": 14,
+            "validators": {
+                "minCharacters": 6,
+                "maxCharacters": 10,
+                "supportedNonNumericsCharacters": ["A", "I", "*"]   
+            }
         },
-        prefill: {
-            value: [
-                {
-                    input: 'none',
-                    steps: [
-                        [
-                            'staticPhoneNumber',
-                            {
-                                countryPrefix: '49',
-                                number: '1753463937',
-                            },
-                        ],
-                    ],
-                },
-            ],
+        "prefill": {
+            "value": [{
+                "input": "none",
+                "steps": [[
+                    "staticPhoneNumber",
+                    {
+                    "countryPrefix": "49",
+                    "number": "1753463937"
+                    }
+                ]]
+            }]
         },
-    },
-},
+    }
+}
 ```
-``` typescript (minimal)
-{ 
-  id: 'examplePhoneNumberInput_1',
-  type: FormFieldTypesEnum.PHONE_NUMBER_INPUT,
-  config: {
-      required: true,
-      pdfWidth: 0.5,
-      label: {
-          text: {
-              en: 'Phone number input required',
-              de: 'Phone number input required [DE]',
-              tr: 'Phone number input required [TR]',
-              fr: 'Phone number input required [FR]',
-              es: 'Phone number input required [ES]',
-              it: 'Phone number input required [IT]',
-          },
-          pdfHide: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-      },
-      value: {
-          pdfHide: false,
-          pdfStartInNewLine: false,
-          pdfTextColor: '#facc2e',
-          pdfTextSize: 14,
-          validators: {
-              maxCharacters: 11,
-          },
-      },
-   },
-},
+```json (minimal)
+{
+    "id": "examplePhoneNumberInput_1",
+    "type": "phoneNumberInput",
+    "config": {
+        "label": {
+            "text": {
+                "en": "Phone number input required",
+                "de": "Phone number input required [DE]",
+                "tr": "Phone number input required [TR]",
+                "fr": "Phone number input required [FR]",
+                "es": "Phone number input required [ES]",
+                "it": "Phone number input required [IT]"
+            },
+        }, 
+        "value": {
+        },
+    }
+}
 ```
 
 ---
@@ -147,11 +132,11 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
 | Required        | no              |
 | Default Value   | empty [Array]               |
 
-By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The charcaters are case sensitive.
+By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The characters are case sensitive.
 
-``` typescript (validators)
-validators:{
-supportedNonNumericsCharacters: ["A", "I", "*"]
+```json (validators)
+"validators":{
+"supportedNonNumericsCharacters": ["A", "I", "*"]
 }
 ```
 
@@ -166,23 +151,19 @@ supportedNonNumericsCharacters: ["A", "I", "*"]
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 
-``` typescript (static phone number)
-        prefill: {
-            value: [
-                {
-                    input: 'none',
-                    steps: [
-                        [
-                            'staticPhoneNumber',
-                            {
-                                countryPrefix: '49',
-                                number: '1753463937',
-                            },
-                        ],
-                    ],
-                },
-            ],
-        },
+```json (static phone number)
+"prefill": {
+    "value": [{
+        "input": "none",
+        "steps": [[
+            "staticPhoneNumber",
+            {
+            "countryPrefix": "49",
+            "number": "1753463937"
+            }
+        ]]
+    }]
+},
 ```
 ---
 ## `onChange`
