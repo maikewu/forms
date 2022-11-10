@@ -122,9 +122,8 @@ By chaining steps, the desired data type can be achieved "step by step".
 </details>
 
 ---
-## Data type per field / section
 
-### Fields and data type
+### Prefill: expected data type
 
 | Field name               | Expected data type                   |
 | :----------------------------- | :---------------------------|
