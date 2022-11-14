@@ -1,5 +1,5 @@
 {
-  "$schema": "https://pastebin.com/raw/19EgpgEK",
+  "$schema": "https://pastebin.com/raw/eysKfZ7M",
   "general": {
     "singleInstanceForm": false,
     "timezone": "Europe/Berlin"
@@ -25,7 +25,26 @@
                 "de": "Servicetechniker",
                 "en": "Service Technicians"
               }
-            }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "10-signatureTechnician",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ]
           }
         },
         {
@@ -37,6 +56,14 @@
                 "de": "Ausgestellt durch",
                 "en": "Issued by"
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
             }
           }
         }
@@ -77,7 +104,20 @@
                   "id": "customer"
                 },
                 "steps": [
-                  "assetInfoToCustomerId"
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              },
+              {
+                "target": {
+                  "id": "10-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  "assetToLocationAddress",
+                  "addressToCityString"
                 ]
               }
             ]
@@ -85,14 +125,15 @@
         },
         {
           "id": "operatingHours",
-          "type": "singleLineInput",
+          "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
                 "de": "Betriebsstunden",
                 "en": "Operating hours"
               }
-            }
+            },
+            "required": true
           }
         }
       ]
@@ -128,27 +169,7 @@
                 "de": "Kundenadresse",
                 "en": "Customer Adress"
               }
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "10-signatureTechnician",
-                  "propertyName": "location"
-                },
-                "steps": [
-                  "addressToCityString"
-                ]
-              },
-              {
-                "target": {
-                  "id": "11-signatureCustomer",
-                  "propertyName": "location"
-                },
-                "steps": [
-                  "addressToCityString"
-                ]
-              }
-            ]
+            }
           }
         },
         {
@@ -177,7 +198,7 @@
       "fields": [
         {
           "id": "anlass",
-          "type": "staticMultiSelect",
+          "type": "staticSingleSelect",
           "config": {
             "label": {
               "text": {
@@ -305,7 +326,6 @@
                 "en": "Comment"
               }
             },
-            "placeHolderText": "<h1>Hier tippen...</h1>",
             "pdfWidth": 1
           }
         }
@@ -329,6 +349,29 @@
               "text": {
                 "de": "Durchgeführte Arbeiten",
                 "en": "Performed Tasks"
+              }
+            },
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": false,
+                "pdfHide": false
+              },
+              "titleSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "highPrioBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "notNecessaryBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
               }
             }
           }
@@ -369,6 +412,42 @@
                 "de": "Zeiten",
                 "en": "Times"
               }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
             }
           }
         }
@@ -393,6 +472,43 @@
                 "de": "Ersatzteile",
                 "en": "Spare Parts"
               }
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Spare Part Number",
+                  "de": "Ersatzteilnummer"
+                }
+              },
+              "quantityNumericInput": {
+                "required": true,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Description",
+                  "de": "Beschreibung"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": true,
+                "required": false,
+                "pdfHide": false
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": true,
+                "required": false,
+                "pdfHide": false
+              },
+              "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+              }
             }
           }
         }
@@ -416,6 +532,42 @@
               "text": {
                 "de": "Aufwände",
                 "en": "Costs"
+              }
+            },
+            "fields": {
+              "dateInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "commentMultiLineTextInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": false
+              },
+              "expenseAmountNumericInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "expenseTypeSingleSelectInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true,
+                "values": {
+                  "Toll": {
+                    "en": "Toll",
+                    "de": "Maut"
+                  },
+                  "Parking": {
+                    "en": "Parking",
+                    "de": "Parken"
+                  },
+                  "Other": {
+                    "en": "Other",
+                    "de": "Sonstiges"
+                  }
+                }
               }
             }
           }
@@ -442,8 +594,7 @@
                 "en": "General Comments"
               }
             },
-            "pdfWidth": 1,
-            "placeHolderText": "<h1>Hier tippen...</h1>"
+            "pdfWidth": 1
           }
         },
         {
@@ -486,6 +637,14 @@
               "input": "creationDateTime",
               "steps": [
                 "dateTimeToDate"
+              ]
+            }
+          ],
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
               ]
             }
           ]
@@ -619,14 +778,15 @@
         },
         {
           "id": "returnJourneyTime",
-          "type": "dateTimeInput",
+          "type": "multiLineTextInput",
           "config": {
             "label": {
               "text": {
                 "de": "Rückreisezeit",
                 "en": "Return journey time"
               }
-            }
+            },
+            "pdfHideIfValueIsEmpty": true
           }
         },
         {

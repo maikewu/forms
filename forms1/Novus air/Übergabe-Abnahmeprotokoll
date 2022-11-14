@@ -1,0 +1,925 @@
+{
+  "general": {
+    "name": {
+      "en": "Commissioning Protocol",
+      "de": "Übergabe/Abnahmeprotokoll"
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Projekt/Gerätenummer",
+            "en": "Projectno./Assetno."
+          },
+          "required": true,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Novus Mitarbeiter",
+            "en": "Novus Employee"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "width": 1,
+          "autofillCurrentUser": true,
+          "printEmailAddress": false,
+          "required": true
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 1,
+          "label": {
+            "de": "Auftraggeber (AG)",
+            "en": "Client"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "address"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "contactPerson": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Mitarbeiter (AG)",
+            "en":"Employee (Client)"
+          },
+          "width": 0.5
+        },
+        "employeePosition": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Funktion",
+            "en":"Position"
+          },
+          "width": 0.5
+        },
+        "address": {
+          "width": 1,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Aufstellort",
+            "en": "Installation Site"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "06_signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "address",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signatureTechnician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07_signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "address",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signatureCustomer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Bestellnummer (AG)",
+            "en": "Order Number (Client)"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "commNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Komm.",
+            "en": "Comm."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "address",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          }
+
+        ]
+      }
+    },
+    "02_checklist": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Checkliste - Übergabe/Abnahme",
+        "en": "Checklist - Handover/Commissioning"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "helpText-1": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "text": {
+            "de": "Standort/Montageplatz",
+            "en": "Location/Installation Site"
+          }
+        },
+        "checkbox-1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja/i.O.",
+            "en": "Yes/Ok"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein/Fehler",
+            "en": "No/Error"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nicht zutreffend",
+            "en": "Not Applicable"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "comments1": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Maßnahmen/Bemerkung",
+            "en": "Action/Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "helpText-2": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "text": {
+            "de": "Elektroanschluss",
+            "en": "Electrical Connection"
+          }
+        },
+        "checkbox-4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja/i.O.",
+            "en": "Yes/Ok"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein/Fehler",
+            "en": "No/Error"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nicht zutreffend",
+            "en": "Not Applicable"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "comments2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Maßnahmen/Bemerkung",
+            "en": "Action/Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "helpText-3": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "text": {
+            "de": "Druckluftanschluss",
+            "en": "Compressed Air Connection"
+          }
+        },
+        "checkbox-7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja/i.O.",
+            "en": "Yes/Ok"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein/Fehler",
+            "en": "No/Error"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nicht zutreffend",
+            "en": "Not Applicable"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "comments3": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Maßnahmen/Bemerkung",
+            "en": "Action/Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "helpText-4": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "text": {
+            "de": "Äußerer Zustand",
+            "en": "Visual Condition"
+          }
+        },
+        "checkbox-10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja/i.O.",
+            "en": "Yes/Ok"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein/Fehler",
+            "en": "No/Error"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nicht zutreffend",
+            "en": "Not Applicable"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "comments4": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Maßnahmen/Bemerkung",
+            "en": "Action/Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "helpText-5": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "text": {
+            "de": "Funktionsprüfung",
+            "en": "Functional Test"
+          }
+        },
+        "checkbox-13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja/i.O.",
+            "en": "Yes/Ok"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein/Fehler",
+            "en": "No/Error"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nicht zutreffend",
+            "en": "Not Applicable"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "comments5": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Maßnahmen/Bemerkung",
+            "en": "Action/Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "helpText-6": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "text": {
+            "de": "Vollständ. Bestellumfang",
+            "en": "Complete Ordering Extent"
+          }
+        },
+        "checkbox-16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja/i.O.",
+            "en": "Yes/Ok"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein/Fehler",
+            "en": "No/Error"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-18": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nicht zutreffend",
+            "en": "Not Applicable"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "comments6": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Maßnahmen/Bemerkung",
+            "en": "Action/Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        },
+        "helpText-7": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "text": {
+            "de": "Dokumentation",
+            "en": "Documentation"
+          }
+        },
+        "checkbox-19": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ja/i.O.",
+            "en": "Yes/Ok"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-20": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nein/Fehler",
+            "en": "No/Error"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-21": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "nicht zutreffend",
+            "en": "Not Applicable"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "comments7": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Maßnahmen/Bemerkung",
+            "en": "Action/Comments"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "disabled": false
+        }
+      }
+    },
+    "03_defects": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Festgestellte Mängel/erforderliche Maßnahmen/benötigte Ersatzteile",
+        "en": "Defects/Actions/Spare Parts"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "defectsActions": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Festgestellte Mängel/erforderliche Maßnahmen",
+            "en": "Defects/Actions"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1,
+          "hideInPdfIfEmpty": true
+        },
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "label": {
+            "de": "Benötigte Ersatzteile",
+            "en": "Spare Parts"
+          },
+          "required": false,
+          "invoiceFields": true,
+          "hideWarrantyField": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1
+        }
+      }
+    },
+    "04_training": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Teilnehmer Einweisung Funktion und Bedienung der Anlage",
+        "en": "Training Participants"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "participants": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "name": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Name, Vorname",
+                "en": "Surname, Name"
+              },
+              "required": true,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "position": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Position",
+                "en": "Position"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "disabled": false
+            }
+          }
+        }
+      }
+    },
+    "05_workTimes": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Regiezeiten",
+        "en": "Work Times"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "times": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Zeiten",
+            "en": "Times"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "required": false
+        }
+      }
+    },
+    "06_signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Technician",
+        "de": "Unterschrift AN (Novus)"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signatureTechnician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Arbeitnehmer",
+            "en": "Employee"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "07_signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature Client",
+        "de": "Unterschrift AG (Kunde)"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "note": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "width": 1,
+          "text": {
+            "de": "Gerät/Anlage gilt vollumfänglich als ordnungsgemäß u. funktionstüchtig abgenommen:",
+            "en": "The asset is fully accepted as properly and fully functional:"
+          }
+        },
+        "signatureCustomer": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Client"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": false,
+          "required": true
+        }
+      }
+    },
+    "08_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Protokoll als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Übergabe-Abnahmeprotokoll",
+            "content": "Diese E-Mail wurde automatisch erstellt. Bitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
