@@ -1,0 +1,415 @@
+{
+  "general": {
+    "name": {
+      "en": "Examination Report",
+      "de": "Prüfbericht"
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "readonly": false,
+          "required": true
+        },
+        "inventoryId": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Inventar Nummer",
+            "en": "Inventory Number"
+          },
+          "readonly": false,
+          "required": false
+        },
+        "location": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Standort",
+            "en": "Location"
+          },
+          "readonly": false
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Art",
+            "en": "Type"
+          },
+          "readonly": false,
+          "required": true
+        },
+        "costCentre": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Kostenstelle",
+            "en": "Cost Centre"
+          },
+          "readonly": false
+        },
+        "building": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gebäude",
+            "en": "Building"
+          },
+          "readonly": false
+        },
+        "serialNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Hersteller / Ser.Nr.",
+            "en": "Serial Number"
+          },
+          "readonly": false
+        },
+        "protectionLevel": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Schutzklasse",
+            "en": "Protection Level"
+          },
+          "options": [
+            {
+              "value": "protectionLevel1",
+              "text": {
+                "de": "SK 1",
+                "en": "SK 1"
+              }
+            },
+            {
+              "value": "protectionLevel2",
+              "text": {
+                "de": "SK 2",
+                "en": "SK 2"
+              }
+            },
+            {
+              "value": "protectionLevel3",
+              "text": {
+                "de": "SK 3",
+                "en": "SK 3"
+              }
+            }
+          ]
+        },
+        "room": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Raum",
+            "en": "Room"
+          },
+          "readonly": false
+        },
+        "examinationType": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Art der Prüfung",
+            "en": "Type of Examination"
+          },
+          "options": [
+            {
+              "value": "examinationType1",
+              "text": {
+                "de": "DIN VDE 0701-0702",
+                "en": "DIN VDE 0701-0702"
+              }
+            },
+            {
+              "value": "examinationType2",
+              "text": {
+                "de": "DIN VDE 0105-100",
+                "en": "DIN VDE 0105-100"
+              }
+            },
+            {
+              "value": "examinationType3",
+              "text": {
+                "de": "DIN VDE 0113-1",
+                "en": "DIN VDE 0113-1"
+              }
+            }
+          ]
+        },
+        "testDevice": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Prüfmittel",
+            "en": "Asset"
+          },
+          "required": false
+        },
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Prüfer",
+            "en": "Technician"
+          },
+          "required": false
+        },
+        "currentExamination": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Prüfdatum",
+            "en": "Date of Examination"
+          },
+          "autofillCurrentDate": true
+        },
+        "upcommingExamination": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Nächste Prüfung:",
+            "en": "Upcomming Examination"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "contactPerson",
+                    "_propertyName": "account"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "2-prüfergebnisse": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Prüfergebnisse",
+        "en": "Results"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "resultRepeater": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "disableTabularView": false,
+          "children": {
+            "function": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Funktion",
+                "en": "Function"
+              },
+              "readonly": false,
+              "required": false
+            },
+            "workStep": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Arbeitsschritt",
+                "en": "Work Step"
+              },
+              "readonly": false,
+              "required": false
+            },
+            "criteria": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Kriterien (Einheit)",
+                "en": "Criteria"
+              },
+              "readonly": false,
+              "required": false
+            },
+            "testResult": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Ergebnis",
+                "en": "Result"
+              },
+              "readonly": false,
+              "required": false
+            },
+            "result": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "OK",
+                "en": "OK"
+              },
+              "options": [
+                {
+                  "value": "ok",
+                  "text": {
+                    "de": "OK",
+                    "en": "OK"
+                  }
+                },
+                {
+                  "value": "notOk",
+                  "text": {
+                    "de": "Unzureichend",
+                    "en": "Deficient"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "result": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Gesamtergebnis",
+            "en": "Final Result"
+          },
+          "options": [
+            {
+              "value": "noDefects",
+              "text": {
+                "de": "Keine Mängel",
+                "en": "No Defects"
+              }
+            },
+            {
+              "value": "minorDefects",
+              "text": {
+                "de": "Geringe Mängel",
+                "en": "Minor Defects"
+              }
+            },
+            {
+              "value": "majorDefects",
+              "text": {
+                "de": "Erhebliche Mängel",
+                "en": "Major Defects"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "3-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "autofillCurrentUser": true,
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "required": false
+        }
+      }
+    },
+    "12-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send filled form",
+        "de": "Ausgefülltes Formular absenden"
+      },
+      "stateIndicator": true,
+      "hasNextStep": false,
+      "children": {
+        "test44": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN",
+            "en": "SEND"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
