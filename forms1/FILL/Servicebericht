@@ -1,0 +1,1175 @@
+{
+  "general": {
+    "name": {
+      "en": "Service Report",
+      "de": "Servicebericht"
+    }
+  },
+  "formStructure": {
+    "1-allgmeineInformationen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "reportId": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Service-Auftragsnummer",
+            "en": "Service Order Number"
+          },
+          "required": true
+        },
+        "technicians": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "width": 0.5,
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "required": true,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "3-customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Customer Information",
+        "de": "Kunden-Informationen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true,
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "3-customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": "customer",
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customerContactPerson",
+                        "_propertyName": "account"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "3-customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "2-maschine",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer_manual_helptext": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Wenn der Kunde noch nicht im System ist, bitte Firmennamen hier eintragen:",
+            "en": "If the customer is not in the system, please add customer name here:"
+          },
+          "hiddenInPdf": true
+        },
+        "customer_manual": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Kunde (manueller Eintrag)",
+            "en": "Customer (manual entry)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "customerLocation": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer Address"
+          },
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "11-signature_technician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "11-signature_customer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "orderNumber": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Bestellnummer",
+            "en": "Order number"
+          },
+          "readonly": false,
+          "required": false,
+          "validators": []
+        },
+        "customerContactPerson": {
+          "width": 0.5,
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Kontaktpersonen",
+            "en": "Contact persons"
+          },
+          "required": false,
+          "printEmailAddress": true,
+          "hideInPdfIfEmpty": true
+        },
+        "contact_manual_helptext": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Wenn die Kontaktperson noch nicht im System ist, bitte Namen und E-Mail Adresse hier eintragen:",
+            "en": "If the contact person is not in the system, please add name and email here:"
+          },
+          "hiddenInPdf": true
+        },
+        "contact_manual": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Kontaktperson (manueller Eintrag)",
+            "en": "Contact Person (manual entry)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer",
+                    "_functionName": "GET_ACCOUNT"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customerContactPerson",
+                    "_propertyName": "account"
+                  }
+                }
+              }
+            ]
+          }
+
+        ]
+      }
+    },
+    "2-maschine": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Maschinen-Information",
+        "en": "Machine information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Maschine",
+            "en": "Machine"
+          },
+          "required": false,
+          "width": 0.5,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hideInPdfIfEmpty": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "3-customerInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset_manual_helptext": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "text": {
+            "de": "Wenn die Maschine noch nicht im System ist, bitte Seriennummer hier eintragen:",
+            "en": "If the machine is not in the system, please add serial number here:"
+          },
+          "hiddenInPdf": true
+        },
+        "asset_manual": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Maschine (manueller Eintrag)",
+            "en": "Machine (manual entry)"
+          },
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "control": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Steuerung",
+            "en": "Control"
+          },
+          "required": false
+        },
+        "nc": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Software NC",
+            "en": "Software NC"
+          },
+          "required": false
+        },
+        "plc": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Software PLC",
+            "en": "Software PLC"
+          },
+          "required": false
+        },
+        "machineHours": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Maschinenstunden",
+            "en": "Machine hours"
+          },
+          "required": false
+        },
+        "spindleHours": {
+          "fieldType": "INPUT_TEXT",
+          "width": 0.5,
+          "label": {
+            "de": "Spindelstunden",
+            "en": "Spindle hours"
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "5-serviceAufgaben": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Service Tasks",
+        "de": "Serviceaufgaben"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "performedTasks": {
+          "fieldType": "REMBERG_TASKS",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Geplante und durchgeführte Aufgaben",
+            "en": "Planned and performed Tasks"
+          },
+          "required": false
+        },
+        "machineState": {
+          "fieldType": "SELECT",
+          "width": 0.5,
+          "label": {
+            "de": "Resultierender Maschinenstatus",
+            "en": "Resulting Machine State"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "operational",
+              "text": {
+                "de": "Betriebsfähig",
+                "en": "Operational"
+              }
+            },
+            {
+              "value": "partlyOperational",
+              "text": {
+                "de": "Bedingt betriebsfähig",
+                "en": "Partly Operational"
+              }
+            },
+            {
+              "value": "notOperational",
+              "text": {
+                "de": "Nicht betriebsfähig",
+                "en": "Not Operational"
+              }
+            }
+          ]
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "performedTasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "6-Arbeitszeiten": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Arbeitszeiten",
+        "en": "Working Times"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "times": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Zeiten",
+            "en": "Times"
+          },
+          "required": false
+        },
+        "travelBackTimesComment": {
+          "fieldType": "HELP_TEXT",
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Rückreisezeit kann erst nach Beendigung der Rückreise eingetragen werden.",
+            "en": "Return time can only be entered after the return journey has ended."
+          }
+        }
+      }
+    },
+    "7-ersatzteile": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "de": "Ersatzteile aus Technikerbestand",
+        "en": "Spare Parts from Technician Inventory"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": false,
+      "children": {
+        "spareParts": {
+          "fieldType": "REMBERG_SPARE_PARTS",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Ersatzteile",
+            "en": "Spare Parts"
+          },
+          "required": false,
+          "invoiceFields": true
+        }
+      }
+    },
+    "8-spesen": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Expenses",
+        "de": "Spesen"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "expenses2": {
+          "fieldType": "REMBERG_EXPENSES",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Ausgaben",
+            "en": "Expenses"
+          },
+          "required": false
+        }
+      }
+    },
+    "11-signature_technician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "required": true,
+          "autofillCurrentUser": true
+        }
+      }
+    },
+    "11-signature_customer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Unterschrift Kunde"
+      },
+      "width": 0.5,
+      "unbreakable": true,
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "12-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send filled form",
+        "de": "Ausgefülltes Formular absenden"
+      },
+      "hasNextStep": true,
+      "hiddenInPdf": true,
+      "children": {
+        "test44": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "FILL Servicebericht (Kundenausfertigung)",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma FILL GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen | Best regards",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "13-comments": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Nachtrag"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "traveltimeHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Rückreisezeiten",
+            "en": "Return journey time"
+          },
+          "required": false
+        },
+        "AdditionalTavelAndWorkingTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Zeiten",
+            "en": "Times"
+          },
+          "required": false
+        },
+        "expenses3Headline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Spesen",
+            "en": "Expenses"
+          },
+          "required": false
+        },
+        "expenses3": {
+          "fieldType": "REMBERG_EXPENSES",
+          "width": 1,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Ausgaben",
+            "en": "Expenses"
+          },
+          "required": false
+        },
+        "emptyLineNew": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "required": false
+        },
+        "KPIs": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Einsatzart",
+            "en": "Mission Type"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "WarrantyWarngau",
+              "text": {
+                "de": "Garantieeinsatz",
+                "en": "Warranty Case"
+              }
+            },
+            {
+              "value": "ServiceMission",
+              "text": {
+                "de": "Serviceeinsatz",
+                "en": "Sevice Case"
+              }
+            }
+          ]
+        },
+        "KPICategoryComment": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "text": {
+            "de": "Bitte füllen Sie die beim Einsatz betroffenen Baugruppen aus:",
+            "en": "Please fill out the assembly groups affected during the mission."
+          }
+        },
+        "MechanicsMission": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Mechanik",
+            "en": "Mechanics"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "MillingHead",
+              "text": {
+                "de": "Fräskopf",
+                "en": "Milling head"
+              }
+            },
+            {
+              "value": "SpindleJack",
+              "text": {
+                "de": "Spindelbock",
+                "en": "Spindle jack"
+              }
+            },
+            {
+              "value": "SpindleDrive",
+              "text": {
+                "de": "Spindelantrieb",
+                "en": "Spindle drive"
+              }
+            },
+            {
+              "value": "Support",
+              "text": {
+                "de": "Support",
+                "en": "Support"
+              }
+            },
+            {
+              "value": "Gear",
+              "text": {
+                "de": "Getriebe",
+                "en": "Gear"
+              }
+            },
+            {
+              "value": "WorkTable",
+              "text": {
+                "de": "Arbeitstisch",
+                "en": "Work table"
+              }
+            },
+            {
+              "value": "Stand",
+              "text": {
+                "de": "Ständer",
+                "en": "Stand"
+              }
+            },
+            {
+              "value": "Foot",
+              "text": {
+                "de": "Fuß",
+                "en": "Foot"
+              }
+            },
+            {
+              "value": "XAxis",
+              "text": {
+                "de": "X-Achse",
+                "en": "X-axis"
+              }
+            },
+            {
+              "value": "YAxis",
+              "text": {
+                "de": "Y-Achse",
+                "en": "Y-axis"
+              }
+            },
+            {
+              "value": "ZAxis",
+              "text": {
+                "de": "Z-Achse",
+                "en": "Z-axis"
+              }
+            },
+            {
+              "value": "AAxis",
+              "text": {
+                "de": "A-Achse",
+                "en": "A-axis"
+              }
+            },
+            {
+              "value": "Cabin1",
+              "text": {
+                "de": "Kabine",
+                "en": "Cabin"
+              }
+            },
+            {
+              "value": "ControlPanel",
+              "text": {
+                "de": "Bedienpult",
+                "en": "Control panel"
+              }
+            },
+            {
+              "value": "LengthGaugeLoadCell1",
+              "text": {
+                "de": "Messtaster, Messdose",
+                "en": "Length Gauge, Load Cell"
+              }
+            },
+            {
+              "value": "MechAddonParts",
+              "text": {
+                "de": "Mech. Anbauteile",
+                "en": "Mech. add-on parts"
+              }
+            },
+            {
+              "value": "ToolsClamp1",
+              "text": {
+                "de": "Werkzeugspanner",
+                "en": "Tools clamp"
+              }
+            },
+            {
+              "value": "ToolsChanger",
+              "text": {
+                "de": "Werkzeugwechsler",
+                "en": "Tool changer"
+              }
+            }
+          ]
+        },
+        "ElectricsMission": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Elektrik",
+            "en": "Electrics"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "Software",
+              "text": {
+                "de": "Software",
+                "en": "Software"
+              }
+            },
+            {
+              "value": "Drive",
+              "text": {
+                "de": "Antrieb",
+                "en": "Drive"
+              }
+            },
+            {
+              "value": "Sensors",
+              "text": {
+                "de": "Sensorik",
+                "en": "Sensors"
+              }
+            },
+            {
+              "value": "Controls1",
+              "text": {
+                "de": "Steuerung",
+                "en": "Controls"
+              }
+            },
+            {
+              "value": "Messsystem",
+              "text": {
+                "de": "Messsystem",
+                "en": "Measuring system"
+              }
+            },
+            {
+              "value": "ControlCabinet",
+              "text": {
+                "de": "Schaltschrank",
+                "en": "Control cabinet"
+              }
+            },
+            {
+              "value": "WiringCabling",
+              "text": {
+                "de": "Verdrahtung, Verkabelung",
+                "en": "Wiring, cabling"
+              }
+            },
+            {
+              "value": "ToolsChanger2",
+              "text": {
+                "de": "Werkzeugwechsler",
+                "en": "Tool changer"
+              }
+            }
+          ]
+        },
+        "ChangeoverRetrofitMission": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Umrüstung/Nachrüstung",
+            "en": "Changeover/Retrofit"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": true,
+          "options": [
+            {
+              "value": "Kabine",
+              "text": {
+                "de": "Kabine",
+                "en": "Cabin"
+              }
+            },
+            {
+              "value": "Steuerung",
+              "text": {
+                "de": "Steuerung",
+                "en": "Controls"
+              }
+            },
+            {
+              "value": "ElHandwheel",
+              "text": {
+                "de": "Elektronisches Handrad",
+                "en": "Electronic handwheel"
+              }
+            },
+            {
+              "value": "LengthGaugeLoadCell",
+              "text": {
+                "de": "Messtaster, Messdose",
+                "en": "Length gauge, load cell"
+              }
+            },
+            {
+              "value": "ToolClamp",
+              "text": {
+                "de": "Werkzeugspanner",
+                "en": "Tool clamp"
+              }
+            },
+            {
+              "value": "AuxEquipment",
+              "text": {
+                "de": "Zusatzgeräte",
+                "en": "Auxiliary equipment"
+              }
+            },
+            {
+              "value": "CutterGuard",
+              "text": {
+                "de": "Fräserschutz",
+                "en": "Cutter guard"
+              }
+            }
+          ]
+        },
+        "maintenanceCheckbox": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Wartung",
+            "en": "Maintenance"
+          },
+          "required": false,
+          "checked": true
+        },
+        "commissioningCheckbox": {
+          "fieldType": "CHECKBOX",
+          "hiddenInPdf": false,
+          "label": {
+            "de": "Inbetriebnahme",
+            "en": "Commissioning"
+          },
+          "required": false,
+          "checked": true
+        },
+        "emptyLineNew2": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "hiddenInPdf": false,
+          "text": {
+            "de": " ",
+            "en": " "
+          },
+          "required": false
+        },
+        "generalComments": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Allgemeine Bemerkungen & Hinweise",
+            "en": "General Comments"
+          },
+          "width": 0.5,
+          "readonly": false,
+          "validators": []
+        },
+        "distributionPossibility": {
+          "fieldType": "TEXTAREA",
+          "width": 0.5,
+          "label": {
+            "de": "Service-Vertriebsmöglichkeit",
+            "en": "Distribution possibility"
+          },
+          "readonly": false,
+          "validators": []
+        },
+        "filesHeadline": {
+          "fieldType": "H3",
+          "width": 1,
+          "text": {
+            "de": "Dokumentenanhang",
+            "en": "Documents Attachment"
+          },
+          "required": false,
+          "hiddenInPdf": true
+        },
+        "files": {
+          "fieldType": "REMBERG_FILE_UPLOAD",
+          "required": false,
+          "label": {
+            "de": "Dokument(e)",
+            "en": "Documents"
+          }
+        }
+      }
+    },
+    "14-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send filled form with addendum",
+        "de": "Ausgefülltes Formular mit Nachtrag absenden"
+      },
+      "hasNextStep": false,
+      "hiddenInPdf": true,
+      "children": {
+        "test45": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "FILL Servicebericht (Interne Ausfertigung)",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nHallo FILL-Team,\nIm Anhang findet ihr den abgeschlossenen Servicebericht als PDF und ggf. weitere Dokumente.\n\nSchöne Grüße,\nEuer Servicetechniker.",
+            "to": {
+              "currentUser": false,
+              "others": [
+              ]
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
