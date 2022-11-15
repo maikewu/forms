@@ -1,0 +1,775 @@
+{
+  "general": {
+    "name": {
+      "de": "Montageauftrag"
+    },
+    "confirmation": {
+      "isSignatureNeeded": true,
+      "popupHeadline": {
+        "de": "Unterschrift notwendig"
+      },
+      "popupDescription": {
+        "de": "Bitte unterschreiben Sie den Montageneuauftrag."
+      }
+    }
+  },
+  "formStructure": {
+    "01-generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Allgemeine Informationen"
+      },
+      "children": {
+        "technician": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Techniker"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": false,
+          "printEmailAddress": false,
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "contactPerson": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "label": {
+            "de": "Ansprechpartner"
+          },
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "autofillCurrentUser": false,
+          "printEmailAddress": false,
+          "required": false,
+          "hideInPdfIfEmpty": true
+        },
+        "telefonHelpText": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Telefon Ansprechpartner"
+          },
+          "hiddenInPdf": true,
+          "width": 1
+        },
+        "contactPhone": {
+          "fieldType": "REMBERG_PHONE",
+          "required": false,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Ansprechpartner Telefon"
+          }
+        },
+        "customer0": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Auftraggeber"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01-generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer0",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customer0Location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer0Location": {
+          "fieldType": "REMBERG_ADDRESS",
+          "width": 0.5,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Adresse Auftraggeber"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "B1-signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer0Location",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature1",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "B1-signatureFessmann",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer0Location",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature2",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": false,
+          "hideInPdfIfEmpty": true,
+          "width": 0.5,
+          "label": {
+            "de": "Warenempfänger"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01-generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "width": 0.5,
+          "hideInPdfIfEmpty": true,
+          "label": {
+            "de": "Adresse Warenempfänger"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customer0Location",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer0",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "contactPerson",
+                    "_propertyName": "account"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02-Montageumfang": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Montageumfang"
+      },
+      "children": {
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "hiddenInPdf": false,
+          "width": 0.5,
+          "label": {
+            "de": "Anlage"
+          }
+        },
+        "montageTage": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Montagetage gem. AB"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "auftragNr": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Auftrag-Nr."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "workTimes": {
+          "fieldType": "REMBERG_WORK_TIMES",
+          "label": {
+            "de": "Zeiten"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "customerFilter"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "customerFilter"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03-Leistungen": {
+      "isForm": true,
+      "ui": "CARD",
+      "cardHeadline": {
+        "de": "Leistungen"
+      },
+      "children": {
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Ausgeführte Leistungen"
+          },
+          "required": false,
+          "width": 1.0,
+          "hideInPdfIfEmtpy": true
+        },
+        "tasksComment": {
+          "fieldType": "TEXTAREA",
+          "label": {
+            "de": "Kommentar"
+          },
+          "required": false,
+          "minRows": 1,
+          "width": 1.0,
+          "hideInPdfIfEmtpy": true
+        },
+        "header": {
+          "fieldType": "H3",
+          "text": {
+            "de": "Verzögerungen durch …"
+          },
+          "hiddenInPdf": false,
+          "width": 1
+        },
+        "anlieferung": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Anlieferung"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "anlieferungComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "einbringung": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Einbringung"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "einbringungComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "platzverhältnisse": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Enge Platzverhältnisse"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "platzverhältnisseComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "montagebedingungen": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Erschwerte Montagebedingungen z.B. Hygieneschleuse, Produktion"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "montagebedingungenComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "bauseitigeMedien": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Fehlende bauseitige Medien"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "bauseitigeMedienComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "Lieferumfang": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Lieferumfang"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "LieferumfangComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "montage": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Montage"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "montageComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "nachlieferung": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nachlieferung"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "nachlieferungComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "sonstiges": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Sonstiges"
+          },
+          "required": false,
+          "width": 0.3,
+          "hiddenInPdf": false,
+          "checked": true,
+          "hideInPdfIfEmpty": true
+        },
+        "sonstigesComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerung in Std."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        },
+        "anfahrt": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Zusätzliche Anfahrt notwendig?"
+          },
+          "required": true,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "multiple": false,
+          "options": [
+            {
+              "value": "ja",
+              "text": {
+                "de": "Ja"
+              }
+            },
+            {
+              "value": "nein",
+              "text": {
+                "de": "Nein"
+              }
+            }
+          ]
+        },
+        "verzögerungHelpText": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Wenn Verzögerungen, bitte Gründe angeben"
+          },
+          "hiddenInPdf": true,
+          "width": 1
+        },
+        "verzögerungComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Verzögerungsgründe"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "disabled": false,
+          "hideInPdfIfEmpty": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "B1-signatureFessmann": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "de": "Unterschrift FESSMANN"
+      },
+      "children": {
+        "sublineFessmann": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Ich bestätige die ordnungsgemäße Ausführung oben aufgeführter Arbeiten."
+          },
+          "width": 1
+        },
+        "signature2": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Unterschrift FESSMANN i.A."
+          }
+        }
+      }
+    },
+    "B1-signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "width": 0.5,
+      "unbreakable": true,
+      "cardHeadline": {
+        "de": "Unterschrift Auftraggeber"
+      },
+      "children": {
+        "sublineCustomer": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Arbeiten richtig ausgeführt, Zeit und Materialverbrauch anerkannt."
+          },
+          "width": 1
+        },
+        "signature1": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Unterschrift Auftraggeber"
+          }
+        }
+      }
+    },
+    "B2-send": {
+      "isForm": true,
+      "ui": "CARD",
+      "hiddenInPdf": true,
+      "cardHeadline": {
+        "de": "Servicebericht als E-Mail senden/gesendet"
+      },
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "SENDEN"
+          },
+          "prefillConfig": {
+            "subject": "Servicebericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

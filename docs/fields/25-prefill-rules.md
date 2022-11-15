@@ -122,6 +122,34 @@ By chaining steps, the desired data type can be achieved "step by step".
 </details>
 
 ---
+
+### Prefill: expected data type
+
+| Field name               | Expected data type                   |
+| :----------------------------- | :---------------------------|
+| `singleLineTextInput` | `STRING` |
+| `multiLineTextInput` | `STRING` |
+| `booleanInput`| `BOOLEAN`|
+| `richTextInput`| `STRING`|
+| `assetSingleSelect` | `ASSET_ID`|
+| `addressInput` | `ADDRESS`|
+| `dateInput` | `REMBERG_DATE`|
+| `timeInput` | `REMBERG_TIME`|
+| `dateTimeInput` | `REMBERG_DATETIME`|
+| `staticSingleSelect` | `STRING`|
+| `staticMultiSelect` | `ARRAY_OF_STRINGS`|
+| `userSingleSelect` | `USER_ID`|
+| `phoneNumberInput` | `PHONE_NUMBER`|
+| `companySingleSelect` | `ACCOUNT_ID`|
+| `taskListInput` | `TASKS`|
+
+| `signatureSection`: property Name              | Expected data type                   |
+| :----------------------------- | :---------------------------|
+| `NAME` | `STRING`|
+| `LOCATION` | `STRING`|
+| `DATE` | `REMBERG_DATE`|
+
+---
 ## Asset View
 If you create a new forms instance from an asset (Asset View), the following data is provided:
 
