@@ -11,7 +11,7 @@ You find all available fields in the list below.
 | Property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |
 | [singleLineTextInput](./01-single-line-text-input)       | The SingleLineTextInput field allows entering one line of unformatted text. |
-| [multiLineTextInput](./02-mutli-line-text-input)         | The MultiLineTextInput field allows entering larger amounts of unformatted text.  |
+| [multiLineTextInput](./02-multi-line-text-input)         | The MultiLineTextInput field allows entering larger amounts of unformatted text.  |
 | [headlineDisplay](./03-headline-display)                 | The HeadlineDisplay is a field that displays headlines to structure content in the form and provisde information.|
 | [addressInput](./04-address-input)                       | The AddressInput contains various fields for every information of an address. |
 | [assetSingleSelect](./05-asset-single-select)            | The AssetSingleSelect field allows to select an asset from the account or a certain costumer.  |
