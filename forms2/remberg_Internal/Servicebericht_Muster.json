@@ -1,0 +1,757 @@
+{
+  "$schema": "https://pastebin.com/raw/eysKfZ7M",
+  "general": {
+    "singleInstanceForm": false,
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01-generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "orderNumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftragsnummer",
+                "en": "Service Order Number"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "technician",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Techniker",
+                "en": "Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentAccountId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "H3_customerInfo",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h3>Kundeninformationen</h3>",
+              "en": "<h3>Customer Information</h3>"
+            },
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "useAsFilterForFields": [
+              "asset",
+              "customerContactPerson"
+            ],
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "assetIdToAsset",
+                  "assetToLocationAddress"
+                ]
+              }
+            ],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customerNumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kundennummer",
+                "en": "Customer Number"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "customerContactPerson",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansprechpartner (Kunde)",
+                "en": "Contact Person (Customer)"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Shipping Address"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "onChange": [
+              {
+                "target": {
+                  "id": "08-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "09-signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "sameDeliveryAddress",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Rechnungsadresse entspricht Kundenadresse",
+                "en": "Billing address same as shipping address"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "none",
+                  "steps": [
+                    [
+                      "staticBoolean",
+                      true
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "billingAddress",
+          "type": "addressInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Rechnungsadresse",
+                "en": "Billing Address"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "H3_assetInfo",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h3>Anlageninformationen</h3>",
+              "en": "<h3>Asset Information</h3>"
+            },
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Maschine",
+                "en": "Machine"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "operatingHours",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Betriebsstunden",
+                "en": "Operating Hours"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02-mission_infos",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Auftragsinformationen",
+          "en": "Mission Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "reason",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlass",
+                "en": "Reason"
+              }
+            },
+            "value": {
+              "options": {
+                "inbetriebnahme": {
+                  "de": "Inbetriebnahme",
+                  "en": "Installation"
+                },
+                "reparatur": {
+                  "de": "Reparatur",
+                  "en": "Repair"
+                },
+                "wartung": {
+                  "de": "Wartung",
+                  "en": "Maintenance"
+                },
+                "kundenberatung": {
+                  "de": "Kundenberatung",
+                  "en": "Customer advisory"
+                },
+                "kalibrierung": {
+                  "de": "Kalibrierung",
+                  "en": "Calibration"
+                },
+                "endabnahme": {
+                  "de": "Endabnahme",
+                  "en": "Final acceptance"
+                },
+                "schulung": {
+                  "de": "Schulung",
+                  "en": "Training"
+                },
+                "umbau": {
+                  "de": "Umbau",
+                  "en": "Modification"
+                },
+                "nachruestung": {
+                  "de": "Nachrüstung",
+                  "en": "Retrofit"
+                },
+                "inspektion": {
+                  "de": "Inspektion",
+                  "en": "Inspection"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "ausfallursache",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ursache",
+                "en": "Cause"
+              }
+            },
+            "value": {
+              "options": {
+                "verschleiss": {
+                  "de": "Verschleiß",
+                  "en": "Wear"
+                },
+                "softwarefehler": {
+                  "de": "Softwarefehler",
+                  "en": "Software error"
+                },
+                "pc": {
+                  "de": "PC",
+                  "en": "PC"
+                },
+                "montagefehler": {
+                  "de": "Montagefehler",
+                  "en": "Assembly mistake"
+                },
+                "transport": {
+                  "de": "Transport",
+                  "en": "Transport"
+                },
+                "bedienfehler": {
+                  "de": "Bedienfehler",
+                  "en": "Operating error"
+                },
+                "elektronik": {
+                  "de": "Elektronik",
+                  "en": "Electronics"
+                },
+                "mechanik": {
+                  "de": "Mechanik",
+                  "en": "Mechanics"
+                },
+                "verschmutzung": {
+                  "de": "Verschmutzung",
+                  "en": "Dirt"
+                },
+                "konstrfehler": {
+                  "de": "Konstruktionsfehler",
+                  "en": "Design flaw"
+                },
+                "nichtanwendbar": {
+                  "de": "Nicht anwendbar",
+                  "en": "Not applicable"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "commentFieldRichText",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "03-performedTasks",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Durchgeführte Arbeiten",
+          "en": "Performed Tasks"
+        }
+      },
+      "fields": [
+        {
+          "id": "tasks",
+          "type": "taskListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Durchgeführte Arbeiten",
+                "en": "Performed Tasks"
+              }
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToTasks"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04-workTimes",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Reise- und Arbeitszeiten",
+          "en": "Travel and Working Times"
+        }
+      },
+      "fields": [
+        {
+          "id": "tavelAndWorkingTimes",
+          "type": "timeTrackingListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Reise- und Arbeitszeiten",
+                "en": "Travel and Working Times"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_spare_parts",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Ersatzteile",
+          "en": "Spare Parts"
+        }
+      },
+      "fields": [
+        {
+          "id": "spareParts",
+          "type": "partListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ersatzteile",
+                "en": "Spare Parts"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "06-expenses",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Spesen",
+          "en": "Expenses"
+        }
+      },
+      "fields": [
+        {
+          "id": "expenses",
+          "type": "expenseListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ausgaben",
+                "en": "Expenses"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "07-comments",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Bemerkungen",
+          "en": "Comments"
+        }
+      },
+      "fields": [
+        {
+          "id": "commentsGeneral",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            }
+          }
+        },
+        {
+          "id": "files",
+          "type": "fileUpload",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Datein",
+                "en": "Files"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "08-signatureTechnician",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Techniker",
+          "en": "Signature Technician"
+        },
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false
+      }
+    },
+    {
+      "id": "09-signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Kunde",
+          "en": "Signature Customer"
+        },
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false
+      }
+    },
+    {
+      "id": "10-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Bericht als E-Mail senden/gesendet",
+          "en": "Send/sent form as E-Mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Servicebericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst"
+          },
+          "subject": {
+            "static": "remberg Servicebericht"
+          }
+        }
+      }
+    },
+    {
+      "id": "11-addendum",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Interner Nachtrag",
+          "en": "Addendum"
+        }
+      },
+      "fields": [
+        {
+          "id": "commentAddendum",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen & Hinweise",
+                "en": "Comments & Notes"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "empfehlungKostenregelung",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Empfehlung für Kostenregelung",
+                "en": "Recommendation for cost regulation"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "value": {
+              "options": {
+                "auftrag": {
+                  "de": "Auftrag",
+                  "en": "Order"
+                },
+                "gewaehrleistung": {
+                  "de": "Gewährleistung",
+                  "en": "Warranty"
+                },
+                "kulanz": {
+                  "de": "Kulanz",
+                  "en": "Goodwill"
+                },
+                "sonstRegelung": {
+                  "de": "Sonstige Regelung",
+                  "en": "Other regulation"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "tavelAndWorkingTimes2",
+          "type": "timeTrackingListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Reise- und Arbeitszeiten",
+                "en": "Travel and Working Times"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "expenses2",
+          "type": "expenseListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ausgaben",
+                "en": "Expenses"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "12-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Bericht als E-Mail senden/gesendet",
+          "en": "Send/sent form as E-Mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail."
+          },
+          "subject": {
+            "static": "Servicebericht - Interner Nachtrag"
+          }
+        }
+      }
+    }
+  ]
+}
