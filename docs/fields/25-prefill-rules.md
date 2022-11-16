@@ -14,33 +14,33 @@ Each field can have multiple prefill rules. When a form is created, the backend 
 Schema:
 ```json (Prefill schema)
 "prefill": {
-    "target": [
+    "target_type": [
         { // These brackets contain the first prefill rule
-            "input": "rule1_value1", 
+            "input": "provided_data1", 
             "steps": [
-                "step1-1", // step to transform the data type
-            ],
-        },
+                "transformation_step1" // step to transform the data type
+            ]
+        }
         { // These brackets contain the second prefill rule, which got only applied when the first input value "rule1_value1" isn't available
-            "input": "rule2_value2",
+            "input": "provided_data2",
             "steps": [
-              "step2-1", // steps to transform the data type
-              "step2-2",
-            ],
-        },
-    ],
-},
+              "transformation_step2_1", // steps to transform the data type
+              "transformation_step2_2"
+            ]
+        }
+    ]
+}
 ```
 
 --- 
 `target` locates the property to which data is to be written. The target name has to be written to the `"input":` section of the prefill rule
 <details> <summary>All available <code>target</code> values </summary>
 
-| Section                  |      `target`      |
+| Section                  |      `target type`      |
 | :------------------------- | :--------------|
 | SignatureSection| `name`, `location`, `date`
    
-| Field                  |      `target`      |
+| Field                  |      `target type`      |
 | :------------------------- | :--------------|
 |SingleLineTextInput| `value`
 |MultiLineTextInput| `value`
@@ -97,7 +97,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `steps`               | input data type  | output data type |
 | :----------------------------- | :----- | :-----|
 | `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `assetIdToUser` | `ASSET_ID`| `ASSET`
+| `assetIdToAsset` | `ASSET_ID`| `ASSET`
 | `userIdToUser` | `USER_ID`| `USER_INFO`
 | `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
 | `userToFullNameString` | `USER_INFO` | `STRING`
@@ -238,19 +238,19 @@ Prefill can have several rules for a target, which get executed sequentially unt
         {
             "input": "currentUser", 
             "steps": [
-                "userToFullNameString",
-            ],
-        },
-    ],
+                "userToFullNameString"
+            ]
+        }
+    ]
     "location": [
         {
             "input": "assetId",
             "steps": [
                 "assetIdToAsset",
                 "assetToLocationAddress",
-                "addressToCityString",
-            ],
-        },
+                "addressToCityString"
+            ]
+        }
         {
             "input": "assetId",
             "steps": [
@@ -258,34 +258,34 @@ Prefill can have several rules for a target, which get executed sequentially unt
                 "assetToCustomerAccountId",
                 "accountIdToAccount",
                 "accountToBillingAddressAddress",
-                "addressToCityString",
-            ],
-        },
+                "addressToCityString"
+            ]
+        }
         {
             "input": "organizationId",
             "steps": [
                 "accountIdToAccount",
                 "accountToBillingAddressAddress",
-                "addressToCityString",
-            ],
-        },
+                "addressToCityString"
+            ]
+        }
         {
             "input": "none",
             "steps": [
                 [
                     "staticString",
-                    "Default Location",
-                ],
-            ],
-        },
-    ],
+                    "Default Location"
+                ]
+            ]
+        }
+    ]
     "date": [
         {
             "input": "creationDateTime",
-            "steps": ["dateTimeToDate"],
-        },
-    ],
-},
+            "steps": ["dateTimeToDate"]
+        }
+    ]
+}
 ```
 ```json (AddressInput)
 // Do not copy comments!
@@ -305,13 +305,13 @@ Prefill can have several rules for a target, which get executed sequentially unt
                         "country": "Default Country",
                         "other": "Default supplement",
                         "countryProvince": "Default state",
-                        "company": "Default Company",
-                    },
-                ],
-            ],
-        },
-    ],
-},
+                        "company": "Default Company"
+                    }
+                ]
+            ]
+        }
+    ]
+}
 ```
 ```json (AddressInput2)
 // Do not copy comments!
@@ -323,11 +323,11 @@ Prefill can have several rules for a target, which get executed sequentially unt
             "input": "workOrderId",
             "steps": [
                 "workOrderIdToWorkOrder",
-                "workOrderToLocationAddress",
-            ],
-        },
-    ],
-},
+                "workOrderToLocationAddress"
+            ]
+        }
+    ]
+}
 ```
 ```json (TaskListInput)
 // Do not copy comments!
@@ -345,34 +345,34 @@ Prefill can have several rules for a target, which get executed sequentially unt
                         "title": "Task 1",
                         "comment": "This task was prefilled 1",
                         "highPriority": false,
-                        "necessary": false,
+                        "necessary": false
                     },
                     {
                         "done": false,
                         "title": "Task 2",
                         "comment": "This task was prefilled 2",
                         "highPriority": true,
-                        "necessary": true,
+                        "necessary": true
                     },
                     {
                         "done": true,
                         "title": "Task 3",
                         "comment": "This task was prefilled 3",
                         "highPriority": false,
-                        "necessary": true,
+                        "necessary": true
                     },
                     {
                         "done": false,
                         "title": "Task 4",
                         "comment": "This task was prefilled 4",
                         "highPriority": true,
-                        "necessary": false,
-                    }],
-                ],
-            ],
-        },
-    ],
-},
+                        "necessary": false
+                    }]
+                ]
+            ]
+        }
+    ]
+}
 ```
 ```json (TaskListInput2)
 // Do not copy comments!
@@ -382,10 +382,10 @@ Prefill can have several rules for a target, which get executed sequentially unt
     "entries": [
         {
             "input": "workOrderId",
-            "steps": [ "workOrderIdToWorkOrder", "workOrderToTasks" ],
-        },
-    ],
-},
+            "steps": [ "workOrderIdToWorkOrder", "workOrderToTasks" ]
+        }
+    ]
+}
 ```
 ```json (SingleLineTextInput)
 // Do not copy comments!
@@ -397,11 +397,11 @@ Prefill can have several rules for a target, which get executed sequentially unt
             "input": "assetId",
             "steps": [
                 "assetIdToAsset",
-                "assetToAssetTypeNameString",
-            ],
-        },
-    ],
-},
+                "assetToAssetTypeNameString"
+            ]
+        }
+    ]
+}
 ```
 ```json (MultiLineTextInput)
 // Do not copy comments!
@@ -412,10 +412,10 @@ Prefill can have several rules for a target, which get executed sequentially unt
             "input": "none",
             "steps": [[
                     "staticString",
-                    "Default \n Multi \n Line \n Text",
-             ]],
-     }],
-},
+                    "Default \n Multi \n Line \n Text"
+             ]]
+     }]
+}
 ```
 ```json (RichTextInput)
 // Do not copy comments!
@@ -428,12 +428,12 @@ Prefill can have several rules for a target, which get executed sequentially unt
             "steps": [
                 [
                     "staticString",
-                    "<h1>Default rich text content</h1>",
-                ],
-            ],
-        },
-    ],
-},
+                    "Default rich text content"
+                ]
+            ]
+        }
+    ]
+}
 ```
 ```json (UserSingleSelect)
 // Do not copy comments!
@@ -442,9 +442,9 @@ Prefill can have several rules for a target, which get executed sequentially unt
 "prefill": {
     "value": [{
             "input": "currentUserId",
-            "steps": [],
-    }],
-},
+            "steps": []
+    }]
+}
 ```
 ```json (BooleanInput)
 // Do not copy comments!
@@ -453,9 +453,9 @@ Prefill can have several rules for a target, which get executed sequentially unt
 "prefill": {
     "value": [{
         "input": "none",
-        "steps": [["staticBoolean", true]],
-    }],
-},
+        "steps": [["staticBoolean", true]]
+    }]
+}
 ```
 ```json (TimeInput)
 // Do not copy comments!
@@ -466,10 +466,10 @@ Prefill can have several rules for a target, which get executed sequentially unt
         "input": "none",
         "steps": [[
             "staticTime",
-            "22:22",
-        ]],
-    }],
-},
+            "22:22"
+        ]]
+    }]
+}
 ```
 ```json (DateTimeInput)
 // Do not copy comments!
@@ -480,10 +480,10 @@ Prefill can have several rules for a target, which get executed sequentially unt
         "input": "none",
         "steps": [[
             "staticDateTime",
-            "2022-02-22T22:22:00.000Z_Europe/Berlin",
-        ]],
-    }],
-},
+            "2022-02-22T22:22:00.000Z_Europe/Berlin"
+        ]]
+    }]
+}
 ```
 </details>
 

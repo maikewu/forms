@@ -35,8 +35,8 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
             "pdfTextColor": "#facc2e",
             "pdfTextSize": 14,
             "text": {
-                "en": "Phone number input required",
-                "de": "Phone number input required [DE]",
+                "de": "Phone number input required",
+                "en": "Phone number input required [DE]",
                 "tr": "Phone number input required [TR]",
                 "fr": "Phone number input required [FR]",
                 "es": "Phone number input required [ES]",
@@ -44,8 +44,8 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
             },
         }, 
        "placeHolderText": {
-            "en": "Phone number input placeholder",
-            "de": "Phone number input placeholder [DE]",
+            "de": "Phone number input placeholder",
+            "en": "Phone number input placeholder [DE]",
             "tr": "Phone number input placeholder [TR]",
             "fr": "Phone number input placeholder [FR]",
             "es": "Phone number input placeholder [ES]",
@@ -73,7 +73,7 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
                     }
                 ]]
             }]
-        },
+        }
     }
 }
 ```
@@ -84,16 +84,14 @@ The PhoneNumberInput field allows to input telephone numbers in the common forma
     "config": {
         "label": {
             "text": {
-                "en": "Phone number input required",
-                "de": "Phone number input required [DE]",
+                "de": "Phone number input required",
+                "en": "Phone number input required [DE]",
                 "tr": "Phone number input required [TR]",
                 "fr": "Phone number input required [FR]",
                 "es": "Phone number input required [ES]",
                 "it": "Phone number input required [IT]"
-            },
-        }, 
-        "value": {
-        },
+            }
+        }
     }
 }
 ```
@@ -163,7 +161,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
             }
         ]]
     }]
-},
+}
 ```
 ---
 ## `onChange`
@@ -173,6 +171,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 | Possible Values            | Array of [DynamicFieldActions](./26-on-change-rules) |
 | Required                   | no                                                                     |
 | Default Value              | -                                                                      |
+
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
