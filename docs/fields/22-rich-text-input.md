@@ -4,7 +4,7 @@ category: 635ce1e7775bc60045570ffb
 parentDoc: 635ce486ae5fac003cef279e
 ---
 
-The RichTextInput is a text field that allows text formatting.
+The RichTextInput is a text field that allows text formatting. 
 # Configuration Overview
 
 | Property                                                                     | Description                      |
@@ -30,7 +30,7 @@ The RichTextInput is a text field that allows text formatting.
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
         "pdfWidth": 1,
-        "placeHolderText": "<h1>Write some rich text</h1>",
+        "placeHolderText": "Write some rich text",
         "label": {
             "pdfHide": false,
             "pdfTextColor": "#facc2e",
@@ -55,11 +55,11 @@ The RichTextInput is a text field that allows text formatting.
         "prefill": {
             "value": [{
                 "input": "none",
-                "steps": [[ "staticString", "<h1>Default rich text content</h1>"]]
+                "steps": [[ "staticString", "Default rich text content"]]
             }]
         }
     }
-},
+}
 ```
 ```json (minimal)
 {
@@ -77,9 +77,9 @@ The RichTextInput is a text field that allows text formatting.
             }
         },
         "value": {
-        },
+        }
     }
-},
+}
 ```
 
 ---
@@ -119,7 +119,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 "prefill": {
     "value": [{
         "input": "none",
-        "steps": [[ "staticString", "<h1>Default rich text content</h1>"
+        "steps": [[ "staticString", "Default rich text content"
         ]]
     }]
 }
