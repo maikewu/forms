@@ -59,7 +59,7 @@ The RichTextInput is a text field that allows text formatting.
             }]
         }
     }
-},
+}
 ```
 ```json (minimal)
 {
@@ -77,9 +77,9 @@ The RichTextInput is a text field that allows text formatting.
             }
         },
         "value": {
-        },
+        }
     }
-},
+}
 ```
 
 ---

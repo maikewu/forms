@@ -29,7 +29,7 @@ The HtmlDisplay allows the user to enter html text. You can find basic html exam
             "fr": "<h1>HTML Display 1</h1><p>This field is in: <b>FR</b></p><p><i>This should be an italic text</i></p>",
             "es": "<h1>HTML Display 1</h1><p>This field is in: <b>ES</b></p><p><i>This should be an italic text</i></p>",
             "it": "<h1>HTML Display 1</h1><p>This field is in: <b>IT</b></p><p><i>This should be an italic text</i></p>"
-        },
+        }
     }
 },
 ```
