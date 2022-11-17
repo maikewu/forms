@@ -190,16 +190,6 @@ The `useAsFilterForFields` property can be used to filter the asset and user sel
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
-```json (currentAccountId)
-"prefill": {
-    "selectedCompany": [
-        {
-            "input": "currentAccountId",
-            "steps": []
-        }
-    ]
-}
-```
 ```json (organizationId)
 "prefill": {
     "selectedCompany": [
@@ -210,6 +200,18 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
     ]
 }
 ```
+
+```json (currentAccountId)
+"prefill": {
+    "selectedCompany": [
+        {
+            "input": "currentAccountId",
+            "steps": []
+        }
+    ]
+}
+```
+
 ---
 ## `onChange`
 
