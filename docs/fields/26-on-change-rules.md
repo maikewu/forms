@@ -68,12 +68,6 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
     "steps": ["assetToAssetTypeNameString"]
 }]
 ```
-```json (Company to Asset)
-"onChange": [{
-    "target": {"id": "exampleAssetSingleSelect_1"},
-    "steps": ["??? Need list from Uwe"]
-}]
-```
 ```json (Company name to STRING)
 "onChange": [{
     "target": { "id": "disabledSingleLineInput_1" },
