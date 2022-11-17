@@ -1,0 +1,380 @@
+{
+  "$schema": "https://pastebin.com/raw/eysKfZ7M",
+
+  "general": {
+      "singleInstanceForm": false,
+      "timezone": "Europe/Berlin"
+  },
+  "sections":[
+    {
+      "type": "fieldSection",
+      "id": "01_generalInformation",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "disclaimer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:9pt'>Verteiler: Geschäftsführung, Konstruktion, Customer Service, Einkauf</b>",
+              "en": "<b style='font-size:9pt'>Distribution: Leadership, Construction, Customer Service, Purchasing</b>"
+            },
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "userSingleSelect",
+          "id": "technician",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Monteur",
+                "en": "Technician"
+              }
+            },
+            "required": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "value": {
+              "pdfPrintEmailAddress": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "dateInput",
+          "id": "date",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Datum",
+                "en": "Date"
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": false,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "order_number",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Montage-Auftragsnummer",
+                "en": "Assembling order number"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "license_plate",
+          "config": {
+            "label": {
+              "text": {
+                "de": "KFZ-Kennzeichen",
+                "en": "License plate number"
+              }
+            },
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "distance",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Gesamtkilometer",
+                "en": "Total kilometer"
+              }
+            },
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "companySingleSelect",
+          "id": "customer",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "useAsFilterForFields": ["asset","customercontactperson"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "userSingleSelect",
+          "id": "customercontactperson",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansprechpartner Kunde",
+                "en": "Customer contact person"
+              }
+            },
+            "required": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "value": {
+              "pdfPrintEmailAddress": false
+            },
+            "onChange": [
+              {
+                "target": {"id": "phone"},
+                "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "customer_contact",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansprechpartner Kunde",
+                "en": "Customer contact person"
+              }
+            },
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Maschine",
+                "en": "Machine"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "fieldSection",
+      "id": "02_work_order_information",
+      "config": {
+        "headlineText": {
+          "de": "Auftragsinformationen",
+          "en": "Work Order Information"
+        }
+      },
+      "fields": [
+        {
+          "type": "multiLineTextInput",
+          "id": "auftragsbeschreibung",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftragsbeschreibung",
+                "en": "Work order description"
+              }
+            },
+            "pdfWidth": 1,
+            "required": false,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "type": "taskListInput",
+          "id": "tasks",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Aufgaben",
+                "en": "Tasks"
+              }
+            },
+            "pdfWidth": 1,
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": true
+              },
+              "highPrioBooleanInput": {
+                "disabled": true
+              },
+              "notNecessaryBooleanInput": {
+                "disabled": true
+              }
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "richTextInput",
+          "id": "tasks_rich_text",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Durchgeführte Arbeiten",
+                "en": "Performed Tasks"
+              }
+            },
+            "required": false,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "type": "fileUpload",
+          "id": "file_upload",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anhänge",
+                "en": "Attachments"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "abnahme_durch",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Abnahme der Arbeiten durch",
+                "en": "Acceptance of work by"
+              }
+            },
+            "pdfWidth": 1,
+            "required": false,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "comment_area",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            },
+            "pdfWidth": 1,
+            "required": false,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "zu_veranlassen",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Noch zu Veranlassen",
+                "en": "To be initiated"
+              }
+            },
+            "pdfWidth": 1,
+            "required": false,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "comments",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            },
+            "pdfWidth": 1,
+            "required": false,
+            "pdfHideIfValueIsEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "type": "emailSection",
+      "id": "send",
+      "config": {
+        "headlineText": {
+          "de": "Bericht als E-Mail senden/gesendet",
+          "en": "Send/sent form as e-mail"
+        },
+        "pdfHide": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "emailDialogPrefill": {
+          "subject": {
+            "static": "Montagebericht"
+          },
+          "body": {
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail."
+          },
+          "cc": {
+            "currentUser": true
+          }
+        }
+      }
+    }
+  ]
+}
