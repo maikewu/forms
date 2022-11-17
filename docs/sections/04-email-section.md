@@ -58,10 +58,10 @@ The EmailSection contains fields to send the finshed form.
         "hideDownloadPdfButton": false,
         "pdfHideIfValueIsEmpty": false,
         "emailDialogPrefill": {
-            "bcc": {
+            "to": {
                 "assignee": false,
                 "creator": false,
-                "currentUser": true,
+                "currentUser": false,
                 "staticEmails": []
             },
             "cc": {
@@ -70,19 +70,19 @@ The EmailSection contains fields to send the finshed form.
                 "currentUser": false,
                 "staticEmails": []
             },
-            "to": {
-                "assignee": true,
+            "bcc": {
+                "assignee": false,
                 "creator": false,
                 "currentUser": false,
                 "staticEmails": []
             },
-            "body": {
-                "dynamic": "tbd",
-                "static": "Default Content"
-            },
             "subject": {
                 "dynamic": "tbd",
                 "static": "Default Subject"
+            },
+            "body": {
+                "dynamic": "tbd",
+                "static": "Default Content"
             }
         }
     }
