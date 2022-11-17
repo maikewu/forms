@@ -1,0 +1,380 @@
+{
+  "$schema": "https://pastebin.com/raw/eysKfZ7M",
+
+  "general": {
+      "singleInstanceForm": false,
+      "timezone": "Europe/Berlin"
+  },
+  "sections":[
+    {
+      "type": "fieldSection",
+      "id": "01_generalInformation",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General Information"
+        }
+      },
+      "fields": [
+        {
+          "type": "companySingleSelect",
+          "id": "customer",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "useAsFilterForFields": ["asset","additional_assets"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customerLocation"},
+                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "addressInput",
+          "id": "customerLocation",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer address"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "value": {
+              "pdfAddLineBreaks": true
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount", "accountToBillingAddressAddress"]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": { "id": "signature_technician", "propertyName": "location" },    
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": { "id": "signature_customer", "propertyName": "location" },    
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Maschine",
+                "en": "Machine"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "fieldRepeater",
+          "id": "repeater_assets",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Weitere Maschinen",
+                "en": "Additional machines"
+              },
+              "pdfHide": true
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "fields": [
+              {
+                "id": "additional_assets",
+                "type": "assetSingleSelect",
+                "config": {
+                  "label": {
+                    "text": {
+                      "de": "Weitere Maschinen",
+                      "en": "Additional machines"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "customer_contact",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kontaktperson",
+                "en": "Contact person"
+              }
+            },
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "phone_number",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Telefonnummer",
+                "en": "Phone number"
+              }
+            },
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "type": "fieldSection",
+      "id": "02_confirmation",
+      "config": {
+        "headlineText": {
+          "de": "Bestätigung",
+          "en": "Confirmation"
+        }
+      },
+      "fields": [
+        {
+          "id": "text1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<p style='font-size:10pt'>Für die oben aufgeführte Maschine wurde das nachstehende Programm zur Spulverhältnisberechnung übergeben.<p>",
+              "en": "<p style='font-size:10pt'>The following program for winding ratio calculation was handed over for the machine mentioned above.</p>"
+            },
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "dateInput",
+          "id": "date",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Tag der Übergabe",
+                "en": "Date of delivery"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true,
+            "prefill": {
+              "value": [
+                {
+                  "input": "creationDateTime",
+                  "steps": ["dateTimeToDate"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "image",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<img src='https://www.remberg.de/wp-content/uploads/2020/11/remberg-logo-small.png' alt='Spulverhältnisberechnung' class='center'>",
+              "en": "<img src='https://www.remberg.de/wp-content/uploads/2020/11/remberg-logo-small.png' alt='Winding reation calculation' class='center'>"
+            },
+            "pdfWidth": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": "signatureSection",
+      "id": "signature_technician",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Georg Sahm GmbH",
+          "en": "Signature Georg Sahm GmbH"
+        },
+        "required": true,
+        "pdfHideIfValueIsEmpty": true,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "pdfHide": false,
+        "fields": {
+          "dateInput": {
+            "required": true,
+            "disable": false,
+            "pdfHide": false
+          },
+          "locationSingleLineTextInput": {
+            "required": true,
+            "disable": false,
+            "pdfHide": false
+          },
+          "nameSingleLineTextInput": {
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": true,
+            "disable": false,
+            "pdfHide": false
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "organizationId",
+              "steps": ["accountIdToAccount", "accountToBillingAddressAddress", "addressToCityString"]
+            },
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "signatureSection",
+      "id": "signature_customer",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Kunde",
+          "en": "Signature Customer"
+        },
+        "required": true,
+        "pdfHideIfValueIsEmpty": true,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "pdfHide": false,
+        "fields": {
+          "dateInput": {
+            "required": true,
+            "disable": false,
+            "pdfHide": false
+          },
+          "locationSingleLineTextInput": {
+            "required": true,
+            "disable": false,
+            "pdfHide": false
+          },
+          "nameSingleLineTextInput": {
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": true,
+            "disable": false,
+            "pdfHide": false
+          }
+        },
+        "prefill": {
+          "location": [
+            {
+              "input": "organizationId",
+              "steps": ["accountIdToAccount", "accountToBillingAddressAddress", "addressToCityString"]
+            },
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "emailSection",
+      "id": "send_customer_version",
+      "config": {
+        "headlineText": {
+          "de": "Bericht als E-Mail senden/gesendet",
+          "en": "Send/sent form as e-mail"
+        },
+        "pdfHide": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "emailDialogPrefill": {
+          "subject": {
+            "static": "Übergabeerklärung für Software zur Spulverhältnisberechnung"
+          },
+          "body": {
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail."
+          },
+          "to": {
+            "staticEmails": ["jmainka@sahmwinder.de"]
+          },
+          "cc": {
+            "currentUser": true
+          }
+        }
+      }
+    }
+  ]
+}
