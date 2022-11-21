@@ -1,0 +1,790 @@
+{
+  "general": {
+    "name": {
+      "en": "Repair Protocol / Cost Estimate",
+      "de": "Reparaturbericht / Kostenvoranschlag"
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "call": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Call",
+            "en":"Call"
+          },
+          "width": 0.5
+        },
+        "ppa": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"PPA",
+            "en":"PPA"
+          },
+          "width": 0.5
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 1,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "address"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "address": {
+          "width": 1,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "06_signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "address",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signatureTechnician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07_signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "address",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signatureCustomer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Gerät & Seriennummer",
+            "en": "Asset & Asset ID"
+          },
+          "required": false,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "workOrderType": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Auftragsart",
+            "en":"Work Order Type"
+          },
+          "width": 0.5
+        },
+        "workOrder": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Auftrag",
+            "en":"Work Order"
+          },
+          "width": 0.5
+        }
+      }
+    },
+    "02_errorInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Fehler und durchgeführte Arbeiten",
+        "en": "Error And Tasks"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "errorDescriptionCustomer": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Fehlerbeschreibung des Kunden",
+            "en": "Error Description By Customer"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        },
+        "errorDescriptionTechnician": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Fehlerbeschreibung",
+            "en": "Error Description"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 1
+        },
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Durchgeführte Arbeiten",
+            "en": "Tasks"
+          },
+          "hiddenInPdf": false,
+          "width": 1,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03_workOrderInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemein",
+        "en": "General"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "pincer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Zange",
+            "en":"Pincer"
+          },
+          "width": 0.5
+        },
+        "pincerSerialNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Seriennnummer",
+            "en":"Serial Number"
+          },
+          "width": 0.5
+        },
+        "checkbox-1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Funktionskontrolle",
+            "en": "Function Control"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dauerlauf",
+            "en": "Continuous Run"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Hardwareupdate",
+            "en": "Hardware Update"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Softwareupdate",
+            "en": "Software Update"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "HV-Prüfung",
+            "en": "HV Control"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Firmware Archiv.",
+            "en": "Firmware Archiv."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Fehlermatrix Archiv.",
+            "en": "Error Matrix Archiv."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Funktionsmatrix",
+            "en": "Function Matrix"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Justage Gerät notw.?",
+            "en": "Adjustment Device Neccessary?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Justage Zange notw.?",
+            "en": "Adjustment Pincer Neccessary?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kalibrierschein gewünscht?",
+            "en": "Calibration Note Demanded?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Werkskalibrierung",
+            "en": "Factory Calibration"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "DAkkS-Kalibrierung",
+            "en": "DAkkS Calibration"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "defectCircuitBoards": {
+          "fieldType": "HELP-TEXT",
+          "label": {
+            "de": "Defekte Leiterkarten",
+            "en": "Defect Circuit Boards"
+          }
+        },
+        "checkbox-14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5308",
+            "en": "CPU 5308"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5314",
+            "en": "CPU 5314"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5319",
+            "en": "CPU 5319"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5394",
+            "en": "CPU 5394"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-18": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5509",
+            "en": "CPU 5509"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-19": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5615",
+            "en": "CPU 5615"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-20": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5711",
+            "en": "CPU 5711"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-21": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5720",
+            "en": "CPU 5720"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-22": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5760",
+            "en": "CPU 5760"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-23": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5765",
+            "en": "CPU 5765"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-24": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Deckel CPU5312",
+            "en": "Lid CPU5312"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-25": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Deckel CPU5546",
+            "en": "Lid CPU5546"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-26": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Deckel CPU5684",
+            "en": "Lid CPU5684"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-27": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5767",
+            "en": "ADW 5767"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-28": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5307",
+            "en": "ADW 5307"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-29": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5401",
+            "en": "ADW 5401"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-30": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5403",
+            "en": "ADW 5403"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-31": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5481",
+            "en": "ADW 5481"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-32": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5520",
+            "en": "ADW 5520"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-33": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5507",
+            "en": "ADW 5507"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-34": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5616",
+            "en": "ADW 5616"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-35": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5713",
+            "en": "ADW 5713"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-36": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5726",
+            "en": "ADW 5726"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-37": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5764",
+            "en": "ADW 5764"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-38": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5767",
+            "en": "ADW 5767"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-39": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "VE5501",
+            "en": "VE5501"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+      }
+    }
+  }
+}
+      
