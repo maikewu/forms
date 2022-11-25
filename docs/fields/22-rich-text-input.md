@@ -68,15 +68,13 @@ The RichTextInput is a text field that allows text formatting.
     "config": {
         "label": {
             "text": {
-                "en": "Rich Text Input 1",
                 "de": "Rich Text Eingabe 1",
+                "en": "Rich Text Input 1",
                 "tr": "Rich Text Input 1 [TR]",
                 "fr": "Rich Text Input 1 [FR]",
                 "es": "Rich Text Input 1 [ES]",
                 "it": "Rich Text Input 1 [IT]"
             }
-        },
-        "value": {
         }
     }
 }
