@@ -51,7 +51,7 @@
               },
               "firstNameRequired": false,
               "lastNameRequired": true,
-              "pdfAddLineBreaks": true,
+              "pdfAddLineBreaks": false
             }
           }
         }
@@ -79,7 +79,7 @@
                 "en": "Customer"
               }
             },
-            "useAsFilterForFields": ["asset","customerContactPerson"],
+            "useAsFilterForFields": ["asset","customerContactPerson","asset2"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -190,7 +190,7 @@
             "onChange": [
               {
                 "target": {"id": "signature_customer","propertyName": "name"},
-                "steps": ["userInfoToUser","userToFullNameString"]
+                "steps": ["userToFullNameString"]
               }
             ]
           }
@@ -239,7 +239,7 @@
           "type": "assetSingleSelect",
           "config": {
             "required": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Maschine / Anlage",
@@ -258,6 +258,99 @@
               {
                 "target": {"id": "customer"},
                 "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "maschinenstunden_auto",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Maschinenstunden Automatik ein",
+                "en": "Operating hours automatic on"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "maschinenstunden_switch",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Maschinenstunden Hauptschalter ein",
+                "en": "Operating hours main switch on"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "assetsRepeater",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Weitere Anlagen",
+                "en": "Additional installations"
+              },
+              "pdfHide": true
+            },
+            "helptextAfter": {
+              "de": "",
+              "en": ""
+            },
+            "helptextBefore": {
+              "de": "",
+              "en": ""
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "fields": [
+              {
+                "id": "asset2",
+                "type": "assetSingleSelect",
+                "config": {
+                  "label": {
+                    "text": {
+                      "de": "Anlagen",
+                      "en": "Installationen"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "singleLineTextInput",
+                "id": "maschinenstunden_auto_2",
+                "config": {
+                  "label": {
+                    "text": {
+                      "de": "Maschinenstunden Automatik ein",
+                      "en": "Operating hours automatic on"
+                    }
+                  },
+                  "required": false
+                }
+              },
+              {
+                "type": "singleLineTextInput",
+                "id": "maschinenstunden_switch_2",
+                "config": {
+                  "label": {
+                    "text": {
+                      "de": "Maschinenstunden Hauptschalter ein",
+                      "en": "Operating hours main switch on"
+                    }
+                  },
+                  "required": false
+                }
               }
             ]
           }
@@ -333,6 +426,36 @@
               ]
             }
           }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "bereitzustellen_durch_kunden",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bereitzustellen durch Kunden",
+                "en": "Provision by customer"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "vereinbarung_mit_kunden",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Vereinbarung mit Kunden",
+                "en": "Agreement with customer"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "pdfWidth": 0.5
+          }
         }
       ]
     },
@@ -372,7 +495,7 @@
               "breakNumericInput": {
                 "disabled": false,
                 "required": false,
-                "pdfHide": false
+                "pdfHide": true
               },
               "durationDisplay": {
                 "disabled": false,
@@ -381,12 +504,12 @@
               "distanceNumericInput": {
                 "disabled": false,
                 "required": false,
-                "pdfHide": false
+                "pdfHide": true
               },
               "technicianUserSingleSelect": {
                 "disabled": false,
                 "required": false,
-                "pdfHide": false,
+                "pdfHide": true,
                 "pdfPrintEmailAddress": true
               },
               "commentMultiLineTextInput": {
@@ -426,7 +549,7 @@
           "config": {
             "label": {
               "text": {
-                "de": "Material",
+                "de": "Ersatzteile",
                 "en": "Spare Parts"
               },
               "pdfHide": false
@@ -470,52 +593,6 @@
                 "pdfHide": false
               }
             }
-          }
-        }
-      ]
-    },
-    {
-      "type": "fieldSection",
-      "id": "07_expenses",
-      "config": {
-        "headlineText": {
-          "de": "Spesen",
-          "en": "Expenses"
-        }
-      },
-      "fields": [
-        {
-          "id": "expenses",
-          "type": "expenseListInput",
-          "config": {
-            "label": {
-              "text": {
-                  "de": "Spesen",
-                  "en": "Expenses"
-              }
-            },
-            "fields": {
-              "dateInput": {
-                "pdfHide": false,
-                "disabled": false,
-                "required": true
-              },
-              "commentMultiLineTextInput": {
-                "pdfHide": false,
-                "disabled": false,
-                "required": false
-              },
-              "expenseAmountNumericInput": {
-                "pdfHide": false,
-                "disabled": false,
-                "required": true
-              },
-              "expenseTypeSingleSelectInput": {
-                "pdfHide": false,
-                "disabled": false,
-                "required": false
-              }
-            } 
           }
         }
       ]
@@ -629,10 +706,10 @@
         "hidePreviewPdfButton": false,
         "emailDialogPrefill": {
           "subject": {
-            "static": ""
+            "static": "Fill Servicebericht/Service Report"
           },
           "body": {
-            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma FILL GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen | Best regards"
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die FILL Serviceleistungen.\nIm Anhang finden Sie Ihren Servicebericht zum oben angeführten Auftrag als PDF.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen\n\n\nDear Sir or Madam,\nThank you for your trust in FILL services.\nPlease find attached your service report as PDF for the order mentioned above.\nIf you have any further questions or concerns, please do not hesitate to contact us.\n\nBest regards,"
           },
           "bcc": {
             "currentUser": true
@@ -656,7 +733,7 @@
           "config": {
             "label": {
               "text": {
-                "de": "Reückreisezeiten",
+                "de": "Rückreisezeiten",
                 "en": "Return travel times"
               },
               "pdfHide": false
@@ -736,264 +813,6 @@
           }
         },
         {
-          "id": "addendum_missionType",
-          "type": "staticSingleSelect",
-          "config": {
-            "required": false,
-            "label": {
-              "text": {
-                "en": "Mission Type",
-                "de": "Einsatzart"
-              }
-            },
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.5,
-            "uiHideInRepeaterCardDisplay": false,
-            "value": {
-              "options": {
-                "warrantyWarngau": {
-                  "en": "Warranty Case - FPS Warngau",
-                  "de": "Garantieeinsatz - FPS Warngau"
-                },
-                "warrantyHolzmaden": {
-                  "en": "Warranty Case - FPS Holzmaden",
-                  "de": "Garantieeinsatz - FPS Holzmaden"
-                },
-                "serviceMission": {
-                  "en": "Sevice Case",
-                  "de": "Serviceeinsatz"
-                }
-              },
-              "pdfHide": false,
-              "pdfStartInNewLine": false
-            }
-          }
-        },
-        {
-          "id": "addendum_assemblyGroupsHeadline",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "en": "Please fill out the assembly groups affected during the mission.",
-              "de": "Bitte füllen Sie die beim Einsatz betroffenen Baugruppen aus:"
-            },
-            "pdfHide": true,
-            "uiHideInRepeaterCardDisplay": false,
-            "uiHide": false
-          }
-        },
-        {
-          "id": "addendum_mechanicsMultiSelect",
-          "type": "staticMultiSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Mechanics",
-                "de": "Mechanik"
-              }
-            },
-            "value": {
-              "options": {
-                "millingHead": {
-                  "de": "Fräskopf",
-                  "en": "Milling head"
-                },
-                "spindleJack": {
-                  "de": "Spindelbock",
-                  "en": "Spindle jack"
-                },
-                "spindleDrive": {
-                  "de": "Spindelantrieb",
-                  "en": "Spindle drive"
-                },
-                "support": {
-                  "de": "Support",
-                  "en": "Support"
-                },
-                "gear": {
-                  "de": "Getriebe",
-                  "en": "Gear"
-                },
-                "workTable": {
-                  "de": "Arbeitstisch",
-                  "en": "Work table"
-                },
-                "stand": {
-                  "de": "Ständer",
-                  "en": "Stand"
-                },
-                "foot": {
-                  "de": "Fuß",
-                  "en": "Foot"
-                },
-                "xAxis": {
-                  "de": "X-Achse",
-                  "en": "X-axis"
-                },
-                "yAxis": {
-                  "de": "Y-Achse",
-                  "en": "Y-axis"
-                },
-                "zAxis": {
-                  "de": "Z-Achse",
-                  "en": "Z-axis"
-                },
-                "aAxis": {
-                  "de": "A-Achse",
-                  "en": "A-axis"
-                },
-                "cabin1": {
-                  "de": "Kabine",
-                  "en": "Cabin"
-                },
-                "controlPanel": {
-                  "de": "Bedienpult",
-                  "en": "Control panel"
-                },
-                "lengthGaugeLoadCell1": {
-                  "de": "Messtaster, Messdose",
-                  "en": "Length Gauge, Load Cell"
-                },
-                "mechAddonParts": {
-                  "de": "Mech. Anbauteile",
-                  "en": "Mech. add-on parts"
-                },
-                "toolsClamp1": {
-                  "de": "Werkzeugspanner",
-                  "en": "Tools clamp"
-                },
-                "toolsChanger": {
-                  "de": "Werkzeugwechsler",
-                  "en": "Tool changer"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "addendum_electricsMultiSelect",
-          "type": "staticMultiSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Electrics",
-                "de": "Elektrik"
-              }
-            },
-            "value": {
-              "options": {
-                "Software": {
-                  "de": "Software",
-                  "en": "Software"
-                },
-                "Drive": {
-                  "de": "Antrieb",
-                  "en": "Drive"
-                },
-                "Sensors": {
-                  "de": "Sensorik",
-                  "en": "Sensors"
-                },
-                "Controls1": {
-                  "de": "Steuerung",
-                  "en": "Controls"
-                },
-                "Messsystem": {
-                  "de": "Messsystem",
-                  "en": "Measuring system"
-                },
-                "ControlCabinet": {
-                  "de": "Schaltschrank",
-                  "en": "Control cabinet"
-                },
-                "WiringCabling": {
-                  "de": "Verdrahtung, Verkabelung",
-                  "en": "Wiring, cabling"
-                },
-                "ToolsChanger2": {
-                  "de": "Werkzeugwechsler",
-                  "en": "Tool changer"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "addendum_changeoverMultiSelect",
-          "type": "staticMultiSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Changeover/Retrofit",
-                "de": "Umrüstung/Nachrüstung"
-              }
-            },
-            "value": {
-              "options": {
-                "Kabine": {
-                  "de": "Kabine",
-                  "en": "Cabin"
-                },
-                "Steuerung": {
-                  "de": "Steuerung",
-                  "en": "Controls"
-                },
-                "ElHandwheel": {
-                  "de": "Elektronisches Handrad",
-                  "en": "Electronic handwheel"
-                },
-                "LengthGaugeLoadCell": {
-                  "de": "Messtaster, Messdose",
-                  "en": "Length gauge, load cell"
-                },
-                "ToolClamp": {
-                  "de": "Werkzeugspanner",
-                  "en": "Tool clamp"
-                },
-                "AuxEquipment": {
-                  "de": "Zusatzgeräte",
-                  "en": "Auxiliary equipment"
-                },
-                "CutterGuard": {
-                  "de": "Fräserschutz",
-                  "en": "Cutter guard"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "addendum_maintenanceBooleanInput",
-          "type": "booleanInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Maintenance",
-                "de": "Wartung"
-              }
-            }
-          }
-        },
-        {
-          "id": "addendum_commissioningBooleanInput",
-          "type": "booleanInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Commissioning",
-                "de": "Inbetriebnahme"
-              }
-            }
-          }
-        },
-        {
           "id": "addendum_generalCommentsMultiLineInput",
           "type": "multiLineTextInput",
           "config": {
@@ -1001,8 +820,8 @@
             "required": false,
             "label": {
               "text": {
-                "en": "General Comments",
-                "de": "Allgemeine Bemerkungen & Hinweise"
+                "de": "Allgemeine Bemerkungen & Hinweise für Kunden",
+                "en": "General comments for customer"
               }
             }
           }
@@ -1015,8 +834,22 @@
             "required": false,
             "label": {
               "text": {
-                "en": "Distribution possibility",
-                "de": "Service-Vertriebsmöglichkeit"
+                "de": "Allgemeine Bemerkungen & Hinweise FILL intern",
+                "en": "General comments FILL internal"
+              }
+            }
+          }
+        },
+        {
+          "id": "addendum_vertriebsmoeglichkeit",
+          "type": "multiLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+            "required": false,
+            "label": {
+              "text": {
+                "de": "Service-Vertriebsmöglichkeit",
+                "en": "After sales opportunity"
               }
             }
           }
@@ -1053,16 +886,16 @@
         "hidePreviewPdfButton": false,
         "emailDialogPrefill": {
           "subject": {
-            "static": "FILL Servicebericht (Interne Ausfertigung)"
+            "static": "FILL Servicebericht"
           },
           "body": {
-            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nHallo FILL-Team,\nIm Anhang findet ihr den abgeschlossenen Servicebericht als PDF und ggf. weitere Dokumente.\n\nSchöne Grüße,\nEuer Servicetechniker."
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nHallo FILL-Team,\nIm Anhang findet ihr den abgeschlossenen Servicebericht als PDF und ggf. weitere Dokumente.\n\nSchöne Grüße,"
           },
           "bcc": {
             "currentUser": true
           }
         }
       }
-    },
+    }
   ]
 }
