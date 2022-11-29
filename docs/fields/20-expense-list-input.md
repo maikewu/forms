@@ -19,7 +19,7 @@ The Expense List Input allows the user to add expenses.
 
 
 ```json (complete)
- {
+{ 
     "id": "exampleExpenseListInput_1",
     "type": "expenseListInput",
     "config": {
@@ -58,31 +58,51 @@ The Expense List Input allows the user to add expenses.
             "required": true
             },
             "expenseTypeSingleSelectInput": {
-            "pdfHide": false,
-            "disabled": false,
-            "required": true,
-            "values": {
-                "exampleSelect_1": {
-                    "en": "Example select 1",
-                    "de": "Example select 1 [DE]",
-                    "tr": "Example select 1 [TR]",
-                    "fr": "Example select 1 [FR]",
-                    "es": "Example select 1 [ES]",
-                    "it": "Example select 1 [IT]"
+                "pdfHide": false,
+                "disabled": false,
+                "required": true,
+                "values": {
+                    "flight": {
+                        "de": "Flug",
+                        "en": "Flight"
                     },
-                "exampleSelect_2": {
-                    "en": "Example select 2",
-                    "de": "Example select 2 [DE]",
-                    "tr": "Example select 2 [TR]",
-                    "fr": "Example select 2 [FR]",
-                    "es": "Example select 2 [ES]",
-                    "it": "Example select 2 [IT]"
-                    }
-                }
+                    "rental_car": {
+                        "de": "Mietauto",
+                        "en": "Rental Car"
+                    },
+                    "board": {
+                        "de": "Verpflegung",
+                        "en": "Board"
+                    },
+                    "accommodation": {
+                        "de": "Unterkunft",
+                        "en": "Accommodation"
+                    },
+                    "parking": {
+                        "de": "Parken",
+                        "en": "Parking"
+                    },
+                    "toll": {
+                        "de": "Maut",
+                        "en": "Toll"
+                    },
+                    "transportation": {
+                        "de": "Transport",
+                        "en": "Transportation"
+                    },
+                    "vignette": {
+                        "de": "Vingette",
+                        "en": "Vingette"
+                    },
+                    "other": {
+                        "de": "Sonstiges",
+                        "en": "Other"
+                    },                        
+                 }
             }
         }
     }
-},
+}
 ```
 ```json (minimal)
 {
@@ -97,10 +117,55 @@ The Expense List Input allows the user to add expenses.
                 "fr": "Expense List 1 [FR]",
                 "es": "Expense List 1 [ES]",
                 "it": "Expense List 1 [IT]"
-            },
+            }
         },
+        "fields": {
+            "expenseTypeSingleSelectInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true,
+                "values": {
+                    "flight": {
+                        "de": "Flug",
+                        "en": "Flight"
+                    },
+                    "rental_car": {
+                        "de": "Mietauto",
+                        "en": "Rental Car"
+                    },
+                    "board": {
+                        "de": "Verpflegung",
+                        "en": "Board"
+                    },
+                    "accommodation": {
+                        "de": "Unterkunft",
+                        "en": "Accommodation"
+                    },
+                    "parking": {
+                        "de": "Parken",
+                        "en": "Parking"
+                    },
+                    "toll": {
+                        "de": "Maut",
+                        "en": "Toll"
+                    },
+                    "transportation": {
+                        "de": "Transport",
+                        "en": "Transportation"
+                    },
+                    "vignette": {
+                        "de": "Vingette",
+                        "en": "Vingette"
+                    },
+                    "other": {
+                        "de": "Sonstiges",
+                        "en": "Other"
+                    },                        
+                 }
+            }
+        }
     }
-},
+}
 ```
 ## `label`
 
