@@ -19,136 +19,124 @@ With the PartListInput, the user can add parts to an form.
 
 ```json (complete)
 {
-    "id": "exampleSparePartsList_1",
-    "type": "partListInput",
-    "config": {
-        "pdfHide": false,
-        "pdfHideIfValuesIsEmpty": false,  
-        "pdfWidth": 1,  
-        "requiredAmountOfEntries": 3,
-        "label": {
-            "text": {
-                "en": "Part List 1",
-                "de": "Ersatzteilliste 1",
-                "tr": "Part List 1 [TR]",
-                "fr": "Part List 1 [FR]",
-                "es": "Part List 1 [ES]",
-                "it": "Part List 1 [IT]"
-            },
-            "pdfHide": false,
-            "pdfTextColor": "#facc2e",
-            "pdfTextSize": 14,
-            "uiHide": false
-        },
-        "fields": {
-            "partNumberSingleLineTextInput": {
-                "required": true,
-                "pdfHide": false,
-                "placeHolderText": {
-                    "en": "Part Number Placeholder Text",
-                    "de": "Part Number Placeholder Text",
-                    "tr": "Part Number Placeholder Text",
-                    "fr": "Part Number Placeholder Text",
-                    "es": "Part Number Placeholder Text",
-                    "it": "Part Number Placeholder Text"
-                }
-            },
-            "quantityNumericInput": {
-                "required": true,
-                "pdfHide": false
-            },
-            "descriptionMultiLineTextInput": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false,
-                "placeHolderText": {
-                    "en": "Description Placeholder Text",
-                    "de": "Description Placeholder Text",
-                    "tr": "Description Placeholder Text",
-                    "fr": "Description Placeholder Text",
-                    "es": "Description Placeholder Text",
-                    "it": "Description Placeholder Text"
-                }
-            },
-            "deliverToStaticSingleSelect": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false
-            },
-            "invoiceToStaticSingleSelect": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false
-            },
-            "warrantyBooleanInput": {
-                "enable": true,
-                "pdfHide": false
-            }
-        }
-    }
+	"id": "exampleSparePartsList_1",
+	"type": "partListInput",
+	"config": {
+		"pdfHide": false,
+		"pdfHideIfValuesIsEmpty": false,  
+		"pdfWidth": 1,  
+		"requiredAmountOfEntries": 3,
+		"label": {
+			"text": {
+				"de": "Ersatzteile",
+				"en": "Spare Parts",
+				"tr": "Part List 1 [TR]",
+				"fr": "Part List 1 [FR]",
+				"es": "Part List 1 [ES]",
+				"it": "Part List 1 [IT]"
+			},
+			"pdfHide": false,
+			"pdfTextColor": "#facc2e",
+			"pdfTextSize": 14,
+			"uiHide": false
+		},
+		"fields": {
+			"partNumberSingleLineTextInput": {
+				"required": true,
+				"pdfHide": false,
+				"placeHolderText": {
+					"de": "Artikelnummer",
+					"en": "Part Number",
+					"tr": "Part Number Placeholder Text",
+					"fr": "Part Number Placeholder Text",
+					"es": "Part Number Placeholder Text",
+					"it": "Part Number Placeholder Text"
+				}
+			},
+			"quantityNumericInput": {
+				"required": true,
+				"pdfHide": false
+			},
+			"descriptionMultiLineTextInput": {
+				"enable": true,
+				"required": true,
+				"pdfHide": false,
+				"placeHolderText": {
+					"de": "Beschreibung",
+					"en": "Description",
+					"tr": "Description Placeholder Text",
+					"fr": "Description Placeholder Text",
+					"es": "Description Placeholder Text",
+					"it": "Description Placeholder Text"
+				}
+			},
+			"deliverToStaticSingleSelect": {
+				"enable": true,
+				"required": true,
+				"pdfHide": false
+			},
+			"invoiceToStaticSingleSelect": {
+				"enable": true,
+				"required": true,
+				"pdfHide": false
+			},
+			"warrantyBooleanInput": {
+				"enable": true,
+				"pdfHide": false
+			}
+		}
+	}
 },
 ```
 ```json (minimal)
 {
-    "id": "exampleSparePartsList_1",
-    "type": "partListInput",
-    "config": {
-        "label": {
-            "text": {
-                "en": "Part List 1",
-                "de": "Ersatzteilliste 1",
-                "tr": "Part List 1 [TR]",
-                "fr": "Part List 1 [FR]",
-                "es": "Part List 1 [ES]",
-                "it": "Part List 1 [IT]"
-            },
-        },
-        "fields": {
-            "partNumberSingleLineTextInput": {
-                "required": true,
-                "pdfHide": false,
-                "placeHolderText": {
-                    "en": "Part Number Placeholder Text",
-                    "de": "Part Number Placeholder Text",
-                    "tr": "Part Number Placeholder Text",
-                    "fr": "Part Number Placeholder Text",
-                    "es": "Part Number Placeholder Text",
-                    "it": "Part Number Placeholder Text"
-                }
-            },
-            "quantityNumericInput": {
-                "required": true,
-                "pdfHide": false
-            },
-            "descriptionMultiLineTextInput": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false,
-                "placeHolderText": {
-                    "en": "Description Placeholder Text",
-                    "de": "Description Placeholder Text",
-                    "tr": "Description Placeholder Text",
-                    "fr": "Description Placeholder Text",
-                    "es": "Description Placeholder Text",
-                    "it": "Description Placeholder Text"
-                }
-            },
-            "deliverToStaticSingleSelect": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false
-            },
-            "invoiceToStaticSingleSelect": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false
-            },
-            "warrantyBooleanInput": {
-                "enable": true,
-                "pdfHide": false
-            }
-        }
-    }
+  "id": "exampleSparePartsList_1",
+	"type": "partListInput",
+	"config": {
+		"label": {
+			"text": {
+				"de": "Ersatzteile",
+				"en": "Spare Parts"
+			}
+		},
+		"fields": {
+			"partNumberSingleLineTextInput": {
+				"required": false,
+				"pdfHide": false,
+				"placeHolderText": {
+					"de": "Artikelnummer",
+					"en": "Part Number"
+				}
+			},
+			"quantityNumericInput": {
+				"required": false,
+				"pdfHide": false
+			},
+			"descriptionMultiLineTextInput": {
+				"enable": true,
+				"required": false,
+				"pdfHide": false,
+				"placeHolderText": {
+					"de": "Beschreibung",
+					"en": "Description"
+				}
+			},
+			"deliverToStaticSingleSelect": {
+				"enable": false,
+				"required": false,
+				"pdfHide": false
+			},
+			"invoiceToStaticSingleSelect": {
+				"enable": false,
+				"required": false,
+				"pdfHide": false
+			},
+			"warrantyBooleanInput": {
+				"enable": false,
+				"pdfHide": false
+			}
+		}
+	}
 },
 ```
 # Configuration Parameters
