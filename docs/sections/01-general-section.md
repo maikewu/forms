@@ -25,7 +25,7 @@ You can find a list below, that contains all sections.
 ```json
 {
   "general": {
-      "singleInstanceForm": false,
+      
       "hideInstanceCounterInPdf": false,
       "timezone": "Europe/Berlin"
   },
