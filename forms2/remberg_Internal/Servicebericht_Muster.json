@@ -37,6 +37,7 @@
                 "en": "Technician"
               }
             },
+            "pdfWidth": 0.5,
             "prefill": {
               "value": [
                 {
@@ -69,6 +70,9 @@
                 "en": "Customer"
               }
             },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": false,
             "useAsFilterForFields": [
               "asset",
               "customerContactPerson"
@@ -79,35 +83,21 @@
                   "id": "customerLocation"
                 },
                 "steps": [
-                  "assetIdToAsset",
-                  "assetToLocationAddress"
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
                 ]
               }
             ],
             "prefill": {
               "selectedCompany": [
                 {
-                  "input": "assetId",
+                  "input": "organizationId",
                   "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
+                    "accountIdToAccount"
                   ]
                 }
               ]
             }
-          }
-        },
-        {
-          "id": "customerNumber",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kundennummer",
-                "en": "Customer Number"
-              }
-            },
-            "pdfWidth": 0.5
           }
         },
         {
@@ -166,19 +156,6 @@
                 "de": "Rechnungsadresse entspricht Kundenadresse",
                 "en": "Billing address same as shipping address"
               }
-            },
-            "prefill": {
-              "value": [
-                {
-                  "input": "none",
-                  "steps": [
-                    [
-                      "staticBoolean",
-                      true
-                    ]
-                  ]
-                }
-              ]
             }
           }
         },
@@ -227,7 +204,13 @@
                   "steps": []
                 }
               ]
-            }
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
           }
         },
         {
