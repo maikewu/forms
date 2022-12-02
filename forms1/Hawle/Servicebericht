@@ -17,6 +17,116 @@
       "stateIndicator": true,
       "hasNextStep": true,
       "children": {
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5,
+          "label": {
+            "de": "Kundenname",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "customerLocation"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "02_assetInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "customerLocation": {
+          "width": 1,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Kundenadresse",
+            "en": "Customer's address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "06_signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_technician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07_signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customerLocation",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signature_customer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
         "serviceTechnician": {
           "fieldType": "REMBERG_USER_SELECT",
           "label": {
@@ -29,7 +139,61 @@
           "autofillCurrentUser": true,
           "printEmailAddress": false,
           "required": false
+        },
+        "serviceDate": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Service Datum",
+            "en": "Date of Service"
+          },
+          "hiddenInPdf": false,
+          "autofillCurrentDate": true,
+          "required": false
         }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "customerAddress"
+                  },
+                  "output": {
+                    "_field": "customerLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     "02_assetInformation": {
@@ -54,6 +218,2786 @@
             "en": "Armature"
           }
         },
+        "type": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Typ",
+            "en": "Type"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "dn": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "DN",
+            "en": "DN"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "serialNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Seriennummer",
+            "en": "Serial Number"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "pressure": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Druckstufe",
+            "en": "Pressure Level"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "constructionYear": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Baujahr",
+            "en": "Year of Construction"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "installationLocation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Einbauort",
+            "en": "Location of Installation"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "locationComment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Zusatzangabe zum Einbauort",
+            "en": "Additional Information"
+          },
+          "hideInPdfIfEmpty": true
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "installationLocation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03_operationalData": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Betriebsinformationen",
+        "en": "Operational Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "inletPressure": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Eingangsdruck",
+            "en": "Inlet Pressure"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "outletPressure": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Ausgangsdruck",
+            "en": "Outlet Pressure"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "constantPressure": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Haltedruck",
+            "en": "Constant Pressure"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "flowRates": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Durchflussmengen",
+            "en": "Flow Rates"
+          },
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "04_serviceInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Servicetätigkeit",
+        "en": "Service Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "function": {
+          "fieldType": "SELECT",
+          "label": {
+            "de": "Funktion gegeben",
+            "en": "Function"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": true,
+          "multiple": false,
+          "options": [
+            {
+              "value": "1",
+              "text": {
+                "de": "Ja",
+                "en": "Yes"
+              }
+            },
+            {
+              "value": "2",
+              "text": {
+                "de": "Nein",
+                "en": "No"
+              }
+            }
+          ]
+        },
+        "comment": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Bemerkung",
+            "en": "Comment"
+          },
+          "hideInPdfIfEmpty": true
+        },
+        "upcommingServiceDate": {
+          "fieldType": "REMBERG_DATE",
+          "label": {
+            "de": "Nächste Wartung",
+            "en": "Date of next Service"
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "hideInPdfIfEmpty": true
+        }
+      }
+    },
+    "05_spareParts": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Spare Parts",
+        "de": "Materialverbrauch"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "header_spare_parts_1": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Repsets Regelventile:",
+            "en": "Repsets  Control Valve:"
+          }
+        },
+        "repsets_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "repsets_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "130001000 - REPARATURSET ZU 1400 PN 10/16/25 RG DRUCKH.-STEUERVENTIL NEUE,LANGE AUSF",
+                    "en": "130001000 - REPARATURSET ZU 1400 PN 10/16/25 RG DRUCKH.-STEUERVENTIL NEUE,LANGE AUSF"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "130001001 - REPARATURSET ZU 1500 PN 10/16/25 RG DRUCKREDUZIER-STEUER-VENTIL",
+                    "en": "130001001 - REPARATURSET ZU 1500 PN 10/16/25 RG DRUCKREDUZIER-STEUER-VENTIL"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "130001002 - REPARATURSET ZU 1400 PN 10/16 DRUCKH.-STEUERVENTIL ALTE,KURZE AUSF",
+                    "en": "130001002 - REPARATURSET ZU 1400 PN 10/16 DRUCKH.-STEUERVENTIL ALTE,KURZE AUSF"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "130001003 - REPARATURSET ZU 1300 PN 10/16 MENGENBEGRENZUNGS-STEUERVENTIL",
+                    "en": "130001003 - REPARATURSET ZU 1300 PN 10/16 MENGENBEGRENZUNGS-STEUERVENTIL"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "130001004 - REPARATURSET ZU 1600 PN 10/16 SCHWIMMERSTEUER-VENTIL",
+                    "en": "130001004 - REPARATURSET ZU 1600 PN 10/16 SCHWIMMERSTEUER-VENTIL"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "130001005 - REPARATURSET ZU 1601 PN 10/16 SCHWIMMERSTEUER-VENTIL",
+                    "en": "130001005 - REPARATURSET ZU 1601 PN 10/16 SCHWIMMERSTEUER-VENTIL"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "130001006 - REPARATURSET ZU 1500 PN 10-25 INOX DRUCKREDUZIER-STEUER-VENTIL",
+                    "en": "130001006 - REPARATURSET ZU 1500 PN 10-25 INOX DRUCKREDUZIER-STEUER-VENTIL"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "130001007 - REPARATURSET ZU 1400 PN 10-25 INOX DRUCKH.-STEUERVENTIL",
+                    "en": "130001007 - REPARATURSET ZU 1400 PN 10-25 INOX DRUCKH.-STEUERVENTIL"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "130001010 - REP-SET STEUERLEIT. DN 40-50 MS SERIENNR. BIS 14251 DICHTUNG 3/8''",
+                    "en": "130001010 - REP-SET STEUERLEIT. DN 40-50 MS SERIENNR. BIS 14251 DICHTUNG 3/8''"
+                  }
+                },
+                {
+                  "value": "10",
+                  "text": {
+                    "de": "130001011 - REP-SET STEUERLEIT. DN 40-50 INOX SERIENNR. 14252-14731 DICHTUNG 3/8''",
+                    "en": "130001011 - REP-SET STEUERLEIT. DN 40-50 INOX SERIENNR. 14252-14731 DICHTUNG 3/8''"
+                  }
+                },
+                {
+                  "value": "10-1",
+                  "text": {
+                    "de": "130001012 - REP-SET STEUERLEIT. DN 65-100 MS SERIENNR. BIS 14251 DICHTUNG 1/2''",
+                    "en": "130001012 - REP-SET STEUERLEIT. DN 65-100 MS SERIENNR. BIS 14251 DICHTUNG 1/2''"
+                  }
+                },
+                {
+                  "value": "11",
+                  "text": {
+                    "de": "130001013 - REP-SET STEUERLEIT. DN 40-100 INOX SERIENNR. AB 14252 DICHTUNG 1/2''",
+                    "en": "130001013 - REP-SET STEUERLEIT. DN 40-100 INOX SERIENNR. AB 14252 DICHTUNG 1/2''"
+                  }
+                },
+                {
+                  "value": "12",
+                  "text": {
+                    "de": "130001015 - REP-SET STEUERLEIT. DN 125-300 MS SERIENNR. BIS 14251 DICHTUNG 3/4''",
+                    "en": "130001015 - REP-SET STEUERLEIT. DN 125-300 MS SERIENNR. BIS 14251 DICHTUNG 3/4''"
+                  }
+                },
+                {
+                  "value": "13",
+                  "text": {
+                    "de": "130001016 - REP-SET STEUERLEIT. DN 125-200 INOX SERIENNR. AB 14252 DICHTUNG 3/4''",
+                    "en": "130001016 - REP-SET STEUERLEIT. DN 125-200 INOX SERIENNR. AB 14252 DICHTUNG 3/4''"
+                  }
+                },
+                {
+                  "value": "14",
+                  "text": {
+                    "de": "130001017 - REP-SET STEUERLEIT. DN 250-300 INOX SERIENNR. AB 14252 DICHTUNG 1''",
+                    "en": "130001017 - REP-SET STEUERLEIT. DN 250-300 INOX SERIENNR. AB 14252 DICHTUNG 1''"
+                  }
+                },
+                {
+                  "value": "15",
+                  "text": {
+                    "de": "130001020 - REPARATUR-SET ZU DN 40-100 STELLUNGSANZEIGER TYP 1995",
+                    "en": "130001020 - REPARATUR-SET ZU DN 40-100 STELLUNGSANZEIGER TYP 1995"
+                  }
+                },
+                {
+                  "value": "16",
+                  "text": {
+                    "de": "130001021 - REPARATUR-SET ZU DN 125-200 STELLUNGSANZEIGER TYP 1995",
+                    "en": "130001021 - REPARATUR-SET ZU DN 125-200 STELLUNGSANZEIGER TYP 1995"
+                  }
+                },
+                {
+                  "value": "17",
+                  "text": {
+                    "de": "130001022 - REPARATUR-SET ZU DN 250-300 STELLUNGSANZEIGER TYP 1995",
+                    "en": "130001022 - REPARATUR-SET ZU DN 250-300 STELLUNGSANZEIGER TYP 1995"
+                  }
+                },
+                {
+                  "value": "18",
+                  "text": {
+                    "de": "130001038 - REPARATUR-SET ZU DN 40 BASISVENTIL AB 09/99 PN 10/16/25",
+                    "en": "130001038 - REPARATUR-SET ZU DN 40 BASISVENTIL AB 09/99 PN 10/16/25"
+                  }
+                },
+                {
+                  "value": "19",
+                  "text": {
+                    "de": "130001040 - REPARATUR-SET ZU DN 50 PN 10-25 BASISVENTIL DN 50 (DN40 BIS 8/99)",
+                    "en": "130001040 - REPARATUR-SET ZU DN 50 PN 10-25 BASISVENTIL DN 50 (DN40 BIS 8/99)"
+                  }
+                },
+                {
+                  "value": "20",
+                  "text": {
+                    "de": "130001040 - REPARATUR-SET ZU DN 50 PN 10-25 BASISVENTIL DN 50 (DN40 BIS 8/99)",
+                    "en": "130001040 - REPARATUR-SET ZU DN 50 PN 10-25 BASISVENTIL DN 50 (DN40 BIS 8/99) "
+                  }
+                },
+                {
+                  "value": "21",
+                  "text": {
+                    "de": "130001040 - REPARATUR-SET ZU DN 50 PN 10-25 BASISVENTIL DN 50 (DN40 BIS 8/99)",
+                    "en": "130001040 - REPARATUR-SET ZU DN 50 PN 10-25 BASISVENTIL DN 50 (DN40 BIS 8/99)"
+                  }
+                },
+                {
+                  "value": "22",
+                  "text": {
+                    "de": "130001065 - REPARATUR-SET ZU DN 65 BASISVENTIL PN 10/16",
+                    "en": "130001065 - REPARATUR-SET ZU DN 65 BASISVENTIL PN 10/16"
+                  }
+                },
+                {
+                  "value": "23",
+                  "text": {
+                    "de": "130001066 - REPARATUR-SET ZU DN 65 BASISVENTIL PN -25-",
+                    "en": "130001066 - REPARATUR-SET ZU DN 65 BASISVENTIL PN -25-"
+                  }
+                },
+                {
+                  "value": "24",
+                  "text": {
+                    "de": "130001080 - REPARATUR-SET ZU DN 80 BASISVENTIL PN 10/16",
+                    "en": "130001080 - REPARATUR-SET ZU DN 80 BASISVENTIL PN 10/16"
+                  }
+                },
+                {
+                  "value": "25",
+                  "text": {
+                    "de": "130001081 - REPARATUR-SET ZU DN 80 BASISVENTIL PN -25-",
+                    "en": "130001081 - REPARATUR-SET ZU DN 80 BASISVENTIL PN -25-"
+                  }
+                },
+                {
+                  "value": "26",
+                  "text": {
+                    "de": "130001100 - REPARATUR-SET ZU DN 100 BASISVENTIL PN 10/16",
+                    "en": "130001100 - REPARATUR-SET ZU DN 100 BASISVENTIL PN 10/16"
+                  }
+                },
+                {
+                  "value": "27",
+                  "text": {
+                    "de": "130001101 - REPARATUR-SET ZU DN 100 BASISVENTIL PN -25-",
+                    "en": "130001101 - REPARATUR-SET ZU DN 100 BASISVENTIL PN -25-"
+                  }
+                },
+                {
+                  "value": "28",
+                  "text": {
+                    "de": "130001125 - REP-SET BASISVENTIL DN 125 (150 ALT SERIENNR. BIS 14889) PN 10/16",
+                    "en": "130001125 - REP-SET BASISVENTIL DN 125 (150 ALT SERIENNR. BIS 14889) PN 10/16"
+                  }
+                },
+                {
+                  "value": "29",
+                  "text": {
+                    "de": "130001126 - REP-SET BASISVENTIL DN 125 (150 ALT SERIENNR. BIS 14889) PN -25-",
+                    "en": "130001126 - REP-SET BASISVENTIL DN 125 (150 ALT SERIENNR. BIS 14889) PN -25-"
+                  }
+                },
+                {
+                  "value": "30",
+                  "text": {
+                    "de": "130001150 - REP-SET BASISVENTIL DN 150 NEU SERIENNR. AB 14890 PN 10/16",
+                    "en": "130001150 - REP-SET BASISVENTIL DN 150 NEU SERIENNR. AB 14890 PN 10/16"
+                  }
+                },
+                {
+                  "value": "31",
+                  "text": {
+                    "de": "130001151 - REP-SET BASISVENTIL DN 150 NEU SERIENNR. AB 14890 PN -25-",
+                    "en": "130001151 - REP-SET BASISVENTIL DN 150 NEU SERIENNR. AB 14890 PN -25-"
+                  }
+                },
+                {
+                  "value": "32",
+                  "text": {
+                    "de": "130001200 - REPARATUR-SET ZU DN 200 BASISVENTIL PN 10/16",
+                    "en": "130001200 - REPARATUR-SET ZU DN 200 BASISVENTIL PN 10/16"
+                  }
+                },
+                {
+                  "value": "33",
+                  "text": {
+                    "de": "130001250 - REPARATUR-SET ZU DN 250 BASISVENTIL PN 10/16",
+                    "en": "130001250 - REPARATUR-SET ZU DN 250 BASISVENTIL PN 10/16"
+                  }
+                },
+                {
+                  "value": "34",
+                  "text": {
+                    "de": "130001300 - REPARATUR-SET ZU DN 300 BASISVENTIL PN 10/16",
+                    "en": "130001300 - REPARATUR-SET ZU DN 300 BASISVENTIL PN 10/16"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_spare_parts_2": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Ersatzteile Steuerleitungen:",
+            "en": "Spare Parts Control Lines:"
+          }
+        },
+        "control_lines_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "control_lines_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "130000012 - ERSATZ-MANOMETER 3/8 0-6 BAR",
+                    "en": "130000012 - ERSATZ-MANOMETER 3/8 0-6 BAR"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "130000013 - ERSATZ-MANOMETER 3/8 0-10 BAR",
+                    "en": "130000013 - ERSATZ-MANOMETER 3/8 0-10 BAR"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "130000014 - ERSATZ-MANOMETER 3/8 0-16 BAR",
+                    "en": "130000014 - ERSATZ-MANOMETER 3/8 0-16 BAR"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "130000015 - ERSATZ-MANOMETER 3/8 0-25 BAR",
+                    "en": "130000015 - ERSATZ-MANOMETER 3/8 0-25 BAR"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "130000016 - ERSATZ-MANOMETER 3/8 0-40 BAR",
+                    "en": "130000016 - ERSATZ-MANOMETER 3/8 0-40 BAR"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "130000021 - ERSATZ-MANOMETER 1/2 0-40 BAR",
+                    "en": "130000021 - ERSATZ-MANOMETER 1/2 0-40 BAR"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "130000023 - ERSATZ-MANOMETER 1/4 0-10 BAR",
+                    "en": "130000023 - ERSATZ-MANOMETER 1/4 0-10 BAR"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "130000025 - ERSATZ-MANOMETER 1/4 0-25 BAR",
+                    "en": "130000025 - ERSATZ-MANOMETER 1/4 0-25 BAR"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "130000361 - DRUCKMINDERER DVGW 1'' 1,5-6,0 BAR NORMALDRUCK D 06 F",
+                    "en": "130000361 - DRUCKMINDERER DVGW 1'' 1,5-6,0 BAR NORMALDRUCK D 06 F"
+                  }
+                },
+                {
+                  "value": "10",
+                  "text": {
+                    "de": "130000362 - DRUCKMINDERER DVGW 1'' 0,5-2,0 BAR NIEDERDRUCK D 06 FN",
+                    "en": "130000362 - DRUCKMINDERER DVGW 1'' 0,5-2,0 BAR NIEDERDRUCK D 06 FN"
+                  }
+                },
+                {
+                  "value": "10-1",
+                  "text": {
+                    "de": "130000363 - DRUCKMINDERER DVGW 1'' 1,5-12,0 BAR HOCHDRUCK D 06 FH",
+                    "en": "130000363 - DRUCKMINDERER DVGW 1'' 1,5-12,0 BAR HOCHDRUCK D 06 FH"
+                  }
+                },
+                {
+                  "value": "11",
+                  "text": {
+                    "de": "130000371 - DRUCKMINDERER DVGW 1/2'' 1,5-6,0 BAR NORMALDRUCK D 06 F",
+                    "en": "130000371 - DRUCKMINDERER DVGW 1/2'' 1,5-6,0 BAR NORMALDRUCK D 06 F"
+                  }
+                },
+                {
+                  "value": "12",
+                  "text": {
+                    "de": "130000388 - WINKEL 90 GRAD IG 3/8''/ AG 3/8'' EDELSTAHL VA4 NACH EN 10242",
+                    "en": "130000388 - WINKEL 90 GRAD IG 3/8''/ AG 3/8'' EDELSTAHL VA4 NACH EN 10242"
+                  }
+                },
+                {
+                  "value": "13",
+                  "text": {
+                    "de": "130000394 - 6-KT DOPPELNIPPEL 3/8'' EDELSTAHL A2 NACH EN 10242",
+                    "en": "130000394 - 6-KT DOPPELNIPPEL 3/8'' EDELSTAHL A2 NACH EN 10242"
+                  }
+                },
+                {
+                  "value": "14",
+                  "text": {
+                    "de": "130000500 - PA-SCHLAUCH WEISS 6X4X1 MM EURO/M",
+                    "en": "130000500 - PA-SCHLAUCH WEISS 6X4X1 MM EURO/M"
+                  }
+                },
+                {
+                  "value": "15",
+                  "text": {
+                    "de": "130000505 - PA-SCHLAUCH SCHWARZ 12X9 MM EURO/M",
+                    "en": "130000505 - PA-SCHLAUCH SCHWARZ 12X9 MM EURO/M"
+                  }
+                },
+                {
+                  "value": "16",
+                  "text": {
+                    "de": "130000520 - STÜTZHÜLSE MESSING 6X4X1 MM",
+                    "en": "130000520 - STÜTZHÜLSE MESSING 6X4X1 MM"
+                  }
+                },
+                {
+                  "value": "17",
+                  "text": {
+                    "de": "130000525 - STÜTZHÜLSE INOX 12X9 MM",
+                    "en": "130000525 - STÜTZHÜLSE INOX 12X9 MM"
+                  }
+                },
+                {
+                  "value": "18",
+                  "text": {
+                    "de": "130001820 - REPARATUR-SET ZU MAGNETVENTIL TYP E321 H13",
+                    "en": "130001820 - REPARATUR-SET ZU MAGNETVENTIL TYP E321 H13"
+                  }
+                },
+                {
+                  "value": "19",
+                  "text": {
+                    "de": "130001825 - REPARATUR-SET ZU MAGNETVENTIL TYP E 322 H7306",
+                    "en": "130001825 - REPARATUR-SET ZU MAGNETVENTIL TYP E 322 H7306"
+                  }
+                },
+                {
+                  "value": "20",
+                  "text": {
+                    "de": "110004051 - FLACHKOPFSCHRAUBE INOX A2 M5X8 DIN 921",
+                    "en": "110004051 - FLACHKOPFSCHRAUBE INOX A2 M5X8 DIN 921"
+                  }
+                },
+                {
+                  "value": "21",
+                  "text": {
+                    "de": "110012080 - SPANNSCHEIBE M8 14 X 0,55 ZU STEUERVENTILEN INOX A2",
+                    "en": "110012080 - SPANNSCHEIBE M8 14 X 0,55 ZU STEUERVENTILEN INOX A2"
+                  }
+                },
+                {
+                  "value": "22",
+                  "text": {
+                    "de": "110013100 - DICHTUNG FIBER ZU STEUERVENTILEN",
+                    "en": "110013100 - DICHTUNG FIBER ZU STEUERVENTILEN"
+                  }
+                },
+                {
+                  "value": "23",
+                  "text": {
+                    "de": "110013325 - VERBUNDDICHTRING INOX/NBR 3/8'' ZU ZENTRALSTOPFEN DN 40-50",
+                    "en": "110013325 - VERBUNDDICHTRING INOX/NBR 3/8'' ZU ZENTRALSTOPFEN DN 40-50"
+                  }
+                },
+                {
+                  "value": "24",
+                  "text": {
+                    "de": "110013327 - VERBUNDDICHTRING INOX/NBR 1/2'' ZU ZENTRALSTOPFEN DN 40-100",
+                    "en": "110013327 - VERBUNDDICHTRING INOX/NBR 1/2'' ZU ZENTRALSTOPFEN DN 40-100"
+                  }
+                },
+                {
+                  "value": "25",
+                  "text": {
+                    "de": "110013332 - VERBUNDDICHTRING INOX/NBR 3/4'' ZU ZENTRALSTOPFEN DN 125-200",
+                    "en": "110013332 - VERBUNDDICHTRING INOX/NBR 3/4'' ZU ZENTRALSTOPFEN DN 125-200"
+                  }
+                },
+                {
+                  "value": "26",
+                  "text": {
+                    "de": "110013333 - VERBUNDDICHTRING ST/NBR 1'' ZU ZENTRALSTOPFEN DN 250-300",
+                    "en": "110013333 - VERBUNDDICHTRING ST/NBR 1'' ZU ZENTRALSTOPFEN DN 250-300"
+                  }
+                },
+                {
+                  "value": "27",
+                  "text": {
+                    "de": "110018070 - O-RING 7,5 X 1,5 NBR 70 ZU STEUERVENTILEN",
+                    "en": "110018070 - O-RING 7,5 X 1,5 NBR 70 ZU STEUERVENTILEN"
+                  }
+                },
+                {
+                  "value": "28",
+                  "text": {
+                    "de": "110018200 - O-RING 20,0 X 2,5 NBR 70",
+                    "en": "110018200 - O-RING 20,0 X 2,5 NBR 70"
+                  }
+                },
+                {
+                  "value": "29",
+                  "text": {
+                    "de": "110018300 - O-RING 30,0 X 4,0 NBR 70",
+                    "en": "110018300 - O-RING 30,0 X 4,0 NBR 70"
+                  }
+                },
+                {
+                  "value": "30",
+                  "text": {
+                    "de": "110027006 - ARMATURENANSCHLUSS DN 6 INOX SCHNEIDRING + MUTTER",
+                    "en": "110027006 - ARMATURENANSCHLUSS DN 6 INOX SCHNEIDRING + MUTTER"
+                  }
+                },
+                {
+                  "value": "31",
+                  "text": {
+                    "de": "110027012 - ARMATURENANSCHLUSS DN 12 INOX SCHNEIDRING + MUTTER",
+                    "en": "110027012 - ARMATURENANSCHLUSS DN 12 INOX SCHNEIDRING + MUTTER"
+                  }
+                },
+                {
+                  "value": "32",
+                  "text": {
+                    "de": "110027106 - SCHNEIDRING DN 6 INOX",
+                    "en": "110027106 - SCHNEIDRING DN 6 INOX"
+                  }
+                },
+                {
+                  "value": "33",
+                  "text": {
+                    "de": "110027112 - SCHNEIDRING DN 12 INOX",
+                    "en": "110027112 - SCHNEIDRING DN 12 INOX"
+                  }
+                },
+                {
+                  "value": "34",
+                  "text": {
+                    "de": "110029112 - BLENDE ZYLINDRISCH DN 12-E = 0,6 MM ZU STEUERLEITUNG INOX",
+                    "en": "110029112 - BLENDE ZYLINDRISCH DN 12-E = 0,6 MM ZU STEUERLEITUNG INOX"
+                  }
+                },
+                {
+                  "value": "35",
+                  "text": {
+                    "de": "110029114 - BLENDE ZYLINDRISCH DN 12-E = 0,9 MM ZU STEUERLEITUNG INOX",
+                    "en": "110029114 - BLENDE ZYLINDRISCH DN 12-E = 0,9 MM ZU STEUERLEITUNG INOX"
+                  }
+                },
+                {
+                  "value": "36",
+                  "text": {
+                    "de": "110029116 - BLENDE ZYLINDRISCH DN 12-E = 1,2 MM ZU STEUERLEITUNG INOX",
+                    "en": "110029116 - BLENDE ZYLINDRISCH DN 12-E = 1,2 MM ZU STEUERLEITUNG INOX"
+                  }
+                },
+                {
+                  "value": "37",
+                  "text": {
+                    "de": "110029118 - BLENDE ZYLINDRISCH DN 12-E = 1,5 MM ZU STEUERLEITUNG INOX",
+                    "en": "110029118 - BLENDE ZYLINDRISCH DN 12-E = 1,5 MM ZU STEUERLEITUNG INOX"
+                  }
+                },
+                {
+                  "value": "38",
+                  "text": {
+                    "de": "110029120 - BLENDE ZYLINDRISCH DN 12-E = 1,9 MM ZU STEUERLEITUNG INOX",
+                    "en": "110029120 - BLENDE ZYLINDRISCH DN 12-E = 1,9 MM ZU STEUERLEITUNG INOX"
+                  }
+                },
+                {
+                  "value": "39",
+                  "text": {
+                    "de": "110029122 - BLENDE ZYLINDRISCH DN 12-E = 2,4 MM ZU STEUERLEITUNG INOX",
+                    "en": "110029122 - BLENDE ZYLINDRISCH DN 12-E = 2,4 MM ZU STEUERLEITUNG INOX"
+                  }
+                },
+                {
+                  "value": "40",
+                  "text": {
+                    "de": "110029124 - BLENDE ZYLINDRISCH DN 12-E = 3,1 MM ZU STEUERLEITUNG INOX",
+                    "en": "110029124 - BLENDE ZYLINDRISCH DN 12-E = 3,1 MM ZU STEUERLEITUNG INOX"
+                  }
+                },
+                {
+                  "value": "41",
+                  "text": {
+                    "de": "110032060 - VERSCHRAUBUNG DN 6-1/8'' INOX MIT EINSCHRAUBNIPPEL",
+                    "en": "110032060 - VERSCHRAUBUNG DN 6-1/8'' INOX MIT EINSCHRAUBNIPPEL"
+                  }
+                },
+                {
+                  "value": "42",
+                  "text": {
+                    "de": "110032061 - VERSCHRAUBUNG DN 6-1/4'' INOX MIT EINSCHRAUBNIPPEL",
+                    "en": "110032061 - VERSCHRAUBUNG DN 6-1/4'' INOX MIT EINSCHRAUBNIPPEL"
+                  }
+                },
+                {
+                  "value": "43",
+                  "text": {
+                    "de": "110032062 - VERSCHRAUBUNG DN 6-3/8'' INOX MIT EINSCHRAUBNIPPEL",
+                    "en": "110032062 - VERSCHRAUBUNG DN 6-3/8'' INOX MIT EINSCHRAUBNIPPEL"
+                  }
+                },
+                {
+                  "value": "44",
+                  "text": {
+                    "de": "110032122 - VERSCHRAUBUNG DN 12-3/8'' INOX MIT EINSCHRAUBNIPPEL",
+                    "en": "110032122 - VERSCHRAUBUNG DN 12-3/8'' INOX MIT EINSCHRAUBNIPPEL"
+                  }
+                },
+                {
+                  "value": "45",
+                  "text": {
+                    "de": "110036105 - UEBERGANGSMUFFE DN 10-3/8'' INOX",
+                    "en": "110036105 - UEBERGANGSMUFFE DN 10-3/8'' INOX"
+                  }
+                },
+                {
+                  "value": "46",
+                  "text": {
+                    "de": "110036125 - UEBERGANGSMUFFE DN 12-3/8'' INOX",
+                    "en": "110036125 - UEBERGANGSMUFFE DN 12-3/8'' INOX"
+                  }
+                },
+                {
+                  "value": "47",
+                  "text": {
+                    "de": "110037120 - UEBERGANGSNIPPEL DN 12-3/8'' INOX",
+                    "en": "110037120 - UEBERGANGSNIPPEL DN 12-3/8'' INOX"
+                  }
+                },
+                {
+                  "value": "48",
+                  "text": {
+                    "de": "110040129 - REDUZIERNIPPEL AG 3/8''-IG 1/4''",
+                    "en": "110040129 - REDUZIERNIPPEL AG 3/8''-IG 1/4''"
+                  }
+                },
+                {
+                  "value": "49",
+                  "text": {
+                    "de": "110041122 - EINSTELLNIPPEL DN 12-3/8'' INOX",
+                    "en": "110041122 - EINSTELLNIPPEL DN 12-3/8'' INOX"
+                  }
+                },
+                {
+                  "value": "50",
+                  "text": {
+                    "de": "110044061 - EINSCHRAUBWINKEL DN  6-1/4'' INOX",
+                    "en": "110044061 - EINSCHRAUBWINKEL DN  6-1/4'' INOX"
+                  }
+                },
+                {
+                  "value": "51",
+                  "text": {
+                    "de": "110044122 - EINSCHRAUBWINKEL DN 12-3/8'' INOX",
+                    "en": "110044122 - EINSCHRAUBWINKEL DN 12-3/8'' INOX"
+                  }
+                },
+                {
+                  "value": "52",
+                  "text": {
+                    "de": "110044125 - EINSCHRAUBWINKEL DN 12-3/8'' INOX MIT ENTLÜFTUNG",
+                    "en": "110044125 - EINSCHRAUBWINKEL DN 12-3/8'' INOX MIT ENTLÜFTUNG"
+                  }
+                },
+                {
+                  "value": "53",
+                  "text": {
+                    "de": "110045060 - WINKELVERSCHRAUBUNG DN 6 INOX 90 GRAD",
+                    "en": "110045060 - WINKELVERSCHRAUBUNG DN 6 INOX 90 GRAD"
+                  }
+                },
+                {
+                  "value": "54",
+                  "text": {
+                    "de": "110045061 - WINKELVERSCHRAUBUNG DN 12 INOX 90 GRAD",
+                    "en": "110045061 - WINKELVERSCHRAUBUNG DN 12 INOX 90 GRAD"
+                  }
+                },
+                {
+                  "value": "55",
+                  "text": {
+                    "de": "110045102 - ANSCHLUßWINKEL  90 G IG 3/8''-IG 3/8'' NACH EN 10241 V4A/316",
+                    "en": "110045102 - ANSCHLUßWINKEL  90 G IG 3/8''-IG 3/8'' NACH EN 10241 V4A/316"
+                  }
+                },
+                {
+                  "value": "56",
+                  "text": {
+                    "de": "110045120 - T-VERSCHRAUBUNG IG 3/8'' INOX",
+                    "en": "110045120 - T-VERSCHRAUBUNG IG 3/8'' INOX"
+                  }
+                },
+                {
+                  "value": "57",
+                  "text": {
+                    "de": "110046060 - T-VERSCHRAUBUNG DN 6/6/6 INOX",
+                    "en": "110046060 - T-VERSCHRAUBUNG DN 6/6/6 INOX"
+                  }
+                },
+                {
+                  "value": "58",
+                  "text": {
+                    "de": "110046121 - T-VERSCHRAUBUNG DN 12/12/12 INOX",
+                    "en": "110046121 - T-VERSCHRAUBUNG DN 12/12/12 INOX"
+                  }
+                },
+                {
+                  "value": "59",
+                  "text": {
+                    "de": "110046131 - T-VERSCHRAUBUNG DN 12/6/12 REDUZIERT INOX",
+                    "en": "110046131 - T-VERSCHRAUBUNG DN 12/6/12 REDUZIERT INOX"
+                  }
+                },
+                {
+                  "value": "60",
+                  "text": {
+                    "de": "110051126 - ZENTRALER-STOPFEN AG 1/2'' INOX MIT ENTLÜFT. SCHRAUBE DN 40-100",
+                    "en": "110051126 - ZENTRALER-STOPFEN AG 1/2'' INOX MIT ENTLÜFT. SCHRAUBE DN 40-100"
+                  }
+                },
+                {
+                  "value": "61",
+                  "text": {
+                    "de": "110051346 - ZENTRALER-STOPFEN AG 3/4'' INOX MIT ENTLÜFT. SCHRAUBE DN 125-200",
+                    "en": "110051346 - ZENTRALER-STOPFEN AG 3/4'' INOX MIT ENTLÜFT. SCHRAUBE DN 125-200"
+                  }
+                },
+                {
+                  "value": "62",
+                  "text": {
+                    "de": "110051383 - STOPFEN AG 3/8'' INOX ZU STEUERLEITUNG DN 40-200",
+                    "en": "110051383 - STOPFEN AG 3/8'' INOX ZU STEUERLEITUNG DN 40-200"
+                  }
+                },
+                {
+                  "value": "63",
+                  "text": {
+                    "de": "110054000 - DROSSELRÜCKSCHL. VENTIL MS VERNICKELT AG3/8''/IG3/8''",
+                    "en": "110054000 - DROSSELRÜCKSCHL. VENTIL MS VERNICKELT AG3/8''/IG3/8''"
+                  }
+                },
+                {
+                  "value": "64",
+                  "text": {
+                    "de": "110054010 - DROSSELRÜCKSCHL. VENTIL ''B'' INOX M.LANGER SPINDEL D12/IG 3/8''",
+                    "en": "110054010 - DROSSELRÜCKSCHL. VENTIL ''B'' INOX M.LANGER SPINDEL D12/IG 3/8''"
+                  }
+                },
+                {
+                  "value": "65",
+                  "text": {
+                    "de": "110054060 - SPINDEL KOMPLETT LANGE AUSFÜHR. ZU DROSSELRÜCKSCHL. VENTIL 3/8''",
+                    "en": "110054060 - SPINDEL KOMPLETT LANGE AUSFÜHR. ZU DROSSELRÜCKSCHL. VENTIL 3/8''"
+                  }
+                },
+                {
+                  "value": "67",
+                  "text": {
+                    "de": "110054080 - RÜCKSCHLAGVENTIL DN 3/8'' PN 40 MESSING",
+                    "en": "110054080 - RÜCKSCHLAGVENTIL DN 3/8'' PN 40 MESSING"
+                  }
+                },
+                {
+                  "value": "68",
+                  "text": {
+                    "de": "110054381 - KUGELHAHN V4A 3/8'' IG BAULÄNGE 44,2MM ZU STEUERLEITUNG DN 40-250",
+                    "en": "110054381 - KUGELHAHN V4A 3/8'' IG BAULÄNGE 44,2MM ZU STEUERLEITUNG DN 40-250"
+                  }
+                },
+                {
+                  "value": "69",
+                  "text": {
+                    "de": "110054382 - KUGELHAHN 3/8'' BAULÄNGE 44MM ZU STEUERLEITUNG DN 40-250",
+                    "en": "110054382 - KUGELHAHN 3/8'' BAULÄNGE 44MM ZU STEUERLEITUNG DN 40-250"
+                  }
+                },
+                {
+                  "value": "70",
+                  "text": {
+                    "de": "110054504 - FILTERDECKEL",
+                    "en": "110054504 - FILTERDECKEL"
+                  }
+                },
+                {
+                  "value": "71",
+                  "text": {
+                    "de": "110054506 - O-RING ZU FILTER DN 3/8''",
+                    "en": "110054506 - O-RING ZU FILTER DN 3/8''"
+                  }
+                },
+                {
+                  "value": "72",
+                  "text": {
+                    "de": "110054507 - DICHTUNG ZU FILTER DN 3/8'' 26/21X1,5",
+                    "en": "110054507 - DICHTUNG ZU FILTER DN 3/8'' 26/21X1,5"
+                  }
+                },
+                {
+                  "value": "73",
+                  "text": {
+                    "de": "110054511 - FILTERSIEB ZU SCHRÄGFILTER 3/8'' RG L=30MM",
+                    "en": "110054511 - FILTERSIEB ZU SCHRÄGFILTER 3/8'' RG L=30MM"
+                  }
+                },
+                {
+                  "value": "74",
+                  "text": {
+                    "de": "110054602 - SCHRÄGFILTER INOX R 3/8'' MW 0,2MM",
+                    "en": "110054602 - SCHRÄGFILTER INOX R 3/8'' MW 0,2MM"
+                  }
+                },
+                {
+                  "value": "75",
+                  "text": {
+                    "de": "110054605 - STOPFEN ZU SCHRÄGFILTER 3/8'' INOX",
+                    "en": "110054605 - STOPFEN ZU SCHRÄGFILTER 3/8'' INOX"
+                  }
+                },
+                {
+                  "value": "76",
+                  "text": {
+                    "de": "110054607 - DICHTUNG GROSS ZU SCHRÄGFILTER 3/8'' INOX",
+                    "en": "110054607 - DICHTUNG GROSS ZU SCHRÄGFILTER 3/8'' INOX"
+                  }
+                },
+                {
+                  "value": "77",
+                  "text": {
+                    "de": "110054611 - FILTERSIEB MW 0,2MM ZU SCHRÄGFILTER 3/8'' INOX L=28MM",
+                    "en": "110054611 - FILTERSIEB MW 0,2MM ZU SCHRÄGFILTER 3/8'' INOX L=28MM"
+                  }
+                },
+                {
+                  "value": "78",
+                  "text": {
+                    "de": "110054612 - O-RING ZU SCHRÄGFILTER INOX",
+                    "en": "110054612 - O-RING ZU SCHRÄGFILTER INOX"
+                  }
+                },
+                {
+                  "value": "79",
+                  "text": {
+                    "de": "110061140 - MAGNETVENTIL 2/2W 1/4''/122 K84 STROMLOS OFFEN INKL MONT.SET SPULE",
+                    "en": "110061140 - MAGNETVENTIL 2/2W 1/4''/122 K84 STROMLOS OFFEN INKL MONT.SET SPULE"
+                  }
+                },
+                {
+                  "value": "80",
+                  "text": {
+                    "de": "110061141 - MAGNETVENTIL 3/2W 1/4''/E131 K04 STROMLOS OFFEN INKL MONT.SET SPULE",
+                    "en": "110061141 - MAGNETVENTIL 3/2W 1/4''/E131 K04 STROMLOS OFFEN INKL MONT.SET SPULE"
+                  }
+                },
+                {
+                  "value": "81",
+                  "text": {
+                    "de": "110061142 - MAGNETVENTIL 3/2W 1/4''/132 K04 STROMLOS OFFEN INKL MONT.SET SPULE",
+                    "en": "110061142 - MAGNETVENTIL 3/2W 1/4''/132 K04 STROMLOS OFFEN INKL MONT.SET SPULE"
+                  }
+                },
+                {
+                  "value": "82",
+                  "text": {
+                    "de": "110061149 - MAGNETVENTIL 2/2W 1/4''/E121 K04 STROMLOS OFFEN INKL MONT.SET SPULE",
+                    "en": "110061149 - MAGNETVENTIL 2/2W 1/4''/E121 K04 STROMLOS OFFEN INKL MONT.SET SPULE"
+                  }
+                },
+                {
+                  "value": "83",
+                  "text": {
+                    "de": "110061382 - MAGNETVENTIL 2/2W 3/8''/E321 H13 STROMLOS OFFEN INKL MONT.SET SPULE",
+                    "en": "110061382 - MAGNETVENTIL 2/2W 3/8''/E321 H13 STROMLOS OFFEN INKL MONT.SET SPULE"
+                  }
+                },
+                {
+                  "value": "84",
+                  "text": {
+                    "de": "110061384 - MAGNETVENTIL 2/2W NW 3/8'' STROMLOS GESCHLOSSEN M.NOTBETÄTIGUNG",
+                    "en": "110061384 - MAGNETVENTIL 2/2W NW 3/8'' STROMLOS GESCHLOSSEN M.NOTBETÄTIGUNG"
+                  }
+                },
+                {
+                  "value": "85",
+                  "text": {
+                    "de": "110061392 - MAGNETVENTIL 2/2W 3/8''/E322 H73 STROMLOS OFFEN INKL MONT.SET SPULE",
+                    "en": "110061392 - MAGNETVENTIL 2/2W 3/8''/E322 H73 STROMLOS OFFEN INKL MONT.SET SPULE"
+                  }
+                },
+                {
+                  "value": "86",
+                  "text": {
+                    "de": "110061394 - MAGNETVENTIL 2/2W NW 3/8'' STROMLOS OFFEN INKL MONT.SET SPULE",
+                    "en": "110061394 - MAGNETVENTIL 2/2W NW 3/8'' STROMLOS OFFEN INKL MONT.SET SPULE"
+                  }
+                },
+                {
+                  "value": "87",
+                  "text": {
+                    "de": "110062201 - SPULE KL.''F'' IP 65 ZU MAGNETVENTIL TYP 481865 230V/50HZ",
+                    "en": "110062201 - SPULE KL.''F'' IP 65 ZU MAGNETVENTIL TYP 481865 230V/50HZ"
+                  }
+                },
+                {
+                  "value": "89",
+                  "text": {
+                    "de": "110062242 - SPULE KL.''F'' IP 65 ZU MAGNETVENTIL TYP 481865 24 V DC=",
+                    "en": "110062242 - SPULE KL.''F'' IP 65 ZU MAGNETVENTIL TYP 481865 24 V DC="
+                  }
+                },
+                {
+                  "value": "90",
+                  "text": {
+                    "de": "110062248 - SPULE KL.''F'' IP 65 ZU MAGNETVENTIL TYP 481865 48 V DC=",
+                    "en": "110062248 - SPULE KL.''F'' IP 65 ZU MAGNETVENTIL TYP 481865 48 V DC="
+                  }
+                },
+                {
+                  "value": "91",
+                  "text": {
+                    "de": "110063000 - GERÄTESTECKDOSE ZU SPULE",
+                    "en": "110063000 - GERÄTESTECKDOSE ZU SPULE"
+                  }
+                },
+                {
+                  "value": "92",
+                  "text": {
+                    "de": "110063105 - STECKERMODUL FÜR MAGNETVENTILE LBV 48-230V AC/DC 2M KABEL",
+                    "en": "110063105 - STECKERMODUL FÜR MAGNETVENTILE LBV 48-230V AC/DC 2M KABEL"
+                  }
+                },
+                {
+                  "value": "93",
+                  "text": {
+                    "de": "110063110 - STECKERMODUL FÜR MAGNETVENTILE LBV 24 DC 8-14S 2M KABEL",
+                    "en": "110063110 - STECKERMODUL FÜR MAGNETVENTILE LBV 24 DC 8-14S 2M KABEL"
+                  }
+                },
+                {
+                  "value": "94",
+                  "text": {
+                    "de": "110068383 - ROHRDOPPELNIPPEL INOX ZU STEUERLEITUNG 3/8'' X 30MM",
+                    "en": "110068383 - ROHRDOPPELNIPPEL INOX ZU STEUERLEITUNG 3/8'' X 30MM"
+                  }
+                },
+                {
+                  "value": "95",
+                  "text": {
+                    "de": "110068384 - ROHRDOPPELNIPPEL A4/GEW.ISO 7-1 ÄHNLICH DIN EN 10241 3/8'' X 40MM",
+                    "en": "110068384 - ROHRDOPPELNIPPEL A4/GEW.ISO 7-1 ÄHNLICH DIN EN 10241 3/8'' X 40MM"
+                  }
+                },
+                {
+                  "value": "96",
+                  "text": {
+                    "de": "110068385 - ROHRDOPPELNIPPEL INOX ZU STEUERLEITUNG 3/8'' X 50MM",
+                    "en": "110068385 - ROHRDOPPELNIPPEL INOX ZU STEUERLEITUNG 3/8'' X 50MM"
+                  }
+                },
+                {
+                  "value": "97",
+                  "text": {
+                    "de": "110068386 - ROHRDOPPELNIPPEL V4A 3/8'' X 60MM NACH EN 10241 ZU STEUERLEIT.",
+                    "en": "110068386 - ROHRDOPPELNIPPEL V4A 3/8'' X 60MM NACH EN 10241 ZU STEUERLEIT."
+                  }
+                },
+                {
+                  "value": "98",
+                  "text": {
+                    "de": "110073006 - INOX ROHR PER METER 1.4301 D 6X1,0 ZU STEUERLEITUNG",
+                    "en": "110073006 - INOX ROHR PER METER 1.4301 D 6X1,0 ZU STEUERLEITUNG"
+                  }
+                },
+                {
+                  "value": "99",
+                  "text": {
+                    "de": "110073012 - INOX ROHR PER METER 1.4301 D12X1,5 ZU STEUERLEITUNG",
+                    "en": "110073012 - INOX ROHR PER METER 1.4301 D12X1,5 ZU STEUERLEITUNG"
+                  }
+                },
+                {
+                  "value": "100",
+                  "text": {
+                    "de": "119930100 - ANZEIGEGLAS DN 6/4'' - 100",
+                    "en": "119930100 - ANZEIGEGLAS DN 6/4'' - 100"
+                  }
+                },
+                {
+                  "value": "101",
+                  "text": {
+                    "de": "119990500 - SENSOR OHNE KABEL ZU DN 6/4''-DN 300 ELEKT. STELLANZEIGER",
+                    "en": "119990500 - SENSOR OHNE KABEL ZU DN 6/4''-DN 300 ELEKT. STELLANZEIGER"
+                  }
+                },
+                {
+                  "value": "102",
+                  "text": {
+                    "de": "119990505 - KABELDOSE M. WINKEL-STECKER 5M KABEL",
+                    "en": "119990505 - KABELDOSE M. WINKEL-STECKER 5M KABEL"
+                  }
+                },
+                {
+                  "value": "103",
+                  "text": {
+                    "de": "119990610 - ÖFFNUNGSBEGRENZER DN 6/4''-DN 100 KPL ZU ELEKT. STELL-ANZEIGER",
+                    "en": "119990610 - ÖFFNUNGSBEGRENZER DN 6/4''-DN 100 KPL ZU ELEKT. STELL-ANZEIGER"
+                  }
+                },
+                {
+                  "value": "104",
+                  "text": {
+                    "de": "119990620 - ÖFFNUNGSBEGRENZER DN 125-DN 200 KPL ZU ELEKT. STELL-ANZEIGER",
+                    "en": "119990620 - ÖFFNUNGSBEGRENZER DN 125-DN 200 KPL ZU ELEKT. STELL-ANZEIGER"
+                  }
+                },
+                {
+                  "value": "105",
+                  "text": {
+                    "de": "119990709 - O-RING 9,92X2,62 DN 6/4''-DN 100 F.ELEKT.STELLANZEIG. TYP1960,1998/99",
+                    "en": "119990709 - O-RING 9,92X2,62 DN 6/4''-DN 100 F.ELEKT.STELLANZEIG. TYP1960,1998/99"
+                  }
+                },
+                {
+                  "value": "106",
+                  "text": {
+                    "de": "119990713 - O-RING 13,95X2,62 DN 125-DN 300 F.ELEKT.STELLANZEIG. TYP1960,1998/99",
+                    "en": "119990713 - O-RING 13,95X2,62 DN 125-DN 300 F.ELEKT.STELLANZEIG. TYP1960,1998/99"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_spare_parts_3": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Ersatzteile Steuerventile:",
+            "en": "Spare Parts Control Valves:"
+          }
+        },
+        "control_valves_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "control_valves_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "110111702 - SITZ INOX ZU STEUERVENTIL DRV PN 16",
+                    "en": "110111702 - SITZ INOX ZU STEUERVENTIL DRV PN 16"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "110112202 - DICHTUNGSTRÄGER INOX/EPDM ZU STEUERVENTIL DRV",
+                    "en": "110112202 - DICHTUNGSTRÄGER INOX/EPDM ZU STEUERVENTIL DRV"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "110112602 - MEMBRANE VERSTÄRKT EPDM 1,5MM ZU STEUERVENTIL DRV PN 16",
+                    "en": "110112602 - MEMBRANE VERSTÄRKT EPDM 1,5MM ZU STEUERVENTIL DRV PN 16"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "110112902 - DRUCKSCHEIBE INOX ZU STEUERVENTILEN PN 16",
+                    "en": "110112902 - DRUCKSCHEIBE INOX ZU STEUERVENTILEN PN 16"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "110113302 - DRUCKSCHRAUBE INOX ZU STEUERVENTIL KURZ",
+                    "en": "110113302 - DRUCKSCHRAUBE INOX ZU STEUERVENTIL KURZ"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "110113303 - DRUCKSCHRAUBE 1.4305 ZU STEUERVENTIL LANG",
+                    "en": "110113303 - DRUCKSCHRAUBE 1.4305 ZU STEUERVENTIL LANG"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "110113402 - DRUCKMUTTER BRONZE ZU STEUERVENTIL KURZ",
+                    "en": "110113402 - DRUCKMUTTER BRONZE ZU STEUERVENTIL KURZ"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "110113502 - STERNGRIFF SCHWARZ 50MM MIT VIERKANT ZU STEUERVENTILEN",
+                    "en": "110113502 - STERNGRIFF SCHWARZ 50MM MIT VIERKANT ZU STEUERVENTILEN"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "110113602 - BÜGEL INOX",
+                    "en": "110113602 - BÜGEL INOX"
+                  }
+                },
+                {
+                  "value": "10",
+                  "text": {
+                    "de": "110113702 - FÜHRUNGSZAPFEN INOX ZU STEUERVENTIL DRV PN 16",
+                    "en": "110113702 - FÜHRUNGSZAPFEN INOX ZU STEUERVENTIL DRV PN 16"
+                  }
+                },
+                {
+                  "value": "10-1",
+                  "text": {
+                    "de": "110114502 - FEDER STANDARD INOX STEUERVENTIL DRV 1,5-16 BAR",
+                    "en": "110114502 - FEDER STANDARD INOX STEUERVENTIL DRV 1,5-16 BAR"
+                  }
+                },
+                {
+                  "value": "11",
+                  "text": {
+                    "de": "110114512 - FEDER STANDARD STEUERVENTIL DAV",
+                    "en": "110114512 - FEDER STANDARD STEUERVENTIL DAV"
+                  }
+                },
+                {
+                  "value": "12",
+                  "text": {
+                    "de": "110114524 - DRUCKFEDER SCHWACH PILOTV. COMPACT KENNSCHEIBE BLAU D= 4,25MM",
+                    "en": "110114524 - DRUCKFEDER SCHWACH PILOTV. COMPACT KENNSCHEIBE BLAU D= 4,25MM"
+                  }
+                },
+                {
+                  "value": "13",
+                  "text": {
+                    "de": "110114526 - DRUCKFEDER STARK PILOTV. COMPACT KENNSCHEIBE GELB D= 7,00MM",
+                    "en": "110114526 - DRUCKFEDER STARK PILOTV. COMPACT KENNSCHEIBE GELB D= 7,00MM"
+                  }
+                },
+                {
+                  "value": "14",
+                  "text": {
+                    "de": "110115100 - ROHRLEITUNGSTEILE STEUERLEITUNG NACH KUNDENBESTELL.",
+                    "en": "110115100 - ROHRLEITUNGSTEILE STEUERLEITUNG NACH KUNDENBESTELL."
+                  }
+                },
+                {
+                  "value": "15",
+                  "text": {
+                    "de": "110119404 - STEUERLEITUNG 1400 DN 100 PN 10/16 KPLT MIT ST.VENTIL UND MANOMETER",
+                    "en": "110119404 - STEUERLEITUNG 1400 DN 100 PN 10/16 KPLT MIT ST.VENTIL UND MANOMETER"
+                  }
+                },
+                {
+                  "value": "16",
+                  "text": {
+                    "de": "110119405 - STEUERLEITUNG 1500 DN 100 PN 10/16 KPLT MIT ST.VENTIL UND MANOMETER",
+                    "en": "110119405 - STEUERLEITUNG 1500 DN 100 PN 10/16 KPLT MIT ST.VENTIL UND MANOMETER"
+                  }
+                },
+                {
+                  "value": "17",
+                  "text": {
+                    "de": "110190006 - STEUERVENTIL ZU DRV NR.1500 PN 16 STANDARD INOX 1,5-12,0 BAR",
+                    "en": "110190006 - STEUERVENTIL ZU DRV NR.1500 PN 16 STANDARD INOX 1,5-12,0 BAR"
+                  }
+                },
+                {
+                  "value": "18",
+                  "text": {
+                    "de": "110190007 - STEUERVENTIL ZU DRV NR.1500 PN 16 SCHWACH INOX 0,5-5,0 BAR",
+                    "en": "110190007 - STEUERVENTIL ZU DRV NR.1500 PN 16 SCHWACH INOX 0,5-5,0 BAR"
+                  }
+                },
+                {
+                  "value": "19",
+                  "text": {
+                    "de": "110190102 - STEUERVENTIL KPLT. NR.1500 PN 25 ZU DRUCKREDUZIER VENTIL",
+                    "en": "110190102 - STEUERVENTIL KPLT. NR.1500 PN 25 ZU DRUCKREDUZIER VENTIL"
+                  }
+                },
+                {
+                  "value": "20",
+                  "text": {
+                    "de": "110191502 - STEUERVENTIL KPLT. NR.1300 ZU MENGENBEGRENZUNGS VENTIL",
+                    "en": "110191502 - STEUERVENTIL KPLT. NR.1300 ZU MENGENBEGRENZUNGS VENTIL"
+                  }
+                },
+                {
+                  "value": "21",
+                  "text": {
+                    "de": "110192003 - STEUERVENTIL KPLT. (KURZ) ZU DRUCKHALTEVENTIL",
+                    "en": "110192003 - STEUERVENTIL KPLT. (KURZ) ZU DRUCKHALTEVENTIL"
+                  }
+                },
+                {
+                  "value": "22",
+                  "text": {
+                    "de": "110192406 - STEUERVENTIL ZU DAV NR.1400 PN 16 STANDARD INOX 1,5-12,0 BAR",
+                    "en": "110192406 - STEUERVENTIL ZU DAV NR.1400 PN 16 STANDARD INOX 1,5-12,0 BAR"
+                  }
+                },
+                {
+                  "value": "23",
+                  "text": {
+                    "de": "110194013 - SCHWIMMERSTANGE PVC LÄNGE 333MM",
+                    "en": "110194013 - SCHWIMMERSTANGE PVC LÄNGE 333MM"
+                  }
+                },
+                {
+                  "value": "24",
+                  "text": {
+                    "de": "110194016 - SCHWIMMER D 200X135 MIT GEWICHT PVC GRAU",
+                    "en": "110194016 - SCHWIMMER D 200X135 MIT GEWICHT PVC GRAU"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_spare_parts_4": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Ersatzteile Basisventile:",
+            "en": "Spare Parts Base Valves:"
+          }
+        },
+        "base_valves_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "base_valves_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "110101311 - DECKEL GJS 400 ZU BASISVENTIL DN 50",
+                    "en": "110101311 - DECKEL GJS 400 ZU BASISVENTIL DN 50"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "110101313 - DECKEL GJS 400 ZU BASISVENTIL DN 80",
+                    "en": "110101313 - DECKEL GJS 400 ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "110101314 - DECKEL GJS 400 ZU BASISVENTIL DN 100",
+                    "en": "110101314 - DECKEL GJS 400 ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "110102412 - FÜHRUNGSZAPFEN BRONZE ZU BASISVENTIL DN 65",
+                    "en": "110102412 - FÜHRUNGSZAPFEN BRONZE ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "110102416 - FÜHRUNGSZAPFEN BRONZE ZU BASISVENTIL DN 125-150",
+                    "en": "110102416 - FÜHRUNGSZAPFEN BRONZE ZU BASISVENTIL DN 125-150"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "110102418 - FÜHRUNGSZAPFEN CUSN 8 ZU BASISVENTIL DN 200-250",
+                    "en": "110102418 - FÜHRUNGSZAPFEN CUSN 8 ZU BASISVENTIL DN 200-250"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "110102421 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 1 1/2''-50",
+                    "en": "110102421 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 1 1/2''-50"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "110102422 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 65",
+                    "en": "110102422 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "110102423 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 80",
+                    "en": "110102423 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "10",
+                  "text": {
+                    "de": "110102424 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 100",
+                    "en": "110102424 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "10-1",
+                  "text": {
+                    "de": "110102426 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 125-150",
+                    "en": "110102426 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 125-150"
+                  }
+                },
+                {
+                  "value": "11",
+                  "text": {
+                    "de": "110102428 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 200-250",
+                    "en": "110102428 - FÜHRUNGSZAPFEN INOX ZU BASISVENTIL DN 200-250"
+                  }
+                },
+                {
+                  "value": "12",
+                  "text": {
+                    "de": "110102430 - SPINDELFÜHRUNG DN 40",
+                    "en": "110102430 - SPINDELFÜHRUNG DN 40"
+                  }
+                },
+                {
+                  "value": "13",
+                  "text": {
+                    "de": "110102431 - SPINDELFÜHRUNG DN 50",
+                    "en": "110102431 - SPINDELFÜHRUNG DN 50"
+                  }
+                },
+                {
+                  "value": "14",
+                  "text": {
+                    "de": "110102432 - SPINDELFÜHRUNG DN 65",
+                    "en": "110102432 - SPINDELFÜHRUNG DN 65"
+                  }
+                },
+                {
+                  "value": "15",
+                  "text": {
+                    "de": "110102433 - SPINDELFÜHRUNG DN 80",
+                    "en": "110102433 - SPINDELFÜHRUNG DN 80"
+                  }
+                },
+                {
+                  "value": "16",
+                  "text": {
+                    "de": "110102434 - SPINDELFÜHRUNG DN 100",
+                    "en": "110102434 - SPINDELFÜHRUNG DN 100"
+                  }
+                },
+                {
+                  "value": "17",
+                  "text": {
+                    "de": "110102435 - SPINDELFÜHRUNG DN 125-150",
+                    "en": "110102435 - SPINDELFÜHRUNG DN 125-150"
+                  }
+                },
+                {
+                  "value": "18",
+                  "text": {
+                    "de": "110102441 - FÜHRUNG UNTEN BRONZE ZU ECKVENTIL DN 50",
+                    "en": "110102441 - FÜHRUNG UNTEN BRONZE ZU ECKVENTIL DN 50"
+                  }
+                },
+                {
+                  "value": "19",
+                  "text": {
+                    "de": "110102443 - FÜHRUNG UNTEN BRONZE ZU ECKVENTIL DN 80",
+                    "en": "110102443 - FÜHRUNG UNTEN BRONZE ZU ECKVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "20",
+                  "text": {
+                    "de": "110102444 - FÜHRUNG UNTEN BRONZE ZU ECKVENTIL DN 100",
+                    "en": "110102444 - FÜHRUNG UNTEN BRONZE ZU ECKVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "21",
+                  "text": {
+                    "de": "110102445 - FÜHRUNG UNTEN BRONZE ZU ECKVENTIL DN 150",
+                    "en": "110102445 - FÜHRUNG UNTEN BRONZE ZU ECKVENTIL DN 150"
+                  }
+                },
+                {
+                  "value": "22",
+                  "text": {
+                    "de": "110102611 - SPINDEL INOX ZU BASISVENTIL DN 40-50",
+                    "en": "110102611 - SPINDEL INOX ZU BASISVENTIL DN 40-50"
+                  }
+                },
+                {
+                  "value": "23",
+                  "text": {
+                    "de": "110102612 - SPINDEL INOX ZU BASISVENTIL DN 65",
+                    "en": "110102612 - SPINDEL INOX ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "24",
+                  "text": {
+                    "de": "110102613 - SPINDEL INOX ZU BASISVENTIL DN 80",
+                    "en": "110102613 - SPINDEL INOX ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "25",
+                  "text": {
+                    "de": "110102614 - SPINDEL INOX ZU BASISVENTIL DN 100",
+                    "en": "110102614 - SPINDEL INOX ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "26",
+                  "text": {
+                    "de": "110102615 - SPINDEL INOX ZU BASISVENTIL DN 125",
+                    "en": "110102615 - SPINDEL INOX ZU BASISVENTIL DN 125"
+                  }
+                },
+                {
+                  "value": "27",
+                  "text": {
+                    "de": "110102616 - SPINDEL INOX ZU BASISVENTIL DN 150",
+                    "en": "110102616 - SPINDEL INOX ZU BASISVENTIL DN 150"
+                  }
+                },
+                {
+                  "value": "28",
+                  "text": {
+                    "de": "110102617 - SPINDEL INOX ZU BASISVENTIL DN 200",
+                    "en": "110102617 - SPINDEL INOX ZU BASISVENTIL DN 200"
+                  }
+                },
+                {
+                  "value": "29",
+                  "text": {
+                    "de": "110102811 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 6/4''-50",
+                    "en": "110102811 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 6/4''-50"
+                  }
+                },
+                {
+                  "value": "30",
+                  "text": {
+                    "de": "110102812 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 65",
+                    "en": "110102812 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "31",
+                  "text": {
+                    "de": "110102813 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 80",
+                    "en": "110102813 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "32",
+                  "text": {
+                    "de": "110102814 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 100",
+                    "en": "110102814 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "33",
+                  "text": {
+                    "de": "110102816 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 125",
+                    "en": "110102816 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 125"
+                  }
+                },
+                {
+                  "value": "34",
+                  "text": {
+                    "de": "110102818 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 150",
+                    "en": "110102818 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 150"
+                  }
+                },
+                {
+                  "value": "35",
+                  "text": {
+                    "de": "110102820 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 200",
+                    "en": "110102820 - DICHTUNGSTRÄGER INOX ZU BASISVENTIL DN 200"
+                  }
+                },
+                {
+                  "value": "36",
+                  "text": {
+                    "de": "110103411 - MEMBRANE EPDM ZU BASISVENTIL DN 40-50",
+                    "en": "110103411 - MEMBRANE EPDM ZU BASISVENTIL DN 40-50"
+                  }
+                },
+                {
+                  "value": "37",
+                  "text": {
+                    "de": "110103412 - MEMBRANE EPDM ZU BASISVENTIL DN 65",
+                    "en": "110103412 - MEMBRANE EPDM ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "38",
+                  "text": {
+                    "de": "110103413 - MEMBRANE EPDM ZU BASISVENTIL DN 80",
+                    "en": "110103413 - MEMBRANE EPDM ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "39",
+                  "text": {
+                    "de": "110103414 - MEMBRANE EPDM ZU BASISVENTIL DN 100",
+                    "en": "110103414 - MEMBRANE EPDM ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "40",
+                  "text": {
+                    "de": "110103416 - MEMBRANE EPDM (150 ALT) ZU BASISVENTIL DN 125-150",
+                    "en": "110103416 - MEMBRANE EPDM (150 ALT) ZU BASISVENTIL DN 125-150"
+                  }
+                },
+                {
+                  "value": "41",
+                  "text": {
+                    "de": "110103711 - DICHTUNG EPDM ZU BASISVENTIL DN 2''-50",
+                    "en": "110103711 - DICHTUNG EPDM ZU BASISVENTIL DN 2''-50"
+                  }
+                },
+                {
+                  "value": "42",
+                  "text": {
+                    "de": "110103712 - DICHTUNG EPDM ZU BASISVENTIL DN 65",
+                    "en": "110103712 - DICHTUNG EPDM ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "43",
+                  "text": {
+                    "de": "110103713 - DICHTUNG EPDM ZU BASISVENTIL DN 80",
+                    "en": "110103713 - DICHTUNG EPDM ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "44",
+                  "text": {
+                    "de": "110103714 - DICHTUNG EPDM ZU BASISVENTIL DN 100",
+                    "en": "110103714 - DICHTUNG EPDM ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "45",
+                  "text": {
+                    "de": "110103716 - DICHTUNG EPDM (150 ALT) ZU BASISVENTIL DN 125-150",
+                    "en": "110103716 - DICHTUNG EPDM (150 ALT) ZU BASISVENTIL DN 125-150"
+                  }
+                },
+                {
+                  "value": "46",
+                  "text": {
+                    "de": "110103717 - DICHTUNG EPDM ZU BASISVENTIL DN 200",
+                    "en": "110103717 - DICHTUNG EPDM ZU BASISVENTIL DN 200"
+                  }
+                },
+                {
+                  "value": "47",
+                  "text": {
+                    "de": "110104211 - DECKELFÜHRUNG BRONZE 3/8'' ZU BASISVENTIL DN 1 1/2''-50",
+                    "en": "110104211 - DECKELFÜHRUNG BRONZE 3/8'' ZU BASISVENTIL DN 1 1/2''-50"
+                  }
+                },
+                {
+                  "value": "48",
+                  "text": {
+                    "de": "110104212 - DECKELFÜHRUNG BRONZE ZU BASISVENTIL DN 65",
+                    "en": "110104212 - DECKELFÜHRUNG BRONZE ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "49",
+                  "text": {
+                    "de": "110104214 - DECKELFÜHRUNG BRONZE ZU BASISVENTIL DN 80-100",
+                    "en": "110104214 - DECKELFÜHRUNG BRONZE ZU BASISVENTIL DN 80-100"
+                  }
+                },
+                {
+                  "value": "50",
+                  "text": {
+                    "de": "110104216 - DECKELFÜHRUNG BRONZE ZU BASISVENTIL DN 125-150",
+                    "en": "110104216 - DECKELFÜHRUNG BRONZE ZU BASISVENTIL DN 125-150"
+                  }
+                },
+                {
+                  "value": "51",
+                  "text": {
+                    "de": "110104218 - DECKELFÜHRUNG CUSN 8 ZU BASISVENTIL DN 200-250",
+                    "en": "110104218 - DECKELFÜHRUNG CUSN 8 ZU BASISVENTIL DN 200-250"
+                  }
+                },
+                {
+                  "value": "52",
+                  "text": {
+                    "de": "110104221 - SPINDELFÜHRUNG INOX 1/2'' - 8MM ZU DECKEL DN 40-50",
+                    "en": "110104221 - SPINDELFÜHRUNG INOX 1/2'' - 8MM ZU DECKEL DN 40-50"
+                  }
+                },
+                {
+                  "value": "53",
+                  "text": {
+                    "de": "110104222 - SPINDELFÜHRUNG INOX 1/2'' - 10MM ZU DECKEL DN 65",
+                    "en": "110104222 - SPINDELFÜHRUNG INOX 1/2'' - 10MM ZU DECKEL DN 65"
+                  }
+                },
+                {
+                  "value": "54",
+                  "text": {
+                    "de": "110104224 - SPINDELFÜHRUNG INOX 1/2'' - 12MM ZU DECKEL DN 80-100",
+                    "en": "110104224 - SPINDELFÜHRUNG INOX 1/2'' - 12MM ZU DECKEL DN 80-100"
+                  }
+                },
+                {
+                  "value": "55",
+                  "text": {
+                    "de": "110104226 - SPINDELFÜHRUNG INOX 3/4'' - 16MM ZU DECKEL DN 125-150",
+                    "en": "110104226 - SPINDELFÜHRUNG INOX 3/4'' - 16MM ZU DECKEL DN 125-150"
+                  }
+                },
+                {
+                  "value": "56",
+                  "text": {
+                    "de": "110104228 - SPINDELFÜHRUNG INOX M30 - 18MM ZU DECKEL DN 200",
+                    "en": "110104228 - SPINDELFÜHRUNG INOX M30 - 18MM ZU DECKEL DN 200"
+                  }
+                },
+                {
+                  "value": "57",
+                  "text": {
+                    "de": "110104330 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 40",
+                    "en": "110104330 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 40"
+                  }
+                },
+                {
+                  "value": "58",
+                  "text": {
+                    "de": "110104333 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 50",
+                    "en": "110104333 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 50"
+                  }
+                },
+                {
+                  "value": "59",
+                  "text": {
+                    "de": "110104336 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 65",
+                    "en": "110104336 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "60",
+                  "text": {
+                    "de": "110104339 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 80",
+                    "en": "110104339 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "61",
+                  "text": {
+                    "de": "110104342 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 100",
+                    "en": "110104342 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "62",
+                  "text": {
+                    "de": "110104345 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 125",
+                    "en": "110104345 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 125"
+                  }
+                },
+                {
+                  "value": "63",
+                  "text": {
+                    "de": "110104348 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 150",
+                    "en": "110104348 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 150"
+                  }
+                },
+                {
+                  "value": "64",
+                  "text": {
+                    "de": "110104351 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 200",
+                    "en": "110104351 - MOD. GEGENSITZ INOX ZU BASISVENTIL DN 200"
+                  }
+                },
+                {
+                  "value": "65",
+                  "text": {
+                    "de": "110104611 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 6/4''- 50",
+                    "en": "110104611 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 6/4''- 50"
+                  }
+                },
+                {
+                  "value": "67",
+                  "text": {
+                    "de": "110104612 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 65",
+                    "en": "110104612 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "68",
+                  "text": {
+                    "de": "110104613 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 80",
+                    "en": "110104613 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "69",
+                  "text": {
+                    "de": "110104614 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 100",
+                    "en": "110104614 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "70",
+                  "text": {
+                    "de": "110104616 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 150",
+                    "en": "110104616 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 150"
+                  }
+                },
+                {
+                  "value": "71",
+                  "text": {
+                    "de": "110104617 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 200",
+                    "en": "110104617 - DRUCKSCHEIBE INOX ZU BASISVENTIL DN 200"
+                  }
+                },
+                {
+                  "value": "72",
+                  "text": {
+                    "de": "110104814 - MUTTER INOX / A2 ZU BASISVENTIL DN 80-100",
+                    "en": "110104814 - MUTTER INOX / A2 ZU BASISVENTIL DN 80-100"
+                  }
+                },
+                {
+                  "value": "73",
+                  "text": {
+                    "de": "110104818 - MUTTER INOX / A2 ZU BASISVENTIL DN 200-250",
+                    "en": "110104818 - MUTTER INOX / A2 ZU BASISVENTIL DN 200-250"
+                  }
+                },
+                {
+                  "value": "74",
+                  "text": {
+                    "de": "110104911 - FEDER INOX ZU BASISVENTIL DN 40-50",
+                    "en": "110104911 - FEDER INOX ZU BASISVENTIL DN 40-50"
+                  }
+                },
+                {
+                  "value": "75",
+                  "text": {
+                    "de": "110104912 - FEDER INOX ZU BASISVENTIL DN 65",
+                    "en": "110104912 - FEDER INOX ZU BASISVENTIL DN 65"
+                  }
+                },
+                {
+                  "value": "76",
+                  "text": {
+                    "de": "110104913 - FEDER INOX ZU BASISVENTIL DN 80",
+                    "en": "110104913 - FEDER INOX ZU BASISVENTIL DN 80"
+                  }
+                },
+                {
+                  "value": "77",
+                  "text": {
+                    "de": "110104914 - FEDER INOX ZU BASISVENTIL DN 100",
+                    "en": "110104914 - FEDER INOX ZU BASISVENTIL DN 100"
+                  }
+                },
+                {
+                  "value": "78",
+                  "text": {
+                    "de": "110104915 - FEDER INOX ZU BASISVENTIL DN 125-150",
+                    "en": "110104915 - FEDER INOX ZU BASISVENTIL DN 125-150"
+                  }
+                },
+                {
+                  "value": "79",
+                  "text": {
+                    "de": "110104916 - FEDER INOX ZU BASISVENTIL DN 150 NEU",
+                    "en": "110104916 - FEDER INOX ZU BASISVENTIL DN 150 NEU"
+                  }
+                },
+                {
+                  "value": "80",
+                  "text": {
+                    "de": "110104917 - FEDER INOX ZU BASISVENTIL DN 200",
+                    "en": "110104917 - FEDER INOX ZU BASISVENTIL DN 200"
+                  }
+                },
+                {
+                  "value": "81",
+                  "text": {
+                    "de": "110105014 - FEDER STARK DN 100",
+                    "en": "110105014 - FEDER STARK DN 100"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_spare_parts_5": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Ersatzteile Hydranten:",
+            "en": "Spare Parts Hydrants:"
+          }
+        },
+        "hydrants_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "hydrants_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "5190000004 - SECHSKANTSCHRAUBE A2 M 16X60 ZU SOLLBRUCHSTELLE M.BOHRG+PFROPF.",
+                    "en": "5190000004 - SECHSKANTSCHRAUBE A2 M 16X60 ZU SOLLBRUCHSTELLE M.BOHRG+PFROPF."
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "5190000010 - VENTILKEGEL KPL.H3/4 ZU INOX-HYDRANT MIT STRÖMUNGSGEBER",
+                    "en": "5190000010 - VENTILKEGEL KPL.H3/4 ZU INOX-HYDRANT MIT STRÖMUNGSGEBER"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "5190000020 - SICHERUNGSSTIFT ZU INOX-HYDRANT ZU VENTILKEGEL",
+                    "en": "5190000020 - SICHERUNGSSTIFT ZU INOX-HYDRANT ZU VENTILKEGEL"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "5190000021 - BELÜFTUNGSVENTIL ZU INOX-HYDRANT",
+                    "en": "5190000021 - BELÜFTUNGSVENTIL ZU INOX-HYDRANT"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "5190000036 - SPINDELHALTER KPLT. DN 80/100 MIT SPINDEL + MUTTER H3 AB 93/H4",
+                    "en": "5190000036 - SPINDELHALTER KPLT. DN 80/100 MIT SPINDEL + MUTTER H3 AB 93/H4"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "5190000041 - ZENTRIERDICHTUNG H3 ZU UMFAHRHYDR. ZU UMFAHRSTELLE",
+                    "en": "5190000041 - ZENTRIERDICHTUNG H3 ZU UMFAHRHYDR. ZU UMFAHRSTELLE"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "5190000060 - ERSATZSCHRAUBEN-SET KPLT. ZU SOLLBRUCHSTELLE UMFAHRHYDRANT",
+                    "en": "5190000060 - ERSATZSCHRAUBEN-SET KPLT. ZU SOLLBRUCHSTELLE UMFAHRHYDRANT"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "5190000104 - FEDERVORSTECKER W.ST.: A2",
+                    "en": "5190000104 - FEDERVORSTECKER W.ST.: A2"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "5190000133 - KAPPE ZU A-KUPPLUNG DIN 14 319 MIT KETTE H3",
+                    "en": "5190000133 - KAPPE ZU A-KUPPLUNG DIN 14 319 MIT KETTE H3"
+                  }
+                },
+                {
+                  "value": "10",
+                  "text": {
+                    "de": "5190000137 - FLACHDICHTUNG ZU A-KAPPE 119 X 100 X 4",
+                    "en": "5190000137 - FLACHDICHTUNG ZU A-KAPPE 119 X 100 X 4"
+                  }
+                },
+                {
+                  "value": "10-1",
+                  "text": {
+                    "de": "5190000233 - KAPPE ZU B-KUPPLUNG MIT KETTE H4",
+                    "en": "5190000233 - KAPPE ZU B-KUPPLUNG MIT KETTE H4"
+                  }
+                },
+                {
+                  "value": "11",
+                  "text": {
+                    "de": "5190000237 - FLACHDICHTUNG ZU B-KAPPE 78 X 61 X 4",
+                    "en": "5190000237 - FLACHDICHTUNG ZU B-KAPPE 78 X 61 X 4"
+                  }
+                },
+                {
+                  "value": "12",
+                  "text": {
+                    "de": "5190000331 - KAPPE ZU C-KUPPLUNG MIT KETTE",
+                    "en": "5190000331 - KAPPE ZU C-KUPPLUNG MIT KETTE"
+                  }
+                },
+                {
+                  "value": "13",
+                  "text": {
+                    "de": "5190000336 - FLACHDICHTUNG ZU C-KAPPE 58 X 46 X 4",
+                    "en": "5190000336 - FLACHDICHTUNG ZU C-KAPPE 58 X 46 X 4"
+                  }
+                },
+                {
+                  "value": "14",
+                  "text": {
+                    "de": "5190000600 - SICKERELEMENT PAAR PP-REGRANULAT FÜR ÜBERFLURHYDRANT TYP ''H4''",
+                    "en": "5190000600 - SICKERELEMENT PAAR PP-REGRANULAT FÜR ÜBERFLURHYDRANT TYP ''H4''"
+                  }
+                },
+                {
+                  "value": "15",
+                  "text": {
+                    "de": "5190000650 - SICKERELEMENT PAAR PP-REGRANULAT FÜR ''H8''",
+                    "en": "5190000650 - SICKERELEMENT PAAR PP-REGRANULAT FÜR ''H8''"
+                  }
+                },
+                {
+                  "value": "16",
+                  "text": {
+                    "de": "5190000700 - SICKERSTEIN PAAR ZU 514-519 ÜFH FÜR ÜBERFLURHYDRANT",
+                    "en": "5190000700 - SICKERSTEIN PAAR ZU 514-519 ÜFH FÜR ÜBERFLURHYDRANT"
+                  }
+                },
+                {
+                  "value": "17",
+                  "text": {
+                    "de": "5190004190 - O-RING 170,0 X 6,0 EPDM 70 ZU H 4 UMFAHRHYDRANT",
+                    "en": "5190004190 - O-RING 170,0 X 6,0 EPDM 70 ZU H 4 UMFAHRHYDRANT"
+                  }
+                },
+                {
+                  "value": "18",
+                  "text": {
+                    "de": "4910800243 - KLAUENDECKEL ROT",
+                    "en": "4910800243 - KLAUENDECKEL ROT"
+                  }
+                },
+                {
+                  "value": "19",
+                  "text": {
+                    "de": "4910800258 - BLECHFEDER 1.4310 0,6 MM/BLM 7806",
+                    "en": "4910800258 - BLECHFEDER 1.4310 0,6 MM/BLM 7806"
+                  }
+                },
+                {
+                  "value": "20",
+                  "text": {
+                    "de": "4910800272 - NIRO-SPLINT 3,2X25MM DIN 94",
+                    "en": "4910800272 - NIRO-SPLINT 3,2X25MM DIN 94"
+                  }
+                },
+                {
+                  "value": "21",
+                  "text": {
+                    "de": "4910800279 - KLAUEN-KUPPLUNG DN80 MIT MS-RING",
+                    "en": "4910800279 - KLAUEN-KUPPLUNG DN80 MIT MS-RING"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_spare_parts_6": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Ersatzteile BEV 987 / 992:",
+            "en": "Spare Parts BEV 987 / 992:"
+          }
+        },
+        "BEV987_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "BEV987_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "9922900130 - UNI-SPÜLGARNITUR L 755-1305MM MIT KUGELHAHN",
+                    "en": "9922900130 - UNI-SPÜLGARNITUR L 755-1305MM MIT KUGELHAHN"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "9922900755 - SPÜLGARNITUR L 755 ZU 9922 MIT KUGELHAHN",
+                    "en": "9922900755 - SPÜLGARNITUR L 755 ZU 9922 MIT KUGELHAHN"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "9922901055 - SPÜLGARNITUR L 1055 ZU 9922 MIT KUGELHAHN",
+                    "en": "9922901055 - SPÜLGARNITUR L 1055 ZU 9922 MIT KUGELHAHN"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "9922901305 - SPÜLGARNITUR L 1305 ZU 9922 MIT KUGELHAHN",
+                    "en": "9922901305 - SPÜLGARNITUR L 1305 ZU 9922 MIT KUGELHAHN"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "9922901555 - SPÜLGARNITUR L 1555 ZU 9922 MIT KUGELHAHN",
+                    "en": "9922901555 - SPÜLGARNITUR L 1555 ZU 9922 MIT KUGELHAHN"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "9922990015 - SPINDELHALTER GJS 400 EWS HALTERUNG FÜR BETÄTIGUNGSSCHRAUBE",
+                    "en": "9922990015 - SPINDELHALTER GJS 400 EWS HALTERUNG FÜR BETÄTIGUNGSSCHRAUBE"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "9922990016 - BETÄTIGUNGSSCHRAUBE M 20 X 75 MIT IG M8",
+                    "en": "9922990016 - BETÄTIGUNGSSCHRAUBE M 20 X 75 MIT IG M8"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "9922990018 - ZENTRIERSCHRAUBE A2 MIT KUGEL 15MM MIT IG M 8 M 20 X 75MM",
+                    "en": "9922990018 - ZENTRIERSCHRAUBE A2 MIT KUGEL 15MM MIT IG M 8 M 20 X 75MM"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "9922990023 - O-RING 60,0 X 6,0 EPDM 70 ZU O-RINGTRÄGER UBA W 270 EN 681-1",
+                    "en": "9922990023 - O-RING 60,0 X 6,0 EPDM 70 ZU O-RINGTRÄGER UBA W 270 EN 681-1"
+                  }
+                },
+                {
+                  "value": "10",
+                  "text": {
+                    "de": "9922990032 - DICHTDECKEL KPLT. ZU 2'' BEL.VENTIL (POM-DREIBEIN MIT VA-SCHRB+O-RING)",
+                    "en": "9922990032 - DICHTDECKEL KPLT. ZU 2'' BEL.VENTIL (POM-DREIBEIN MIT VA-SCHRB+O-RING)"
+                  }
+                },
+                {
+                  "value": "10-1",
+                  "text": {
+                    "de": "9922990033 - O-RING 116,0 X 4,0 EPDM 70 UBA/W 270 EN 681-1",
+                    "en": "9922990033 - O-RING 116,0 X 4,0 EPDM 70 UBA/W 270 EN 681-1"
+                  }
+                },
+                {
+                  "value": "11",
+                  "text": {
+                    "de": "9922990034 - DICHTSCHRAUBE KPL.ZU 2'' BEL.VENTIL M10X16 MIT DICHTUNG PN 6 + 16",
+                    "en": "9922990034 - DICHTSCHRAUBE KPL.ZU 2'' BEL.VENTIL M10X16 MIT DICHTUNG PN 6 + 16"
+                  }
+                },
+                {
+                  "value": "12",
+                  "text": {
+                    "de": "9922990040 - STANDROHR Z.BE+ENTL. 168,3X2,5X 628 GARNIT./BAULÄNGE 755",
+                    "en": "9922990040 - STANDROHR Z.BE+ENTL. 168,3X2,5X 628 GARNIT./BAULÄNGE 755"
+                  }
+                },
+                {
+                  "value": "13",
+                  "text": {
+                    "de": "9922990041 - STANDROHR Z.BE+ENTL. 168,3X2,5X 928 GARNIT./BAULÄNGE1055",
+                    "en": "9922990041 - STANDROHR Z.BE+ENTL. 168,3X2,5X 928 GARNIT./BAULÄNGE1055"
+                  }
+                },
+                {
+                  "value": "14",
+                  "text": {
+                    "de": "9922990042 - STANDROHR Z.BE+ENTL. 168,3X2,5X1178 GARNIT./BAULÄNGE1305",
+                    "en": "9922990042 - STANDROHR Z.BE+ENTL. 168,3X2,5X1178 GARNIT./BAULÄNGE1305"
+                  }
+                },
+                {
+                  "value": "15",
+                  "text": {
+                    "de": "9922990043 - STANDROHR Z.BE+ENTL. 168,3X2,5X1428 GARNIT./BAULÄNGE1555",
+                    "en": "9922990043 - STANDROHR Z.BE+ENTL. 168,3X2,5X1428 GARNIT./BAULÄNGE1555"
+                  }
+                },
+                {
+                  "value": "16",
+                  "text": {
+                    "de": "9922990060 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 16 FÜR LG 755MM",
+                    "en": "9922990060 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 16 FÜR LG 755MM"
+                  }
+                },
+                {
+                  "value": "17",
+                  "text": {
+                    "de": "9922990061 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 16 FÜR LG 1055MM",
+                    "en": "9922990061 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 16 FÜR LG 1055MM"
+                  }
+                },
+                {
+                  "value": "18",
+                  "text": {
+                    "de": "9922990062 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 16 FÜR LG 1305MM",
+                    "en": "9922990062 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 16 FÜR LG 1305MM"
+                  }
+                },
+                {
+                  "value": "19",
+                  "text": {
+                    "de": "9922990063 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 16 FÜR LG 1555MM",
+                    "en": "9922990063 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 16 FÜR LG 1555MM"
+                  }
+                },
+                {
+                  "value": "20",
+                  "text": {
+                    "de": "9922990066 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 6 FÜR LG 755MM",
+                    "en": "9922990066 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 6 FÜR LG 755MM"
+                  }
+                },
+                {
+                  "value": "21",
+                  "text": {
+                    "de": "9922990067 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 6 FÜR LG 1055MM",
+                    "en": "9922990067 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 6 FÜR LG 1055MMG"
+                  }
+                },
+                {
+                  "value": "22",
+                  "text": {
+                    "de": "9922990068 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 6 FÜR LG 1305MM",
+                    "en": "9922990068 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 6 FÜR LG 1305MM"
+                  }
+                },
+                {
+                  "value": "23",
+                  "text": {
+                    "de": "9922990069 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 6 FÜR LG 1555MM",
+                    "en": "9922990069 - AUSWECHSELGARNITUR KPLT. ZU 992 BE.+ENTL.GARN. PN 6 FÜR LG 1555MM"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_spare_parts_7": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Ersatzteile Havent 987 / 992:",
+            "en": "Spare Parts Havent 987 / 992:"
+          }
+        },
+        "havent_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "havent_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "98781605 - ROLLMEMBRANE EPDM 50 ZU HAVENT NIRO KTW/W270-ZULAS.",
+                    "en": "98781605 - ROLLMEMBRANE EPDM 50 ZU HAVENT NIRO KTW/W270-ZULAS."
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "9925990065 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 16 FÜR LG 755MM",
+                    "en": "9925990065 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 16 FÜR LG 755MM"
+                  }
+                },
+                {
+                  "value": "3",
+                  "text": {
+                    "de": "9925990066 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 16 FÜR LG 1055MM",
+                    "en": "9925990066 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 16 FÜR LG 1055MM"
+                  }
+                },
+                {
+                  "value": "4",
+                  "text": {
+                    "de": "9925990067 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 16 FÜR LG 1305MM",
+                    "en": "9925990067 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 16 FÜR LG 1305MM"
+                  }
+                },
+                {
+                  "value": "5",
+                  "text": {
+                    "de": "9925990068 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 16 FÜR LG 1555MM",
+                    "en": "9925990068 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 16 FÜR LG 1555MM"
+                  }
+                },
+                {
+                  "value": "6",
+                  "text": {
+                    "de": "9925990075 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 25 FÜR LG 755MM",
+                    "en": "9925990075 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 25 FÜR LG 755MM"
+                  }
+                },
+                {
+                  "value": "7",
+                  "text": {
+                    "de": "9925990076 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 25 FÜR LG 1055MM",
+                    "en": "9925990076 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 25 FÜR LG 1055MM"
+                  }
+                },
+                {
+                  "value": "8",
+                  "text": {
+                    "de": "9925990077 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 25 FÜR LG 1305MM",
+                    "en": "9925990077 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 25 FÜR LG 1305MM"
+                  }
+                },
+                {
+                  "value": "9",
+                  "text": {
+                    "de": "9925990078 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 25 FÜR LG 1555MM",
+                    "en": "9925990078 - AUSWECHSELGARNITUR KPL.HAVENT NIRO BE.+ENTL.GARN. PN 25 FÜR LG 1555MM"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "header_spare_parts_8": {
+          "fieldType": "H3",
+          "hiddenInPdf": true,
+          "width": 1,
+          "text": {
+            "de": "Ersatzteile BEV 986 / 985:",
+            "en": "Spare Parts BEV 986 / 985:"
+          }
+        },
+        "BEV986_spare_parts": {
+          "isForm": true,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "quantity_1": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Anzahl",
+                "en": "Quantity"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false
+            },
+            "BEV986_parts": {
+              "fieldType": "SELECT",
+              "label": {
+                "de": "Artikel",
+                "en": "Spare part"
+              },
+              "required": false,
+              "width": 0.5,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": true,
+              "multiple": false,
+              "options": [
+                {
+                  "value": "1",
+                  "text": {
+                    "de": "98640110 - ROLLMEMBRANE HNBR",
+                    "en": "98640110 - ROLLMEMBRANE HNBR"
+                  }
+                },
+                {
+                  "value": "2",
+                  "text": {
+                    "de": "98641015 - SCHWIMMERSTANGE KPLT M 6/M 8 NEU 160MM 1.4571",
+                    "en": "98641015 - SCHWIMMERSTANGE KPLT M 6/M 8 NEU 160MM 1.4571"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "06_signatureTechnician": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature technician",
+        "de": "Unterschrift Techniker"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_technician": {
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Techniker",
+            "en": "Technician"
+          },
+          "hiddenInPdf": false,
+          "showTime": false,
+          "autofillCurrentUser": true,
+          "required": true
+        }
+      }
+    },
+    "07_signatureCustomer": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Signature customer",
+        "de": "Unterschrift Kunde"
+      },
+      "stateIndicator": true,
+      "width": 0.5,
+      "unbreakable": true,
+      "hasNextStep": true,
+      "children": {
+        "signature_customer": {
+          "hiddenInPdf": false,
+          "showTime": false,
+          "fieldType": "REMBERG_SIGNATURE",
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "required": true
+        }
+      }
+    },
+    "08_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent service report as email",
+        "de": "Servicebericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "Servicebericht",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Servicebericht als PDF.\n\nMit freundlichen Grüßen\nHawle Kunststoff & Service GmbH",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false,
+              "others": []
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
       }
     }
   }

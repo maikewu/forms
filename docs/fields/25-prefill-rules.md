@@ -171,7 +171,7 @@ If you create a new forms instance from a work order, the following data is prov
 
 | Data | Condition | Description |
 | :------------------------- | :--------------| :---- |
-| `relatedWorkOrderId`  |  |  The ID of the work order from which the form is created
+| `WorkOrderId`  |  |  The ID of the work order from which the form is created
 | `organizationId`  | If WO has connected company | The ID of the company (contact) which is connected to the work order
 | `assetId`  | If WO has assets |  The ID of the asset which is part of the work order
 | `currentUser`  |  | Information about the current user, including the name, ID, etc.

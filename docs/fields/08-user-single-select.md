@@ -145,8 +145,8 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
         {
             "input": "currentUserId",
             "steps": [],
-        },
-    ],
+        }
+    ]
 },
 ```
 ---
@@ -160,9 +160,19 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```json
-"onChange": [{
+```json (Name to Signature Section)
+"onChange": [
+    {
         "target": { "id": "exampleSignatureSection", "propertyName": "name" },
         "steps": [ "userToFullNameString" ],
-    }],
+    }
+],
+```
+```json (phone number)
+"onChange": [
+    {
+        "target": {"id": "phone"},
+        "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"]
+    }
+],
 ```

@@ -62,14 +62,20 @@ The AssetSingleSelect field allows to select an asset from the account or a cert
             "steps": []
         }]
       },
-      "onChange": [{
+      "onChange": [
+        {
           "target": {"id": "exampleAddressInput_1"},
           "steps": [ "assetInfoToAsset","assetToLocationAddress"]
-          },
-          {
+        },
+        {
           "target": {"id": "exampleMultiLineTextInput_1"},
           "steps": ["assetToAssetTypeNameString"]
-      }]
+        },
+        {
+          "target": {"id": "customer"},
+          "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+        }
+      ]
   },
 },
 ```
@@ -128,9 +134,19 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
 
 
 This configuration follows the [general syntax for dynamic field actions](./26-on-change-rules).
-```json
-"onChange": [{
+```json (Asset Location to Address Field)
+"onChange": [
+  {
     "target": {"id": "exampleAddressInput_1"},
     "steps": [ "assetInfoToAsset","assetToLocationAddress"]
-}],
+  }
+],
+```
+```json (Customer from Asset)
+"onChange": [
+  {
+    "target": {"id": "customer"},
+    "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+  }
+],
 ```

@@ -1,0 +1,1732 @@
+{
+  "general": {
+    "name": {
+      "en": "Repair Protocol / Cost Estimate",
+      "de": "Reparaturbericht / Kostenvoranschlag"
+    }
+  },
+  "formStructure": {
+    "01_generalInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemeine Informationen",
+        "en": "General Information"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "call": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Call",
+            "en":"Call"
+          },
+          "width": 0.5
+        },
+        "ppa": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"PPA",
+            "en":"PPA"
+          },
+          "width": 0.5
+        },
+        "customer": {
+          "fieldType": "REMBERG_CUSTOMER_SELECT",
+          "required": true,
+          "width": 0.5,
+          "label": {
+            "de": "Kunde",
+            "en": "Customer"
+          },
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      },
+                      "output": {
+                        "_field": "asset",
+                        "_propertyName": "customerFilter"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "customer",
+                              "_propertyName": "customer"
+                            },
+                            "_functionName": "GET_ACCOUNT"
+                          },
+                          "_propertyName": "company"
+                        },
+                        "_propertyName": "billingAddress"
+                      },
+                      "output": {
+                        "_field": "address"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "address": {
+          "width": 0.5,
+          "fieldType": "REMBERG_ADDRESS",
+          "label": {
+            "de": "Adresse",
+            "en": "Address"
+          },
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "messages": {
+            "onChange": [
+              {
+                "to": "06_signatureTechnician",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "address",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signatureTechnician",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "to": "07_signatureCustomer",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": "address",
+                        "_propertyName": "city"
+                      },
+                      "output": {
+                        "_formArray": "signatureCustomer",
+                        "_formArrayIndex": 0,
+                        "_propertyName": "location"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "label": {
+            "de": "Gerät & Seriennummer",
+            "en": "Asset & Asset ID"
+          },
+          "required": true,
+          "width": 1,
+          "disableSelection": false,
+          "hidePreselection": false,
+          "showUnassigned": true,
+          "editShowInput": true,
+          "registerAssetChange": true,
+          "messages": {
+            "onChange": [
+              {
+                "to": "01_generalInformation",
+                "actions": [
+                  {
+                    "name": "PATCH_DATA",
+                    "_dynamicData": {
+                      "input": {
+                        "_field": {
+                          "_field": {
+                            "_field": {
+                              "_field": "asset",
+                              "_propertyName": "product"
+                            },
+                            "_functionName": "GET_PRODUCT"
+                          },
+                          "_propertyName": "customer"
+                        },
+                        "_functionName": "GET_ACCOUNT"
+                      },
+                      "output": {
+                        "_field": "customer",
+                        "_propertyName": "customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "workOrderType": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Auftragsart",
+            "en":"Work Order Type"
+          },
+          "width": 0.5
+        },
+        "workOrder": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Auftrag",
+            "en":"Work Order"
+          },
+          "width": 0.5
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": {
+                      "_field": "ARGS",
+                      "_propertyName": "asset",
+                      "_functionName": "GET_PRODUCT"
+                    },
+                    "_propertyName": "customer"
+                  },
+                  "output": {
+                    "_field": "customer",
+                    "_propertyName": "customer"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "address",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_errorInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Fehler und durchgeführte Arbeiten",
+        "en": "Error And Tasks"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "errorDescriptionCustomer": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Fehlerbeschreibung des Kunden",
+            "en": "Error Description By Customer"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "errorDescriptionTechnician": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Fehlerbeschreibung",
+            "en": "Error Description"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 1
+        },
+        "tasks": {
+          "fieldType": "REMBERG_TASKS",
+          "label": {
+            "de": "Durchgeführte Arbeiten",
+            "en": "Tasks"
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "width": 1,
+          "required": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "03_workOrderInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Allgemein",
+        "en": "General"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "pincer": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Zange",
+            "en":"Pincer"
+          },
+          "width": 0.5
+        },
+        "pincerSerialNumber": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de":"Seriennnummer",
+            "en":"Serial Number"
+          },
+          "width": 0.5
+        },
+        "checkbox-1": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Funktionskontrolle",
+            "en": "Function Control"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-2": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dauerlauf",
+            "en": "Continuous Run"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-3": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Hardwareupdate",
+            "en": "Hardware Update"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-4": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Softwareupdate",
+            "en": "Software Update"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-5": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "HV-Prüfung",
+            "en": "HV Control"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-6": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Firmware Archiv.",
+            "en": "Firmware Archiv."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-7": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Fehlermatrix Archiv.",
+            "en": "Error Matrix Archiv."
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-8": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Funktionsmatrix",
+            "en": "Function Matrix"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-9": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Justage Gerät notw.?",
+            "en": "Adjustment Device Neccessary?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-10": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Justage Zange notw.?",
+            "en": "Adjustment Pincer Neccessary?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-11": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kalibrierschein gewünscht?",
+            "en": "Calibration Note Demanded?"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-12": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Werkskalibrierung",
+            "en": "Factory Calibration"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-13": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "DAkkS-Kalibrierung",
+            "en": "DAkkS Calibration"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "defectCircuitBoards": {
+          "fieldType": "HELP_TEXT",
+          "text": {
+            "de": "Defekte Leiterkarten",
+            "en": "Defect Circuit Boards"
+          },
+          "width": 1,
+          "hiddenInPdf": false
+        },
+        "checkbox-14": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5308",
+            "en": "CPU 5308"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-15": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5314",
+            "en": "CPU 5314"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-16": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5319",
+            "en": "CPU 5319"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-17": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5394",
+            "en": "CPU 5394"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-18": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5509",
+            "en": "CPU 5509"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-19": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5615",
+            "en": "CPU 5615"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-20": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5711",
+            "en": "CPU 5711"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-21": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5720",
+            "en": "CPU 5720"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-22": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5760",
+            "en": "CPU 5760"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-23": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "CPU 5765",
+            "en": "CPU 5765"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-24": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Deckel CPU5312",
+            "en": "Lid CPU5312"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-25": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Deckel CPU5546",
+            "en": "Lid CPU5546"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-26": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Deckel CPU5684",
+            "en": "Lid CPU5684"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-27": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5767",
+            "en": "ADW 5767"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-28": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5307",
+            "en": "ADW 5307"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-29": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5401",
+            "en": "ADW 5401"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-30": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5403",
+            "en": "ADW 5403"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-31": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5481",
+            "en": "ADW 5481"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-32": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5520",
+            "en": "ADW 5520"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-33": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5507",
+            "en": "ADW 5507"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-34": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5616",
+            "en": "ADW 5616"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-35": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5713",
+            "en": "ADW 5713"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-36": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5726",
+            "en": "ADW 5726"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-37": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5764",
+            "en": "ADW 5764"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-38": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "ADW 5767",
+            "en": "ADW 5767"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-39": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "VE5501",
+            "en": "VE5501"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-40": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "VE5496",
+            "en": "VE5496"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-41": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "VE5515",
+            "en": "VE5515"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-42": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "VE561100",
+            "en": "VE561100"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-43": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "VE561101",
+            "en": "VE561101"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-44": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "VE578600",
+            "en": "VE578600"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-45": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "VE578601",
+            "en": "VE578601"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-46": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "MT3410/ 3430",
+            "en": "MT3410/ 3430"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-47": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "MT3414",
+            "en": "MT3414"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-48": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "MT3402/ 3422",
+            "en": "MT3402/ 3422"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-49": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "MT3416 / 3417",
+            "en": "MT3416 / 3417"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "functionMatrix": {
+          "fieldType": "HELP_TEXT",
+          "width": 1,
+          "hiddenInPdf": false,
+          "text": {
+            "de": "Funktionsmatrix",
+            "en": "Function Matrix"
+          }
+        },
+        "checkbox-50": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Nur Standardfunktionen",
+            "en": "Only  Standard Functions"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-51": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "I-Wandlerprüfung",
+            "en": "I Converter Check"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-52": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "I-Bürde",
+            "en": "I Load"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-53": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dosierung Relais",
+            "en": "Dosing Relais"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-54": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Ext. Relais",
+            "en": "Ext. Relais"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-55": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Quelle",
+            "en": "Source"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-56": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Auto. Prüfablauf",
+            "en": "Auto. Test Sequence"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-57": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Tm/Te Geber",
+            "en": "Tm/Te Transmitter"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-58": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Langzeitmessung",
+            "en": "Long Time Measurement"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-59": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kurve Quelle",
+            "en": "Curve Source"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-60": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Quelle mit DC",
+            "en": "Source With DC"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-61": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Automessung",
+            "en": "Automatic Measurment"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-62": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Service Mode",
+            "en": "Service Mode"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-63": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Registertest PQS",
+            "en": "Register Test PQS"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-64": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Selektive",
+            "en": "Selective"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-65": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "U-Bürde",
+            "en": "U Load"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-66": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Durchfunktion",
+            "en": "Through Function"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-67": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Externe Quelle",
+            "en": "External Source"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-68": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Zusatzkanäle",
+            "en": "Additional Canals"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-69": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dosierung Zeit",
+            "en": "Dosing Time"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-70": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Datenauslesung Zähler",
+            "en": "Data Readout Meter"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-71": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Register Test",
+            "en": "Register Test"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-72": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dos. Quelle",
+            "en": "Dos. Source"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-73": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Dosierung Prüfzähler",
+            "en": "Dosing Reference Meter"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "checkbox-74": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "Kunden Daten",
+            "en": "Customer Information"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        }
+      }
+    },
+    "04_customerInformation": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Informationen für Kunden",
+        "en": "Information For Customer"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "customerInformation": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Informationen für Kunden",
+            "en": "Information For Customer"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "required": false,
+          "width": 0.5
+        }
+      }
+    },
+    "05_material": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Material",
+        "en": "Material"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "PPA": {
+          "fieldType": "CHECKBOX",
+          "label": {
+            "de": "s. PPA",
+            "en": "see PPA"
+          },
+          "required": false,
+          "width": 0.5,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": true,
+          "checked": false
+        },
+        "spareParts": {
+          "isForm": true,
+          "width": 1,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "name": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Bezeichnung",
+                "en": "Name"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "partNumber": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Teilenummer",
+                "en": "Part Number"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "quantity": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Menge",
+                "en": "Quantity"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "singlePrice": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Stückpreis in EUR",
+                "en": "Single Price in EUR"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "totalAmountParts": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Gesamtpreis in EUR",
+                "en": "Toal Amount in EUR"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            }
+          }
+        },
+        "totalAmountSpareParts": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gesamtbetrag (in EUR)",
+            "en": "Total Amount (in EUR)"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        }
+      }
+    },
+    "06_tasks": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Arbeit",
+        "en": "Tasks"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "tasks": {
+          "isForm": true,
+          "width": 1,
+          "isListForm": true,
+          "displayButtons": true,
+          "listFormNoDataHint": {
+            "en": "No entries added yet.",
+            "de": "Es wurden noch keine Einträge hinzugefügt."
+          },
+          "children": {
+            "task": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Arbeit",
+                "en": "Task"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "taskDate": {
+              "fieldType": "REMBERG_DATE",
+              "label": {
+                "de": "Datum",
+                "en": "Date"
+              },
+              "hiddenInPdf": false,
+              "autofillCurrentDate": false,
+              "required": false
+            },
+            "name": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Name",
+                "en": "Name"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "time": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Zeit (hh:mm)",
+                "en": "Time (hh:mm)"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "hourlyWage": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Stundenlohn in EUR",
+                "en": "Hourly Wage in EUR"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            },
+            "totalAmountTasks": {
+              "fieldType": "INPUT_TEXT",
+              "label": {
+                "de": "Gesamtpreis in EUR",
+                "en": "Total Amount in EUR"
+              },
+              "required": false,
+              "hiddenInPdf": false,
+              "hideInPdfIfEmpty": false,
+              "disabled": false
+            }
+          }
+        },
+        "totalAmountTasks": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Gesamtbetrag (in EUR)",
+            "en": "Total Amount (in EUR)"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "tasks",
+                    "_functionName": "GET_TASKS"
+                  },
+                  "output": {
+                    "_field": "tasks",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "07_totalAmount": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "de": "Reparaturkosten gesamt",
+        "en": "Total Amount Repair Costs"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "required": true,
+      "children": {
+        "totalAmountMaterial2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Material (in EUR)",
+            "en": "Material (in EUR)"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "totalAmountTasks2": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Arbeit (in EUR)",
+            "en": "Tasks (in EUR)"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "totalAmountImport": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Import (in EUR)",
+            "en": "Import (in EUR)"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        },
+        "totalAmountRepairCosts": {
+          "fieldType": "INPUT_TEXT",
+          "label": {
+            "de": "Reparaturkosten gesamt (in EUR)",
+            "en": "Total Amount Repair Costs (in EUR)"
+          },
+          "required": false,
+          "width": 1,
+          "hiddenInPdf": false,
+          "hideInPdfIfEmpty": false,
+          "disabled": false
+        }
+      }
+    },
+    "08_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "ZERA GmbH - Reparaturbericht",
+            "content": "Dies ist eine automatische E-Mail.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "09_addendum": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Addendum",
+        "de": "Interner Nachtrag"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "addendum": {
+          "fieldType": "REMBERG_RICH_TEXTAREA",
+          "label": {
+            "de": "Interne Informationen",
+            "en": "Internal Information"
+          },
+          "placeholder": {
+            "de": "Hier tippen...",
+            "en": "Type here..."
+          },
+          "hiddenInPdf": false,
+          "required": false,
+          "width": 0.5
+        }
+      }
+    },
+    "10_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "ZERA GmbH - Reparaturbericht mit internem Nachtrag",
+            "content": "Dies ist eine automatische E-Mail.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": true
+            },
+            "bcc": {
+              "currentUser": false
+            }
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+      

@@ -1,0 +1,922 @@
+{
+  "$schema": "https://pastebin.com/raw/eysKfZ7M",
+  "general": {
+    
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General Information"
+        }
+      },
+      "fields": [
+        {
+          "type": "companySingleSelect",
+          "id": "customer",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "required": true,
+            "pdfWidth": 1,
+            "useAsFilterForFields": ["asset","customer_contact"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "userSingleSelect",
+          "id": "customer_contact",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansprechpartner Kunde",
+                "en": "Customer contact person"
+              }
+            },
+            "value": {
+              "pdfPrintEmailAddress": true
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "onChange": [
+              {
+                "target": {"id": "customer_contact_phone"},
+                "steps": ["userInfoToUser","userToPhoneNumberString","phoneNumberStringToPhoneNumberObject"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "userSingleSelect",
+          "id": "khb_contact",
+          "config": {
+            "label": {
+              "text": {
+                "de": "khb Ansprechpartner",
+                "en": "khb contact person"
+              }
+            },
+            "value": {
+              "pdfPrintEmailAddress": true
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "onChange": [
+              {
+                "target": {"id": "khb_contact_phone"},
+                "steps": ["userInfoToUser","userToPhoneNumberString","phoneNumberStringToPhoneNumberObject"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "phoneNumberInput",
+          "id": "customer_contact_phone",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Telefonnummer Kunde",
+                "en": "Phone number customer"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "phoneNumberInput",
+          "id": "khb_contact_phone",
+          "config": {
+            "label": {
+              "text": {
+                "de": "khb Telefonnummer",
+                "en": "khb Phone number"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlage",
+                "en": "Asset"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "order_number",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bestellnummer",
+                "en": "Order number"
+              }
+            },
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "singleLineTextInput",
+          "id": "khb_order_number",
+          "config": {
+            "label": {
+              "text": {
+                "de": "khb-Auftragsnummer",
+                "en": "khb work order number"
+              }
+            },
+            "required": true,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "dateInput",
+          "id": "service_date",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Servicedatum",
+                "en": "Service date"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "value": [
+                {
+                  "input": "creationDateTime",
+                  "steps": ["dateTimeToDate"]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "fieldSection",
+      "id": "02_bauseits",
+      "config": {
+        "headlineText": {
+          "de": "Bauseits",
+          "en": "On-site"
+        }
+      },
+      "fields": [
+        {
+          "type": "headlineDisplay",
+          "id": "header_space_1",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "headlineDisplay",
+          "id": "header_bauseits",
+          "config": {
+            "text": {
+              "de": "Bauseits",
+              "en": "On-site"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "staticSingleSelect",
+          "id": "spezialwerkzeug",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Spezialwerkzeug",
+                "en": "Special tooling"
+              }
+            },
+            "value": {
+              "options": {
+                "1":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "2":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "bemerkung_1_1",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Notes"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "staticSingleSelect",
+          "id": "betriebsanleitung",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Betriebsanleitung/Wartungsanleitung",
+                "en": "Operating manual / maintenance manual"
+              }
+            },
+            "value": {
+              "options": {
+                "1":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "2":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "bemerkung_1_2",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Notes"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "staticSingleSelect",
+          "id": "absprache_stillstand",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Absprache über Anlagenstillstand",
+                "en": "Agreement about downtime"
+              }
+            },
+            "value": {
+              "options": {
+                "1":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "2":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "bemerkung_1_3",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Notes"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "staticSingleSelect",
+          "id": "ersatzteile",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ersatzteile (O-Ring, Dichtungen)",
+                "en": "Spare parts (o-ring, seals)"
+              }
+            },
+            "value": {
+              "options": {
+                "1":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "2":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "bemerkung_1_4",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Notes"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "type": "fieldSection",
+      "id": "03_arbeitsmittel",
+      "config": {
+        "headlineText": {
+          "de": "Arbeitsmittel",
+          "en": "Work Equipment"
+        }
+      },
+      "fields": [
+        {
+          "type": "headlineDisplay",
+          "id": "header_space_2",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "headlineDisplay",
+          "id": "header_arbeitsmittel",
+          "config": {
+            "text": {
+              "de": "Arbeitsmittel",
+              "en": "Work Equipment"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "staticSingleSelect",
+          "id": "wartungsaufkleber",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Wartungsaufkleber",
+                "en": "Maintenance sticker"
+              }
+            },
+            "value": {
+              "options": {
+                "1":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "2":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "bemerkung_2_1",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Notes"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "staticSingleSelect",
+          "id": "lochzange",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ausdrückzange/Lochzange",
+                "en": "Extraction pliers / punch pliers"
+              }
+            },
+            "value": {
+              "options": {
+                "1":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "2":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "bemerkung_2_2",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Notes"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "staticSingleSelect",
+          "id": "handwerkzeug",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Handwerkzeug",
+                "en": "Hand tools"
+              }
+            },
+            "value": {
+              "options": {
+                "1":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "2":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "bemerkung_2_3",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Notes"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "staticSingleSelect",
+          "id": "tablet",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Tablet",
+                "en": "Tablet"
+              }
+            },
+            "value": {
+              "options": {
+                "1":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "2":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "bemerkung_2_4",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Notes"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "type": "fieldSection",
+      "id": "04_checkpunkte",
+      "config": {
+        "headlineText": {
+          "de": "Wartungscheckpunkte",
+          "en": "Maintenance Checklist"
+        }
+      },
+      "fields": [
+        {
+          "type": "headlineDisplay",
+          "id": "header_space_3",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "headlineDisplay",
+          "id": "header_checkpunkte",
+          "config": {
+            "text": {
+              "de": "Wartungscheckpunkte",
+              "en": "Maintenance Checklist"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_1",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlagenstillstand",
+                "en": "Downtime"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_2",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Füllrüssel in Wartungsposition fahren",
+                "en": "Move filling nozzle to maintenance position"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_3",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Überprüfung: Schlauch leer?",
+                "en": "Check: Hose empty?"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_4",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Verbindung zum Anschluss Schlauch/Rohr lösen",
+                "en": "Disconnect connection to hose/tube"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_5",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Orangenen Klemmhebel lösen",
+                "en": "Loosen orange clamping lever"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_6",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Füllventil mit Füllrüssel ausbauen",
+                "en": "Remove filling valve with filling nozzle"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_7",
+          "config": {
+            "label": {
+              "text": {
+                "de": "In den Schraubstock klemmen",
+                "en": "Clamp in the vice"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_8",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Füllventil auseinander bauen",
+                "en": "Disassemble filling valve"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_9",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Druckfeder und Dichtungen ersetzen",
+                "en": "Replace pressure spring and seals"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_10",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Füllventil zusammenbauen ",
+                "en": "Assemble filling valve"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_11",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Füllventil einsetzen und befestigen",
+                "en": "Insert and fasten filling valve"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_12",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anschluss an Rohr/Schlauch herstellen",
+                "en": "Connect to pipe/hose"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_13",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Endpositionen fahren und überprüfen",
+                "en": "Move and check end positions"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "booleanInput",
+          "id": "checklist_item_14",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Wartungsaufkleber für nächste Wartung anbringen",
+                "en": "Attach maintenance sticker for next maintenance"
+              }
+            },
+            "pdfWidth": 1,
+            "required": true
+          }
+        },
+        {
+          "type": "headlineDisplay",
+          "id": "header_space_comments",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1
+          }
+        },
+        {
+          "type": "multiLineTextInput",
+          "id": "comments",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Comments"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "disclaimer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:9pt'>Wichtige Information:</b><p style='font-size:9pt'>Es gibt unterschiedliche Füllrüsselventile und deren Kontermutter wird mit unterschiedlichen Drehmomenten angezogen!</p>",
+              "en": "<b style='font-size:9pt'>Important information:</b><p style='font-size:9pt'>There are different filling nozzle valves and their lock nuts are tightened with different torques</p>"
+            },
+            "pdfWidth": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": "signatureSection",
+      "id": "signature_technician",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Techniker",
+          "en": "Signature Technician"
+        },
+        "required": true,
+        "pdfHideIfValueIsEmpty": true,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "pdfHide": false,
+        "fields": {
+          "dateInput": {
+            "required": true,
+            "disable": false,
+            "pdfHide": false
+          },
+          "locationSingleLineTextInput": {
+            "required": false,
+            "disable": true,
+            "pdfHide": true
+          },
+          "nameSingleLineTextInput": {
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": true,
+            "disable": false,
+            "pdfHide": false
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "emailSection",
+      "id": "send_customer_version",
+      "config": {
+        "headlineText": {
+          "de": "Bericht als E-Mail senden/gesendet",
+          "en": "Send/sent form as e-mail"
+        },
+        "pdfHide": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "emailDialogPrefill": {
+          "subject": {
+            "static": "Füllrüsselwartung - khb Maschinen- und Anlagenbau GmbH"
+          },
+          "body": {
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nanbei erhalten sie das Serviceprotokolls unseres Technikers für den Einsatz in Ihrem Unternehmen.\nWir hoffen, dass Sie mit der ausgeführten Tätigkeit zufrieden sind.\nFür weitere Fragen steht Ihnen unser Team zur Verfügung.\n\nMit freundlichen Grüßen\n\nIhr Team der khb Maschinen- und Anlagenbau GmbH\n\n--\n\nDear Sir and Madam,\n\nEnclosed you will find the service protocol of our technician for the work in your company.\nWe hope you are satisfied with the work.\nIf you have any further questions, please do not hesitate to contact our team.\n\nBest regards\n\nYour team from khb Maschinen- und Anlagenbau GmbH"
+          },
+          "bcc": {
+            "currentUser": true
+          }
+        }
+      }
+    }
+  ]
+}

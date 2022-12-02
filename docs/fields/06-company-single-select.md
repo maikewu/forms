@@ -59,7 +59,7 @@ The CompanySingleSelect field allows the user to choose one of the customer comp
         "prefill": {
             [ "selectedCompany" ]: [
                 {
-                    "input": "currentAccountId",
+                    "input": "organizationId",
                     "steps": []
                 }
             ]
@@ -190,9 +190,20 @@ The `useAsFilterForFields` property can be used to filter the asset and user sel
 | Default Value              | -                                                                   |
 
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
+```json (organizationId)
+"prefill": {
+    "selectedCompany": [
+        {
+            "input": "organizationId",
+            "steps": []
+        }
+    ]
+}
+```
+
 ```json (currentAccountId)
 "prefill": {
-    [ "selectedCompany" ]: [
+    "selectedCompany": [
         {
             "input": "currentAccountId",
             "steps": []
@@ -200,6 +211,7 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
     ]
 }
 ```
+
 ---
 ## `onChange`
 
