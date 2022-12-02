@@ -5,7 +5,7 @@
   },
   "sections": [
     {
-      "id": "1-allgmeineInformationen",
+      "id": "01_generalInformation",
       "type": "fieldSection",
       "config": {
         "headlineText": {
@@ -15,21 +15,21 @@
       },
       "fields": [
         {
-          "id": "reportID",
-          "type": "multiLineTextInput",
+          "id": "maintenanceNr",
+          "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
                 "de": "Wartungs-Auftragnummer",
-                "en": "Maintenance Order Number"
+                "en": "Work Order Number"
               }
             },
             "required": true
           }
         },
         {
-          "id": "orderNumber",
-          "type": "multiLineTextInput",
+          "id": "orderNr",
+          "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
@@ -41,24 +41,24 @@
           }
         },
         {
-          "id": "technicians",
+          "id": "technician",
           "type": "personListInput",
           "config": {
             "label": {
               "text": {
                 "de": "Servicetechniker",
-                "en": "Service Technician"
+                "en": "Technician"
               }
             }
           }
         },
         {
-          "id": "begleitung",
+          "id": "attendant",
           "type": "personListInput",
           "config": {
             "label": {
               "text": {
-                "de": "Begleitung",
+                "de": "Begleiter",
                 "en": "Attendant"
               }
             }
@@ -74,6 +74,16 @@
                 "en": "Issued by"
               }
             },
+            "onChange": [
+              {
+                "target": {
+                  "id":"6_signature_technician", "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ],
             "prefill": {
               "value": [
                 {
@@ -99,12 +109,12 @@
       ]
     },
     {
-      "id": "2-maschine",
+      "id": "2_maschine",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Maschine",
-          "en": "Machine"
+          "de": "Objekt",
+          "en": "Asset"
         }
       },
       "fields": [
@@ -121,21 +131,12 @@
             "onChange": [
               {
                 "target": {
-                  "id": "customerLocation"
+                  "id": "6_signature_technician", "propertyName": "location"
                 },
                 "steps": [
                   "assetInfoToAsset",
-                  "assetToLocationAddress"
-                ]
-              },
-              {
-                "target": {
-                  "id": "customer"
-                },
-                "steps": [
-                  "assetInfoToCustomerId",
-                  "accountIdToAccount",
-                  "accountToAccountInfo"
+                  "assetToLocationAddress",
+                  "addressToCityString"
                 ]
               }
             ],
@@ -164,270 +165,7 @@
       ]
     },
     {
-      "id": "3-customerInformation",
-      "type": "fieldSection",
-      "config": {
-        "headlineText": {
-          "de": "Kunden-Informationen",
-          "en": "Customer Information"
-        }
-      },
-      "fields": [
-        {
-          "id": "customer",
-          "type": "companySingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kunde",
-                "en": "Customer"
-              }
-            },
-            "required": true
-          }
-        },
-        {
-          "id": "customerLocation",
-          "type": "addressInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kundenadresse",
-                "en": "Customer Address"
-              }
-            }
-          }
-        },
-        {
-          "id": "customerContactPerson",
-          "type": "userSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Ansprechpartner-Auswahl",
-                "en": "Select Customer Contact"
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "4-anlassUndAusfallInformation",
-      "type": "fieldSection",
-      "config": {
-        "headlineText": {
-          "de": "Anlass und Ausfallursache",
-          "en": "Reason and Failure Cause"
-        }
-      },
-      "fields": [
-        {
-          "id": "anlass",
-          "type": "staticMultiSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Anlass",
-                "en": "Reason"
-              }
-            },
-            "value": {
-              "options": {
-                "inbetriebnahme": {
-                  "de": "Inbetriebnahme",
-                  "en": "Commissioning"
-                },
-                "kundenberatung": {
-                  "de": "Kundenberatung",
-                  "en": "Customer advisory"
-                },
-                "kalibrierung": {
-                  "de": "Kalibrierung",
-                  "en": "Calibration"
-                },
-                "vorfuehrung": {
-                  "de": "Vorführung",
-                  "en": "Demonstration"
-                },
-                "endabnahme": {
-                  "de": "Endabnahme",
-                  "en": "Final acceptance"
-                },
-                "messe": {
-                  "de": "Messe",
-                  "en": "Fair"
-                },
-                "schulung": {
-                  "de": "Schulung",
-                  "en": "Training"
-                },
-                "umbau": {
-                  "de": "Umbau",
-                  "en": "Modification"
-                },
-                "nachruestung": {
-                  "de": "Nachrüstung",
-                  "en": "Retrofit"
-                },
-                "reparatur": {
-                  "de": "Reparatur",
-                  "en": "Repair"
-                },
-                "wartung": {
-                  "de": "Wartung",
-                  "en": "Maintenance"
-                },
-                "inspektion": {
-                  "de": "Inspektion",
-                  "en": "Inspection"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "ausfallUrsache",
-          "type": "staticMultiSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Ausfallursache",
-                "en": "Failure cause"
-              }
-            },
-            "value": {
-              "options": {
-                "verschleiss": {
-                  "de": "Verschleiß",
-                  "en": "Wear"
-                },
-                "softwarefehler": {
-                  "de": "Softwarefehler",
-                  "en": "Software error"
-                },
-                "pc": {
-                  "de": "PC",
-                  "en": "PC"
-                },
-                "montagefehler": {
-                  "de": "Montagefehler",
-                  "en": "Montage error"
-                },
-                "transport": {
-                  "de": "Transport",
-                  "en": "Transport"
-                },
-                "bedienfehler": {
-                  "de": "Bedienfehler",
-                  "en": "Operating error"
-                },
-                "elektronik": {
-                  "de": "Elektronik",
-                  "en": "Electronic"
-                },
-                "mechanik": {
-                  "de": "Mechanik",
-                  "en": "Mechanics"
-                },
-                "verschmutzung": {
-                  "de": "Verschmutzung",
-                  "en": "Pollution"
-                },
-                "konstrfehler": {
-                  "de": "Konstruktionsfehler",
-                  "en": "Konstruction error"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "anlassUndAusfallursacheSonstiges",
-          "type": "multiLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "5-serviceAufgaben",
-      "type": "fieldSection",
-      "config": {
-        "headlineText": {
-          "de": "Serviceaufgaben",
-          "en": "Service Tasks"
-        }
-      },
-      "fields": [
-        {
-          "id": "tasks",
-          "type": "taskListInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Durchgeführte Arbeiten",
-                "en": "Performed Tasks"
-              }
-            },
-            "fields": {
-              "checkboxBooleanInput": {
-                  "checkedByDefault": false,
-                  "pdfHide": false
-              },
-              "titleSingleLineTextInput": {
-                  "required": false,
-                  "pdfHide": false
-              },
-              "commentMultiLineTextInput": {
-                  "disabled": false,
-                  "required": false,
-                  "pdfHide": false
-              },
-              "highPrioBooleanInput": {
-                  "disabled": false,
-                  "pdfHide": false
-              },
-              "notNecessaryBooleanInput": {
-                  "disabled": false,
-                  "pdfHide": false
-              }
-          },
-          "prefill": {
-            "entries": [
-              {
-                "input": "workOrderId",
-                "steps": [
-                  "workOrderIdToWorkOrder",
-                  "workOrderToTasks"
-                ]
-              }
-            ]
-          }
-          }
-        },
-        {
-          "id": "tasksComment",
-          "type": "multiLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "6-reiseUndArbeitszeiten",
+      "id": "3_reiseUndArbeitszeiten",
       "type": "fieldSection",
       "config": {
         "headlineText": {
@@ -487,7 +225,7 @@
       ]
     },
     {
-      "id": "7-ersatzteile",
+      "id": "4_ersatzteile",
       "type": "fieldSection",
       "config": {
         "headlineText": {
@@ -556,11 +294,11 @@
       ]
     },
     {
-      "id": "8-spesen",
+      "id": "5_kosten",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Spesen",
+          "de": "Kosten",
           "en": "Expenses"
         }
       },
@@ -596,37 +334,21 @@
                 "disabled": false,
                 "required": true,
                 "values": {
-                  "flight": {
-                    "de": "Flug",
-                    "en": "Flight"
+                  "tax": {
+                    "de": "Steuern",
+                    "en": "Tax"
                   },
-                  "rental_car": {
-                    "de": "Mietauto",
-                    "en": "Rental Car"
+                  "travel": {
+                    "de": "Reisekosten",
+                    "en": "Travel Cost"
                   },
-                  "board": {
-                    "de": "Verpflegung",
-                    "en": "Board"
+                  "parts": {
+                    "de": "Materialkosten",
+                    "en": "Parts Cost"
                   },
-                  "accommodation": {
-                    "de": "Unterkunft",
-                    "en": "Accommodation"
-                  },
-                  "parking": {
-                    "de": "Parken",
-                    "en": "Parking"
-                  },
-                  "toll": {
-                    "de": "Maut",
-                    "en": "Toll"
-                  },
-                  "transportation": {
-                    "de": "Transport",
-                    "en": "Transportation"
-                  },
-                  "vignette": {
-                    "de": "Vingette",
-                    "en": "Vingette"
+                  "labor": {
+                    "de": "Arbeitskosten",
+                    "en": "Labor Cost"
                   },
                   "other": {
                     "de": "Sonstiges",
@@ -640,43 +362,7 @@
       ]
     },
     {
-      "id": "9-Bemerkungen",
-      "type": "fieldSection",
-      "config": {
-        "headlineText": {
-          "de": "Bemerkungen",
-          "en": "Notes"
-        }
-      },
-      "fields": [
-        {
-          "id": "generalComments",
-          "type": "multiLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Allgemeine Bemerkungen & Hinweise",
-                "en": "General Comments"
-              }
-            }
-          }
-        },
-        {
-          "id": "customerRequests",
-          "type": "multiLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kundenwünsche",
-                "en": "Customer Requests"
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "11-signature_technician",
+      "id": "6_signature_technician",
       "type": "signatureSection",
       "config": {
         "required": true,
@@ -709,7 +395,7 @@
       }
     },
     {
-      "id": "12-send",
+      "id": "12_send",
       "type": "emailSection",
       "config": {
         "headlineText": {

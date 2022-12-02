@@ -1,4 +1,5 @@
 {
+  "$schema": "https://pastebin.com/raw/eysKfZ7M",
   "general": {
     "timezone": "Europe/Berlin"
   },
@@ -108,16 +109,50 @@
               ]
             }
           }
+        },
+        {
+          "id": "serviceTechnician",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Servicetechniker",
+                "en": "Service Technician"
+              }
+            },
+            "pdfWidth": 0.5,
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "constructionDate",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Herstellungsdatum",
+                "en": "Construction Date"
+              }
+            },
+            "pdfWidth": 0.5
+          }
         }
       ]
     },
     {
-      "id": "02_assemblyInformation",
+      "id": "02_maintenanceInformation",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Informationen Montage",
-          "en": "Information Assembly"
+          "de": "Wartungsinformationen",
+          "en": "Maintenance Information"
         }
       },
       "fields": [
@@ -135,72 +170,116 @@
           }
         },
         {
-          "id": "headlineInformationAssembly",
+          "id": "headlineMaintenanceInformation",
           "type": "headlineDisplay",
           "config":{
             "uiHide": true,
             "text":{
-              "de":"Informationen Montage",
-              "en":"Information Assembly"
+              "de":"Informationen Wartung",
+              "en":"Information Maintenance"
             },
             "pdfWidth": 1,
             "pdfTextSize": "H2"
           }
         },
         {
-          "id": "startAssembly",
-          "type": "dateTimeInput",
+          "id": "maintenanceType",
+          "type": "staticSingleSelect",
           "config": {
             "label": {
               "text": {
-                "de": "Montagebeginn",
-                "en": "Assembly Start"
+                "de": "Wartungstyp",
+                "en": "Maintenance Type"
               }
             },
-            "required": true,
-            "pdfWidth": 0.5
+            "pdfWidth": 0.5,
+            "value": {
+              "options": {
+                "foresightedMaintenance":{
+                  "de": "Vorausschauende Wartung",
+                  "en": "Foresighted Maintenance"
+                },
+                "plannedMaintenance":{
+                  "de": "Geplante Wartung gemäß Service-Vertrag",
+                  "en": "Planned Maintenance According To Service Contract"
+                },
+                "earlyMaintenance":{
+                  "de": "Frühzeitige Wartung gemäß Service-Vertrag",
+                  "en": "Early Maintenance According To Service Contract"
+                },
+                "emergencyRepair":{
+                  "de": "Notfallreperatur",
+                  "en": "Emergency Repair"
+                },
+                "spareParts":{
+                  "de": "Teileaustausch",
+                  "en": "Spare Party Change"
+                }
+              }
+            }
           }
         },
         {
-          "id": "completionAssembly",
-          "type": "dateTimeInput",
+          "id": "maintenanceStatus",
+          "type": "staticSingleSelect",
           "config": {
             "label": {
               "text": {
-                "de": "Fertigstellung",
-                "en": "Completion"
+                "de": "Wartungsstatus",
+                "en": "Maintenance Status"
               }
             },
-            "required": true,
-            "pdfWidth": 0.5
+            "pdfWidth": 0.5,
+            "value": {
+              "options": {
+                "completed":{
+                  "de": "Abgeschlossen",
+                  "en": "Completed"
+                },
+                "inProcess":{
+                  "de": "In Bearbeitung",
+                  "en": "In Process"
+                }
+              }
+            }
           }
         },
         {
-          "id": "contractCompletion",
-          "type": "dateInput",
+          "id": "helpText",
+          "type": "htmlDisplay",
           "config": {
-            "label": {
-              "text": {
-                "de": "Vertraglich vereinbarte Fertigstellung",
-                "en": "Contractually Agreed Completion"
-              }
-            },
-            "required": true,
-            "pdfWidth": 0.5
+            "pdfHide": true,
+            "text": {
+              "de": "Wenn ''In Bearbeitung'' gewählt, bitte spezifizieren:",
+              "en": "If selected ''In Process'', please specify:"
+            }
           }
         },
         {
-          "id": "missedDeadline",
+          "id": "maintenanceCompletion",
           "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
-                "de": "Terminüberschreitung (in Tagen)",
-                "en": "Missed Deadline (in days)"
+                "de": "Fortschritt (in %)",
+                "en": "Process (in %)"
               }
             },
             "pdfWidth": 0.5,
-            "pdfHideIfValueIsEmpty":true
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "lastMaintenanceDate",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Datum letzter Wartung",
+                "en": "Date Of Last Maintenance"
+              }
+            },
+            "pdfWidth": 0.5
           }
         }
       ]
@@ -242,226 +321,28 @@
           }
         },
         {
-          "id": "assetAlignment",
-          "type": "staticSingleSelect",
+          "id": "completedTasks",
+          "type": "taskListInput",
           "config": {
             "label": {
               "text": {
-                "de": "Ausrichtung und Fixierung der Anlage auf dem Fundament",
-                "en": "Alignment and fixation of the asset on the foundation"
+                "de": "Aufgaben",
+                "en": "Tasks"
               }
             },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
+            "pdfWidth": 1,
+            "prefill": {
+              "entries":
+              [
+                {
+                  "input": "workOrderId",
+                  "steps": [ "workOrderIdToWorkOrder", "workOrderToTasks" ]
                 }
-              }
-            }
-          }
-        },
-        {
-          "id": "mainComponents",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Hauptkomponenten korrekt montiert",
-                "en": "Main components mounted correctly"
-              }
+              ]
             },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "mediaSources",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Medienleitungen komplett montiert",
-                "en": "Media sources mounted correctly"
-              }
-            },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "wiring",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Verkabelung der Komponenten abgeschlossen",
-                "en": "Wiring of the components completed"
-              }
-            },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "powerSupply",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Stromversorgung angeschlossen",
-                "en": "Power supply connected"
-              }
-            },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "waterSupply",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Wasserversorgung angeschlossen",
-                "en": "Water supply connected"
-              }
-            },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "nitrogenSupply",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Stickstoffversorgung angeschlossen",
-                "en": "Nitrogen supply connected"
-              }
-            },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "sewagePipe",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Abwasserleitung angeschlossen",
-                "en": "Sewage pipe connected"
-              }
-            },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "hydrogenPipe",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Wasserstoffleitung angeschlossen",
-                "en": "Hydrogen pipe connected"
-              }
-            },
-            "pdfWidth": 0.5,
-            "value": {
-              "options": {
-                "done": {
-                  "de": "Erledigt",
-                  "en": "Done"
-                },
-                "n/a": {
-                  "de": "n/a",
-                  "en": "n/a"
-                }
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": true
               }
             }
           }
@@ -469,12 +350,12 @@
       ]
     },
     {
-      "id": "04_defects",
+      "id": "04_spareParts",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Mangel bzw. unvollständige Leistung",
-          "en": "Defect Or Incompleted Performance"
+          "de": "Material",
+          "en": "Spare Parts"
         }
       },
       "fields": [
@@ -492,26 +373,63 @@
           }
         },
         {
-          "id": "headlineDefect",
+          "id": "headlineSpareParts",
           "type": "headlineDisplay",
           "config":{
             "uiHide": true,
             "text":{
-              "de":"Mangel bzw. unvollständige Leistung",
-              "en":"Defect Or Incompleted Performance"
+              "de":"Material",
+              "en":"Spare Parts"
             },
             "pdfWidth": 1,
             "pdfTextSize": "H2"
           }
         },
         {
-          "id": "defects",
-          "type": "multiLineTextInput",
+          "id": "spareParts",
+          "type": "partListInput",
           "config": {
             "label": {
               "text": {
-                "de": "Bemerkung",
-                "en": "Comments"
+                "de": "Verwendete Ersatzteile",
+                "en": "Used Spare Parts"
+              }
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "placeHolderText": {
+                  "de": "Artikelnummer",
+                  "en": "Part Number"
+                },
+                "required": true,
+                "pdfHide": false
+              },
+              "quantityNumericInput": {
+                "required": true,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Beschreibung",
+                  "en": "Description"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": false,
+                "pdfHide": false,
+                "required": false
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": false,
+                "pdfHide": false,
+                "required": false
+              },
+              "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
               }
             }
           }
@@ -519,12 +437,12 @@
       ]
     },
     {
-      "id": "05_acceptance",
+      "id": "05_times",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Abnahme",
-          "en": "Acceptance"
+          "de": "Arbeits- & Reisezeiten",
+          "en": "Working & Travel Time"
         }
       },
       "fields": [
@@ -542,53 +460,61 @@
           }
         },
         {
-          "id": "headlineAcceptance",
+          "id": "headlineTimes",
           "type": "headlineDisplay",
           "config":{
             "uiHide": true,
             "text":{
-              "de":"Abnahme",
-              "en":"Acceptance"
+              "de":"Arbeits- & Reisezeiten",
+              "en":"Working & Travel Time"
             },
             "pdfWidth": 1,
             "pdfTextSize": "H2"
           }
         },
         {
-          "id": "refusedAcceptance",
-          "type": "booleanInput",
+          "id": "times",
+          "type": "timeTrackingListInput",
           "config": {
-            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
-                "de": "Die Abnahme der Leistung wird wegen der vorgenannten Mängel verweigert.",
-                "en": "The acceptance of the service is refused due to the above mentioned defects."
+                "de": "Zeiten",
+                "en": "Times"
               }
-            }
-          }
-        },
-        {
-          "id": "reservedAcceptance",
-          "type": "booleanInput",
-          "config": {
-            "pdfHideIfValueIsEmpty": true,
-            "label": {
-              "text": {
-                "de": "Die Leistung wird abgenommen unter Vorbehalt der aufgeführten Mängel.",
-                "en": "The service is accepted under reserve due to the listed defects."
-              }
-            }
-          }
-        },
-        {
-          "id": "acceptance",
-          "type": "booleanInput",
-          "config": {
-            "pdfHideIfValueIsEmpty": true,
-            "label": {
-              "text": {
-                "de": "Die Leistung wird abgenommen.",
-                "en": "The service is accepted."
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "pdfHide": false,
+                "required": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "pdfHide": false,
+                "required": false
+              },
+              "technicianUserSingleSelect": {
+                "required": true,
+                "disabled": false,
+                "pdfHide": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "pdfHide": false,
+                "required": false
               }
             }
           }
@@ -638,6 +564,30 @@
             "disable": false,
             "capitalizeFirstLetterOfEveryWord": true
           }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": ["userToFullNameString"]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
+          "location": [
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
         }
       }
     },
@@ -671,6 +621,24 @@
             "disable": false,
             "capitalizeFirstLetterOfEveryWord": true
           }
+        },
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
+          "location": [
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
         }
       }
     },
