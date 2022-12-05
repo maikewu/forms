@@ -26,44 +26,7 @@
             },
             "required": true
           }
-        },
-        {
-          "id": "orderNr",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Bestellnummer",
-                "en": "Order Number"
-              }
-            },
-            "required": true
-          }
-        },
-        {
-          "id": "technician",
-          "type": "personListInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Servicetechniker",
-                "en": "Technician"
-              }
-            }
-          }
-        },
-        {
-          "id": "attendant",
-          "type": "personListInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Begleiter",
-                "en": "Attendant"
-              }
-            }
-          }
-        },
+        }, 
         {
           "id": "ausgestelltDurch",
           "type": "userSingleSelect",
@@ -103,6 +66,15 @@
                 "de": "Austellungsdatum",
                 "en": "Date of issue"
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "creationDateTime","steps": [
+                    "dateTimeToDate"
+                  ]
+                }
+              ]
             }
           }
         }
@@ -149,18 +121,6 @@
               ]
             }
           }
-        },
-        {
-          "id": "constructionYear",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Baujahr",
-                "en": "Construction Year"
-              }
-            }
-          }
         }
       ]
     },
@@ -169,8 +129,8 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Reise- und Arbeitszeiten",
-          "en": "Travel and Working Times"
+          "de": "Arbeitszeiten",
+          "en": "Working Times"
         }
       },
       "fields": [
@@ -391,7 +351,51 @@
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
         "hideDownloadPdfButton": false,
-        "hidePreviewPdfButton": false
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+              {
+                  "input": "currentUser", 
+                  "steps": [
+                      "userToFullNameString"
+                  ]
+              }
+          ],
+          "location": [
+              {
+                  "input": "assetId",
+                  "steps": [
+                      "assetIdToAsset",
+                      "assetToLocationAddress",
+                      "addressToCityString"
+                  ]
+              },
+              {
+                  "input": "assetId",
+                  "steps": [
+                      "assetIdToAsset",
+                      "assetToCustomerAccountId",
+                      "accountIdToAccount",
+                      "accountToBillingAddressAddress",
+                      "addressToCityString"
+                  ]
+              },
+              {
+                  "input": "currentAccountId",
+                  "steps": [
+                      "accountIdToAccount",
+                      "accountToBillingAddressAddress",
+                      "addressToCityString"
+                  ]
+                }
+          ],
+          "date": [
+              {
+                  "input": "creationDateTime",
+                  "steps": ["dateTimeToDate"]
+              }
+          ]
+      }
       }
     },
     {
