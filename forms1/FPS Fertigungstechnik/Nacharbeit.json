@@ -1,0 +1,216 @@
+{
+  "general": {
+    "name": {
+      "en": "Rework",
+      "de": "Nacharbeit"
+    }
+  },
+  "formStructure": {
+    "01_general_information": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Rework",
+        "de": "Nacharbeit"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "children": {
+        "location_creation": {
+          "fieldType": "REMBERG_ADDRESS",
+          "required": true,
+          "width": 0.25,
+          "label": {
+            "de": "Ort",
+            "en": "Location"
+          }
+        },
+        "date_creation": {
+          "fieldType": "REMBERG_DATE",
+          "required": true,
+          "width": 0.25,
+          "label": {
+            "de": "Datum",
+            "en": "Date"
+          },
+          "autofillCurrentDate": true
+        },
+        "creator": {
+          "fieldType": "REMBERG_USER_SELECT",
+          "required": true,
+          "width": 0.25,
+          "label": {
+            "de": "Ersteller",
+            "en": "Creator"
+          },
+          "autofillCurrentUser": true
+        },
+        "asset": {
+          "fieldType": "REMBERG_ASSET_SELECT",
+          "required": true,
+          "width": 0.25,
+          "label": {
+            "de": "Maschine / Anlage",
+            "en": "Machine / System"
+          }
+        }
+      },
+      "messages": {
+        "onLoaded": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "address"
+                  },
+                  "output": {
+                    "_field": "location_creation",
+                    "_propertyName": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "PATCH_DATA",
+                "_dynamicData": {
+                  "input": {
+                    "_field": "ARGS",
+                    "_propertyName": "asset",
+                    "_functionName": "GET_PRODUCT"
+                  },
+                  "output": {
+                    "_field": "asset",
+                    "_propertyName": "product"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "02_Rework": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": true,
+      "cardHeadline": {
+        "en": "Documentation Rework",
+        "de": "Dokumentation Nacharbeit"
+      },
+      "stateIndicator": true,
+      "hasNextStep": true,
+      "width": 1,
+      "children": {
+        "rework_type": {
+          "fieldType": "SELECT",
+          "multiple": false,
+          "required": true,
+          "width": 1,
+          "label": {
+            "de": "Art der Nacharbeit",
+            "en": "Type of rework"
+          },
+          "options": [
+            {
+              "value": "repair",
+              "text": {
+                "de": "Reparaturauftrag",
+                "en": "Repair work"
+              }
+            },
+            {
+              "value": "material",
+              "text": {
+                "de": "Materialfehler",
+                "en": "Material defect"
+              }
+            },
+            {
+              "value": "production",
+              "text": {
+                "de": "Fertigungsfehler",
+                "en": "Production defect"
+              }
+            }
+          ]
+        },
+        "cost_center": {
+          "fieldType": "INPUT_TEXT",
+          "required":true,
+          "width": 1,
+          "label": {
+            "de": "Kostenstelle",
+            "en": "Cost center"
+          }
+        },
+        "duration_min": {
+          "fieldType": "INPUT_Number",
+          "required":true,
+          "width": 1,
+            "de": "Nacharbeitsdauer in min",
+            "en": "Duration of rework in min"
+        }
+      }
+    },
+    "03_send": {
+      "isForm": true,
+      "ui": "CARD",
+      "initialExpand": false,
+      "cardHeadline": {
+        "en": "Send/sent form as E-Mail",
+        "de": "Bericht als E-Mail senden/gesendet"
+      },
+      "stateIndicator": true,
+      "hiddenInPdf": true,
+      "hasNextStep": true,
+      "children": {
+        "send1": {
+          "fieldType": "REMBERG_SEND",
+          "label": {
+            "de": "Gesendet an",
+            "en": "Sent to"
+          },
+          "prefillConfig": {
+            "subject": "KSM Prüfprotokoll",
+            "content": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n",
+            "to": {
+              "currentUser": false
+            },
+            "cc": {
+              "currentUser": false
+            },
+            "bcc": {
+              "currentUser": false
+            },
+            "domainLimitations": [
+              "fps-germany.com",
+              "remberg.de"
+            ]
+          },
+          "required": false
+        }
+      },
+      "messages": {
+        "onFinish": [
+          {
+            "to": "ROOT",
+            "actions": [
+              {
+                "name": "SAVE_TO_BACKEND"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -162,7 +162,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  |  Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  |  	The ID of the current space
-| `assignedUserId`  | Optional |  The ID of the user who is assigned to the asset
+| `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
 ---
  ## Work Order View
@@ -178,7 +178,7 @@ If you create a new forms instance from a work order, the following data is prov
 | `currentUserId`  |  | The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  | The ID of the current space 
-| `assignedUserId`  | Optional | The ID of the user who is assigned to the work order
+| `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
 ---
 ## Properties

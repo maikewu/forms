@@ -1,7 +1,6 @@
 {
   "$schema": "https://pastebin.com/raw/eysKfZ7M",
   "general": {
-    "singleInstanceForm": false,
     "timezone": "Europe/Berlin"
   },
   "sections": [
@@ -43,28 +42,19 @@
         },
         {
           "id": "technicians",
-          "type": "userSingleSelect",
+          "type": "personListInput",
           "config": {
             "label": {
               "text": {
                 "de": "Servicetechniker",
                 "en": "Service Technician"
               }
-            },
-            "required": true,
-            "prefill": {
-              "value": [
-                {
-                  "input": "currentAccountId",
-                  "steps": []
-                }
-              ]
             }
           }
         },
         {
           "id": "begleitung",
-          "type": "userSingleSelect",
+          "type": "personListInput",
           "config": {
             "label": {
               "text": {
@@ -80,9 +70,17 @@
           "config": {
             "label": {
               "text": {
-                "de": "ausgestellt durch",
+                "de": "Ausgestellt durch",
                 "en": "Issued by"
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
             }
           }
         },
@@ -377,7 +375,41 @@
                 "de": "Durchgeführte Arbeiten",
                 "en": "Performed Tasks"
               }
-            }
+            },
+            "fields": {
+              "checkboxBooleanInput": {
+                  "checkedByDefault": false,
+                  "pdfHide": false
+              },
+              "titleSingleLineTextInput": {
+                  "required": false,
+                  "pdfHide": false
+              },
+              "commentMultiLineTextInput": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false
+              },
+              "highPrioBooleanInput": {
+                  "disabled": false,
+                  "pdfHide": false
+              },
+              "notNecessaryBooleanInput": {
+                  "disabled": false,
+                  "pdfHide": false
+              }
+          },
+          "prefill": {
+            "entries": [
+              {
+                "input": "workOrderId",
+                "steps": [
+                  "workOrderIdToWorkOrder",
+                  "workOrderToTasks"
+                ]
+              }
+            ]
+          }
           }
         },
         {
@@ -406,12 +438,48 @@
       "fields": [
         {
           "id": "times",
-          "type": "timeInput",
+          "type": "timeTrackingListInput",
           "config": {
             "label": {
               "text": {
                 "de": "Zeiten",
                 "en": "Times"
+              }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
               }
             }
           }
@@ -437,6 +505,51 @@
                 "de": "Ersatzteile",
                 "en": "Spare Parts"
               }
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Artikelnummer",
+                  "en": "Part Number",
+                  "tr": "Part Number Placeholder Text",
+                  "fr": "Part Number Placeholder Text",
+                  "es": "Part Number Placeholder Text",
+                  "it": "Part Number Placeholder Text"
+                }
+              },
+              "quantityNumericInput": {
+                "required": true,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Beschreibung",
+                  "en": "Description",
+                  "tr": "Description Placeholder Text",
+                  "fr": "Description Placeholder Text",
+                  "es": "Description Placeholder Text",
+                  "it": "Description Placeholder Text"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
+              },
+              "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+              }
             }
           }
         }
@@ -447,8 +560,8 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Expenses",
-          "en": "Spesen"
+          "de": "Spesen",
+          "en": "Expenses"
         }
       },
       "fields": [
@@ -460,6 +573,66 @@
               "text": {
                 "de": "Aufwände",
                 "en": "Costs"
+              }
+            },
+            "fields": {
+              "dateInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "commentMultiLineTextInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "expenseAmountNumericInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "expenseTypeSingleSelectInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true,
+                "values": {
+                  "flight": {
+                    "de": "Flug",
+                    "en": "Flight"
+                  },
+                  "rental_car": {
+                    "de": "Mietauto",
+                    "en": "Rental Car"
+                  },
+                  "board": {
+                    "de": "Verpflegung",
+                    "en": "Board"
+                  },
+                  "accommodation": {
+                    "de": "Unterkunft",
+                    "en": "Accommodation"
+                  },
+                  "parking": {
+                    "de": "Parken",
+                    "en": "Parking"
+                  },
+                  "toll": {
+                    "de": "Maut",
+                    "en": "Toll"
+                  },
+                  "transportation": {
+                    "de": "Transport",
+                    "en": "Transportation"
+                  },
+                  "vignette": {
+                    "de": "Vingette",
+                    "en": "Vingette"
+                  },
+                  "other": {
+                    "de": "Sonstiges",
+                    "en": "Other"
+                  }
+                }
               }
             }
           }
@@ -565,10 +738,10 @@
             "staticEmails": []
           },
           "body": {
-            "dynamic": "tbd"
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail."
           },
           "subject": {
-            "dynamic": "tbd"
+            "static": "Wartungsprotkoll"
           }
         }
       }

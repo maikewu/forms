@@ -12,8 +12,9 @@ You can find a list below, that contains all sections.
 
 | general property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |
+| [hideInstanceCounterInPdf](#hideinstancecounterinpdf)       | Setting this to `true` hides the counter of the form instance in the PDF view |
 | [singleInstanceForm](#singleinstanceform)                  | If this is set to `true`, no new form can be created if the previous one is not completed. |
-| [timezone](#timezone)                                       | Defines the timezone of the form
+| [timezone](#timezone)                                       | Defines the timezone of the form |
 
 | sections property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |
@@ -24,7 +25,8 @@ You can find a list below, that contains all sections.
 ```json
 {
   "general": {
-      "singleInstanceForm": false,
+      
+      "hideInstanceCounterInPdf": false,
       "timezone": "Europe/Berlin"
   },
   "sections": [
@@ -47,7 +49,21 @@ You can find a list below, that contains all sections.
   ]
 }
 ```
+---
+## `hideInstanceCounterInPdf`
 
+| `hideInstanceCounterInPdf`       |                 |
+| :-------------- | :-------------- |
+| Possible Values | `true`, `false`   |
+| Required        | no              |
+| Default Value   | -             |
+
+Setting the `hideInstanceCounterInPdf` config option to `true` hides the instance count of the form in the PDF view. 
+
+```json
+"hideInstanceCounterInPdf": false
+```
+---
 ## `singleInstanceForm`
 
 | `singleInstanceForm`       |                 |
@@ -62,6 +78,7 @@ Setting the `singleInstanceForm` config option to `true` allows only one instanc
 "singleInstanceForm": false
 ```
 
+---
 ## `timezone`
 
 | `timezone`       |                 |

@@ -1,7 +1,6 @@
 {
   "$schema": "https://pastebin.com/raw/eysKfZ7M",
   "general": {
-    "singleInstanceForm": false,
     "timezone": "Europe/Berlin"
   },
   "sections": [
@@ -38,27 +37,29 @@
                 "en": "Technician"
               }
             },
+            "pdfWidth": 0.5,
             "prefill": {
               "value": [
                 {
-                  "input": "currentAccountId",
+                  "input": "assignedUserId",
                   "steps": []
                 }
               ]
             }
           }
-        },
-        {
-          "id": "H3_customerInfo",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<h3>Kundeninformationen</h3>",
-              "en": "<h3>Customer Information</h3>"
-            },
-            "pdfHide": true
-          }
-        },
+        }
+      ]
+    },
+    {
+      "id": "02-customerInfo",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Kundeninformationen",
+          "en": "Customer Information"
+        }
+      },
+      "fields": [
         {
           "id": "customer",
           "type": "companySingleSelect",
@@ -69,6 +70,9 @@
                 "en": "Customer"
               }
             },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": true,
             "useAsFilterForFields": [
               "asset",
               "customerContactPerson"
@@ -79,13 +83,17 @@
                   "id": "customerLocation"
                 },
                 "steps": [
-                  "assetIdToAsset",
-                  "assetToLocationAddress"
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
                 ]
               }
             ],
             "prefill": {
               "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
                 {
                   "input": "assetId",
                   "steps": [
@@ -95,19 +103,6 @@
                 }
               ]
             }
-          }
-        },
-        {
-          "id": "customerNumber",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kundennummer",
-                "en": "Customer Number"
-              }
-            },
-            "pdfWidth": 0.5
           }
         },
         {
@@ -166,19 +161,6 @@
                 "de": "Rechnungsadresse entspricht Kundenadresse",
                 "en": "Billing address same as shipping address"
               }
-            },
-            "prefill": {
-              "value": [
-                {
-                  "input": "none",
-                  "steps": [
-                    [
-                      "staticBoolean",
-                      true
-                    ]
-                  ]
-                }
-              ]
             }
           }
         },
@@ -195,18 +177,19 @@
             "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5
           }
-        },
-        {
-          "id": "H3_assetInfo",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<h3>Anlageninformationen</h3>",
-              "en": "<h3>Asset Information</h3>"
-            },
-            "pdfHide": true
-          }
-        },
+        }
+      ]
+    },
+    {
+      "id": "02-assetInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Anlageninformationen",
+          "en": "Asset Information"
+        }
+      },
+      "fields": [
         {
           "id": "asset",
           "type": "assetSingleSelect",
@@ -226,7 +209,19 @@
                   "steps": []
                 }
               ]
-            }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
           }
         },
         {
@@ -244,7 +239,7 @@
       ]
     },
     {
-      "id": "02-mission_infos",
+      "id": "04-mission_infos",
       "type": "fieldSection",
       "config": {
         "headlineText": {
@@ -379,7 +374,11 @@
                 "en": "Comment"
               }
             },
-            "pdfWidth": 0.5
+            "pdfWidth": 0.5,
+            "placeHolderText": {
+              "de": "Kommentar",
+              "en": "Comment"
+            }
           }
         }
       ]
@@ -402,6 +401,29 @@
               "text": {
                 "de": "Durchgeführte Arbeiten",
                 "en": "Performed Tasks"
+              }
+            },
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": false,
+                "pdfHide": false
+              },
+              "titleSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "highPrioBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "notNecessaryBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
               }
             },
             "prefill": {
@@ -438,6 +460,42 @@
                 "de": "Reise- und Arbeitszeiten",
                 "en": "Travel and Working Times"
               }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              }
             }
           }
         }
@@ -462,6 +520,51 @@
                 "de": "Ersatzteile",
                 "en": "Spare Parts"
               }
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Artikelnummer",
+                  "en": "Part Number",
+                  "tr": "Part Number Placeholder Text",
+                  "fr": "Part Number Placeholder Text",
+                  "es": "Part Number Placeholder Text",
+                  "it": "Part Number Placeholder Text"
+                }
+              },
+              "quantityNumericInput": {
+                "required": true,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Beschreibung",
+                  "en": "Description",
+                  "tr": "Description Placeholder Text",
+                  "fr": "Description Placeholder Text",
+                  "es": "Description Placeholder Text",
+                  "it": "Description Placeholder Text"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": true,
+                "required": true,
+                "pdfHide": false
+              },
+              "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+              }
             }
           }
         }
@@ -485,6 +588,66 @@
               "text": {
                 "de": "Ausgaben",
                 "en": "Expenses"
+              }
+            },
+            "fields": {
+              "dateInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "commentMultiLineTextInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "expenseAmountNumericInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "expenseTypeSingleSelectInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true,
+                "values": {
+                  "flight": {
+                    "de": "Flug",
+                    "en": "Flight"
+                  },
+                  "rental_car": {
+                    "de": "Mietauto",
+                    "en": "Rental Car"
+                  },
+                  "board": {
+                    "de": "Verpflegung",
+                    "en": "Board"
+                  },
+                  "accommodation": {
+                    "de": "Unterkunft",
+                    "en": "Accommodation"
+                  },
+                  "parking": {
+                    "de": "Parken",
+                    "en": "Parking"
+                  },
+                  "toll": {
+                    "de": "Maut",
+                    "en": "Toll"
+                  },
+                  "transportation": {
+                    "de": "Transport",
+                    "en": "Transportation"
+                  },
+                  "vignette": {
+                    "de": "Vingette",
+                    "en": "Vingette"
+                  },
+                  "other": {
+                    "de": "Sonstiges",
+                    "en": "Other"
+                  }
+                }
               }
             }
           }
@@ -697,7 +860,43 @@
                 "en": "Travel and Working Times"
               }
             },
-            "pdfHideIfValueIsEmpty": true
+            "pdfHideIfValueIsEmpty": true,
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              }
+            }
           }
         },
         {
@@ -710,7 +909,67 @@
                 "en": "Expenses"
               }
             },
-            "pdfHideIfValueIsEmpty": true
+            "pdfHideIfValueIsEmpty": true,
+            "fields": {
+              "dateInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "commentMultiLineTextInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "expenseAmountNumericInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true
+              },
+              "expenseTypeSingleSelectInput": {
+                "pdfHide": false,
+                "disabled": false,
+                "required": true,
+                "values": {
+                  "flight": {
+                    "de": "Flug",
+                    "en": "Flight"
+                  },
+                  "rental_car": {
+                    "de": "Mietauto",
+                    "en": "Rental Car"
+                  },
+                  "board": {
+                    "de": "Verpflegung",
+                    "en": "Board"
+                  },
+                  "accommodation": {
+                    "de": "Unterkunft",
+                    "en": "Accommodation"
+                  },
+                  "parking": {
+                    "de": "Parken",
+                    "en": "Parking"
+                  },
+                  "toll": {
+                    "de": "Maut",
+                    "en": "Toll"
+                  },
+                  "transportation": {
+                    "de": "Transport",
+                    "en": "Transportation"
+                  },
+                  "vignette": {
+                    "de": "Vingette",
+                    "en": "Vingette"
+                  },
+                  "other": {
+                    "de": "Sonstiges",
+                    "en": "Other"
+                  }
+                }
+              }
+            }
           }
         }
       ]

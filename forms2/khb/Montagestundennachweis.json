@@ -2,7 +2,7 @@
   "$schema": "https://pastebin.com/raw/eysKfZ7M",
 
   "general": {
-      "singleInstanceForm": false,
+      
       "timezone": "Europe/Berlin"
   },
   "sections":[
@@ -27,7 +27,8 @@
               }
             },
             "required": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 1,
+            "useAsFilterForFields": ["asset","customer_contact"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -35,15 +36,105 @@
                   "steps": []
                 }
               ]
+            }
+          }
+        },
+        {
+          "type": "userSingleSelect",
+          "id": "customer_contact",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansprechpartner Kunde",
+                "en": "Customer contact person"
+              }
+            },
+            "value": {
+              "pdfPrintEmailAddress": true
+            },
+            "required": false,
+            "pdfWidth": 0.5,
+            "onChange": [
+              {
+                "target": {"id": "customer_contact_phone"},
+                "steps": ["userInfoToUser","userToPhoneNumberString","phoneNumberStringToPhoneNumberObject"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "userSingleSelect",
+          "id": "khb_contact",
+          "config": {
+            "label": {
+              "text": {
+                "de": "khb Ansprechpartner",
+                "en": "khb contact person"
+              }
+            },
+            "value": {
+              "pdfPrintEmailAddress": true
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "onChange": [
+              {
+                "target": {"id": "khb_contact_phone"},
+                "steps": ["userInfoToUser","userToPhoneNumberString","phoneNumberStringToPhoneNumberObject"]
+              }
+            ]
+          }
+        },
+        {
+          "type": "phoneNumberInput",
+          "id": "customer_contact_phone",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Telefonnummer Kunde",
+                "en": "Phone number customer"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "type": "phoneNumberInput",
+          "id": "khb_contact_phone",
+          "config": {
+            "label": {
+              "text": {
+                "de": "khb Telefonnummer",
+                "en": "khb Phone number"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlage",
+                "en": "Asset"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
             },
             "onChange": [
               {
-                "target": {"id": "signature_technician", "propertyName": "location"},
-                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"]
-              },
-              {
-                "target": {"id": "signature_customer", "propertyName": "location"},
-                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"]
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
               }
             ]
           }
@@ -65,36 +156,6 @@
         },
         {
           "type": "singleLineTextInput",
-          "id": "kommission",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kommission",
-                "en": "Commission"
-              }
-            },
-            "required": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5
-          }
-        },
-        {
-          "type": "singleLineTextInput",
-          "id": "leistungszeitraum",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Leistungszeitraum",
-                "en": "Service period"
-              }
-            },
-            "required": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5
-          }
-        },
-        {
-          "type": "singleLineTextInput",
           "id": "khb_order_number",
           "config": {
             "label": {
@@ -103,7 +164,7 @@
                 "en": "khb work order number"
               }
             },
-            "required": false,
+            "required": true,
             "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5
           }
@@ -124,36 +185,6 @@
           }
         },
         {
-          "type": "multiLineTextInput",
-          "id": "kurzbericht",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kurzbericht über Montageverlauf",
-                "en": "Short report about assembly process"
-              }
-            },
-            "pdfWidth": 1,
-            "required": false,
-            "pdfHideIfValueIsEmpty": true
-          }
-        },
-        {
-          "type": "multiLineTextInput",
-          "id": "notes",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Material / sonstige Kosten / besondere Vereinbarungen",
-                "en": "Material / other costs / special agreements"
-              }
-            },
-            "pdfWidth": 1,
-            "required": false,
-            "pdfHideIfValueIsEmpty": true
-          }
-        },
-        {
           "id": "times",
           "type": "timeTrackingListInput",
           "config": {
@@ -167,7 +198,7 @@
             "pdfHideIfValueIsEmpty": true,
             "fields": {
               "timeTrackingTypeStaticSingleSelect": {
-                "pdfHide": false
+                "pdfHide": true
               },
               "startDateTimeInput": {
                 "pdfHide": false
@@ -181,13 +212,13 @@
                 "pdfHide": false
               },
               "durationDisplay": {
-                "disabled": false,
-                "pdfHide": false
+                "disabled": true,
+                "pdfHide": true
               },
               "distanceNumericInput": {
-                "disabled": false,
+                "disabled": true,
                 "required": false,
-                "pdfHide": false
+                "pdfHide": true
               },
               "technicianUserSingleSelect": {
                 "disabled": false,
@@ -210,8 +241,8 @@
       "id": "signature_technician",
       "config": {
         "headlineText": {
-          "de": "Unterschrift Mitarbeiter",
-          "en": "Signature Staff Member"
+          "de": "Unterschrift khb",
+          "en": "Signature khb"
         },
         "required": true,
         "pdfHideIfValueIsEmpty": true,
@@ -225,9 +256,9 @@
             "pdfHide": false
           },
           "locationSingleLineTextInput": {
-            "required": true,
-            "disable": false,
-            "pdfHide": false
+            "required": false,
+            "disable": true,
+            "pdfHide": true
           },
           "nameSingleLineTextInput": {
             "capitalizeFirstLetterOfEveryWord": true,
@@ -242,16 +273,6 @@
               "input": "assignedUserId",
               "steps": ["userIdToUser","userToFullNameString"]
             }
-          ],
-          "location": [
-            {
-              "input": "workOrderId",
-              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
-            },
-            {
-              "input": "assetId",
-              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
-            }
           ]
         }
       }
@@ -261,7 +282,7 @@
       "id": "signature_customer",
       "config": {
         "headlineText": {
-          "de": "Unterschrift Auftraggeber",
+          "de": "Unterschrift Kunde",
           "en": "Signature Customer"
         },
         "required": true,
@@ -276,9 +297,9 @@
             "pdfHide": false
           },
           "locationSingleLineTextInput": {
-            "required": true,
-            "disable": false,
-            "pdfHide": false
+            "required": false,
+            "disable": true,
+            "pdfHide": true
           },
           "nameSingleLineTextInput": {
             "capitalizeFirstLetterOfEveryWord": true,
@@ -286,18 +307,6 @@
             "disable": false,
             "pdfHide": false
           }
-        },
-        "prefill": {
-          "location": [
-            {
-              "input": "workOrderId",
-              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
-            },
-            {
-              "input": "assetId",
-              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
-            }
-          ]
         }
       }
     },
@@ -317,10 +326,13 @@
             "static": "Montagestundennachweis - khb Maschinen- und Anlagenbau GmbH"
           },
           "body": {
-            "static": "Sehr geehrte Damen und Herren,\n\nanbei erhalten sie den Montagestundennachweis unseres Monteurs für den Einsatz in Ihrem Unternehmen.\nWir hoffen, dass Sie mit der ausgeführten Tätigkeit zufrieden sind.\nFür weitere Fragen steht Ihnen unser Team zur Verfügung.\n\nMit freundlichen Grüßen\n\nIhr Team der khb Maschinen- und Anlagenbau GmbH\n\n--\n\nDear Sir and Madam,\n\nEnclosed you will find the service protocol of our technician for the work in your company.\nWe hope you are satisfied with the work.\nIf you have any further questions, please do not hesitate to contact our team.\n\nBest regards\n\nYour team from khb Maschinen- und Anlagenbau GmbH"
+            "static": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nanbei erhalten sie den Montagestundennachweis unseres Monteurs für den Einsatz in Ihrem Unternehmen.\nWir hoffen, dass Sie mit der ausgeführten Tätigkeit zufrieden sind.\nFür weitere Fragen steht Ihnen unser Team zur Verfügung.\n\nMit freundlichen Grüßen\n\nIhr Team der khb Maschinen- und Anlagenbau GmbH\n\n--\n\nDear Sir and Madam,\n\nEnclosed you will find the service protocol of our technician for the work in your company.\nWe hope you are satisfied with the work.\nIf you have any further questions, please do not hesitate to contact our team.\n\nBest regards\n\nYour team from khb Maschinen- und Anlagenbau GmbH"
           },
           "bcc": {
-            "currentUser": true
+            "currentUser": true,
+            "staticEmails": [
+              "a.becker@khb-anlagenbau.com"
+            ]
           }
         }
       }
