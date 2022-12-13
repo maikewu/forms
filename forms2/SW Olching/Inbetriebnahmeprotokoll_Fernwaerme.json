@@ -1,0 +1,508 @@
+{
+  "$schema": "https://pastebin.com/raw/eysKfZ7M",
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_inspectionPlace",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Auftragsinformationen",
+          "en": "Work Order Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "headlineInspectionPlace",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Auftragsinformationen",
+              "en":"Work Order Information"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "useAsFilterForFields": ["asset"],
+            "required": true,
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerAddress"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            }
+          } 
+        },
+        {
+          "id": "customerAddress",
+          "type": "addressInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer Address"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount", "accountToBillingAddressAddress"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlage",
+                "en": "Asset"
+              }
+            },
+            "required": true,
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "assetAddress"},
+                "steps": ["assetInfoToAsset","assetToLocationAddress"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "assetAddress",
+          "type": "addressInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Adresse",
+                "en": "Address"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "prefill": {
+              "value":[
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "installationCompany",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Installationsfirma",
+                "en": "Installation Company"
+              }
+            }
+          }
+        },
+        {
+          "id": "dateWorkOrder",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftrag zur Inbetriebnahme vom",
+                "en": "Date of order for Commissioning"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_defects",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Mängel",
+          "en": "Defects"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace1",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineDefects",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Mängel",
+              "en":"Defects"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "disclaimer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:9pt'>Bei der Abnahme des Fernwärmeanschlusses und der Hausschlussstation wurden festgestellt:</b>",
+              "en": "<b style='font-size:9pt'>During the acceptance of the district heating connection and the house connection station were found:</b>"
+            }
+          }
+        },
+        {
+          "id": "noDefects",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "keine offensichtlichen Mängel",
+                "en": "no obvious defects"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "followingDefects",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "die folgenden Mängel",
+                "en": "following defects"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "commentDefects",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Festgestellte Mängel",
+                "en": "Checked Defects"
+              }
+            },
+            "placeHolderText": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+           "pdfHideIfValueIsEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_papers",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterlagen",
+          "en": "Papers"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlinePapers",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Unterlagen",
+              "en":"Defects"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "disclaimer2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:9pt'>Folgende Unterlagen liegen vor:</b>",
+              "en": "<b style='font-size:9pt'>Following documents exist:</b>"
+            }
+          }
+        },
+        {
+          "id": "pressureSampleProtocol",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Druckprobenprotokoll vom",
+                "en": "Pressure Sample Protocol from"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "datePressureProtocol",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Datum",
+                "en": "Date"
+              },
+              "pdfHide": true
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "flushProtocol",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Spülprotokoll vom",
+                "en": "Flush Protocol from"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "dateFlushProtocol",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Datum",
+                "en": "Date"
+              },
+              "pdfHide": true
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_commissioning",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Inbetriebnahme",
+          "en": "Commissioning"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace3",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineCommissioning",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Inbetriebnahme",
+              "en":"Commissioning"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "disclaimer3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:9pt'>Der Fernwärmeanschluss und die Hausanschlussstation wurden:</b>",
+              "en": "<b style='font-size:9pt'>The district heating connection and the house connection station were:</b>"
+            }
+          }
+        },
+        {
+          "id": "commissioned",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "in Betrieb genommen",
+                "en": "commissioned"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "commissionedDefects",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "mit Mängel auf ausdrücklichen Wunsch und Risiko des Auftraggebers und ohne die Übernahme einer Haftung durch die Stadtwerke Olching GmbH in Betrieb genommen",
+                "en": "put into operation with defects at the express request and risk of the customer and without the assumption of liability by Stadtwerke Olching GmbH."
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "notCommissioned",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "aufgrund der Mängel nicht in Betrieb genommen",
+                "en": "not put into operation due to the defects"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "disclaimer4",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:9pt'>Der Volumenstrom- und Differenzdruckregler wurde:</b>",
+              "en": "<b style='font-size:9pt'>The volume flow and differential pressure regulator was:</b>"
+            }
+          }
+        },
+        {
+          "id": "adjusted",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "eingestellt",
+                "en": "adjusted"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "adjustedTo",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "eingestellt auf (l/h)",
+                "en": "adjusted to (l/h)"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "notAdjusted",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "nicht eingestellt",
+                "en": "not adjusted"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "adjustedTo",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "nicht eingestellt, weil",
+                "en": "not adjusted because"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        }
+      ]
+    }
+  ]
+}
