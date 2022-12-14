@@ -29,7 +29,7 @@ parentDoc: 635ce486ae5fac003cef279e
     "type": "fieldRepeater",
     "config": {
         "pdfHide": false,
-        "pdfHideIfValuesIsEmpty": false,
+        "pdfHideIfValueIsEmpty": false,
         "requiredAmountOfEntries": 2,
         "pdfWidth": 1,
         "label": {
