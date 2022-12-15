@@ -17,7 +17,6 @@ The EmailSection contains fields to send the finshed form.
 | [requiredAmountOfOutgoingMails](#requiredamountofoutgoingmails)                        | Setting the requried amount of outgoing emails that has to be sent or marked for sending. |
 | [hidePreviewPdfButton](./02-signature-section/#hidepreviewpdfbutton)                                          | Setting this to `true` hides the preview PDF button in the UI. |
 | [hideDownloadPdfButton](./02-signature-section/#hidedownloadpdfbutton)                                        |  Setting this to `true` hides the download PDF button in the UI.|
-| [allowSendingWhenRequiredFieldsMissing](#allowsendingwhenrequiredfieldsmissing)        | Setting this to `true` allows to send the mail even if not every required field having been filled |
 | [whitelistedDomains](#whitelisteddomains)                                              | Defining domains that are whitelisted to as recipients |
 | [emailDialogPrefill](#emaildialogprefill)                                              | Configuration the email prefill after the FormEmailPrefillConfig. |
 
@@ -52,7 +51,6 @@ The EmailSection contains fields to send the finshed form.
             "es": "<b>Example HTML helptext below [ES]</b>",
             "it": "<b>Example HTML helptext below [IT]</b>"
         },
-        "allowSendingWhenRequiredFieldsMissing": false,
         "requiredAmountOfOutgoingMails": 2,
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -77,12 +75,20 @@ The EmailSection contains fields to send the finshed form.
                 "staticEmails": []
             },
             "subject": {
-                "dynamic": "tbd",
-                "static": "Default Subject"
+                "en": "Example Email Section",
+                "de": "Beispiel Email Sektion",
+                "tr": "Example Email Section [TR]",
+                "fr": "Example Email Section [FR]",
+                "es": "Example Email Section [ES]",
+                "it": "Example Email Section [IT]"
             },
             "body": {
-                "dynamic": "tbd",
-                "static": "Default Content"
+                "en": "Example Email Section",
+                "de": "Beispiel Email Sektion",
+                "tr": "Example Email Section [TR]",
+                "fr": "Example Email Section [FR]",
+                "es": "Example Email Section [ES]",
+                "it": "Example Email Section [IT]"
             }
         }
     }
@@ -104,21 +110,6 @@ By setting `requiredAmountOfOutgoingMails`, you define the amount of mails which
 "requiredAmountOfOutgoingMails": 3,
 ```
 
----
-## `allowSendingWhenRequiredFieldsMissing`
-
-
-| `allowSendingWhenRequiredFieldsMissing`  |                 |
-| :--------------------------| :-------------- |
-| Possible Values            | `true`, `false`  |
-| Required                   | no              |
-| Default Value              | `false`             |
-
-By setting `allowSendingWhenRequiredFieldsMissing` to `true` the user is able to send the mail without all required fields having been filled.
-
-```typescript
-"allowSendingWhenRequiredFieldsMissing": true,
-```
 ---
 ## `whitelistedDomains`
 
@@ -177,12 +168,20 @@ By setting `emailDialogPrefill` you ensure that mails are only sent to recipient
         "staticEmails": []
     },
     "subject": {
-        "dynamic": "tbd",
-        "static": "Default Subject"
+        "en": "Example Email Section",
+        "de": "Beispiel Email Sektion",
+        "tr": "Example Email Section [TR]",
+        "fr": "Example Email Section [FR]",
+        "es": "Example Email Section [ES]",
+        "it": "Example Email Section [IT]"
     },
     "body": {
-        "dynamic": "tbd",
-        "static": "Default Content"
+        "en": "Example Email Section",
+        "de": "Beispiel Email Sektion",
+        "tr": "Example Email Section [TR]",
+        "fr": "Example Email Section [FR]",
+        "es": "Example Email Section [ES]",
+        "it": "Example Email Section [IT]"
     }
 }
 ```
@@ -254,14 +253,18 @@ Duplications happens when currentUser=assignee=creator!
 
 | Property                                                      | Description                       |
 | :------------------------------------------------------------ | :-------------------------------- |
-| [static]                                                      | Static text input that can be used to pedefine the value of the `subject`. |
+| [Mu]                                                      | Static text input that can be used to pedefine the value of the `subject`. |
 
 Allows to predefine the subject of the mail. If the subject is empty the form name is used as subject. 
 
 ```typescript
 "subject": {
-    "dynamic": "tbd",
-    "static": "Default Subject"
+    "en": "Example Email Section",
+    "de": "Beispiel Email Sektion",
+    "tr": "Example Email Section [TR]",
+    "fr": "Example Email Section [FR]",
+    "es": "Example Email Section [ES]",
+    "it": "Example Email Section [IT]"
 },
 ```
 ---
@@ -275,7 +278,11 @@ Allows to predefine a message in the body.
 
 ```typescript
 "body": {
-    "dynamic": "tbd",
-    "static": "Default Content"
+    "en": "Example Email Section",
+    "de": "Beispiel Email Sektion",
+    "tr": "Example Email Section [TR]",
+    "fr": "Example Email Section [FR]",
+    "es": "Example Email Section [ES]",
+    "it": "Example Email Section [IT]"
 }
 ```
