@@ -13,7 +13,6 @@ You can find a list below, that contains all sections.
 | general property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |
 | [hideInstanceCounterInPdf](#hideinstancecounterinpdf)       | Setting this to `true` hides the counter of the form instance in the PDF view |
-| [singleInstanceForm](#singleinstanceform)                  | If this is set to `true`, no new form can be created if the previous one is not completed. |
 | [timezone](#timezone)                                       | Defines the timezone of the form |
 
 | sections property                                                 | Description                                                                                                  |
@@ -25,7 +24,6 @@ You can find a list below, that contains all sections.
 ```json
 {
   "general": {
-      
       "hideInstanceCounterInPdf": false,
       "timezone": "Europe/Berlin"
   },
@@ -63,21 +61,6 @@ Setting the `hideInstanceCounterInPdf` config option to `true` hides the instanc
 ```json
 "hideInstanceCounterInPdf": false
 ```
----
-## `singleInstanceForm`
-
-| `singleInstanceForm`       |                 |
-| :-------------- | :-------------- |
-| Possible Values | `true`, `false`   |
-| Required        | no              |
-| Default Value   | -             |
-
-Setting the `singleInstanceForm` config option to `true` allows only one instance of this form type to be in progress at any given time. 
-
-```json
-"singleInstanceForm": false
-```
-
 ---
 ## `timezone`
 
