@@ -1,0 +1,1022 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_generalInformatio",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Projekt/Gerätenummer",
+                "en": "Projectno./Assetno."
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "technician",
+          "type": "userSingleSelect",
+          "config": {
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Auftraggeber (AG)",
+                "en": "Client"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": true,
+            "pdfWidth": 1,
+            "useAsFilterForFields": [
+              "asset"
+            ],
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kundenname"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "contactPerson",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Mitarbeiter (AG)",
+                "en": "Employee (Client)"
+              }
+            }
+          }
+        },
+        {
+          "id": "employeePosition",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Funktion",
+                "en": "Position"
+              }
+            }
+          }
+        },
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "company": false,
+              "supplement": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customers address"
+              }
+            },
+            "value": {
+              "pdfStartInNewLine": true,
+              "pdfAddLineBreaks": true
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ],
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "orderNumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Bestellnummer (AG)",
+                "en": "Order Number (Client)"
+              }
+            }
+          }
+        },
+        {
+          "id": "commNumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Komm.",
+                "en": "Comm."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_checklist",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Checkliste - Übergabe/Abnahme",
+          "en": "Checklist - Handover/Commissioning"
+        }
+      },
+      "fields": [
+        {
+          "id": "helpText1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "uiHide": false,
+            "text": {
+              "de": "Standort/Montageplatz",
+              "en": "Location/Installation Site"
+            }
+          }
+        },
+        {
+          "id": "yBox1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "ja/i.O.",
+                "en": "Yes/Ok"
+              }
+            }
+          }
+        },
+        {
+          "id": "nBox1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nein/Fehler",
+                "en": "No/Error"
+              }
+            }
+          }
+        },
+        {
+          "id": "aBox1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nicht zutreffend",
+                "en": "Not Applicable"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment1",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Maßnahmen/Bemerkung",
+                "en": "Action/Comments"
+              }
+            }
+          }
+        },
+        {
+          "id": "helpText2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "uiHide": false,
+            "text": {
+              "de": "Elektroanschluss",
+              "en": "Electrical Connection"
+            }
+          }
+        },
+        {
+          "id": "yBox2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "ja/i.O.",
+                "en": "Yes/Ok"
+              }
+            }
+          }
+        },
+        {
+          "id": "nBox2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nein/Fehler",
+                "en": "No/Error"
+              }
+            }
+          }
+        },
+        {
+          "id": "aBox2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nicht zutreffend",
+                "en": "Not Applicable"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment2",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Maßnahmen/Bemerkung",
+                "en": "Action/Comments"
+              }
+            }
+          }
+        },
+        {
+          "id": "helpText3",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "uiHide": false,
+            "text": {
+              "de": "Druckluftanschluss",
+              "en": "Compressed Air Connection"
+            }
+          }
+        },
+        {
+          "id": "yBox3",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "ja/i.O.",
+                "en": "Yes/Ok"
+              }
+            }
+          }
+        },
+        {
+          "id": "nBox3",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nein/Fehler",
+                "en": "No/Error"
+              }
+            }
+          }
+        },
+        {
+          "id": "aBox",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nicht zutreffend",
+                "en": "Not Applicable"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment3",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Maßnahmen/Bemerkung",
+                "en": "Action/Comments"
+              }
+            }
+          }
+        },
+        {
+          "id": "helpText4",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "uiHide": false,
+            "text": {
+              "de": "Äußerer Zustand",
+              "en": "Visual Condition"
+            }
+          }
+        },
+        {
+          "id": "yBox4",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "ja/i.O.",
+                "en": "Yes/Ok"
+              }
+            }
+          }
+        },
+        {
+          "id": "nBox4",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nein/Fehler",
+                "en": "No/Error"
+              }
+            }
+          }
+        },
+        {
+          "id": "aBox4",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nicht zutreffend",
+                "en": "Not Applicable"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment4",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Maßnahmen/Bemerkung",
+                "en": "Action/Comments"
+              }
+            }
+          }
+        },
+        {
+          "id": "helpText5",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "uiHide": false,
+            "text": {
+              "de": "Funktionsprüfung",
+              "en": "Functional Test"
+            }
+          }
+        },
+        {
+          "id": "yBox5",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "ja/i.O.",
+                "en": "Yes/Ok"
+              }
+            }
+          }
+        },
+        {
+          "id": "nBox5",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nein/Fehler",
+                "en": "No/Error"
+              }
+            }
+          }
+        },
+        {
+          "id": "aBox5",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nicht zutreffend",
+                "en": "Not Applicable"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment5",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Maßnahmen/Bemerkung",
+                "en": "Action/Comments"
+              }
+            }
+          }
+        },
+        {
+          "id": "helpText6",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "uiHide": false,
+            "text": {
+              "de": "Vollständ. Bestellumfang",
+              "en": "Complete Ordering Extent"
+            }
+          }
+        },
+        {
+          "id": "yBox6",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "ja/i.O.",
+                "en": "Yes/Ok"
+              }
+            }
+          }
+        },
+        {
+          "id": "nBox6",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nein/Fehler",
+                "en": "No/Error"
+              }
+            }
+          }
+        },
+        {
+          "id": "aBox6",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nicht zutreffend",
+                "en": "Not Applicable"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment6",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Maßnahmen/Bemerkung",
+                "en": "Action/Comments"
+              }
+            }
+          }
+        },
+        {
+          "id": "helpText7",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "uiHide": false,
+            "text": {
+              "de": "Dokumentation",
+              "en": "Documentation"
+            }
+          }
+        },
+        {
+          "id": "yBox7",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "ja/i.O.",
+                "en": "Yes/Ok"
+              }
+            }
+          }
+        },
+        {
+          "id": "nBox7",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nein/Fehler",
+                "en": "No/Error"
+              }
+            }
+          }
+        },
+        {
+          "id": "aBox7",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "nicht zutreffend",
+                "en": "Not Applicable"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment7",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Maßnahmen/Bemerkung",
+                "en": "Action/Comments"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fieldSection",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General information"
+        }
+      },
+      "fields": [
+        {
+          "id": "remarks",
+          "type": "richTextInput",
+          "config": {
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Festgestellte Mängel/erforderliche Maßnahmen",
+                "en": "Defects/Actions"
+              }
+            },
+            "placeHolderText": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            }
+          }
+        },
+        {
+          "id": "exampleSparePartsList_1",
+          "type": "partListInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Benötigte Ersatzteile",
+                "en": "Spare Parts"
+              }
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "pdfHide": false,
+                "required": false,
+                "placeHolderText": {
+                  "de": "Artikelnummer",
+                  "en": "Part Number"
+                }
+              },
+              "quantityNumericInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": false,
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Beschreibung",
+                  "en": "Description"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": true,
+                "required": false,
+                "pdfHide": false
+              },
+              "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_training",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Teilnehmer Einweisung Funktion und Bedienung der Anlage",
+          "en": "Training Participants"
+        }
+      },
+      "fields": [
+        {
+          "id": "participants",
+          "type": "fieldRepeater",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "requiredAmountOfEntries": 0,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Teilnehmer Einweisung Funktion und Bedienung der Anlage",
+                "en": "Training Participants"
+              }
+            },
+            "fields": [
+              {
+                "id": "name",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.5,
+                  "required": true,
+                  "label": {
+                    "text": {
+                      "de": "Name, Vorname",
+                      "en": "Surname, Name"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "position",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.5,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "de": "Position",
+                      "en": "Position"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_workTimes",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Teilnehmer Einweisung Funktion und Bedienung der Anlage",
+          "en": "Training Participants"
+        }
+      },
+      "fields": [
+        {
+          "id": "times",
+          "type": "timeInput",
+          "config": {
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Zeiten",
+                "en": "Times"
+              }
+            },
+            "value": {
+              "dropdownInterval": 15,
+              "pdfStartInNewLine": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "signatureTechnician",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Arbeitnehmer",
+          "en": "Employee"
+        },
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hint",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Gerät/Anlage gilt vollumfänglich als ordnungsgemäß u. funktionstüchtig abgenommen.",
+          "en": "The asset is fully accepted as properly and fully functiona."
+        }
+      },
+      "fields": [
+      ]
+    },
+    {
+      "id": "signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "en": "Signature Client",
+          "de": "Unterschrift AG (Kunde)"
+        },
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        }
+      }
+    },
+    {
+      "id": "send",
+      "type": "emailSection",
+      "config": {
+        "pdfHide": false,
+        "whitelistedDomains": [],
+        "headlineText": {
+          "de": "Ausgefülltes Inbetriebnahme- und Wartungsprotokoll absenden",
+          "en": "Send filled commissioning and maintenance protocol"
+        },
+        "allowSendingWhenRequiredFieldsMissing": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": true,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "static":  "Diese E-Mail wurde automatisch erstellt. Bitte antworten Sie nicht auf diese E-Mail."
+          },
+          "subject": {
+            "static": "Übergabe-Abnahmeprotokoll"
+          }
+        }
+      }
+    }
+  ]
+}

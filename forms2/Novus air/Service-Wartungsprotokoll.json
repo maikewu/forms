@@ -16,6 +16,51 @@
       },
       "fields": [
         {
+          "id": "headlineGeneralInformation",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Allgemeine Informationen",
+              "en":"General Information"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "serviceTechnician",
+          "type": "userSingleSelect",
+          "config": {
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Servicemitarbeiter",
+                "en": "Service Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "10_signatureTechnician",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ]
+          }
+        },
+        {
           "id": "customer",
           "type": "companySingleSelect",
           "config": {
@@ -31,7 +76,7 @@
             "onChange": [
               {
                 "target": {
-                  "id": "assetAddress",
+                  "id": "customerAddress"
                 },
                 "steps": [
                   "accountInfoToAccount",
@@ -42,8 +87,40 @@
             "prefill": {
               "selectedCompany": [
                 {
-                  "input": "currentAccountId",
+                  "input": "organizationId",
                   "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customerAddress",
+          "type": "addressInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftraggeberdresse",
+                "en": "Customer Address"
+              }
+            },
+            "pdfWidth": 0.5,
+            "value": {
+              "pdfStartInNewLine": true,
+              "pdfAddLineBreaks": true
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount", "accountToBillingAddressAddress"]
                 }
               ]
             }
@@ -63,19 +140,1063 @@
           }
         },
         {
+          "id": "contactPerson",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansprechperson/Mitarbeiter",
+                "en": "Contact Person/Employee"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true 
+          }
+        },
+        {
+          "id": "maintenanceContract",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+               "text": {
+                "de": "Wartungsvertrag",
+                "en": "Maintenance Contract"
+               }
+            },
+            "pdfWidth": 0.5,
+            "value": {
+              "options": {
+                "basic":{
+                  "de": "Basic",
+                  "en": "Basic"
+                },
+                "classic":{
+                  "de": "Classic",
+                  "en": "Classic"
+                },
+                "premium":{
+                  "de": "Premium",
+                  "en": "Premium"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "serviceContract",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Servicevertrag",
+                "en": "Service Contract"
+              }
+            },
+            "pdfWidth": 0.5,
+            "value": {
+              "options": {
+                "yes":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "no":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "otherAgreements",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Sonstige Vereinbarung",
+                "en": "Other Agreements"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_assetInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Geräteinformationen",
+          "en": "Asset Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace1",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineAssetInformation",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Geräteinformationen",
+              "en":"Asset Information"
+            },
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Geräterbezeichnung/-nummer",
+                "en": "Asset Name and Number"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "assetAddress"},
+                "steps": ["assetInfoToAsset","assetToLocationAddress"]
+              }
+            ]
+          }
+        },
+        {
           "id": "assetAddress",
           "type": "addressInput",
           "config": {
             "label": {
               "text": {
-                "de": "Anschrift/Standort",
-                "en": "Address/Location"
+                "de": "Standort",
+                "en": "Asset Address"
               }
             },
             "pdfWidth": 0.5,
-
+            "value": {
+              "pdfStartInNewLine": true,
+              "pdfAddLineBreaks": true
+            },
+            "prefill": {
+              "value":[
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "specialEquipment",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Sonderausstattung",
+                "en": "Special Equipment"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "lastInspection",
+          "type": "dateInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+               "text": {
+                "de": "Letzte Inspektion",
+                "en": "Last Inspection"
+               }
+            }
+          }
+        },
+        {
+          "id": "errorMessage",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Beanstandungen/Fehlermeldung",
+                "en": "Complaints/Error Message"
+              }
+            }
           }
         }
+      ]
+    },
+    {
+      "id": "03_maintenanceInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Wartungsinformationen",
+          "en": "Maintenance Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineMaintenanceInformation",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Wartungsinformationen",
+              "en":"Maintenance Information"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "technicalRequirements",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlage entspricht den technischen Anfoderungen des Geräteherstellers",
+                "en": "Asset complies with the technical requirements of the equipment manufacturer"
+              }
+            },
+            "pdfWidth": 0.5,
+            "value": {
+              "options": {
+                "yes":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "no":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "testBadge",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Prüfplakette erteilt",
+                "en": "Test Badge granted"
+              }
+            },
+            "pdfWidth": 0.5,
+            "value": {
+              "options": {
+                "yes":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "no":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "testBadgeValidation",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Prüfplakette gültig bis",
+                "en": "Test Badge valid until"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "comments",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Comments"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "VDEinspection",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "VDE Prüfung durchgeführt",
+                "en": "VDE Inspection performed"
+              }
+            },
+            "pdfWidth": 0.5,
+            "value": {
+              "options": {
+                "yes":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "no":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "VDEinspectionPerformedBy",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "VDE Prüfung erfolgt durch",
+                "en": "VDE Inspection performed by"
+              }
+            },
+            "pdfWidth": 0.5,
+            "value": {
+              "options": {
+                "customer":{
+                  "de": "Auftraggeber",
+                  "en": "Customer"
+                },
+                "externalCompany":{
+                  "de": "Fremdfirma",
+                  "en": "External Company"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_dataBeforeService",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Betriebsparameter - Ausstattung - Softwarestand vor Service",
+          "en": "Operating Parameters - Equipment - Software Version before Service"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace3",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineDataBeforeService",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Betriebsparameter - Ausstattung - Softwarestand vor Service",
+              "en":"Operating Parameters - Equipment - Software Version before Service"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "operatingHours",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Betriebsstunden",
+                "en": "Operating Hours"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "valveCycles",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ventilzyklen",
+                "en": "Valve Cycles"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "valveCyclesSum",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ventilzyklen Summe",
+                "en": "Valve Cycles Sum"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "differentialPressure",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Differenzdruck: 100%",
+                "en": "Differential Pressure: 100%"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "flowRate",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Volumenstrom: 100%",
+                "en": "Flow Rate: 100%"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "softwareVersion",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Softwareversion",
+                "en": "Software Version"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "lastCleaning",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Letzte Abreinigung",
+                "en": "Last Cleaning"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "startCleaning",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Start Abreinigung",
+                "en": "Start Cleaning"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "logoVersion",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Logoversion",
+                "en": "Logo Version"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "filterSaturation",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Filtersättigung",
+                "en": "Filter Saturation"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "sensor",
+          "type": "staticSingleSelect",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Sensor",
+                "en": "Sensor"
+              }
+            },
+            "value": {
+              "options": {
+                "no":{
+                  "de": "Nein",
+                  "en": "No"
+                },
+                "VOC":{
+                  "de": "VOC",
+                  "en": "VOC"
+                },
+                "particleRLS":{
+                  "de": "Partikel-RLS",
+                  "en": "Particle RLS"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "filteType",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Filtertyp",
+                "en": "Filter Type"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_dataAfterService",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Betriebsparameter - Ausstattung - Softwarestand nach Service",
+          "en": "Operating Parameters - Equipment - Software Version after Service"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace4",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineDataAfterService",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Betriebsparameter - Ausstattung - Softwarestand nach Service",
+              "en":"Operating Parameters - Equipment - Software Version after Service"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "startCleaningAfter",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Start Abreinigung",
+                "en": "Start Cleaning"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "differentialPressureAfter",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Differenzdruck: 100%",
+                "en": "Differential Pressure: 100%"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "flowRateAfter",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Volumenstrom: 100%",
+                "en": "Flow Rate: 100%"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "softwareVersionAfter",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Softwareversion",
+                "en": "Software Version"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "logoVersionAfter",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Logoversion",
+                "en": "Logo Version"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "sensorAfter",
+          "type": "staticSingleSelect",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Sensor",
+                "en": "Sensor"
+              }
+            },
+            "value": {
+              "options": {
+                "no":{
+                  "de": "Nein",
+                  "en": "No"
+                },
+                "VOC":{
+                  "de": "VOC",
+                  "en": "VOC"
+                },
+                "particleRLS":{
+                  "de": "Partikel-RLS",
+                  "en": "Particle RLS"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "filteTypeAfter",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Filtertyp",
+                "en": "Filter Type"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "06_stockstacking",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Bestandsaufnahme IST-Werte",
+          "en": "Stockstacking Actual Value"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace4",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineStockstacking",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Bestandsaufnahme IST-Werte",
+              "en":"Stockstacking Actual Value"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "helptext",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "1 - verschmutzt, 2 - nachgezogen, 3 - eingestellt, 4 - gereinigt, 5 - beschädigt, 6 - zugesetzt, 7 - ungünstig, 8 - grenzwertig",
+              "en": "1 - dirty, 2 - tightened, 3 - adjusted, 4 - cleaned, 5 - damaged, 6 - clogged, 7 - unfavorable, 8 - borderline"
+            }
+          }
+        },
+        {
+          "id": "locationCheck",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "1. Standortprüfung (Eignung/Einflüsse)",
+                "en": "1. Location Check (suitability/influences)"
+              }
+            },
+            "pdfWidth": 0.5 
+          }
+        },
+        {
+          "id": "comment1",
+          "type": "singleLineTextInput",
+          "config": {
+           "label": {
+            "text": {
+              "de": "Bemerkung",
+              "en": "Comment"
+            }
+           },
+           "pdfWidth": 0.5,
+           "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "visualCheck",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "2. Sichtprüfung der Anlage",
+                "en": "2. Visual Check of Asset"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "comment2",
+          "type": "singleLineTextInput",
+          "config": {
+           "label": {
+            "text": {
+              "de": "Bemerkung",
+              "en": "Comment"
+            }
+           },
+           "pdfWidth": 0.5,
+           "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "visualInspection",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "2. Sichtprüfung der Anlage auf äußerliche Beschädigungen inkl. Anschlussleitungen",
+                "en": "2. Visual inspection of the system for external damage incl. connection lines"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "comment3",
+          "type": "singleLineTextInput",
+          "config": {
+           "label": {
+            "text": {
+              "de": "Bemerkung",
+              "en": "Comment"
+            }
+           },
+           "pdfWidth": 0.5,
+           "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "filterMats",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "3. Filtermatten am Auslass (Zustand)",
+                "en": "3. Filter mats at the outlet (condition)."
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "comment4",
+          "type": "singleLineTextInput",
+          "config": {
+           "label": {
+            "text": {
+              "de": "Bemerkung",
+              "en": "Comment"
+            }
+           },
+           "pdfWidth": 0.5,
+           "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "warningSigns",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "4. Warnschilder (vorhanden/erkennbar)",
+                "en": "4. Warning signs (present/recognizable)"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "comment5",
+          "type": "singleLineTextInput",
+          "config": {
+           "label": {
+            "text": {
+              "de": "Bemerkung",
+              "en": "Comment"
+            }
+           },
+           "pdfWidth": 0.5,
+           "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "operationHours1",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "5. Betriebsstunden (Servicemenü)",
+                "en": "5. Operating hours (service menu)"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "differentialPressure1",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "6. Differenzdruck (Anzeige Display)",
+                "en": "6. Differential pressure (display)"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "suction",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "7. Messung V-Ansaugung (m/s)",
+                "en": "7. Measurement V suction (m/s)"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "blowOutSpeed",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "8. Messung Ausblasgeschwindigkeit (m/s)",
+                "en": "8. Measurement blow out speed (m/s)"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "compressedAir",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "9. Kontr. Druckluft (4-6 bar) u. Abscheider",
+                "en": "9. Contr. compressed air (4-6 bar) and separator"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "comment6",
+          "type": "singleLineTextInput",
+          "config": {
+           "label": {
+            "text": {
+              "de": "Bemerkung",
+              "en": "Comment"
+            }
+           },
+           "pdfWidth": 0.5,
+           "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "contamination",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "10. Sichtkontrolle auf Verunreinigungen",
+                "en": "10. Visual inspection for contamination"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "comment7",
+          "type": "singleLineTextInput",
+          "config": {
+           "label": {
+            "text": {
+              "de": "Bemerkung",
+              "en": "Comment"
+            }
+           },
+           "pdfWidth": 0.5,
+           "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "contamination",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "10. Sichtkontrolle auf Verunreinigungen",
+                "en": "10. Visual inspection for contamination"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "comment8",
+          "type": "singleLineTextInput",
+          "config": {
+           "label": {
+            "text": {
+              "de": "Bemerkung",
+              "en": "Comment"
+            }
+           },
+           "pdfWidth": 0.5,
+           "pdfHideIfValueIsEmpty": true
+          }
+        },
       ]
     }
   ]

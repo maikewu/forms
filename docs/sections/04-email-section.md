@@ -251,9 +251,10 @@ Duplications happens when currentUser=assignee=creator!
 ### `subject`
 
 
-| Property                                                      | Description                       |
-| :------------------------------------------------------------ | :-------------------------------- |
-| [Mu]                                                      | Static text input that can be used to pedefine the value of the `subject`. |
+| Property          | Description                |
+| :---------------- | :------------------------- |
+| Possible Values   | [MultiLanguageText](./24-general-properties/#multilanguagetext) |
+
 
 Allows to predefine the subject of the mail. If the subject is empty the form name is used as subject. 
 
@@ -270,9 +271,10 @@ Allows to predefine the subject of the mail. If the subject is empty the form na
 ---
 ### `body`
 
-| Property                                                      | Description                       |
-| :------------------------------------------------------------ | :-------------------------------- |
-| [static]                                                      | Static text input that can be used to predefine the value of the `body`. |
+
+| Property          | Description                |
+| :---------------- | :------------------------- |
+| Possible Values   | [MultiLanguageText](./24-general-properties/#multilanguagetext) |
 
 Allows to predefine a message in the body. 
 
