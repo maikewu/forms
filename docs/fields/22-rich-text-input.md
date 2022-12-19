@@ -37,7 +37,7 @@ The RichTextInput is a text field that allows text formatting.
             "fr": "Example Placeholder [FR]",
             "es": "Example Placeholder [ES]",
             "it": "Example Placeholder [IT]",
-        }
+        },
         "label": {
             "pdfHide": false,
             "pdfTextColor": "#facc2e",
