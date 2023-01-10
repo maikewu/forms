@@ -1,29 +1,123 @@
 {
   "general": {
+    "$schema": "https://app.remberg.de/api/forms/v2/documentation/form-template-config-schema.json",
     "timezone": "Europe/Berlin"
   },
   "sections": [
     {
-      "id": "01_generalInformation",
+      "id": "01_placeOfInstallation",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Allgemeine Informationen",
-          "en": "General Information"
+          "de": "Einbauort",
+          "en": "Place Of Installation"
         }
       },
       "fields": [
         {
-          "id": "headlinegeneralInformation",
+          "id": "headlinePlaceOfInstallation",
           "type": "headlineDisplay",
           "config":{
             "uiHide": true,
             "text":{
-              "de":"Allgemeine Informationen",
-              "en":"General Information"
+              "de":"Einbauort",
+              "en":"Place Of Installation"
             },
             "pdfWidth": 1,
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlage",
+                "en": "Asset"
+              }
+            },
+            "required": true, 
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "assetAddress"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  "assetToLocationAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "assetAddress",
+          "type": "addressInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Adresse",
+                "en": "Address"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_customerInformation",
+      "type": "fieldSection",
+      "config":{
+        "headlineText":{
+          "de": "Kundeninformationen",
+          "en": "Customer Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace1",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
             "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineCustomerInformation",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "text": {
+              "de": "Kundeninformation",
+              "en": "Customer Information"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
           }
         },
         {
@@ -36,56 +130,92 @@
                 "en": "Customer"
               }
             },
+            "useAsFilterForFields": [
+              "asset"
+            ],
             "onChange": [
               {
                 "target": {
-                  "id": "customerLocation"
+                  "id": "customerAddress"
                 },
                 "steps": [
                   "accountInfoToAccount",
                   "accountToBillingAddressAddress"
                 ]
-              },
-              {
-                "target": {
-                  "id": "03_signatureTechnician",
-                  "propertyName": "location"
-                },
-                "steps": [
-                  "accountInfoToAccount",
-                  "accountToBillingAddressAddress",
-                  "addressToCityString"
-                ]
               }
             ],
-            "useAsFilterForFields": [
-              "assetDismount",
-              "assetInstallation"
-            ]
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
-          "id": "customerLocation",
+          "id": "customerAddress",
           "type": "addressInput",
           "config": {
             "label": {
               "text": {
                 "de": "Kundenadresse",
-                "en": "Customer Adress"
+                "en": "Customer Address"
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
             }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_workOrderInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Anlagenerfassung",
+          "en": "Asset Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "whiteSpace2",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"",
+              "en":""
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H2"
           }
         },
         {
-          "id": "customerContactPerson",
-          "type": "userSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kontaktperson",
-                "en": "Contact Person"
-              }
-            }
+          "id": "headlineWorkOrderInformation",
+          "type": "headlineDisplay",
+          "config":{
+            "uiHide": true,
+            "text":{
+              "de":"Montageinformationen",
+              "en":"Assembly Information"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3"
           }
         },
         {
@@ -119,81 +249,17 @@
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "id": "02_assetInformation",
-      "type": "fieldSection",
-      "config": {
-        "headlineText": {
-          "de": "Anlagenerfassung",
-          "en": "Asset Information"
-        }
-      },
-      "fields": [
+        },
         {
-          "id": "whiteSpace",
+          "id": "whiteSpace3",
           "type": "headlineDisplay",
           "config":{
-            "uiHide": true,
             "text":{
               "de":"",
               "en":""
             },
             "pdfWidth": 1,
             "pdfTextSize": "H2"
-          }
-        },
-        {
-          "id": "headlineAssetInformation",
-          "type": "headlineDisplay",
-          "config":{
-            "uiHide": true,
-            "text":{
-              "de":"Anlagenerfassung",
-              "en":"Asset Information"
-            },
-            "pdfWidth": 1,
-            "pdfTextSize": "H2"
-          }
-        },
-        {
-          "id": "helpTextAsset",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<h4><b>Anlage<b/></h4>",
-              "en": "<h4><b>Asset<b/></h4>"
-            },
-            "pdfWidth": 0.5,
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "assetDismount",
-          "type": "assetSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Anlage Ausbau",
-                "en": "Asset Dismount"
-              }
-            },
-            "pdfWidth": 0.5
-          }
-        },
-        {
-          "id": "assetInstallation",
-          "type": "assetSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Anlage Einbau",
-                "en": "Asset Installation"
-              }
-            },
-            "pdfWidth": 0.5
           }
         },
         {
@@ -349,6 +415,19 @@
           }
         },
         {
+          "id": "whiteSpace4",
+          "type": "headlineDisplay",
+          "config":{
+            "text":{
+              "de":"",
+              "en":""
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H2",
+            "uiHide": true
+          }
+        },
+        {
           "id": "helpTextserialNr",
           "type": "htmlDisplay",
           "config": {
@@ -501,7 +580,20 @@
           }
         },
         {
-          "id": "helpTextZählerart",
+          "id": "whiteSpace5",
+          "type": "headlineDisplay",
+          "config":{
+            "text":{
+              "de":"",
+              "en":""
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H2",
+            "uiHide": true
+          }
+        },
+        {
+          "id": "helpTextMeterType",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -513,7 +605,7 @@
           }
         },
         {
-          "id": "zählerartDismount",
+          "id": "meterTypeDismount",
           "type": "singleLineTextInput",
           "config": {
             "label": {
@@ -526,7 +618,7 @@
           }
         },
         {
-          "id": "zählerartInstallation",
+          "id": "meterTypeInstallation",
           "type": "singleLineTextInput",
           "config": {
             "label": {
@@ -577,7 +669,7 @@
           }
         },
         {
-          "id": "helpTextGröße",
+          "id": "helpTextSize",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -589,7 +681,7 @@
           }
         },
         {
-          "id": "größeDismount",
+          "id": "sizeDismount",
           "type": "singleLineTextInput",
           "config": {
             "label": {
@@ -602,7 +694,7 @@
           }
         },
         {
-          "id": "größeInstallation",
+          "id": "sizeInstallation",
           "type": "singleLineTextInput",
           "config": {
             "label": {
@@ -810,55 +902,96 @@
       "id": "03_signatureTechnician",
       "type": "signatureSection",
       "config": {
-        "required": false,
+        "required": true,
         "headlineText": {
-          "en": "Signature technician",
+          "en": "Signature Assembler",
           "de": "Unterschrift Monteur"
         },
         "fields": {
           "dateInput": {
             "disable": false,
-            "required": false,
+            "required": true,
             "pdfHide": false
           },
           "locationSingleLineTextInput": {
             "disable": false,
-            "required": false,
+            "required": true,
             "pdfHide": false
           },
           "nameSingleLineTextInput": {
             "disable": false,
-            "required": false,
+            "required": true,
             "pdfHide": false,
-            "capitalizeFirstLetterOfEveryWord": false
+            "capitalizeFirstLetterOfEveryWord": true
           }
         },
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "pdfHide": false,
-        "pdfHideIfValueIsEmpty": false
+        "pdfHideIfValueIsEmpty": true,
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ]
+        }
       }
     },
     {
-      "id": "06_addendum",
+      "id": "06_upload",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Anhang",
-          "en": "Addendum"
+          "de": "Dokumente hinzufügen",
+          "en": "Document Upload"
         }
       },
       "fields": [
         {
-          "id": "fileUpload",
+          "id": "whiteSpace6",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1"
+          }
+        },
+        {
+          "id": "documents",
           "type": "fileUpload",
           "config": {
             "label": {
               "text": {
-                "de": "Datei Anhang",
-                "en": "Attache File"
+                "de": "Dokument",
+                "en": "Documents"
               }
-            }
+            },
+            "pdfHideIfValueIsEmpty": true
           }
         }
       ]
@@ -868,7 +1001,7 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "en": "Send/sent form as E-Mail",
+          "en": "Send/sent report as E-Mail",
           "de": "Montagebeleg als E-Mail senden/gesendet"
         },
         "hidePreviewPdfButton": false,
@@ -878,12 +1011,12 @@
             "currentUser": true
           },
           "body": {
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
-            "en": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail."
+            "de": "Sehr geehrte Damen und Herren,\n\nanbei finden Sie Ihr Dokument.\n\nDiese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nFür Rückfragen stehen wir gerne unter folgenden Adressen zur Verfügung:\nService E-Mail Fernwärme: fernwaerme@sw-olching.de\nService E-Mail Ladelösungen: ladeinfrastruktur@sw-olching.de\n\nMit freundlichen Grüßen\nIhr Stadtwerke Olching Team",
+            "en": "Sehr geehrte Damen und Herren,\n\nanbei finden Sie Ihr Dokument.\n\nDiese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nFür Rückfragen stehen wir gerne unter folgenden Adressen zur Verfügung:\nService E-Mail Fernwärme: fernwaerme@sw-olching.de\nService E-Mail Ladelösungen: ladeinfrastruktur@sw-olching.de\n\nMit freundlichen Grüßen\nIhr Stadtwerke Olching Team"
           },
           "subject": {
-            "de": "Montagebeleg",
-            "en": "Montagebeleg"
+            "de": "Montagebeleg Wärmemengenzähler",
+            "en": "Assembly Report Heat Meter"
           }
         }
       }
