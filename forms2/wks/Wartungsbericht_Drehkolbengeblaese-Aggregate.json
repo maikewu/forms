@@ -1,6 +1,6 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin" 
   },
   "sections": [
     {
@@ -31,13 +31,13 @@
           "config": {
             "label": {
               "text": {
-                "de": "Einsatzort/Betreiber",
-                "en": "Operator"
+                "de": "Anlagenstandort/Kunde",
+                "en": "Asset Location/Customer"
               }
             },
-            "useAsFilterForFields": [
-              "asset"
-            ],
+            "required": true,
+            "pdfWidth": 0.5,
+            "useAsFilterForFields": ["asset"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -58,7 +58,7 @@
               },
               {
                 "target": {
-                  "id": "09_signatureTechnician",
+                  "id": "10_signatureTechnician",
                   "propertyName": "location"
                 },
                 "steps": [
@@ -89,17 +89,18 @@
           "config": {
             "label": {
               "text": {
-                "de": "Betreiberadresse",
-                "en": "Operator Adress"
+                "de": "Anschrift",
+                "en": "Address"
               }
             },
+            "pdfWidth": 0.5,
             "prefill": {
               "value": [
                 {
-                  "input": "organizationId",
+                  "input": "workOrderId",
                   "steps": [
-                    "accountIdToAccount",
-                    "accountToBillingAddressAddress"
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
                   ]
                 }
               ]
@@ -112,60 +113,8 @@
           "config": {
             "label": {
               "text": {
-                "de": "Telefon",
-                "en": "Telephone Number"
-              }
-            },
-            "pdfWidth": 0.5
-          }
-        },
-        {
-          "id": "faxCustomer",
-          "type": "phoneNumberInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Fax",
-                "en": "Fax"
-              }
-            },
-            "pdfWidth": 0.5,
-            "pdfHideIfValueIsEmpty": true
-          }
-        },
-        {
-          "id": "asset",
-          "type": "assetSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Drehkolbengebläse",
-                "en": "Positive Displacement Blower"
-              }
-            }
-          }
-        },
-        {
-          "id": "assetId",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Fabrik-Nr.",
-                "en": "Asset ID"
-              }
-            },
-            "pdfWidth": 0.5
-          }
-        },
-        {
-          "id": "productionYear",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Baujahr",
-                "en": "Year of Production"
+                "de": "Telefon / Telefax / Funk",
+                "en": "Telephone / Fax"
               }
             },
             "pdfWidth": 0.5
@@ -178,8 +127,8 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Maschinendaten",
-          "en": "Machine Data"
+          "de": "1. Maschinendaten",
+          "en": "1. Machine Data"
         }
       },
       "fields": [
@@ -211,11 +160,46 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Maschinendaten",
-              "en": "Machine Data"
+              "de": "1. Maschinendaten",
+              "en": "1. Machine Data"
             },
-            "uiTextSize": "H3",
+            "pdfTextSize": "H3",
             "uiHide": true
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Drehkolbengebläse",
+                "en": "Roots Blower"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "pdfWidth": 0.5,
+            "required": true
+          }
+        },
+        {
+          "id": "productionYear",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Baujahr",
+                "en": "Year of Production"
+              }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -228,7 +212,7 @@
                 "en": "Outlet Pressure (bar)"
               }
             },
-            "pdfWidth": 0.3
+            "pdfWidth": 0.5
           }
         },
         {
@@ -241,7 +225,7 @@
                 "en": "Room Temperature (°C)"
               }
             },
-            "pdfWidth": 0.3
+            "pdfWidth": 0.5
           }
         },
         {
@@ -253,7 +237,8 @@
                 "de": "Motorleistung",
                 "en": "Engine Power"
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -262,10 +247,11 @@
           "config": {
             "label": {
               "text": {
-                "de": "Anzahl Betriebsstunden alt/neu",
-                "en": "Number of operating hours new/old"
+                "de": "Anzahl Betriebsstunden (alt/neu)",
+                "en": "Number of operating hours (old/new)"
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -275,23 +261,35 @@
             "label": {
               "text": {
                 "de": "Verwendete Ölsorte",
-                "en": "Type of Oil"
+                "en": "Used Oil Type"
               }
             },
-            "pdfWidth": 0.3
+            "pdfWidth": 0.5
           }
         },
         {
           "id": "oilChange",
-          "type": "singleLineTextInput",
+          "type": "staticSingleSelect",
           "config": {
             "label": {
               "text": {
                 "de": "Ölwechsel",
-                "en": "Oilchange"
+                "en": "Oil Change"
               }
             },
-            "pdfWidth": 0.3
+            "value": {
+              "options": {
+                "yes": {
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "no": {
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            },
+            "pdfWidth": 0.5
           }
         }
       ]
@@ -301,8 +299,8 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Zusatzkomponenten des Drehkolbengebläses",
-          "en": "Additional Components of the Positive Displacement Blower"
+          "de": "2. Zusatzkomponenten des Drehkolbengebläses",
+          "en": "2. Additional Components of Roots Blower"
         }
       },
       "fields": [
@@ -334,10 +332,10 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Zusatzkomponenten des Drehkolbengebläses",
-              "en": "Additional Components of the Positive Displacement Blower"
+              "de": "2. Zusatzkomponenten des Drehkolbengebläses",
+              "en": "2. Additional Components of Roots Blower"
             },
-            "uiTextSize": "H3",
+            "pdfTextSize": "H3",
             "uiHide": true
           }
         },
@@ -362,7 +360,8 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -386,7 +385,8 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -410,18 +410,19 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         }
       ]
     },
     {
-      "id": "04_inspectionOfPositiveDisplacementBlower",
+      "id": "04_inspectionOfRootsBlower",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Inspektion des Drehkolbengebläses",
-          "en": "Inspection of Positive Displacement Blower"
+          "de": "3. Inspektion des Drehkolbengebläses",
+          "en": "3. Inspection of Roots Blower"
         }
       },
       "fields": [
@@ -453,10 +454,10 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Inspektion des Drehkolbengebläses",
-              "en": "Inspection of Positive Displacement Blower"
+              "de": "3. Inspektion des Drehkolbengebläses",
+              "en": "3. Inspection of Roots Blower"
             },
-            "uiTextSize": "H3",
+            "pdfTextSize": "H3",
             "uiHide": true
           }
         },
@@ -465,27 +466,15 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Laufruhe des Gebläses",
-              "en": "Smoothness of Blower"
+              "de": "3.1 Laufruhe des Gebläses",
+              "en": "3.1 Smoothness of Blower"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
-          "id": "pdfHeadline5",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Laufruhe des Gebläses",
-              "en": "Smoothness of Blower"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
-          }
-        },
-        {
-          "id": "laufruhe",
+          "id": "smoothness",
           "type": "staticSingleSelect",
           "config": {
             "label": {
@@ -505,19 +494,33 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
           "id": "causeSmoothness4",
-          "type": "multiLineTextInput",
+          "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
                 "de": "wenn schlecht, evtl. Ursache",
                 "en": "in case of bad smoothness, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line4",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -525,23 +528,22 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Ölstand des Gebläses (Die erford. Ölstandhöhe ist Mitte Schauglas)",
-              "en": "Oil Level of Blower (The required oil level is in the middle of the sight glass)"
+              "de": "3.2 Ölstand des Gebläses",
+              "en": "3.2 Oil Level of Blower"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
-          "id": "pdfHeadline6",
-          "type": "headlineDisplay",
+          "id": "helpTextOilLevel",
+          "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "Ölstand des Gebläses (Die erford. Ölstandhöhe ist Mitte Schauglas)",
-              "en": "Oil Level of Blower (The required oil level is in the middle of the sight glass)"
+              "de": "Die erford. Ölstandhöhe ist Mitte Schauglas",
+              "en": "The required oil level is in the middle of the sight glass"
             },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfHide": true
           }
         },
         {
@@ -573,38 +575,36 @@
           }
         },
         {
-          "id": "headlineoilTightness",
-          "type": "headlineDisplay",
+          "id": "line5",
+          "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "Öldichtigkeit des Gebläses",
-              "en": "Oil Tightness of Blower"
+              "de": "<hr>",
+              "en": "<hr>"
             },
-            "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline7",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Öldichtigkeit des Gebläses",
-              "en": "Oil Tightness of Blower"
-            },
-            "uiTextSize": "H3",
             "uiHide": true
           }
         },
         {
-          "id": "headlineoilTightness2",
+          "id": "headlineoilTightness",
           "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "3.3 Öldichtigkeit des Gebläses",
+              "en": "3.3 Oil Tightness of Blower"
+            },
+            "uiTextSize": "H2",
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "helpTextOilTightness",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Das Gebläse muss ölfrei sein, d.h es dürfen keine Ölundichtigkeiten festgestellt werden.",
               "en": "The blower must be oil-free, i.e. no oil leaks may be found."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -629,19 +629,22 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
           "id": "positionOfOilLeak",
-          "type": "multiLineTextInput",
+          "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
-                "de": "wenn nein, Stelle der Ölundichtigkeit:",
+                "de": "wenn nein, Stelle der Ölundichtigkeit",
                 "en": "in case of leakage, give position of leakage"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         },
         {
@@ -653,7 +656,9 @@
                 "de": "evtl. Ursache",
                 "en": "in case of leakage, give cause of leakage"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         },
         {
@@ -665,7 +670,103 @@
                 "de": "Undichtigkeitsgrad",
                 "en": "Extend of leakage"
               }
-            }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "line6",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headlineSuctionFilter",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "3.4 Inspektion der Ansaugfilter",
+              "en": "3.4 Inspection of Suction Filter"
+            },
+            "uiTextSize": "H2",
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "helpTextSuctionFilter",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "Damit das Gebläse vor unzulässig hoher Druckdifferenz geschützt werden kann, muss der Ansaugfilter in regelmäßigen Zeitintervallen gereinigt werden.",
+              "en": "In order to protect the blower against impermissibly high pressure difference, the intake filter must be cleaned at regular time intervals."
+            },
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "suctionFilter",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansaugfilter",
+                "en": "Suction Filter"
+              }
+            },
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Sauber",
+                  "en": "Clean"
+                },
+                "2": {
+                  "de": "Verschmutzt",
+                  "en": "Dirty"
+                }
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "suctionFilterBlocked",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansaugfilter ist zu",
+                "en": "Suction Filter is blocked"
+              }
+            },
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Erneuern",
+                  "en": "Renew"
+                },
+                "2": {
+                  "de": "Reinigen",
+                  "en": "Clean"
+                }
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "line7",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -673,34 +774,21 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Inspektion des Förderraumes (falls erforderlich)",
-              "en": "Inspection of the conveyor space (if necessary)"
+              "de": "3.5 Inspektion des Förderraumes (falls erforderlich)",
+              "en": "3.5 Inspection of the conveyor space (if necessary)"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
-          "id": "pdfHeadline8",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Inspektion des Förderraumes (falls erforderlich)",
-              "en": "Inspection of the conveyor space (if necessary)"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
-          }
-        },
-        {
-          "id": "headlineConveyorRoom2",
-          "type": "headlineDisplay",
+          "id": "helpTextConveyorRoom",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Der Förderraum ist nach Entfernen des Ansaugfilters (KIII + KS Aggregat) zu kontrollieren auf:",
               "en": "The conveyor space should be checked for the following after removing the intake filter (KIII + KS unit):"
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -725,7 +813,8 @@
                   "en": "Dirty"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -749,19 +838,32 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
           "id": "locationContactPoints",
-          "type": "multiLineTextInput",
+          "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
                 "de": "wenn ja, Lage der Anlaufstellen",
                 "en": "in case of visible contact points, give location of contact points"
               }
-            }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line8",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -769,34 +871,21 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Inspektion des Ansaugschalldämpfers (falls erforderlich)",
-              "en": "Inspection of intake silencer (if necessary)"
+              "de": "3.6 Inspektion des Ansaugschalldämpfers (falls erforderlich)",
+              "en": "3.6 Inspection of intake silencer (if necessary)"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline9",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Inspektion des Ansaugschalldämpfers (falls erforderlich)",
-              "en": "Inspection of intake silencer (if necessary)"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
           "id": "headlineIntakeSilencer2",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Der Ansaugschalldämpfer wird auf Verschmutzung und durch Abfüllen mit der Hand auf Dichtigkeit geprüft.",
               "en": "The intake silencer is checked for contamination and tightness by hand."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -821,7 +910,8 @@
                   "en": "Dirty"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -845,7 +935,8 @@
                   "en": "Leaky"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -857,7 +948,9 @@
                 "de": "Stelle der Undichtigkeit",
                 "en": "Location of leakage"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         },
         {
@@ -881,7 +974,8 @@
                   "en": "Leaky"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -893,18 +987,19 @@
                 "de": "Stelle der Undichtigkeit",
                 "en": "Location of leakage"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         },
         {
           "id": "headlineIntakeSilencer3",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "Beim KS - Aggregat sind bei nachlassender Schalldämpfung die Absorptionsfornteile auszutauschen.",
-              "en": "Regarding the KS - unit, the absorption parts must be replaced if the sound insulation decreases."
+              "de": "Beim KS-Aggregat sind bei nachlassender Schalldämpfung die Absorptionsfornteile auszutauschen.",
+              "en": "Regarding the KS unit, the absorption parts must be replaced if the sound insulation decreases."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -929,7 +1024,19 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "line9",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -937,34 +1044,21 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Fliegender Betrieb",
-              "en": "Flying Operation"
+              "de": "3.6.1 Fliegender Antrieb",
+              "en": "3.6.1 Flying Operation"
             },
-            "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline10",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Fliegender Betrieb",
-              "en": "Flying Operation"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfTextSize": "H2",
+            "uiTextSize": "H2"
           }
         },
         {
           "id": "headlineFlyingOperation2",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Der Riemenantrieb muss fachgerecht gespannt und ausgerichtet sein.",
               "en": "The belt drive must be professionally tensioned and aligned."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -989,7 +1083,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1013,7 +1108,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1037,18 +1133,18 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
           "id": "headlineFlyingOperation3",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Die Keilriemen dürfen keinen Schlupf aufweisen.",
               "en": "The V-belts must not slip."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -1073,7 +1169,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1097,7 +1194,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1121,7 +1219,19 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "line10",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -1129,34 +1239,21 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Überprüfung des Sicherheitsventils",
-              "en": "Checking the safety valve"
+              "de": "3.7 Überprüfung des Sicherheitsventils",
+              "en": "3.7 Checking the safety valve"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline11",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Überprüfung des Sicherheitsventils",
-              "en": "Checking the safety valve"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
           "id": "headlineSafetyValve2",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Das Sicherheitsventil ist kein Regelorgan und darf nicht als solches genutzt werden. Eine Überprüfung erfollgt durch das Anheben des Ventils mittels zwei Schraubenziehern.",
               "en": "The safety valve is not a control device and should not be used as such. It should be checked by lifting the valve using two screwdrivers."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -1181,7 +1278,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1193,7 +1291,20 @@
                 "de": "wenn schlecht, Ursache",
                 "en": "in case of bad functionality, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line11",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -1201,34 +1312,107 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Magnetventil der Anfahrentlastung",
-              "en": "Solenoid valve of the start-up relief"
+              "de": "3.8 Überprüfung der Anfahrentlastung",
+              "en": "3.8 Checking the start-up relief"
             },
             "uiTextSize": "H2",
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "disclaimerValveStartRelief",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "Die Schließzeit der Anfahrentlastung wird gemessen, wobei diese über dem Staudruck (1/3 des Betriebsdruckes) eingestellt sein sollte.",
+              "en": "The closing time of the start-up relief is measured and it should be set above the back pressure (1/3 of the operating pressure)."
+            },
             "pdfHide": true
           }
         },
         {
-          "id": "pdfHeadline12",
-          "type": "headlineDisplay",
+          "id": "closingTime",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Schließzeit ts = (sek)",
+                "en": "Closing Time = (sec)"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "conditionStartUpRelief",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Funktion der Anfahrentlastung",
+                "en": "Functionality of Start-up Relief"
+              }
+            },
+            "value": {
+              "options": {
+                "good": {
+                  "de": "Gut",
+                  "en": "Good"
+                },
+                "bad": {
+                  "de": "Schlecht",
+                  "en": "Bad"
+                }
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "causeBadFunctionality1",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "wenn schlecht, Ursache",
+                "en": "in case of bad functionality, give cause"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line12",
+          "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "Magnetventil der Anfahrentlastung",
-              "en": "Solenoid valve of the start-up relief"
+              "de": "<hr>",
+              "en": "<hr>"
             },
-            "uiTextSize": "H3",
             "uiHide": true
           }
         },
         {
-          "id": "headlineStartRelief2",
+          "id": "headlineValveStartRelief",
           "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "3.8.1 Magnetventil der Anfahrentlastung",
+              "en": "3.8.1 Solenoid valve of the start-up relief"
+            },
+            "uiTextSize": "H2",
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "headlineStartRelief2",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Die Funktionstüchtigkeit des Magnetventis muss gewährleistet sein.",
               "en": "The functionality of the solenoid valve must be guaranteed."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -1253,7 +1437,8 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1265,7 +1450,20 @@
                 "de": "wenn schlecht, Ursache",
                 "en": "in case of bad functionality, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line13",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -1273,46 +1471,32 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Überprüfung des Kompensators",
-              "en": "Checking the compensator"
+              "de": "3.9 Überprüfung des Kompensators",
+              "en": "3.9 Checking the compensator"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline13",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Überprüfung des Kompensators",
-              "en": "Checking the compensator"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
           "id": "headlineCompensator2",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Der Kompensator dient als elastische Verbindung zwischen Gebläseaggregat und Duckrohrleitung und muss daher spannungsfrei eingebaut sein.",
               "en": "The compensator serves as an elastic connection between the blower unit and the ducting pipe, and must therefore be installed stress-free."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
         {
           "id": "headlineCompensator3",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Die Dichtigkeit des Kompensators ist Grunvoraussetzung für einen wirtschaftlichen Betrieb.",
               "en": "The tightness of the compensator is a basic requirement for economical operation."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -1337,7 +1521,8 @@
                   "en": "Under tension"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1361,7 +1546,8 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1373,7 +1559,20 @@
                 "de": "wenn undicht, Ursache",
                 "en": "in case of leakage, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line14",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -1381,23 +1580,11 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Funktion der Instrumentierung",
-              "en": "Function of the instrumentation"
+              "de": "3.10 Funktion der Instrumentierung",
+              "en": "3.10 Function of the instrumentation"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline14",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Funktion der Instrumentierung",
-              "en": "Function of the instrumentation"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
@@ -1405,10 +1592,11 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Manometer",
-              "en": "Manometer"
+              "de": "3.10.1 Manometer",
+              "en": "3.10.1 Manometer"
             },
-            "uiTextSize": "H3"
+            "uiTextSize": "H2",
+            "pdfTextSize": "H2"
           }
         },
         {
@@ -1432,7 +1620,8 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1444,7 +1633,20 @@
                 "de": "wenn nicht, Ursache",
                 "en": "in case of no functionality, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line15",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -1452,10 +1654,11 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Wartungsanzeiger",
-              "en": "Maintenance indicator"
+              "de": "3.10.2 Wartungsanzeiger",
+              "en": "3.10.2 Maintenance indicator"
             },
-            "uiTextSize": "H3"
+            "uiTextSize": "H2",
+            "pdfTextSize": "H2"
           }
         },
         {
@@ -1479,7 +1682,8 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1491,7 +1695,20 @@
                 "de": "wenn nicht, Ursache",
                 "en": "in case of no functionality, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line16",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -1499,23 +1716,11 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Schwingungsisolationsprüfung der elastischen Maschinenfüße",
-              "en": "Vibration isolation test of the elastic machine feet"
+              "de": "3.11 Schwingungsisolationsprüfung der elastischen Maschinenfüße",
+              "en": "3.11 Vibration isolation test of the elastic machine feet"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline15",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Schwingungsisolationsprüfung der elastischen Maschinenfüße",
-              "en": "Vibration isolation test of the elastic machine feet"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
@@ -1539,7 +1744,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1551,7 +1757,20 @@
                 "de": "wenn schlecht, Ursache",
                 "en": "in case of bad condition, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line17",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -1559,34 +1778,21 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Funktion der Schallhaubenfremdbelüftung",
-              "en": "Functionality of sound hood forced ventilation"
+              "de": "3.12 Funktion der Schallhaubenfremdbelüftung",
+              "en": "3.12 Functionality of sound hood forced ventilation"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline16",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Funktion der Schallhaubenfremdbelüftung",
-              "en": "Functionality of sound hood forced ventilation"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
           "id": "headlineSoundHoodForcedVentilation2",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Die Zuluft- und Abluftkulissen der Schallhaube werden auf Verschmutzungen geprüft, damit der Schallhaubenlüfter keiner unzulässigen hohen Druckdifferenz ausgesetzt ist.",
               "en": "The intake and exhaust louvers of the sound hood are checked for dirt to ensure that the sound hood fan is not exposed to an excessive pressure difference."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -1611,7 +1817,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1623,7 +1830,20 @@
                 "de": "wenn schlecht, Ursache",
                 "en": "in case of bad functionality, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "line18",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -1631,34 +1851,21 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Inspektion des Antriebmotors",
-              "en": "Inspection of the drive motor"
+              "de": "3.13 Inspektion des Antriebmotors",
+              "en": "3.13 Inspection of the drive motor"
             },
             "uiTextSize": "H2",
-            "pdfHide": true
-          }
-        },
-        {
-          "id": "pdfHeadline17",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "Inspektion des Antriebmotors",
-              "en": "Inspection of the drive motor"
-            },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "pdfTextSize": "H2"
           }
         },
         {
           "id": "headlineDriveMotor2",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Die Laufruhe des Antriebsmotors wird beobachtet. Die Nachschmiereinrichtung und der Motorlüfter des Antriebmotors müssen funktionstüchtig sein.",
               "en": "The running smoothness of the drive motor is observed. The lubrication device and the motor fan of the drive motor must be functional."
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -1683,7 +1890,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1695,43 +1903,9 @@
                 "de": "wenn schlecht, evtl. Ursache",
                 "en": "in case of bad smoothness, give cause"
               }
-            }
-          }
-        },
-        {
-          "id": "laufruhe3",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Laufruhe",
-                "en": "Smoothness"
-              }
             },
-            "value": {
-              "options": {
-                "good": {
-                  "de": "Gut",
-                  "en": "Good"
-                },
-                "bad": {
-                  "de": "Schlecht",
-                  "en": "Bad"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "causeSmoothness2",
-          "type": "multiLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "wenn schlecht, evtl. Ursache",
-                "en": "in case of bad smoothness, give cause"
-              }
-            }
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         },
         {
@@ -1755,7 +1929,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1767,7 +1942,9 @@
                 "de": "wenn schlecht, evtl. Ursache",
                 "en": "in case of bad smoothness, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         },
         {
@@ -1791,7 +1968,8 @@
                   "en": "No"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1815,7 +1993,8 @@
                   "en": "Bad"
                 }
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -1827,7 +2006,9 @@
                 "de": "wenn schlecht, evtl. Ursache",
                 "en": "in case of bad condition, give cause"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         }
       ]
@@ -1837,8 +2018,8 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Kommentar zu den Mängeln",
-          "en": "Comments regardig the defects"
+          "de": "4. Kommentar zu den Mängeln",
+          "en": "4. Comments regardig the defects"
         }
       },
       "fields": [
@@ -1855,7 +2036,7 @@
           }
         },
         {
-          "id": "line4",
+          "id": "line19",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -1870,10 +2051,10 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Kommentar zu den Mängeln",
-              "en": "Comments regardig the defects"
+              "de": "4. Kommentar zu den Mängeln",
+              "en": "4. Comments regardig the defects"
             },
-            "uiTextSize": "H3",
+            "pdfTextSize": "H3",
             "uiHide": true
           }
         },
@@ -1896,8 +2077,8 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Sofort durchzuführende Maßnahmen",
-          "en": "Actions to be taken immediately"
+          "de": "5. Sofort durchzuführende Maßnahmen",
+          "en": "5. Actions to be taken immediately"
         }
       },
       "fields": [
@@ -1914,7 +2095,7 @@
           }
         },
         {
-          "id": "line5",
+          "id": "line20",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -1929,22 +2110,21 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Sofort durchzuführende Maßnahmen",
-              "en": "Actions to be taken immediately"
+              "de": "5. Sofort durchzuführende Maßnahmen",
+              "en": "5. Actions to be taken immediately"
             },
-            "uiTextSize": "H3",
+            "pdfTextSize": "H3",
             "uiHide": true
           }
         },
         {
           "id": "headlineFurtherMeasures",
-          "type": "headlineDisplay",
+          "type": "htmlDisplay",
           "config": {
             "text": {
               "de": "Sofort durchzuführende Reparaturen müssen vom Kunden genehmigt und nachstehend beauftragt werden. (Zeitpunkt ist auf einem gesonderten Stundenzettel aufzuführen und vom Auftraggeber zu paragraphieren.)",
               "en": "Immediate repairs must be approved by the customer and commissioned below. (The time is to be recorded on a separate hourly sheet and itemized by the client.)"
             },
-            "uiTextSize": "H3",
             "pdfHide": true
           }
         },
@@ -1954,8 +2134,8 @@
           "config": {
             "label": {
               "text": {
-                "de": "Sofort durchzuführende Maßnahmen",
-                "en": "Actions to be taken immediately"
+                "de": "Liste der sofort durchzuführende Maßnahmen",
+                "en": "List of immediately to be taken actions"
               }
             }
           }
@@ -1969,6 +2149,14 @@
                 "de": "Verantwortlicher Monteur",
                 "en": "Responsible Technician"
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
             }
           }
         }
@@ -2010,14 +2198,6 @@
           }
         },
         "prefill": {
-          "name": [
-            {
-              "input": "currentUser",
-              "steps": [
-                "userToFullNameString"
-              ]
-            }
-          ],
           "date": [
             {
               "input": "creationDateTime",
@@ -2044,8 +2224,8 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Benötigte Ersatzteile",
-          "en": "Required spare parts"
+          "de": "6. Benötigte Ersatzteile",
+          "en": "6. Required spare parts"
         }
       },
       "fields": [
@@ -2062,25 +2242,14 @@
           }
         },
         {
-          "id": "line6",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<hr>",
-              "en": "<hr>"
-            },
-            "uiHide": true
-          }
-        },
-        {
           "id": "pdfHeadline20",
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Benötigte Ersatzteile",
-              "en": "Required spare parts"
+              "de": "6. Benötigte Ersatzteile",
+              "en": "6. Required spare parts"
             },
-            "uiTextSize": "H3",
+            "pdfTextSize": "H3",
             "uiHide": true
           }
         },
@@ -2095,17 +2264,25 @@
               }
             },
             "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": true,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Bezeichnung",
+                  "en": "Name"
+                }
+              },
               "quantityNumericInput": {
                 "required": true,
                 "pdfHide": false
               },
               "descriptionMultiLineTextInput": {
                 "enable": true,
-                "required": true,
+                "required": false,
                 "pdfHide": false,
                 "placeHolderText": {
-                  "de": "Beschreibung",
-                  "en": "Description"
+                  "de": "Beschreibung/Bemerkung",
+                  "en": "Description/Comment"
                 }
               }
             }
@@ -2118,8 +2295,8 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Sonstige Vereinbarungen",
-          "en": "Other Agreements"
+          "de": "7. Sonstige Vereinbarungen",
+          "en": "7. Other Agreements"
         }
       },
       "fields": [
@@ -2136,38 +2313,28 @@
           }
         },
         {
-          "id": "line7",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<hr>",
-              "en": "<hr>"
-            },
-            "uiHide": true
-          }
-        },
-        {
           "id": "pdfHeadline21",
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Sonstige Vereinbarungen",
-              "en": "Other Agreements"
+              "de": "7. Sonstige Vereinbarungen",
+              "en": "7. Other Agreements"
             },
-            "uiTextSize": "H3",
-            "uiHide": true
+            "uiHide": true,
+            "pdfTextSize": "H3"
           }
         },
         {
           "id": "nextInspection",
-          "type": "dateInput",
+          "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
                 "de": "Nächster Inspektionstermin",
                 "en": "Next Inspection"
               }
-            }
+            },
+            "pdfWidth": 0.5
           }
         },
         {
@@ -2179,70 +2346,15 @@
                 "de": "Evtl. erforderlicher Wartungstermin",
                 "en": "Possibly required maintenance date"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         }
       ]
     },
     {
-      "id": "10_signatureCustomer",
-      "type": "signatureSection",
-      "config": {
-        "headlineText": {
-          "de": "Unterschrift des Kunden",
-          "en": "Customer's signature"
-        },
-        "required": true,
-        "hideDownloadPdfButton": false,
-        "hidePreviewPdfButton": false,
-        "pdfHideIfValueIsEmpty": true,
-        "pdfHide": false,
-        "helpTextHtmlBelow": {
-          "de": "Die Inspektion wurde fachgerecht durchgeführt.",
-          "en": "Maintenance was professionally performed."
-        },
-        "fields": {
-          "dateInput": {
-            "required": true,
-            "pdfHide": false,
-            "disable": false
-          },
-          "locationSingleLineTextInput": {
-            "required": true,
-            "pdfHide": false,
-            "disable": false
-          },
-          "nameSingleLineTextInput": {
-            "required": true,
-            "pdfHide": false,
-            "disable": false,
-            "capitalizeFirstLetterOfEveryWord": true
-          }
-        },
-        "prefill": {
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
-              ]
-            }
-          ],
-          "location": [
-            {
-              "input": "assetId",
-              "steps": [
-                "assetIdToAsset",
-                "assetToLocationAddress",
-                "addressToCityString"
-              ]
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "11_signatureTechnician",
+      "id": "10_signatureTechnician",
       "type": "signatureSection",
       "config": {
         "headlineText": {
@@ -2307,6 +2419,63 @@
       }
     },
     {
+      "id": "11_signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift des Kunden",
+          "en": "Customer's signature"
+        },
+        "required": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "pdfHideIfValueIsEmpty": true,
+        "pdfHide": false,
+        "helpTextHtmlBelow": {
+          "de": "Die Inspektion wurde fachgerecht durchgeführt.",
+          "en": "Maintenance was professionally performed."
+        },
+        "fields": {
+          "dateInput": {
+            "required": true,
+            "pdfHide": false,
+            "disable": false
+          },
+          "locationSingleLineTextInput": {
+            "required": true,
+            "pdfHide": false,
+            "disable": false
+          },
+          "nameSingleLineTextInput": {
+            "required": true,
+            "pdfHide": false,
+            "disable": false,
+            "capitalizeFirstLetterOfEveryWord": true
+          }
+        },
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
       "id": "12_send",
       "type": "emailSection",
       "config": {
@@ -2320,7 +2489,7 @@
         "emailDialogPrefill": {
           "subject": {
             "de": "Wartungsbericht Drehkolbengebläse",
-            "en": "Maintenance Report Positive Displacement Blower"
+            "en": "Maintenance Report Roots Blower"
           },
           "body": {
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Wartungsbericht als PDF.\n\nMit freundlichen Grüßen",
