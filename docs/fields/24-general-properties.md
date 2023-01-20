@@ -356,9 +356,10 @@ By setting `validators.regex`, the field will be marked as invalid if the value 
 | Regex patterns    |                                    |
 | :---------------- | :--------------------------------- |
 | `^[A-Z]*$ `         | Only upper case letters            |
-| `^[1-9][0-9]*)$` | Only numbers incl. 0          |
+| `^[0-9]*)$`         | Only numbers incl. 0          |
 | `^[A-Za-z]*$`       | Only upper and lower case letters  |
 
+[Cheat Sheet](https://cheatography.com/davechild/cheat-sheets/regular-expressions/)
 
 ```json
 "validators": {
