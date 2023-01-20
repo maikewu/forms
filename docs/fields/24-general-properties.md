@@ -342,6 +342,35 @@ By setting `validators.maxCharacters`, the field will be marked as invalid if th
 ```
 
 ---
+### `validators.regex`
+
+| `validators.regex`     |                 |
+| :-------------- | :-------------- |
+| Possible Values | regex pattern   |
+| Required        | no              |
+| Default Value   | -               |
+
+By setting `validators.regex`, the field will be marked as invalid if the value contains other characters than allowed.
+
+| Regex patterns    |                                    |
+| :---------------- | :--------------------------------- |
+| ^[A-Z]*$          | Only upper case letters            |
+| ^(0|[1-9][0-9]*)$ | Only full numbers incl. 0          |
+| ^[A-Za-z]*$       | Only upper and lower case letters  |
+
+
+```json
+"validators": {
+    "regex": {
+        "pattern": "^[A-Z]*$",
+        "errorText": {
+            "de": " ",
+            "en": " "
+        }
+  }
+}
+```
+---
 ## `fields`
 
 | Property                                         | Description                       |

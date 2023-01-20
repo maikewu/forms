@@ -62,7 +62,13 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
               "emailAddress": false,
               "maxCharacters": 10,
               "minCharacters": 3,
-              "regexPattern": "^[A-Z]*$",
+              "regex": {
+                "pattern": "^[A-Z]*$",
+                "errorText": {
+                  "de": " ",
+                  "en": " "
+                }
+              }
           },
       },
       "prefill": {
@@ -120,7 +126,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 | [validators.minCharacters](./24-general-properties/#validatorsmincharacters)    | Minimum number of characters for the input value to be valid.                                   |
 | [validators.maxCharacters](./24-general-properties/#validatorsmaxcharacters)    | Maximum number of characters for the input value to be valid.                                   |
 | [validators.emailAddress](#validatorsemailaddress)                              | Setting this to `true` forces the input to match email address format.                                              |
-| [validators.regexPattern](#validatorsregexpattern)                              | Defines regular expression that is valid                          |
+| [validators.regex](#validatorsregex)                              | Defines regular expression that is valid                          |
 
 ---
 ### `validators.emailAddress`
@@ -140,18 +146,24 @@ By setting `emailAddress` to `true`, input must match email address format.
 ```
 
 ---
-### `validators.regexPattern`
+### `validators.regex`
 
-| `validators.regexPattern`     |                 |
+| `validators.regex`     |                 |
 | :-------------- | :-------------- |
 | Possible Values | String     |
 | Required        | no              |
 | Default Value   | `NULL`              |
 
-By defining `validators.regexPattern`, you set a regular expression that is valid. 
+By defining `validators.regex`, you set a regular expression that is valid. 
 ```json
 "validators":{
-"regexPattern": "^[A-Z]*$"
+  "regex": {
+    "pattern": "^[A-Z]*$",
+    "errorText": {
+      "de": " ",
+      "en": " "
+    }
+  }
 }
 ```
 
