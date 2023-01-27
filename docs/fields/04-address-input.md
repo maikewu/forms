@@ -164,39 +164,6 @@ The Address Input field has several different fields that can be individually se
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
 | [pdfAddLineBreaks](./24-general-properties/#pdfaddlinebreaks)                   | Setting this to `true` will add a linebreak in the PDF. |
 
----
-### `supportedNonNumericCharacters`
-
-| `supportedNonNumericCharacters`     |                 |
-| :-------------- | :-------------- |
-| Possible Values | `String [Array]     |
-| Required        | no              |
-| Default Value   | empty [Array]               |
-
-By setting `supportedNonNumericCharacters`, the field will support a list of non numeric characters. The characters are case sensitive.
-
-```json (validators)
-"validators":{
-"supportedNonNumericsCharacters": ["A", "I", "*"]
-}
-```
-
----
-### `validators.regexPattern`
-
-| `validators.regexPattern`     |                 |
-| :-------------- | :-------------- |
-| Possible Values | String     |
-| Required        | no              |
-| Default Value   | -              |
-
-By defining `validators.regexPattern`, you set a expression for valid values.
-
-```json
-"validators":{
-"regexPattern": "^[A-Z]*$"
-}
-```
 
 ---
 ## `prefill`

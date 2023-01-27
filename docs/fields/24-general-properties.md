@@ -25,7 +25,7 @@ On this page you will find a list of repeating fields.
 | [uiTextColor](#uitextcolor)                        | Text color of a certain field in the UI.                                                                |
 | [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are required to fill the form.                  |                                                                             |
 | [label](#lable)                                    | Several configurations for the label.                                                                 |
-| [values](#values)                                  | Several configurations for the values.                                                                 |
+| [values](#value)                                  | Several configurations for the values.                                                                 |
 | [prefill](#prefill)                                | Configuration to prefill the field with a value upon creation of the form instance.                     |
 | [onChange](#onchange)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
 | [fields](#fields)                                  | Components of the field |
@@ -274,8 +274,9 @@ By setting `requiredAmountOfEntries`, it specify how many repeating entries are 
 | [pdfTextColor](#pdftextcolor)                             | Text color of the label in the PDF. |
 | [pdfStartInNewLine](#pdfstartinnewline)                   | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
 | [pdfAddLineBreak](#pdfaddlinebreak)                       | Setting this to `true` will add a linebreak in the PDF. |
-| [validators.maxCharacters](#validatorsmaxcharacters)      | Maximum number of characters for the input value to be valid.                                   |
-| [validators.minCharacters](#validatorsmincharacters)      | Minimum number of characters for the input value to be valid.
+| [validators.maxCharacters](#validatorsmaxcharacters)      | Maximum number of characters for the input value to be valid. |
+| [validators.minCharacters](#validatorsmincharacters)      | Minimum number of characters for the input value to be valid. |
+| [validators.regex](#validatorsregex)                      | Allowing only specific characters as inputs. |
 
 ---
 ### `pdfStartInNewLine`
@@ -341,6 +342,37 @@ By setting `validators.maxCharacters`, the field will be marked as invalid if th
 }
 ```
 
+---
+### `validators.regex`
+
+| `validators.regex`     |                 |
+| :-------------- | :-------------- |
+| Possible Values | regex pattern   |
+| Required        | no              |
+| Default Value   | -               |
+
+By setting `validators.regex`, the field will be marked as invalid if the value contains other characters than allowed.
+
+| Regex patterns    |                                    |
+| :---------------- | :--------------------------------- |
+| `^[A-Z]*$ `         | Only upper case letters            |
+| `^[0-9]*)$`         | Only numbers incl. 0          |
+| `^[A-Za-z]*$`       | Only upper and lower case letters  |
+| `^[-,0-9]+$`     | Only numbers and comma |
+
+[Cheat Sheet](https://cheatography.com/davechild/cheat-sheets/regular-expressions/)
+
+```json
+"validators": {
+    "regex": {
+        "pattern": "^[A-Z]*$",
+        "errorText": {
+            "de": " ",
+            "en": " "
+        }
+  }
+}
+```
 ---
 ## `fields`
 

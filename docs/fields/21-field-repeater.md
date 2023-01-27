@@ -181,7 +181,13 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
                 "emailAddress": false,
                 "maxCharacters": 10,
                 "minCharacters": 3,
-                "regexPattern": "^[A-Z]*$",
+                "regex": {
+                    "pattern": "^[A-Z]*$",
+                    "errorText": {
+                        "de": " ",
+                        "en": " "
+                    }
+                }
             },
         },
         "prefill": {
