@@ -358,6 +358,7 @@ By setting `validators.regex`, the field will be marked as invalid if the value 
 | `^[A-Z]*$ `         | Only upper case letters            |
 | `^[0-9]*)$`         | Only numbers incl. 0          |
 | `^[A-Za-z]*$`       | Only upper and lower case letters  |
+| `^[-,0-9]+$`     | Only numbers and comma |
 
 [Cheat Sheet](https://cheatography.com/davechild/cheat-sheets/regular-expressions/)
 
