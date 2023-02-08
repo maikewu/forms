@@ -1,4 +1,5 @@
 {
+  "$schema": "https://app.remberg.de/api/forms/v2/documentation/form-template-config-schema.json",
   "general": {
     "timezone": "Europe/Berlin"
   },
@@ -14,12 +15,24 @@
       },
       "fields": [
         {
+          "id": "headlineGeneralInformation",
+          "type": "headlineDisplay",
+          "config": { 
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "text": {
+              "de": "Allgemeine Informationen",
+              "en": "General Information" 
+            }
+          }
+        },
+        {
           "id": "maintenanceNr",
           "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
-                "de": "Wartungs-Auftragnummer",
+                "de": "Auftragsnummer",
                 "en": "Work Order Number"
               }
             },
@@ -32,14 +45,15 @@
           "config": {
             "label": {
               "text": {
-                "de": "Ausgestellt durch",
-                "en": "Issued by"
+                "de": "Mitarbeiter",
+                "en": "Employee"
               }
             },
+            "required": true,
             "onChange": [
               {
                 "target": {
-                  "id": "6_signature_technician",
+                  "id": "04_signatureTechnician",
                   "propertyName": "name"
                 },
                 "steps": [
@@ -57,67 +71,24 @@
             }
           }
         },
+        
         {
-          "id": "austellungsDatum",
-          "type": "dateInput",
+          "id": "companySingleSelect_1",
+          "type": "companySingleSelect",
           "config": {
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Austellungsdatum",
-                "en": "Date of issue"
+                "en": "Customer",
+                "de": "Kunde"
               }
             },
             "prefill": {
-              "value": [
+              "selectedCompany": [
                 {
-                  "input": "creationDateTime",
-                  "steps": [
-                    "dateTimeToDate"
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "2_maschine",
-      "type": "fieldSection",
-      "config": {
-        "headlineText": {
-          "de": "Objekt",
-          "en": "Asset"
-        }
-      },
-      "fields": [
-        {
-          "id": "asset",
-          "type": "assetSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Maschine auswählen",
-                "en": "Select Asset"
-              }
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "6_signature_technician",
-                  "propertyName": "location"
-                },
-                "steps": [
-                  "assetInfoToAsset",
-                  "assetToLocationAddress",
-                  "addressToCityString"
-                ]
-              }
-            ],
-            "prefill": {
-              "selectedAsset": [
-                {
-                  "input": "assetId",
+                  "input": "organizationId",
                   "steps": []
                 }
               ]
@@ -127,25 +98,51 @@
       ]
     },
     {
-      "id": "3_reiseUndArbeitszeiten",
+      "id": "02_workTimes",
       "type": "fieldSection",
       "config": {
         "headlineText": {
           "de": "Arbeitszeiten",
-          "en": "Working Times"
+          "en": "Work Hours"
         }
       },
       "fields": [
         {
-          "id": "times",
+          "id": "whitespace1",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "pdfTextSize": "H2",
+            "text": {
+              "de": "",
+              "en": ""
+            }
+          }
+        },
+        {
+          "id": "headlineTimes",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "text": {
+              "de": "Arbeitszeiten",
+              "en": "Work Hours"
+            }
+          }
+        },
+        {
+          "id": "tavelAndWorkingTimes",
           "type": "timeTrackingListInput",
           "config": {
             "label": {
               "text": {
-                "de": "Zeiten",
-                "en": "Times"
+                "de": "Arbeitszeiten",
+                "en": "Work Hours"
               }
             },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
             "fields": {
               "timeTrackingTypeStaticSingleSelect": {
                 "pdfHide": false
@@ -158,7 +155,7 @@
               },
               "breakNumericInput": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false
               },
               "durationDisplay": {
@@ -167,18 +164,18 @@
               },
               "distanceNumericInput": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false
               },
               "technicianUserSingleSelect": {
-                "disabled": false,
-                "required": true,
-                "pdfHide": false,
-                "pdfPrintEmailAddress": true
+                "disabled": true,
+                "required": false,
+                "pdfHide": true,
+                "pdfPrintEmailAddress": false
               },
               "commentMultiLineTextInput": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false
               }
             }
@@ -187,80 +184,11 @@
       ]
     },
     {
-      "id": "4_ersatzteile",
+      "id": "03_expenses",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Ersatzteile",
-          "en": "Spare Parts"
-        }
-      },
-      "fields": [
-        {
-          "id": "parts",
-          "type": "partListInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Ersatzteile",
-                "en": "Spare Parts"
-              }
-            },
-            "fields": {
-              "partNumberSingleLineTextInput": {
-                "required": true,
-                "pdfHide": false,
-                "placeHolderText": {
-                  "de": "Artikelnummer",
-                  "en": "Part Number",
-                  "tr": "Part Number Placeholder Text",
-                  "fr": "Part Number Placeholder Text",
-                  "es": "Part Number Placeholder Text",
-                  "it": "Part Number Placeholder Text"
-                }
-              },
-              "quantityNumericInput": {
-                "required": true,
-                "pdfHide": false
-              },
-              "descriptionMultiLineTextInput": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false,
-                "placeHolderText": {
-                  "de": "Beschreibung",
-                  "en": "Description",
-                  "tr": "Description Placeholder Text",
-                  "fr": "Description Placeholder Text",
-                  "es": "Description Placeholder Text",
-                  "it": "Description Placeholder Text"
-                }
-              },
-              "deliverToStaticSingleSelect": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false
-              },
-              "invoiceToStaticSingleSelect": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false
-              },
-              "warrantyBooleanInput": {
-                "enable": true,
-                "pdfHide": false
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "5_kosten",
-      "type": "fieldSection",
-      "config": {
-        "headlineText": {
-          "de": "Kosten",
+          "de": "Spesen",
           "en": "Expenses"
         }
       },
@@ -271,20 +199,22 @@
           "config": {
             "label": {
               "text": {
-                "de": "Aufwände",
-                "en": "Costs"
+                "de": "Ausgaben",
+                "en": "Expenses"
               }
             },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
             "fields": {
               "dateInput": {
                 "pdfHide": false,
                 "disabled": false,
-                "required": true
+                "required": false
               },
               "commentMultiLineTextInput": {
                 "pdfHide": false,
                 "disabled": false,
-                "required": true
+                "required": false
               },
               "expenseAmountNumericInput": {
                 "pdfHide": false,
@@ -294,28 +224,44 @@
               "expenseTypeSingleSelectInput": {
                 "pdfHide": false,
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "values": {
-                  "tax": {
-                    "de": "Steuern",
-                    "en": "Tax"
+                  "flight": {
+                      "de": "Flug",
+                      "en": "Flight"
                   },
-                  "travel": {
-                    "de": "Reisekosten",
-                    "en": "Travel Cost"
+                  "rental_car": {
+                      "de": "Mietauto",
+                      "en": "Rental Car"
                   },
-                  "parts": {
-                    "de": "Materialkosten",
-                    "en": "Parts Cost"
+                  "board": {
+                      "de": "Verpflegung",
+                      "en": "Board"
                   },
-                  "labor": {
-                    "de": "Arbeitskosten",
-                    "en": "Labor Cost"
+                  "accommodation": {
+                      "de": "Unterkunft",
+                      "en": "Accommodation"
+                  },
+                  "parking": {
+                      "de": "Parken",
+                      "en": "Parking"
+                  },
+                  "toll": {
+                      "de": "Maut",
+                      "en": "Toll"
+                  },
+                  "transportation": {
+                      "de": "Transport",
+                      "en": "Transportation"
+                  },
+                  "vignette": {
+                      "de": "Vignette",
+                      "en": "Vignette"
                   },
                   "other": {
-                    "de": "Sonstiges",
-                    "en": "Other"
-                  }
+                      "de": "Sonstiges",
+                      "en": "Other"
+                  }                      
                 }
               }
             }
@@ -324,7 +270,7 @@
       ]
     },
     {
-      "id": "6_signature_technician",
+      "id": "04_signatureTechnician",
       "type": "signatureSection",
       "config": {
         "required": true,
@@ -363,34 +309,6 @@
               ]
             }
           ],
-          "location": [
-            {
-              "input": "assetId",
-              "steps": [
-                "assetIdToAsset",
-                "assetToLocationAddress",
-                "addressToCityString"
-              ]
-            },
-            {
-              "input": "assetId",
-              "steps": [
-                "assetIdToAsset",
-                "assetToCustomerAccountId",
-                "accountIdToAccount",
-                "accountToBillingAddressAddress",
-                "addressToCityString"
-              ]
-            },
-            {
-              "input": "currentAccountId",
-              "steps": [
-                "accountIdToAccount",
-                "accountToBillingAddressAddress",
-                "addressToCityString"
-              ]
-            }
-          ],
           "date": [
             {
               "input": "creationDateTime",
@@ -403,12 +321,12 @@
       }
     },
     {
-      "id": "12_send",
+      "id": "05_send",
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "de": "Ausgefülltes Formular absenden",
-          "en": "Send filled form"
+          "de": "Stundenzettel als E-Mail senden/gesendet",
+          "en": "Send/sent report as email"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -432,10 +350,12 @@
             "staticEmails": []
           },
           "body": {
-            "de": "tbd"
+            "de": "Stundenzettel",
+            "en": "Time Sheet"
           },
           "subject": {
-            "de": "tbd"
+            "de": "Diese E-Mail wurde automatisch erstellt.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "en": "This email was generated automatically.\nPlease do not reply to this email."
           }
         }
       }
