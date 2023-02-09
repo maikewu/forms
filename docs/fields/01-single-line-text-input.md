@@ -10,7 +10,7 @@ The SingleLineTextInput field allows entering one line of unformatted text. It d
 
 | Property                                                                     | Description                      |
 | :--------------------------------------------------------------------------- | :--------------------------------|
-| [required](./24-general-properties/#required)                                | If this is set to `true`, the field is considered invalid as long as no value is entered. Test:)|
+| [required](./24-general-properties/#required)                                | If this is set to `true`, the field is considered invalid as long as no value is entered.|
 | [disabled](./24-general-properties/#disabled)                                | Setting this to `true` permanently disables the field in the UI. |
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
