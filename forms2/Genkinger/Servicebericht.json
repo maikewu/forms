@@ -1,0 +1,1406 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "02_customerInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Customer Information",
+          "de": "Kundeninformationen",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Ordering party",
+                "de": "Auftraggeber",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "useAsFilterForFields": ["asset","contactPersons"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "orderCustomerLocation"},
+                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "orderCustomerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "label": {
+              "text": {
+                "en": "Address ordering party",
+                "de": "Adresse Auftraggeber",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "label": {
+              "text": {
+                "en": "Adress ship-to party",
+                "de": "Adresse Warenempfänger",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder","workOrderToLocationAddress"]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset","assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "09-signature_technician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "10-signature_customer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_assetInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Asset Information",
+          "de": "Geräte-Informationen",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Maschine",
+                "de": "Gerät",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "fabr-no",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Serial Number",
+                "de": "Fabr.-Nr.",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "werksnummer",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Serial Number",
+                "de": "Werksnummer",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "operatingHours",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Operating Hours",
+                "de": "Betriebsstunden",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "workHours",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Work time",
+                "de": "Arbeitszeit für die Maschine",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_performedTasksInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Performed Tasks",
+          "de": "Durchgeführte Arbeiten",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "tasks",
+          "type": "taskListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "requiredAmountOfEntries": 0,
+            "label": {
+              "text": {
+                "en": "Type of work",
+                "de": "Art der Arbeit",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "tasks2",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Type of work",
+                "de": "Art der Arbeit",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_sparePartsInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Spare Parts",
+          "de": "Ersatzteile",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "kleinteileCheck",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Kleinteil",
+                "de": "Kleinteil",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "spareParts",
+          "type": "partListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "requiredAmountOfEntries": 0,
+            "label": {
+              "text": {
+                "en": "Spare Parts",
+                "de": "Ersatzteile",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Spare Parts",
+                  "de": "Ersatzteile",
+                  "fr": "",
+                  "it": "",
+                  "tr": "",
+                  "es": ""
+                }
+              },
+              "quantityNumericInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Spare Parts",
+                  "de": "Ersatzteile",
+                  "fr": "",
+                  "it": "",
+                  "tr": "",
+                  "es": ""
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": true
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": true
+              },
+              "warrantyBooleanInput": {
+                "enable": false,
+                "pdfHide": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "06_travelAndWorkingTimeInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Travel and Working Times",
+          "de": "Reise- und Arbeitszeiten",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "fahrtkostenCheck",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Lump-sum Agreement for Travel Expenses",
+                "de": "Fahrtkostenpauschale",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+        {
+          "id": "wartungspauschaleCheck",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Lump-sum Agreement for Maintenance Expenses",
+                "de": "Wartungspauschale",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+        {
+          "id": "timesNoteWVFKP",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": true,
+            "pdfWidth": 1,
+            "text": {
+              "en": "If travel oder maintenance expenses lump-sum agreement is checked, please do not enter travel and work times here but in the addendum part!",
+              "de": "Wenn Fahrtkosten- oder Wartungspauschale zutreffen, bitte keinen Eintrag der Reise- und Arbeitszeiten hier vornehmen, sondern diese im Nachtrag vermerken!",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "tavelAndWorkingTimes",
+          "type": "timeTrackingListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "requiredAmountOfEntries": 0,
+            "label": {
+              "text": {
+                "en": "Travel and Working Times",
+                "de": "Reise- und Arbeitszeiten",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "fields": {
+              "breakNumericInput": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "pdfHide": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "08_notesInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Notes",
+          "de": "Bemerkungen",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "assetOK",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Asset state",
+                "de": "Gerätzustand",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.3,
+            "disabled": false,
+            "required": false,
+            "value": {
+              "options": {
+                "OK": {
+                  "de": "i. O.",
+                  "en": "OK"
+                },
+                "Not OK": {
+                  "de": "Nicht i. O.",
+                  "en": "Not OK"
+                }
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "reason",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Reason (if not OK)",
+                "de": "Grund (falls n.i.O.)",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        },
+        {
+          "id": "testdriveCheck",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Test drive conducted",
+                "de": "Testfahrt durchgeführt",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "offersCheck",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Offer for additional service wanted",
+                "de": "Angebot über weiteren Service durch Kunden erwünscht",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+        {
+          "id": "offerInfos",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Offer information",
+                "de": "Angebotsinformationen",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "timesNote",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved.",
+              "de": "Die ordnungsgemäße Ausführung des Auftrags wird bestätigt, geschriebene Zeiten, Kilometer und Teile sind genehmigt.",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "09-signature_technician",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true,
+            "capitalizeFirstLetterOfEveryWord": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          }
+        },
+        "required": true,
+        "headlineText": {
+          "en": "Signature technician",
+          "de": "Unterschrift Monteur",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "10-signature_customer",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true,
+            "capitalizeFirstLetterOfEveryWord": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          }
+        },
+        "required": true,
+        "headlineText": {
+          "en": "Signature customer",
+          "de": "Unterschrift Auftraggeber",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "11-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send filled out form to customer",
+          "de": "Ausgefüllten Servicebericht an Kunden senden",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "pdfHide": true,
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "bcc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "",
+            "de": "Genkinger Servicebericht (Kundenausfertigung)",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Genkinger GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen | Best regards",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": false
+      }
+    },
+    {
+      "id": "12-Addendum",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Internal Addendum by the Technician",
+          "de": "Interner Nachtrag durch den Monteur",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "AdditionalTavelAndWorkingTimes",
+          "type": "timeTrackingListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "requiredAmountOfEntries": 1,
+            "label": {
+              "text": {
+                "en": "Additional Travel and Working Times",
+                "de": "Zusätzliche Reise- und Arbeitszeiten",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "fields": {
+              "breakNumericInput": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "spareParts2",
+          "type": "partListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "requiredAmountOfEntries": 0,
+            "label": {
+              "text": {
+                "en": "Additional Spare Parts",
+                "de": "Zusätzliche Ersatzteile",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Part Number",
+                  "de": "Artikelnummer",
+                  "fr": "",
+                  "it": "",
+                  "tr": "",
+                  "es": ""
+                }
+              },
+              "quantityNumericInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Description",
+                  "de": "Beschreibung",
+                  "fr": "",
+                  "it": "",
+                  "tr": "",
+                  "es": ""
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": true
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": true
+              },
+              "warrantyBooleanInput": {
+                "enable": true,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "additionalExpenses",
+          "type": "expenseListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Expenses",
+                "de": "Ausgaben",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "fields": {
+              "expenseTypeSingleSelectInput": {
+                "required": false,
+                "values": {
+                  "expenseType_1": {
+                    "de": "Flug",
+                    "en": "Flight"
+                  },
+                  "expenseType_2": {
+                    "de": "Mietauto",
+                    "en": "Rental Car"
+                  },
+                  "expenseType_3": {
+                    "de": "Verpflegung",
+                    "en": "Board"
+                  },
+                  "expenseType_4": {
+                    "de": "Unterkunft",
+                    "en": "Accommodation"
+                  },
+                  "expenseType_5": {
+                    "de": "Parken",
+                    "en": "Parking"
+                  },
+                  "expenseType_6": {
+                    "de": "Maut",
+                    "en": "Toll"
+                  },
+                  "expenseType_7": {
+                    "de": "Transport",
+                    "en": "Transportation"
+                  },
+                  "expenseType_8": {
+                    "de": "Vignette",
+                    "en": "Vignette"
+                  },
+                  "expenseType_9": {
+                    "de": "Sonstiges",
+                    "en": "Other"
+                  }
+                }
+              },
+              "expenseAmountNumericInput": {
+                "required": false
+              }
+            }
+          }
+        },
+        {
+          "id": "documents-notes",
+          "type": "fileUpload",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Attachments",
+                "de": "Anhänge",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "generalNotesX",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "General Notes",
+                "de": "Allgemeine Bemerkungen & Hinweise",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "13-Addendum-backoffice",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Internal Addendum by Backoffice",
+          "de": "Interner Nachtrag durch den Innendienst",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "serviceNumber",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Type",
+                "de": "Bericht-Typ",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "disabled": false,
+            "required": false,
+            "value": {
+              "options": {
+                "kd": {
+                  "de": "Kundendienst",
+                  "en": "Customer Service"
+                },
+                "wv": {
+                  "de": "Wartungsvertrag",
+                  "en": "Maintenance Contract"
+                },
+                "g": {
+                  "de": "Garantie",
+                  "en": "Warranty"
+                },
+                "fs": {
+                  "de": "Full-Service",
+                  "en": "Full Service"
+                },
+                "k": {
+                  "de": "Kulanz",
+                  "en": "Goodwill"
+                }
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "maintenanceLumpSum",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Maintenance Lump-Sum",
+                "de": "Wartungspauschale",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "travelLumpSum",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Travel Costs Lump-Sum",
+                "de": "Fahrtkostenpauschale",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "smallParts",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Small Parts",
+                "de": "Kleinteile",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "generalComments2",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "General Comments",
+                "de": "Allgemeine Bemerkungen & Hinweise",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen...",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            },
+            "value": {
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "14-Addendum-backoffice2",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Internal Addendum by Accounting",
+          "de": "Interner Nachtrag durch die Abrechnungsabteilung",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        }
+      },
+      "fields": [
+        {
+          "id": "oinvoice",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "SAP Document",
+                "de": "SAP-Beleg",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "customerOrder",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Customer Order Number",
+                "de": "Kundenbestellnummer",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "generalNotes3",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "General Notes",
+                "de": "Allgemeine Bemerkungen & Hinweise",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
