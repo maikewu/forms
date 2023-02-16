@@ -1,0 +1,989 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General Informationen"
+        }
+      },
+      "fields": [
+        {
+          "id": "headline_010",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "pdfHide": false,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline_011",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Kundendaten",
+              "en": "Customer Data"
+            },
+            "uiTextSize": "H1",
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "instructed_by",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Beauftragt von",
+                "en": "Instructed by"
+              }
+            }
+          }
+        },
+        {
+          "id": "responsible_technician",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Verantwortlicher Monteur",
+                "en": "Responsible Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "06_signature",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "useAsFilterForFields": [
+              "asset"
+            ],
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer_location"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer_location",
+          "type": "addressInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer Location"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customer_phone",
+          "type": "phoneNumberInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Telefon",
+                "en": "Phone"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_order",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Auftrag",
+          "en": "Order"
+        }
+      },
+      "fields": [
+        {
+          "id": "headline_020",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "pdfHide": false,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline_021",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Auftrag",
+              "en": "Order"
+            },
+            "uiTextSize": "H1",
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "order_type",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftragsart",
+                "en": "Order Type"
+              }
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Maschine",
+                "en": "Machine"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "production_year"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  [
+                    "assetToCustomPropertyValue",
+                    16
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "production_year",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Baujahr",
+                "en": "Year of production"
+              }
+            }
+          }
+        },
+        {
+          "id": "operating_hours_motor",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.33,
+            "label": {
+              "text": {
+                "de": "Betriebsstunden Motor",
+                "en": "Operating Hours Motor"
+              }
+            }
+          }
+        },
+        {
+          "id": "operating_hours_machine",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.33,
+            "label": {
+              "text": {
+                "de": "Betriebsstunden Maschine",
+                "en": "Operating Hours Machine"
+              }
+            }
+          }
+        },
+        {
+          "id": "harvesting_area",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.33,
+            "label": {
+              "text": {
+                "de": "Rodefläche",
+                "en": "Harvesting Area"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_activity_tracking",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Arbeitszeiten",
+          "en": "Working Times"
+        }
+      },
+      "fields": [
+        {
+          "id": "headline_030",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "pdfHide": false,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline_031",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Arbeitszeiten",
+              "en": "Working Time"
+            },
+            "uiTextSize": "H1",
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "repeater03_activity_tracking",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "fields": [
+              {
+                "id": "repeater03_technician",
+                "type": "userSingleSelect",
+                "config": {
+                  "pdfWidth": 0.1,
+                  "label": {
+                    "text": {
+                      "de": "Monteur",
+                      "en": "Technician"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_type_activity",
+                "type": "staticSingleSelect",
+                "config": {
+                  "pdfWidth": 0.1,
+                  "label": {
+                    "text": {
+                      "de": "Kategorie",
+                      "en": "Category"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "type_assemply": {
+                        "de": "Montage",
+                        "en": "Assemply"
+                      },
+                      "type_others": {
+                        "de": "Sonstige",
+                        "en": "Others"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_type_technician",
+                "type": "staticSingleSelect",
+                "config": {
+                  "pdfHide": true,
+                  "label": {
+                    "text": {
+                      "de": "Monteurtyp",
+                      "en": "Type Technician"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "type_trainee": {
+                        "de": "Azubi",
+                        "en": "Trainee"
+                      },
+                      "type_technician": {
+                        "de": "Monteur",
+                        "en": "Technician"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_error_code",
+                "type": "staticSingleSelect",
+                "config": {
+                  "pdfWidth": 0.10,
+                  "label": {
+                    "text": {
+                      "de": "Fehlercode",
+                      "en": "Error Code"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "Code1": {
+                        "de": "Code1",
+                        "en": "Code1"
+                      },
+                      "Code2": {
+                        "de": "Code2",
+                        "en": "Code2"
+                      },
+                      "Code3": {
+                        "de": "Code3",
+                        "en": "Code3"
+                      },
+                      "Code4": {
+                        "de": "Code4",
+                        "en": "Code4"
+                      },
+                      "Code5": {
+                        "de": "Code5",
+                        "en": "Code5"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_causing_part",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.10,
+                  "label": {
+                    "text": {
+                      "de": "Nr. verur. Bauteil",
+                      "en": "No. Caus. Part"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_description",
+                "type": "multiLineTextInput",
+                "config": {
+                  "pdfWidth": 0.15,
+                  "label": {
+                    "text": {
+                      "de": "Beschreibung",
+                      "en": "Description"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_time_start",
+                "type": "dateTimeInput",
+                "config": {
+                  "pdfWidth": 0.15,
+                  "label": {
+                    "text": {
+                      "de": "Startzeit",
+                      "en": "Starting Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_time_end",
+                "type": "dateTimeInput",
+                "config": {
+                  "pdfWidth": 0.15,
+                  "label": {
+                    "text": {
+                      "de": "Endzeit",
+                      "en": "Ending Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_break_time",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.05,
+                  "label": {
+                    "text": {
+                      "de": "Pause [min]",
+                      "en": "Break [min]"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_travel_time",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.05,
+                  "label": {
+                    "text": {
+                      "de": "Arbeit [min]",
+                      "en": "Work [min]"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater03_cost_center",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfHide": true,
+                  "label": {
+                    "text": {
+                      "de": "Kostenstelle",
+                      "en": "Cost Center"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_travel_tracking",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Reisezeiten",
+          "en": "Travel Times"
+        }
+      },
+      "fields": [
+        {
+          "id": "headline_040",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "pdfHide": false,
+            "pdfTextSize": "H3",
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline_04",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Reisezeiten",
+              "en": "Travel Times"
+            },
+            "uiTextSize": "H1",
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "repeater04_travel_tracking",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "fields": [
+              {
+                "id": "repeater04_technician",
+                "type": "userSingleSelect",
+                "config": {
+                  "pdfWidth": 0.1,
+                  "label": {
+                    "text": {
+                      "de": "Monteur",
+                      "en": "Technician"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_type_travel",
+                "type": "staticSingleSelect",
+                "config": {
+                  "pdfWidth": 0.1,
+                  "label": {
+                    "text": {
+                      "de": "Kategorie",
+                      "en": "Category"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "type_arrival": {
+                        "de": "Anreise",
+                        "en": "Outward"
+                      },
+                      "type_depature": {
+                        "de": "Abreise",
+                        "en": "Inward"
+                      },
+                      "type_commute": {
+                        "de": "Pendel",
+                        "en": "Commute"
+                      },
+                      "type_delivery": {
+                        "de": "An- & Abreise",
+                        "en": "Out- & Inward"
+                      },
+                      "type_others": {
+                        "de": "Sonstige",
+                        "en": "Others"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_type_technician",
+                "type": "staticSingleSelect",
+                "config": {
+                  "pdfHide": true,
+                  "label": {
+                    "text": {
+                      "de": "Monteurtyp",
+                      "en": "Type Technician"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "type_trainee": {
+                        "de": "Azubi",
+                        "en": "Trainee"
+                      },
+                      "type_technician": {
+                        "de": "Monteur",
+                        "en": "Technician"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_vehicle_ID",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfHide": true,
+                  "label": {
+                    "text": {
+                      "de": "Kennzeichen / Flugnummer",
+                      "en": "License Plate / Flight Number"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_type_vehicle",
+                "type": "staticSingleSelect",
+                "config": {
+                  "pdfHide": true,
+                  "label": {
+                    "text": {
+                      "de": "Vehikel",
+                      "en": "Vehicle"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "type_car": {
+                        "de": "KFZ",
+                        "en": "Car"
+                      },
+                      "type_bus": {
+                        "de": "Bus",
+                        "en": "Bus"
+                      },
+                      "type_train": {
+                        "de": "Zug",
+                        "en": "Train"
+                      },
+                      "type_plane": {
+                        "de": "Flug",
+                        "en": "Plane"
+                      },
+                      "type_others": {
+                        "de": "Sonst.",
+                        "en": "Others"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_location_depature",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.125,
+                  "label": {
+                    "text": {
+                      "de": "Startort",
+                      "en": "Depature"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_km_start",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.05,
+                  "label": {
+                    "text": {
+                      "de": "km Start",
+                      "en": "km Start"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_time_start",
+                "type": "dateTimeInput",
+                "config": {
+                  "pdfWidth": 0.15,
+                  "label": {
+                    "text": {
+                      "de": "Startzeit",
+                      "en": "Starting Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_location_destination",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.125,
+                  "label": {
+                    "text": {
+                      "de": "Zielort",
+                      "en": "Destination"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_km_destination",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.05,
+                  "label": {
+                    "text": {
+                      "de": "km Ziel",
+                      "en": "km Dest."
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_time_end",
+                "type": "dateTimeInput",
+                "config": {
+                  "pdfWidth": 0.15,
+                  "label": {
+                    "text": {
+                      "de": "Endzeit",
+                      "en": "Ending Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_break_time",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.05,
+                  "label": {
+                    "text": {
+                      "de": "Pause [min]",
+                      "en": "Break [min]"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_travel_time",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfWidth": 0.05,
+                  "label": {
+                    "text": {
+                      "de": "Reise [min]",
+                      "en": "Travels [min]"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater04_cost_center",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfHide": true,
+                  "label": {
+                    "text": {
+                      "de": "Kostenstelle",
+                      "en": "Cost Center"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_PSIpenta",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Nachtrag",
+          "en": "Addendum"
+        }
+      },
+      "fields": [
+        {
+          "id": "way_of_charge",
+          "type": "staticSingleSelect",
+          "config": {
+            "pdfHide": true,
+            "label": {
+              "text": {
+                "de": "Berechnungsart",
+                "en": "Way of Charge"
+              }
+            },
+            "value": {
+              "options": {
+                "type_Charge": {
+                  "de": "Berechnet",
+                  "en": "Charged"
+                },
+                "type_FoCharge": {
+                  "de": "Kostenlos",
+                  "en": "Free of Charge"
+                },
+                "type_sales": {
+                  "de": "Vertrieb",
+                  "en": "Sales"
+                },
+                "type_development": {
+                  "de": "Entwicklung",
+                  "en": "Development"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "06_signature",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Techniker",
+          "en": "Signature Technician"
+        },
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "07_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Formular als E-Mail senden",
+          "en": "Send form as E-Mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen BSP-Bericht als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed BSP report as PDF.\n\nBest regards"
+          },
+          "subject": {
+            "de": "Montagebericht",
+            "en": "Assembly Report"
+          }
+        }
+      }
+    }
+  ]
+}
