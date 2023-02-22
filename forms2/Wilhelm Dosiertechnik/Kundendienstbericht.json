@@ -1,0 +1,1240 @@
+{
+  "general": {
+	  "timezone": "Europe/Berlin"
+  },
+  "sections": [
+	  {
+		  "id": "01_generalInformation",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "General Information",
+				  "de": "Allgemeine Informationen"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "date",
+				  "type": "dateInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Date",
+							  "de": "Datum"
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "required": true,
+					  "value": {
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "creationDateTime",
+									"steps": ["dateTimeToDate"]
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "technician",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Technician",
+							  "de": "Techniker"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "currentUserId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "begleiter",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Attendant",
+							  "de": "Begleiter"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "missionNumber",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Assembly Number",
+							  "de": "Montagenummer"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "validators": {}
+					  }
+				  }
+			  },
+			  {
+				  "id": "orderNumber",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Service Order Number",
+							  "de": "Auftragsnummer"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "validators": {}
+					  },
+						"prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
+				  }
+			  },
+			  {
+				  "id": "customer",
+				  "type": "companySingleSelect",
+				  "config": {
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+						"useAsFilterForFields": ["asset"],
+					  "label": {
+						  "text": {
+							  "en": "Customer",
+							  "de": "Kunde"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": true,
+						  "pdfHide": false
+					  },
+						"prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
+            },
+						"onChange": [
+							{
+								"target": {
+									"id": "customerLocation"
+								},
+								"steps": [
+									"accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+								]
+							}
+						]
+				  }
+			  },
+			  {
+				  "id": "asset",
+				  "type": "assetSingleSelect",
+				  "config": {
+					  "required": true,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Machine",
+							  "de": "Maschine"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "customerLocation",
+				  "type": "addressInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": {
+						  "street": false,
+						  "streetNumber": false,
+						  "supplement": false,
+						  "company": false,
+						  "zipPostCode": false,
+						  "city": false,
+						  "state": false,
+						  "country": false
+					  },
+					  "label": {
+						  "text": {
+							  "en": "Mission Address",
+							  "de": "Einsatzort"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false
+					  },
+						"prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+                },
+								{
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "07-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "07-signatureTechnician-2",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+							{
+                "target": {
+                  "id": "08-signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "03_performed_tasks",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Performed Tasks",
+				  "de": "Ausgeführte Arbeiten"
+			  }
+		  },
+		  "fields": [
+			  {
+          "id": "tasks",
+          "type": "taskListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ausgeführte Aufgaben",
+                "en": "Performed Tasks"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": true
+              },
+              "highPrioBooleanInput": {
+                "disabled": true
+              },
+              "notNecessaryBooleanInput": {
+                "disabled": true
+              }
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
+                }
+              ]
+            }
+          }
+        }
+		  ]
+	  },
+	  {
+		  "id": "04_work_times",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Travel and Working Times",
+				  "de": "Reise- und Arbeitszeiten"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "regie",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Directing",
+							  "de": "Regie"
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "flatrate",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Flat-Rate",
+							  "de": "Pauschal"
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+          "id": "travelAndWorkingTimes",
+          "type": "timeTrackingListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Reise- und Arbeitszeiten",
+                "en": "Travel and working times"
+              },
+              "pdfHide": false
+            },
+            "requiredAmountOfEntries": 1,
+            "pdfWidth": 1,
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": true
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": true
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": true,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+			  {
+				  "id": "times_disclaimer",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "The travel time and distance is given for one-way travel and is calculated twice (outward and return).",
+						  "de": "Die Anreisezeit und Entfernung ist für die einfache Anfahrt angegeben und wird doppelt berechnet (Hin- und Rückfahrt)."
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "05_spare_parts",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Spare Parts",
+				  "de": "Materialverbrauch"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "Jesco_spare_parts",
+				  "type": "fieldRepeater",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Jesco Parts",
+							  "de": "Jesco Teile"
+						  },
+						  "pdfHide": false
+					  },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+					  "fields": [
+						  {
+							  "id": "Jesco_spare_parts||quantity_1",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfWidth": 0.3,
+								  "label": {
+									  "text": {
+										  "en": "Quantity",
+										  "de": "Anzahl"
+									  },
+									  "pdfHide": false
+								  },
+								  "value": {
+									  "validators": {}
+								  }
+							  }
+						  },
+						  {
+							  "id": "Jesco_spare_parts||jesco_parts",
+							  "type": "staticSingleSelect",
+							  "config": {
+								  "label": {
+									  "text": {
+										  "en": "Spare part",
+										  "de": "Artikel"
+									  },
+									  "pdfHide": false
+								  },
+								  "pdfHide": false,
+								  "pdfWidth": 0.7,
+								  "disabled": false,
+								  "required": false,
+								  "value": {
+									  "options": {
+										  "1": {
+											  "de": "38619B - WS Einlassventil C22123/C2214",
+											  "en": "38619B - WS Einlassventil C22123/C2214"
+										  },
+										  "2": {
+											  "de": "35686 - WS Sicherheits-Sperrventil",
+											  "en": "35686 - WS Sicherheits-Sperrventil"
+										  },
+										  "3": {
+											  "de": "33390C - WS Sicherheits-Abblaseventil m. Feder",
+											  "en": "33390C - WS Sicherheits-Abblaseventil m. Feder"
+										  },
+										  "4": {
+											  "de": "35057 - Akrivkohlefüllung Jesco",
+											  "en": "35057 - Akrivkohlefüllung Jesco"
+										  },
+										  "5": {
+											  "de": "28552 - Aktivkohlefüllung groß",
+											  "en": "28552 - Aktivkohlefüllung groß"
+										  },
+										  "6": {
+											  "de": "34690B - WS Regelventil",
+											  "en": "34690B - WS Regelventil"
+										  },
+										  "7": {
+											  "de": "29717B - WS Messglas",
+											  "en": "29717B - WS Messglas"
+										  },
+										  "8": {
+											  "de": "80587B - WS Injektorrückschlag m. Membran HDR",
+											  "en": "80587B - WS Injektorrückschlag m. Membran HDR"
+										  },
+										  "9": {
+											  "de": "80587C - WS Injektorrückschlag ohne HDR",
+											  "en": "80587C - WS Injektorrückschlag ohne HDR"
+										  },
+										  "10": {
+											  "de": "35561 - WS Messzelle PM01",
+											  "en": "35561 - WS Messzelle PM01"
+										  },
+										  "11": {
+											  "de": "33601B - WS Vakuumbrecher",
+											  "en": "33601B - WS Vakuumbrecher"
+										  },
+										  "12": {
+											  "de": "33390 B - WS Sicherheitsventil Plus",
+											  "en": "33390 B - WS Sicherheitsventil Plus"
+										  },
+										  "13": {
+											  "de": "35062 - WS Rücklaufsperre",
+											  "en": "35062 - WS Rücklaufsperre"
+										  },
+										  "14": {
+											  "de": "41100060 - Bezugselektrode Chlor",
+											  "en": "41100060 - Bezugselektrode Chlor"
+										  },
+										  "15": {
+											  "de": "41100004 - PH Elektrode",
+											  "en": "41100004 - PH Elektrode"
+										  },
+										  "16": {
+											  "de": "41100011 - Redoxelektrode",
+											  "en": "41100011 - Redoxelektrode"
+										  },
+										  "17": {
+											  "de": "78073 B - Satz Pufferlösungen 2xpH 1 1x Redox",
+											  "en": "78073 B - Satz Pufferlösungen 2xpH 1 1x Redox"
+										  },
+										  "18": {
+											  "de": "24000023 - Manometer V-Regler",
+											  "en": "24000023 - Manometer V-Regler"
+										  },
+										  "19": {
+											  "de": "78392 - Austausch Sensorelement rot",
+											  "en": "78392 - Austausch Sensorelement rot"
+										  },
+										  "10-1": {
+											  "de": "34146 - Edelstahlelektrode",
+											  "en": "34146 - Edelstahlelektrode"
+										  }
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  }
+					  ]
+				  }
+			  },
+			  {
+				  "id": "evoqua_spare_parts",
+				  "type": "fieldRepeater",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Evoqua Parts",
+							  "de": "Evoqua Teile"
+						  },
+						  "pdfHide": false
+					  },
+						"requiredAmountOfEntries": 0,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+					  "fields": [
+						  {
+							  "id": "evoqua_spare_parts||quantity_2",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfWidth": 0.3,
+								  "label": {
+									  "text": {
+										  "en": "Quantity",
+										  "de": "Anzahl"
+									  },
+									  "pdfHide": false
+								  },
+								  "value": {
+									  "validators": {}
+								  }
+							  }
+						  },
+						  {
+							  "id": "evoqua_spare_parts||evoqua_parts",
+							  "type": "staticSingleSelect",
+							  "config": {
+								  "label": {
+									  "text": {
+										  "en": "Spare part",
+										  "de": "Artikel"
+									  },
+									  "pdfHide": false
+								  },
+								  "pdfHide": false,
+								  "pdfWidth": 0.7,
+								  "disabled": false,
+								  "required": false,
+								  "value": {
+									  "options": {
+										  "1": {
+											  "de": "W3T-330841 - Ersatzteilsatz V-Regler",
+											  "en": "W3T-330841 - Ersatzteilsatz V-Regler"
+										  },
+										  "2": {
+											  "de": "W3T-477401 - Ersatzteilsatz V-Regler mit RDS",
+											  "en": "W3T-477401 - Ersatzteilsatz V-Regler mit RDS"
+										  },
+										  "3": {
+											  "de": "WT-00138 - WS Sicherheitsventil",
+											  "en": "WT-00138 - WS Sicherheitsventil"
+										  },
+										  "4": {
+											  "de": "WT-00150 - WS Sperrventil",
+											  "en": "WT-00150 - WS Sperrventil"
+										  },
+										  "5": {
+											  "de": "W3T-167494 - WS Regelventil",
+											  "en": "W3T-167494 - WS Regelventil"
+										  },
+										  "6": {
+											  "de": "W3T-161729 - Aktivkohlefüllung W&T",
+											  "en": "W3T-161729 - Aktivkohlefüllung W&T"
+										  },
+										  "7": {
+											  "de": "WT-00130 - WS  3/4'' Injektor",
+											  "en": "WT-00130 - WS  3/4'' Injektor"
+										  },
+										  "8": {
+											  "de": "WT-00170 - WS Depolox 4 Messzelle",
+											  "en": "WT-00170 - WS Depolox 4 Messzelle"
+										  },
+										  "9": {
+											  "de": "WT-00175 - WS Depolox 5 Messzelle",
+											  "en": "WT-00175 - WS Depolox 5 Messzelle"
+										  },
+										  "10": {
+											  "de": "W3T173163 - Elektrolyt 20 ml",
+											  "en": "W3T173163 - Elektrolyt 20 ml"
+										  },
+										  "11": {
+											  "de": "W3T160652 - Chlorelektrode POOL",
+											  "en": "W3T160652 - Chlorelektrode POOL"
+										  },
+										  "12": {
+											  "de": "41100004 - PH Elektrode",
+											  "en": "41100004 - PH Elektrode"
+										  },
+										  "13": {
+											  "de": "41100011 - Redoxelektrode",
+											  "en": "41100011 - Redoxelektrode"
+										  },
+										  "14": {
+											  "de": "78073 B - Satz Pufferlösungen 2xpH 1 1x Redox",
+											  "en": "78073 B - Satz Pufferlösungen 2xpH 1 1x Redox"
+										  },
+										  "15": {
+											  "de": "W3T167383 - Austauschsensor Chlor",
+											  "en": "W3T167383 - Austauschsensor Chlor"
+										  },
+										  "5-1": {
+											  "de": "W3T-160391 - Schwäbekörperfänger klein",
+											  "en": "W3T-160391 - Schwäbekörperfänger klein"
+										  },
+										  "5-2": {
+											  "de": "W3T-160392 - Schwäbekörperfänger groß",
+											  "en": "W3T-160392 - Schwäbekörperfänger groß"
+										  }
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  }
+					  ]
+				  }
+			  },
+			  {
+				  "id": "sonstige_spare_parts",
+				  "type": "fieldRepeater",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Other Parts",
+							  "de": "Sonstige Teile"
+						  },
+						  "pdfHide": false
+					  },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"requiredAmountOfEntries": 0,
+					  "fields": [
+						  {
+							  "id": "sonstige_spare_parts||quantity_3",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfWidth": 0.3,
+								  "label": {
+									  "text": {
+										  "en": "Quantity",
+										  "de": "Anzahl"
+									  },
+									  "pdfHide": false
+								  },
+								  "value": {
+									  "validators": {}
+								  }
+							  }
+						  },
+						  {
+							  "id": "sonstige_spare_parts||sonstige_parts",
+							  "type": "staticSingleSelect",
+							  "config": {
+								  "label": {
+									  "text": {
+										  "en": "Spare part",
+										  "de": "Artikel"
+									  },
+									  "pdfHide": false
+								  },
+								  "pdfHide": false,
+								  "pdfWidth": 0.7,
+								  "disabled": false,
+								  "required": false,
+								  "value": {
+									  "options": {
+										  "1": {
+											  "de": "81043 - Chlorflaschendichtung",
+											  "en": "81043 - Chlorflaschendichtung"
+										  },
+										  "2": {
+											  "de": "SW0136-1 - Schlauchkit mittel 1,0l/h 1,6mm grün",
+											  "en": "SW0136-1 - Schlauchkit mittel 1,0l/h 1,6mm grün"
+										  },
+										  "3": {
+											  "de": "SW0136-2 - Schlauchkit groß 1,0l/h 1,6mm grün",
+											  "en": "SW0136-2 - Schlauchkit groß 1,0l/h 1,6mm grün"
+										  },
+										  "4": {
+											  "de": "SW0136-3 - Schlauchkit klein 0,25l/h 0,8mm blau",
+											  "en": "SW0136-3 - Schlauchkit klein 0,25l/h 0,8mm blau"
+										  },
+										  "5": {
+											  "de": "S43061 - Rollenträger blau",
+											  "en": "S43061 - Rollenträger blau"
+										  },
+										  "6": {
+											  "de": "81244 - Impfstellenschlauch schwarz / klar SAH",
+											  "en": "81244 - Impfstellenschlauch schwarz / klar SAH"
+										  },
+										  "7": {
+											  "de": "BRD061/2 - Ersatzsieb 1/2-3/4''",
+											  "en": "BRD061/2 - Ersatzsieb 1/2-3/4''"
+										  },
+										  "8": {
+											  "de": "BRD061/3 - Siebtasse 1/2-3/4''",
+											  "en": "BRD061/3 - Siebtasse 1/2-3/4''"
+										  },
+										  "9": {
+											  "de": "W2T-505671 - Chlorgasschlauch W&T klein 6,35x1,6",
+											  "en": "W2T-505671 - Chlorgasschlauch W&T klein 6,35x1,6"
+										  },
+										  "10": {
+											  "de": "97175 - Chlorgasschlauch Jesco klein 6/8",
+											  "en": "97175 - Chlorgasschlauch Jesco klein 6/8"
+										  },
+										  "11": {
+											  "de": "97128 - Dosierschlauch 4/6",
+											  "en": "97128 - Dosierschlauch 4/6"
+										  },
+										  "12": {
+											  "de": "97120 - PVC-Gewebeschaluch 8/12",
+											  "en": "97120 - PVC-Gewebeschaluch 8/12"
+										  }
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  }
+					  ]
+				  }
+			  },
+			  {
+				  "id": "spareParts",
+				  "type": "partListInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "requiredAmountOfEntries": 0,
+					  "label": {
+						  "text": {
+							  "en": "Additional Spare Parts",
+							  "de": "Weiterer Materialverbrauch"
+						  },
+						  "pdfHide": false
+					  },
+					  "fields": {
+						  "descriptionMultiLineTextInput": {
+                "enable": true,
+                "pdfHide": false,
+                "required": true,
+                "placeHolderText": {
+                  "de": "Beschreibung",
+                  "en": "Description"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": false,
+                "pdfHide": false,
+                "required": false
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": false,
+                "pdfHide": false,
+                "required": false
+              },
+              "partNumberSingleLineTextInput": {
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Artikelnummer",
+                  "en": "Parts Number"
+                },
+                "required": false
+              },
+              "quantityNumericInput": {
+                "pdfHide": false,
+                "required": false
+              },
+              "warrantyBooleanInput": {
+                "enable": false,
+                "pdfHide": false
+              }
+					  }
+				  }
+			  },
+			  {
+				  "id": "disclaimer1",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "The commissioned work was carried out as agreed and the system was taken over in perfect condition. If, despite this, hidden defects appear, please complain within 8 days. Replaced parts are the property of the customer, they were handed over as requested. Operating instructions for the system are available to the operator/operating personnel.",
+						  "de": "Die beauftragten Arbeiten wurden wie vereinbart durchgeführt und die Anlage in einwandfreien Zustand übernommen. Sollten sich trotzdem versteckte, nicht aufgetretene Fehler zeigen, reklamieren Sie bitte innerhalb von 8 Tagen. Ausgetauschte Teile sind Eigentum des Kunden, sie wurden wunschgemäß ausgehändigt. Eine Bedienungsanleitung für die Anlage liegt dem Betreiber/Bedienungspersonal vor."
+					  }
+				  }
+			  },
+			  {
+				  "id": "disclaimer2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "With the signature, the general assembly conditions are accepted.",
+						  "de": "Mit der Unterschrift werden die allgemeinen Montagebedingungen anerkannt."
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "07-signatureTechnician",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true,
+					  "capitalizeFirstLetterOfEveryWord": false
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  }
+			  },
+			  "required": true,
+			  "headlineText": {
+				  "en": "Signature Technician",
+				  "de": "Unterschrift Techniker"
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+		  }
+	  },
+	  {
+		  "id": "07-signatureTechnician-2",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false,
+					  "capitalizeFirstLetterOfEveryWord": false
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false
+				  }
+			  },
+			  "required": false,
+			  "headlineText": {
+				  "en": "Signature Technician",
+				  "de": "Unterschrift Techniker"
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": true,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+		  }
+	  },
+	  {
+		  "id": "08-signatureCustomer",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true,
+					  "capitalizeFirstLetterOfEveryWord": false
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  }
+			  },
+			  "required": true,
+			  "headlineText": {
+				  "en": "Signature Customer",
+				  "de": "Unterschrift Kunde"
+			  },
+			  "pdfHide": false,
+			  "helpTextHtmlAbove": {
+				  "en": "The commissioned work was carried out as agreed and the system was taken over in perfect condition. If, despite this, hidden defects appear, please complain within 8 days. Replaced parts are the property of the customer, they were handed over as requested. Operating instructions for the system are available to the operator/operating personnel. With the signature, the general assembly conditions are accepted.",
+				  "de": "Die beauftragten Arbeiten wurden wie vereinbart durchgeführt und die Anlage in einwandfreien Zustand übernommen. Sollten sich trotzdem versteckte, nicht aufgetretene Fehler zeigen, reklamieren Sie bitte innerhalb von 8 Tagen. Ausgetauschte Teile sind Eigentum des Kunden, sie wurden wunschgemäß ausgehändigt. Eine Bedienungsanleitung für die Anlage liegt dem Betreiber/Bedienungspersonal vor. Mit der Unterschrift werden die allgemeinen Montagebedingungen anerkannt."
+			  },
+			  "helpTextHtmlBelow": {
+				  "en": "",
+				  "de": ""
+			  },
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+		  }
+	  },
+	  {
+		  "id": "09-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent form as E-Mail",
+				  "de": "Bericht als E-Mail senden/gesendet"
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 0,
+			  "pdfHide": true,
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": false,
+					  "staticEmails": [
+						  "kundendienstbericht@wilhelm-dosiertechnik.de"
+					  ]
+				  },
+				  "cc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "",
+					  "de": "Wilhelm Dosiertechnik - Kundendienstbericht"
+				  },
+				  "body": {
+					  "en": "",
+					  "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Kundendienstbericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst"
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  },
+	  {
+		  "id": "10_addendum",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Addendum",
+				  "de": "Interner Nachtrag"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "commentAddendum",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Comments & Notes",
+							  "de": "Bemerkungen & Hinweise"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "uiMinRows": 0,
+						  "uiMaxRows": 10
+					  }
+				  }
+			  },
+			  {
+				  "id": "upload",
+				  "type": "fileUpload",
+				  "config": {
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Photos",
+							  "de": "Fotos"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "tavelAndWorkingTimes2",
+				  "type": "timeTrackingListInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "requiredAmountOfEntries": 0,
+					  "label": {
+						  "text": {
+							  "en": "Travel and Working Times",
+							  "de": "Reise- und Arbeitszeiten"
+						  },
+						  "pdfHide": false
+					  },
+					  "fields": {
+						  "breakNumericInput": {
+							  "disabled": false,
+							  "pdfHide": false
+						  },
+						  "durationDisplay": {
+							  "disabled": false,
+							  "pdfHide": false
+						  },
+						  "distanceNumericInput": {
+							  "disabled": false,
+							  "pdfHide": false
+						  },
+						  "technicianUserSingleSelect": {
+							  "disabled": false,
+							  "pdfHide": false
+						  },
+						  "commentMultiLineTextInput": {
+							  "disabled": false,
+							  "pdfHide": false
+						  }
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "11-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent form as E-Mail",
+				  "de": "Bericht als E-Mail senden/gesendet"
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 0,
+			  "pdfHide": true,
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": false,
+					  "staticEmails": [
+						  "wilhelm-dosiertechnik@service.mail.remberg.de",
+						  "kundendienstbericht@wilhelm-dosiertechnik.de"
+					  ]
+				  },
+				  "cc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "",
+					  "de": "Kundendienstbericht - Interner Nachtrag"
+				  },
+				  "body": {
+					  "en": "",
+					  "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail."
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  }
+  ]
+}

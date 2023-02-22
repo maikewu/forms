@@ -61,6 +61,14 @@
                 "en": "Machine"
               }
             },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
             "onChange": [
               {
                 "target": {
@@ -86,6 +94,15 @@
                 "de": "Kunde",
                 "en": "Customer"
               }
+            },
+            "useAsFilterForFields": ["asset"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
             },
             "onChange": [
               {
@@ -228,10 +245,47 @@
           "config": {
             "requiredAmountOfEntries": 0,
             "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
                 "de": "Reise- und Arbeitszeiten",
                 "en": "Travel and Working Times"
+              }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
               }
             }
           }
@@ -267,14 +321,32 @@
           "id": "tasks",
           "type": "taskListInput",
           "config": {
-            "requiredAmountOfEntries": 0,
-            "pdfWidth": 1,
-            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
                 "de": "Durchgeführte Arbeiten",
                 "en": "Performed Tasks"
               }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": true
+              },
+              "highPrioBooleanInput": {
+                "disabled": true
+              },
+              "notNecessaryBooleanInput": {
+                "disabled": true
+              }
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
+                }
+              ]
             }
           }
         },
@@ -322,15 +394,53 @@
       "fields": [
         {
           "id": "spareParts",
-          "type": "singleLineTextInput",
+          "type": "partListInput",
           "config": {
-            "required": false,
-            "pdfWidth": 1,
-            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
-                "de": "Land",
-                "en": "Country"
+                "de": "Ersatzteile",
+                "en": "Spare Parts"
+              },
+              "pdfHide": false
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "requiredAmountOfEntries": 0,
+            "fields": {
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "pdfHide": false,
+                "required": true,
+                "placeHolderText": {
+                  "de": "Beschreibung",
+                  "en": "Description"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": false,
+                "pdfHide": false,
+                "required": false
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": false,
+                "pdfHide": false,
+                "required": false
+              },
+              "partNumberSingleLineTextInput": {
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Artikelnummer",
+                  "en": "Parts Number"
+                },
+                "required": false
+              },
+              "quantityNumericInput": {
+                "pdfHide": false,
+                "required": false
+              },
+              "warrantyBooleanInput": {
+                "enable": false,
+                "pdfHide": false
               }
             }
           }
@@ -401,6 +511,16 @@
               "input": "assignedUserId",
               "steps": ["userIdToUser", "userToFullNameString"]
             }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
           ]
         }
       }
@@ -435,6 +555,18 @@
             "pdfHide": false,
             "required": true
           }
+        },
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
         }
       }
     },
