@@ -1,0 +1,989 @@
+{
+  "general": {
+	  "timezone": "Europe/Berlin"
+  },
+  "sections": [
+	  {
+		  "id": "01_generalInformation",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Completion of mechanical and electrical erection, commissioning of the line and trial run",
+				  "de": "Fertigstellung der mechanischen und elektrischen Montage, Inbetriebnahme der Anlage und Probelauf",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+				{
+				  "id": "orderNumber",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Order No",
+							  "de": "Bestell-Nr",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToERPReferenceString"
+									]
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "customer",
+				  "type": "companySingleSelect",
+				  "config": {
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Customer",
+							  "de": "Kunde",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": true,
+						  "pdfHide": false
+					  },
+						"useAsFilterForFields": ["asset","asset2"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customerLocation"},
+                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "asset",
+				  "type": "assetSingleSelect",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Machine",
+							  "de": "Maschine",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "additionalAssets",
+				  "type": "fieldRepeater",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Additional machines",
+							  "de": "Weitere Maschinen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": true
+					  },
+						"pdfHideIfValueIsEmpty": true,
+					  "fields": [
+						  {
+							  "id": "asset2",
+							  "type": "assetSingleSelect",
+							  "config": {
+								  "required": false,
+								  "disabled": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Additional Machine(s)",
+										  "de": "Weitere Maschine(n)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  },
+								  "value": {
+									  "disableCreation": false,
+									  "pdfHide": false
+								  }
+							  }
+						  }
+					  ]
+				  }
+			  },
+			  {
+				  "id": "customerLocation",
+				  "type": "addressInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": {
+						  "street": false,
+						  "streetNumber": false,
+						  "supplement": false,
+						  "company": false,
+						  "zipPostCode": false,
+						  "city": false,
+						  "state": false,
+						  "country": false
+					  },
+					  "label": {
+						  "text": {
+							  "en": "Customer Address",
+							  "de": "Kundenadresse",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "pdfStartInNewLine": true,
+						  "pdfAddLineBreaks": true
+					  },
+						"prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+                },
+								{
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "07-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "08-signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "space1",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "date",
+				  "type": "dateInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Delivery date",
+							  "de": "Liefertermin",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "technician",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "In the presence of Service Technician",
+							  "de": "In Anwesenheit des Servicetechnikers",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "assignedUserId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "customerPerson",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "In the presence of customer personnel",
+							  "de": "In Beisein vom Kundenpersonal ",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "space2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "dropdown1",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "The mechanical and production trial run has proved satisfactory in every respect to the order confirmation",
+							  "de": "Der maschinelle und produktionstechnische Probelauf hat sich in jeder Hinsicht als zufriedenstellend für die Auftragsbestätigung erwiesen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "required": true,
+					  "value": {
+						  "options": {
+							  "Yes": {
+								  "de": "Ja",
+								  "en": "Yes"
+							  },
+							  "No": {
+								  "de": "Nein",
+								  "en": "No"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "dropdown2",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Faults or defects were found in material, design and workmanship during the installation time and / or necessary modifications/replacements have been made.",
+							  "de": "Während der Installationszeit wurden Fehler oder Mängel in Material, Konstruktion und Ausführung festgestellt und / oder notwendige Änderungen / Ersatzteile vorgenommen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "required": true,
+					  "value": {
+						  "options": {
+							  "Yes": {
+								  "de": "Ja",
+								  "en": "Yes"
+							  },
+							  "No": {
+								  "de": "Nein",
+								  "en": "No"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "helptext1",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "<b><br>The machine has been set up according to material type specification:</b>",
+						  "de": "<b><br>Die Maschine wurde nach der Spezifikation der folgenden Materialart eingerichtet:</b>",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "materialList1",
+				  "type": "fieldRepeater",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Material for machine types 400 to 700",
+							  "de": "Material für Maschinentypen 400 bis 700",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": true
+					  },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+					  "fields": [
+						  {
+							  "id": "materialTyp_repeater1",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Material Type",
+										  "de": "Material",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "breite_repeater1",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Width (mm)",
+										  "de": "Breite (mm)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "hub_repeater1",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Traverse (mm)",
+										  "de": "Hub (mm)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "speed_repeater1",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Speed (m/min)",
+										  "de": "Geschwindigkeit (m/min)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "winkel_repeater1",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Angle (°)",
+										  "de": "Winkel (°)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "verlegeabstand_repeater1",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Layout spacing (mm)",
+										  "de": "Verlegeabstand (mm)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  }
+					  ]
+				  }
+			  },
+			  {
+				  "id": "materialList2",
+				  "type": "fieldRepeater",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Material for all other machine types",
+							  "de": "Material für alle anderen Maschinentypen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": true
+					  },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+					  "fields": [
+						  {
+							  "id": "materialTyp_repeater2",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Material Type",
+										  "de": "Material",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "fadenspannung_repeater2",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Yarn tension (bar)",
+										  "de": "Fadenspannung (bar)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "anspressdruck_repeater2",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Bail pressure (bar)",
+										  "de": "Anpressdruck (bar)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "speed_repeater2",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Speed (m/min)",
+										  "de": "Geschwindigkeit (m/min)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "spulenverhaltnis_repeater2",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Winding ratio (nominal ratio)",
+										  "de": "Spulenverhältnis (Nennverhältnis)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  },
+						  {
+							  "id": "verlegeabstand_repeater2",
+							  "type": "singleLineTextInput",
+							  "config": {
+								  "disabled": false,
+								  "required": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Layout spacing (mm)",
+										  "de": "Verlegeabstand (mm)",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  }
+							  }
+						  }
+					  ]
+				  }
+			  },
+			  {
+				  "id": "dropdown_handout",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Spare parts and accessories have been checked and handed over according to packing list",
+							  "de": "Ersatzteile und Zubehör wurden geprüft und entsprechend der Verpackung ausgehändigt",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "required": false,
+					  "value": {
+						  "options": {
+							  "Yes": {
+								  "de": "Ja",
+								  "en": "Yes"
+							  },
+							  "No": {
+								  "de": "Nein",
+								  "en": "No"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "comment",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Customer notes",
+							  "de": "Bemerkungen des Kunden",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "uiMinRows": 1,
+						  "uiMaxRows": 10
+					  }
+				  }
+			  },
+			  {
+				  "id": "disclaimer",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "<b><br>Note to warranty and product liability:</b><br>Any changes and/or structural modification of the machine or parts thereof without the explicit consent of Georg Sahm GmbH & Co. KG causes the loss of warranty and product liability.",
+						  "de": "<b><br>Hinweis zur Gewährleistung und Produkthaftung:</b><br>Jegliche Änderungen und/oder bauliche Veränderungen an der Maschine oder Teilen ohne ausdrückliche Zustimmung der Georg Sahm GmbH & Co. KG führt zum Verlust der Gewährleistung und Produkthaftung.",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "07-signatureTechnician",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true,
+					  "capitalizeFirstLetterOfEveryWord": true
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  }
+			  },
+			  "required": true,
+			  "headlineText": {
+				  "en": "Signature Georg Sahm GmbH",
+				  "de": "Unterschrift Georg Sahm GmbH",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            },
+						{
+							"input": "organizationId",
+							"steps": ["accountIdToAccount","accountToBillingAddressAddress","addressToCityString"]
+						}
+          ]
+        }
+		  }
+	  },
+	  {
+		  "id": "08-signatureCustomer",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true,
+					  "capitalizeFirstLetterOfEveryWord": true
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  }
+			  },
+			  "required": true,
+			  "headlineText": {
+				  "en": "Signature Customer",
+				  "de": "Unterschrift Kunde",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            },
+						{
+							"input": "organizationId",
+							"steps": ["accountIdToAccount","accountToBillingAddressAddress","addressToCityString"]
+						}
+          ]
+        }
+		  }
+	  },
+	  {
+		  "id": "11-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent form as E-Mail",
+				  "de": "Bericht als E-Mail senden/gesendet",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 0,
+			  "pdfHide": true,
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": true,
+					  "staticEmails": []
+				  },
+				  "cc": {
+					  "assignee": false,
+					  "staticEmails": [
+						  "jmainka@sahmwinder.de",
+						  "kschiller@sahmwinder.de"
+					  ]
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "Site Acceptance Test (SAT) Certificate",
+					  "de": "Site Acceptance Test (SAT) Certificate",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  },
+				  "body": {
+					  "en": "This email was generated automatically.\nPlease do not reply to this email.",
+					  "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  }
+  ]
+}

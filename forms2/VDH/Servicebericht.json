@@ -1,0 +1,1026 @@
+{
+  "general": {
+	  "timezone": "Europe/Berlin"
+  },
+  "sections": [
+	  {
+		  "id": "01_generalInformation",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "General Information",
+				  "de": "Allgemeine Informationen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "serviceNumber",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "vdh Service Number",
+							  "de": "vdh Auftrags-Nr.",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToERPReferenceString"
+									]
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "serviceTermin",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Service Date",
+							  "de": "Servicetermin",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToStartDate"
+									]
+								},
+								{
+									"input": "creationDateTime",
+									"steps": ["dateTimeToDate"]
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "customer",
+				  "type": "companySingleSelect",
+				  "config": {
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Customer",
+							  "de": "Kunde",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": true,
+						  "pdfHide": false
+					  },
+						"useAsFilterForFields": ["asset","customerContactPerson","asset2"],
+						"prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+						"onChange": [
+              {
+                "target": {
+                  "id": "06-signature_technician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "asset",
+				  "type": "assetSingleSelect",
+				  "config": {
+					  "required": true,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Machine",
+							  "de": "Anlage",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "machine_repeater",
+				  "type": "fieldRepeater",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Additional assets",
+							  "de": "Weitere Anlagen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+						"pdfHideIfValueIsEmpty": true,
+					  "fields": [
+						  {
+							  "id": "asset2",
+							  "type": "assetSingleSelect",
+							  "config": {
+								  "required": true,
+								  "disabled": false,
+								  "pdfHide": false,
+								  "pdfHideIfValueIsEmpty": false,
+								  "label": {
+									  "text": {
+										  "en": "Asset",
+										  "de": "Anlage",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  },
+								  "value": {
+									  "disableCreation": false,
+									  "pdfHide": false
+								  }
+							  }
+						  }
+					  ]
+				  }
+			  },
+			  {
+				  "id": "customerContactPerso",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Contact Person of Customer",
+							  "de": "Ansprechpartner beim Kunden",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": true,
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "customerContactText",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "In case the contact is not to be found above, please enter it manually below:",
+						  "de": "Falls der Kontakt oben nicht auffindbar ist, bitte folgend manuell eintippen:",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "contactPersons_customer_freetext",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Contact Person of Customer",
+							  "de": "Ansprechpartner beim Kunden",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "missionDetails",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Work Order Content",
+							  "de": "Auftragsinhalt",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "serviceTechnician_User",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Service Technician",
+							  "de": "Servicetechniker",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "assignedUserId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "serviceTechnicians",
+				  "type": "personListInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Additional service technicians",
+							  "de": "Weitere Servicetechniker",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "value": {
+						  "email": {
+							  "hide": true,
+							  "pdfHide": true,
+							  "required": false
+						  },
+						  "firstNameRequired": false,
+						  "lastNameRequired": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "02_Anlagenzustand_vor_Arbeit",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Machine Condition Before Service Work",
+				  "de": "Anlagenzustand vor Arbeitsaufnahme",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "conidition",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Machine Condition",
+							  "de": "Anlagenzustand",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "disabled": false,
+					  "required": false,
+					  "value": {
+						  "options": {
+							  "ok": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "nOK": {
+								  "de": "n. OK",
+								  "en": "n. OK"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "cleanness",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Machine Cleanness",
+							  "de": "Sauberkeit der Anlage",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "disabled": false,
+					  "required": false,
+					  "value": {
+						  "options": {
+							  "ok_2": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "nOK_2": {
+								  "de": "n. OK",
+								  "en": "n. OK"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "leakage",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Leakage Size",
+							  "de": "Leckgröße",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "display_leak",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Leakage Display",
+							  "de": "Anzeige Leck",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "preConiditionComment",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Comment",
+							  "de": "Bemerkung",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "03_performedTasksInformation",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Performed Tasks",
+				  "de": "Durchgeführte Arbeiten",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "tasks",
+				  "type": "taskListInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "requiredAmountOfEntries": 1,
+					  "label": {
+						  "text": {
+							  "en": "Performed Tasks",
+							  "de": "Durchgeführte Arbeiten",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+						"fields": {
+							"checkboxBooleanInput": {
+                "checkedByDefault": true
+              },
+              "highPrioBooleanInput": {
+                "disabled": true
+              },
+              "notNecessaryBooleanInput": {
+                "disabled": true
+              }
+						}
+				  }
+			  },
+			  {
+				  "id": "tasksComment",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Comment",
+							  "de": "Bemerkung",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "04_Anlagenzustand_nach_Arbeit",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Machine Condition After Service Work",
+				  "de": "Anlagenzustand nach Beendigung der Arbeit",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "conidition_after",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Machine Condition",
+							  "de": "Anlagenzustand",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "disabled": false,
+					  "required": false,
+					  "value": {
+						  "options": {
+							  "ok_3": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "nOK_3": {
+								  "de": "n. OK",
+								  "en": "n. OK"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "cleanness_after",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Machine Cleanness",
+							  "de": "Sauberkeit der Anlage",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "disabled": false,
+					  "required": false,
+					  "value": {
+						  "options": {
+							  "ok_4": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "nOK_4": {
+								  "de": "n. OK",
+								  "en": "n. OK"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "leakage_after",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Leakage Size",
+							  "de": "Leckgröße",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "display_leak_after",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Leakage Display",
+							  "de": "Anzeige Leck",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "postConiditionComment",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Comment",
+							  "de": "Bemerkung",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "05_notesInformation",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Notes",
+				  "de": "Anmerkungen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "additionalTasks",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Additional necessary tasks / offers",
+							  "de": "Zusätzlich notwendige Arbeiten / Angebote",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "comments",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Comments / Additions",
+							  "de": "Bemerkungen / Zusätze",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "retourGoods",
+				  "type": "partListInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Retourware",
+							  "de": "Retourware",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "fields": {
+						  "partNumberSingleLineTextInput": {
+							  "required": false,
+							  "pdfHide": false,
+							  "placeHolderText": {
+								  "en": "Part Number",
+								  "de": "Artikelnummer",
+								  "fr": "",
+								  "it": "",
+								  "tr": "",
+								  "es": ""
+							  }
+						  },
+						  "quantityNumericInput": {
+							  "required": false,
+							  "pdfHide": false
+						  },
+						  "descriptionMultiLineTextInput": {
+							  "enable": true,
+							  "required": false,
+							  "pdfHide": false,
+							  "placeHolderText": {
+								  "en": "Description",
+								  "de": "Beschreibung",
+								  "fr": "",
+								  "it": "",
+								  "tr": "",
+								  "es": ""
+							  }
+						  },
+						  "deliverToStaticSingleSelect": {
+							  "enable": false,
+							  "required": false,
+							  "pdfHide": true
+						  },
+						  "invoiceToStaticSingleSelect": {
+							  "enable": false,
+							  "required": false,
+							  "pdfHide": true
+						  },
+						  "warrantyBooleanInput": {
+							  "enable": false,
+							  "pdfHide": true
+						  }
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "06-signature_technician",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true,
+					  "capitalizeFirstLetterOfEveryWord": false
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  }
+			  },
+			  "required": true,
+			  "headlineText": {
+				  "en": "Signature Service Technician",
+				  "de": "Unterschrift Servicetechniker",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            },
+						{
+							"input": "organizationId",
+							"steps": ["accountIdToAccount","accountToBillingAddressAddress","addressToCityString"]
+						}
+          ]
+        }
+		  }
+	  },
+	  {
+		  "id": "07-upload",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Document Upload",
+				  "de": "Dokumente hinzufügen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "documents",
+				  "type": "fileUpload",
+				  "config": {
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Documents",
+							  "de": "Dokument",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "08-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent form as E-Mail",
+				  "de": "Bericht als E-Mail senden/gesendet",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 0,
+			  "pdfHide": true,
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": false,
+					  "staticEmails": [
+						  "warda@vdh-germany.de",
+						  "engelhardt@vdh-germany.de"
+					  ]
+				  },
+				  "cc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "Service Report - W.v.d. Heyde Gmbh",
+					  "de": "Servicebericht - W.v.d. Heyde GmbH",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  },
+				  "body": {
+					  "en": "This email was generated automatically.\nPlease do not reply to this email.",
+					  "de": "Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-Mail. \n\nAnbei erhalten sie den Bericht des letzten Serviceeinsatzes. \n\nMit freundlichen Grüßen,\nIhr Service-Team.",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  }
+  ]
+}
