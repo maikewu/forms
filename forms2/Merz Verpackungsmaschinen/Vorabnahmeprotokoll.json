@@ -8,8 +8,8 @@
 		  "type": "fieldSection",
 		  "config": {
 			  "headlineText": {
-				  "en": " ",
-				  "de": " ",
+				  "en": "General Information",
+				  "de": "Allgemeine Informationen",
 				  "fr": "",
 				  "it": "",
 				  "tr": "",
@@ -18,7 +18,7 @@
 		  },
 		  "fields": [
 			  {
-				  "id": "01_generalInformation||customer",
+				  "id": "customer",
 				  "type": "companySingleSelect",
 				  "config": {
 					  "required": true,
@@ -39,11 +39,37 @@
 					  "value": {
 						  "disableCreation": true,
 						  "pdfHide": false
-					  }
+					  },
+						"useAsFilterForFields": ["asset"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+						"onChange": [
+							{
+								"target": {"id": "06-signatureTechnician","propertyName": "location"},
+								"steps": ["accountInfoToAccount","accountToBillingAddressAddress","addressToCityString"]
+							},
+							{
+								"target": {"id": "07-signatureCustomer","propertyName": "location"},
+								"steps": ["accountInfoToAccount","accountToBillingAddressAddress","addressToCityString"]
+							}
+						]
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||order_number",
+				  "id": "order_number",
 				  "type": "singleLineTextInput",
 				  "config": {
 					  "disabled": false,
@@ -62,13 +88,21 @@
 						  },
 						  "pdfHide": false
 					  },
-					  "value": {
-						  "validators": null
-					  }
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToERPReferenceString"
+									]
+								}
+							]
+						}
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||order_Date",
+				  "id": "order_Date",
 				  "type": "dateInput",
 				  "config": {
 					  "label": {
@@ -92,7 +126,7 @@
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||offer_number",
+				  "id": "offer_number",
 				  "type": "singleLineTextInput",
 				  "config": {
 					  "disabled": false,
@@ -110,14 +144,11 @@
 							  "es": ""
 						  },
 						  "pdfHide": false
-					  },
-					  "value": {
-						  "validators": null
 					  }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||offer_Date",
+				  "id": "offer_Date",
 				  "type": "dateInput",
 				  "config": {
 					  "label": {
@@ -141,7 +172,7 @@
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||confirmation_number",
+				  "id": "confirmation_number",
 				  "type": "singleLineTextInput",
 				  "config": {
 					  "disabled": false,
@@ -159,14 +190,11 @@
 							  "es": ""
 						  },
 						  "pdfHide": false
-					  },
-					  "value": {
-						  "validators": null
 					  }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||confirmation_Date",
+				  "id": "confirmation_Date",
 				  "type": "dateInput",
 				  "config": {
 					  "label": {
@@ -190,7 +218,7 @@
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||technician_select",
+				  "id": "technician_select",
 				  "type": "userSingleSelect",
 				  "config": {
 					  "required": true,
@@ -209,13 +237,13 @@
 						  "pdfHide": false
 					  },
 					  "value": {
-						  "pdfPrintEmailAddress": null,
+						  "pdfPrintEmailAddress": false,
 						  "pdfHide": false
 					  }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||customer_contact",
+				  "id": "customer_contact",
 				  "type": "singleLineTextInput",
 				  "config": {
 					  "disabled": false,
@@ -233,14 +261,11 @@
 							  "es": ""
 						  },
 						  "pdfHide": false
-					  },
-					  "value": {
-						  "validators": null
 					  }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||asset",
+				  "id": "asset",
 				  "type": "assetSingleSelect",
 				  "config": {
 					  "required": false,
@@ -262,11 +287,19 @@
 					  "value": {
 						  "disableCreation": false,
 						  "pdfHide": false
-					  }
+					  },
+						"prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||additional_equipment",
+				  "id": "additional_equipment",
 				  "type": "singleLineTextInput",
 				  "config": {
 					  "disabled": false,
@@ -284,21 +317,18 @@
 							  "es": ""
 						  },
 						  "pdfHide": false
-					  },
-					  "value": {
-						  "validators": null
 					  }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||helptext1",
+				  "id": "helptext1",
 				  "type": "htmlDisplay",
 				  "config": {
 					  "pdfHide": false,
 					  "pdfWidth": 1,
 					  "text": {
-						  "en": "\n We hereby confirm that during today's test run the above named machine has performed as requested and complies with the order and the technical specification of our offer / order confirmation. <br>",
-						  "de": "\n Wir bestätigen hiermit, dass oben genannte Verpackungsmaschine beim heutigen Testlauf die gewünschte Leistung erbracht hat und der Bestellung sowie der technischen Spezifikation von unserem Angebot / Auftragsbestätigung entspricht. <br>",
+						  "en": "<br>We hereby confirm that during today's test run the above named machine has performed as requested and complies with the order and the technical specification of our offer / order confirmation. <br>",
+						  "de": "<br>Wir bestätigen hiermit, dass oben genannte Verpackungsmaschine beim heutigen Testlauf die gewünschte Leistung erbracht hat und der Bestellung sowie der technischen Spezifikation von unserem Angebot / Auftragsbestätigung entspricht. <br>",
 						  "fr": "",
 						  "it": "",
 						  "tr": "",
@@ -307,7 +337,7 @@
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||space_1",
+				  "id": "space_1",
 				  "type": "htmlDisplay",
 				  "config": {
 					  "pdfHide": false,
@@ -323,29 +353,12 @@
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||helptext2",
-				  "type": "htmlDisplay",
-				  "config": {
-					  "pdfHide": true,
-					  "pdfWidth": 1,
-					  "text": {
-						  "en": "During the acceptance test, the following defects were identified or changes were specified:",
-						  "de": "Während der Abnahme wurden nachstehende Mängel festgestellt bzw. Änderungen festgelegt:",
-						  "fr": "",
-						  "it": "",
-						  "tr": "",
-						  "es": ""
-					  }
-				  }
-			  },
-			  {
-				  "id": "01_generalInformation||defects",
+				  "id": "defects",
 				  "type": "multiLineTextInput",
 				  "config": {
 					  "required": false,
 					  "disabled": false,
 					  "pdfHide": false,
-					  "placeHolderText": null,
 					  "pdfHideIfValueIsEmpty": true,
 					  "pdfWidth": 1,
 					  "label": {
@@ -357,17 +370,13 @@
 							  "tr": "",
 							  "es": ""
 						  },
-						  "pdfHide": false
-					  },
-					  "value": {
 						  "pdfHide": false,
-						  "uiMinRows": null,
-						  "uiMaxRows": 10
+							"uiHide": false
 					  }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||space_2",
+				  "id": "space_2",
 				  "type": "htmlDisplay",
 				  "config": {
 					  "pdfHide": false,
@@ -383,23 +392,7 @@
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||helptext3",
-				  "type": "htmlDisplay",
-				  "config": {
-					  "pdfHide": true,
-					  "pdfWidth": 1,
-					  "text": {
-						  "en": "The following items will be completed as soon as possible, and Merz will pay the costs:",
-						  "de": "Folgende Punkte werden schnellst möglich erledigt, und die Kosten übernimmt Merz:",
-						  "fr": "",
-						  "it": "",
-						  "tr": "",
-						  "es": ""
-					  }
-				  }
-			  },
-			  {
-				  "id": "01_generalInformation||merz_pays",
+				  "id": "merz_pays",
 				  "type": "singleLineTextInput",
 				  "config": {
 					  "disabled": false,
@@ -417,30 +410,11 @@
 							  "es": ""
 						  },
 						  "pdfHide": false
-					  },
-					  "value": {
-						  "validators": null
 					  }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||helptext4",
-				  "type": "htmlDisplay",
-				  "config": {
-					  "pdfHide": true,
-					  "pdfWidth": 1,
-					  "text": {
-						  "en": "The following items will be completed as soon as possible, and Customer will pay the costs:",
-						  "de": "Folgende Punkte werden schnellst möglich erledigt, und die Kosten übernimmt Kunde:",
-						  "fr": "",
-						  "it": "",
-						  "tr": "",
-						  "es": ""
-					  }
-				  }
-			  },
-			  {
-				  "id": "01_generalInformation||customer_pays",
+				  "id": "customer_pays",
 				  "type": "singleLineTextInput",
 				  "config": {
 					  "disabled": false,
@@ -458,14 +432,11 @@
 							  "es": ""
 						  },
 						  "pdfHide": false
-					  },
-					  "value": {
-						  "validators": null
 					  }
 				  }
 			  },
 			  {
-				  "id": "01_generalInformation||delivery_Date",
+				  "id": "delivery_Date",
 				  "type": "dateInput",
 				  "config": {
 					  "label": {
@@ -491,7 +462,7 @@
 		  ]
 	  },
 	  {
-		  "id": "02-signatureTechnician",
+		  "id": "06-signatureTechnician",
 		  "type": "signatureSection",
 		  "config": {
 			  "fields": {
@@ -524,11 +495,29 @@
 			  "pdfHide": false,
 			  "pdfHideIfValueIsEmpty": false,
 			  "hideDownloadPdfButton": false,
-			  "hidePreviewPdfButton": false
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
 		  }
 	  },
 	  {
-		  "id": "03-signatureCustomer",
+		  "id": "07-signatureCustomer",
 		  "type": "signatureSection",
 		  "config": {
 			  "fields": {
@@ -561,7 +550,19 @@
 			  "pdfHide": false,
 			  "pdfHideIfValueIsEmpty": false,
 			  "hideDownloadPdfButton": false,
-			  "hidePreviewPdfButton": false
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
 		  }
 	  },
 	  {
