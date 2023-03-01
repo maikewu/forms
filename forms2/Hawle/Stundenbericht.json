@@ -1,0 +1,481 @@
+{
+  "$schema": "https://app.remberg.de/api/forms/v2/documentation/form-template-config-schema.json",
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "headlineGeneralInformation",
+          "type": "headlineDisplay",
+          "config": { 
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "text": {
+              "de": "Allgemeine Informationen",
+              "en": "General Information" 
+            }
+          }
+        },
+        {
+          "id": "subject",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Betreff",
+                "en": "Subject"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "workOrderID",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftragsnummer",
+                "en": "Work Order ID"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "serviceTechnician",
+          "type": "userSingleSelect",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Mitarbeiter",
+                "en": "Service Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "04_signatureTechnician",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "companion",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Begleiter",
+                "en": "Companion"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "companySingleSelect_1",
+          "type": "companySingleSelect",
+          "config": {
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer address"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "04_signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "05_signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ],
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentAccountId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_workTimes",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Arbeitszeiten",
+          "en": "Work Hours"
+        }
+      },
+      "fields": [
+        {
+          "id": "whitespace1",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "pdfTextSize": "H2",
+            "text": {
+              "de": "",
+              "en": ""
+            }
+          }
+        },
+        {
+          "id": "headlineTimes",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "text": {
+              "de": "Arbeitszeiten",
+              "en": "Work Hours"
+            }
+          }
+        },
+        {
+          "id": "tavelAndWorkingTimes",
+          "type": "timeTrackingListInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Arbeitszeiten",
+                "en": "Work Hours"
+              },
+              "pdfHide": true
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": true,
+                "required": false,
+                "pdfHide": true,
+                "pdfPrintEmailAddress": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_disclaimers",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Hinweise",
+          "en": "Disclaimers"
+        }
+      },
+      "fields": [
+        {
+          "id": "whitespace2",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "pdfTextSize": "H2",
+            "text": {
+              "de": "",
+              "en": ""
+            }
+          }
+        },
+        {
+          "id": "dicslaimer1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b>Zuschläge für Arbeitszeit außerhalb Mo - Do: 7.00 - 17.00 Uhr, Fr: 7.00 - 12.00 Uhr nach Aufwand:</b><br>- 17:00 Uhr - 7:00 Uhr und an Samstagen: 50 %<br>- An Sonn- und Feiertagen: 100%<br><br><b>Tages- und Übernachtungsspesen pro Servicetechniker pro 8 h-Schicht nach Aufwand</b>",
+              "en": "<b>Surcharges for working time outside Mon - Thurs: 7:00 am - 5:00 pm, Fri: 7:00 am - 12:00 am at cost:</b><br>- 5:00 pm - 7:00 am and on Saturdays: 50%<br>- On Sundays and public holidays: 100%<br><br><b>Daily and overnight expenses per service technician per 8 h shift at cost.</b>"
+            }
+          }
+        },
+        {
+          "id": "whitespace3",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "pdfTextSize": "H2",
+            "text": {
+              "de": "",
+              "en": ""
+            }
+          }
+        },
+        {
+          "id": "gas",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bereitstellung Gasmessgerät",
+                "en": "Provision gas meter"
+              }
+            },
+            "value": {
+              "options": {
+                "yes":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "no":{
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_signatureTechnician",
+      "type": "signatureSection",
+      "config": {
+        "required": true,
+        "headlineText": {
+          "de": "Unterschrift Techniker",
+          "en": "Signature technician"
+        },
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": true
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "05_signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "required": true,
+        "headlineText": {
+          "de": "Unterschrift Kunde",
+          "en": "Signature Customer"
+        },
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": true
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "06_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Stundenbericht als E-Mail senden/gesendet",
+          "en": "Send/sent report as email"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": true,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": true,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": true,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Stundenbericht",
+            "en": "Time Sheet"
+          },
+          "subject": {
+            "de": "Diese E-Mail wurde automatisch erstellt.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "en": "This email was generated automatically.\nPlease do not reply to this email."
+          }
+        }
+      }
+    }
+  ]
+}

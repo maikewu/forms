@@ -1,0 +1,368 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "General Information",
+          "de": "Allgemeine Informationen"
+        }
+      },
+      "fields": [
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Machine",
+                "de": "Maschine"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "orderNumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Order No.",
+                "de": "Bestellung Nr."
+              },
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "space1",
+          "type": "headlineDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": " ",
+              "de": " "
+            },
+            "uiTextSize": "H3",
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": { "id": "customerLocation" },
+                "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "label": {
+              "text": {
+                "en": "Customer address",
+                "de": "Kundenadresse"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfAddLineBreaks": true
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+                },
+								{
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "11-signature_technician", "propertyName": "location"},    
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {"id": "11-signature_customer", "propertyName": "location"},    
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "text1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "<br>The fully installed machine of the above type complies with the contractual agreements and is hereby accepted by the customer.<br>The machine operates fully automatically, efficiently and without malfunctions.<br><br>All functions of the machine have been explained to the customer.<br><br>The operating instructions, the PLC program and the data with all CNC parameters have been handed over to the customer.<br><br>The warranty period begins with today's date.<br><br>",
+              "de": "<br>Die vollständig installierte Maschine vom oben genannten Typ entspricht den vertraglichen Vereinbarungen und ist hiermit vom Kunden abgenommen.<br>Die Maschine arbeitet vollautomatisch, effizient und ohne Störungen.<br><br>Alle Funktionen der Maschine wurden dem Kunden erklärt.<br><br>Die Bedienungsanleitung, das PLC-Programm sowie die Daten mit allen CNC-Parametern wurden dem Kunden übergeben.<br><br>Die Gewährleistungsfrist beginnt mit dem heutigen Tag.<br><br>"
+            }
+          }
+        },
+        {
+          "id": "comment",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Notes",
+                "de": "Anmerkungen"
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "space2",
+          "type": "headlineDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": " \n ",
+              "de": " \n "
+            },
+            "uiTextSize": "H3",
+            "pdfTextSize": "H3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "11-signature_customer",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          }
+        },
+        "required": true,
+        "headlineText": {
+          "en": "Signature Customer\n ",
+          "de": "Unterschrift Kunde\n "
+        },
+        "pdfHide": false,
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "11-signature_technician",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          }
+        },
+        "required": true,
+        "headlineText": {
+          "en": "Signature WF Maschinenbau und Blechformtechnik GmbH & Co. KG",
+          "de": "Unterschrift WF Maschinenbau und Blechformtechnik GmbH & Co. KG"
+        },
+        "pdfHide": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "11-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent form as E-Mail",
+          "de": "Bericht als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 1,
+        "pdfHide": true,
+        "pdfHideIfValueIsEmpty": true,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "bcc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "",
+            "de": ""
+          },
+          "body": {
+            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail."
+          }
+        },
+        "whitelistedDomains": []
+      }
+    }
+  ]
+}
