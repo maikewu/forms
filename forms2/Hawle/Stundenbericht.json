@@ -27,29 +27,52 @@
           }
         },
         {
-          "id": "maintenanceNr",
+          "id": "subject",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Betreff",
+                "en": "Subject"
+              }
+            },
+            "required": true,
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "workOrderID",
           "type": "singleLineTextInput",
           "config": {
             "label": {
               "text": {
                 "de": "Auftragsnummer",
-                "en": "Work Order Number"
+                "en": "Work Order ID"
               }
             },
-            "required": true
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
           }
         },
         {
-          "id": "ausgestelltDurch",
+          "id": "serviceTechnician",
           "type": "userSingleSelect",
           "config": {
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Mitarbeiter",
-                "en": "Employee"
+                "en": "Service Technician"
               }
             },
-            "required": true,
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            },
             "onChange": [
               {
                 "target": {
@@ -60,18 +83,23 @@
                   "userToFullNameString"
                 ]
               }
-            ],
-            "prefill": {
-              "value": [
-                {
-                  "input": "assignedUserId",
-                  "steps": []
-                }
-              ]
-            }
+            ]
           }
         },
-        
+        {
+          "id": "companion",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Begleiter",
+                "en": "Companion"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5
+          }
+        },
         {
           "id": "companySingleSelect_1",
           "type": "companySingleSelect",
@@ -85,11 +113,74 @@
                 "de": "Kunde"
               }
             },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ],
             "prefill": {
               "selectedCompany": [
                 {
                   "input": "organizationId",
                   "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer address"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "04_signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "05_signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ],
+            "prefill": {
+              "value": [
+                {
+                  "input": "currentAccountId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
                 }
               ]
             }
@@ -139,7 +230,8 @@
               "text": {
                 "de": "Arbeitszeiten",
                 "en": "Work Hours"
-              }
+              },
+              "pdfHide": true
             },
             "pdfWidth": 1,
             "pdfHideIfValueIsEmpty": true,
@@ -184,84 +276,68 @@
       ]
     },
     {
-      "id": "03_expenses",
+      "id": "03_disclaimers",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Spesen",
-          "en": "Expenses"
+          "de": "Hinweise",
+          "en": "Disclaimers"
         }
       },
       "fields": [
         {
-          "id": "expenses",
-          "type": "expenseListInput",
+          "id": "whitespace2",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "pdfTextSize": "H2",
+            "text": {
+              "de": "",
+              "en": ""
+            }
+          }
+        },
+        {
+          "id": "dicslaimer1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b>Zuschläge für Arbeitszeit außerhalb Mo - Do: 7.00 - 17.00 Uhr, Fr: 7.00 - 12.00 Uhr nach Aufwand:</b><br>- 17:00 Uhr - 7:00 Uhr und an Samstagen: 50 %<br>- An Sonn- und Feiertagen: 100%<br><br><b>Tages- und Übernachtungsspesen pro Servicetechniker pro 8 h-Schicht nach Aufwand</b>",
+              "en": "<b>Surcharges for working time outside Mon - Thurs: 7:00 am - 5:00 pm, Fri: 7:00 am - 12:00 am at cost:</b><br>- 5:00 pm - 7:00 am and on Saturdays: 50%<br>- On Sundays and public holidays: 100%<br><br><b>Daily and overnight expenses per service technician per 8 h shift at cost.</b>"
+            }
+          }
+        },
+        {
+          "id": "whitespace3",
+          "type": "headlineDisplay",
+          "config": {
+            "uiHide": true,
+            "pdfTextSize": "H2",
+            "text": {
+              "de": "",
+              "en": ""
+            }
+          }
+        },
+        {
+          "id": "gas",
+          "type": "staticSingleSelect",
           "config": {
             "label": {
               "text": {
-                "de": "Ausgaben",
-                "en": "Expenses"
+                "de": "Bereitstellung Gasmessgerät",
+                "en": "Provision gas meter"
               }
             },
-            "pdfWidth": 1,
-            "pdfHideIfValueIsEmpty": true,
-            "fields": {
-              "dateInput": {
-                "pdfHide": false,
-                "disabled": false,
-                "required": false
-              },
-              "commentMultiLineTextInput": {
-                "pdfHide": false,
-                "disabled": false,
-                "required": false
-              },
-              "expenseAmountNumericInput": {
-                "pdfHide": false,
-                "disabled": false,
-                "required": true
-              },
-              "expenseTypeSingleSelectInput": {
-                "pdfHide": false,
-                "disabled": false,
-                "required": false,
-                "values": {
-                  "flight": {
-                      "de": "Flug",
-                      "en": "Flight"
-                  },
-                  "rental_car": {
-                      "de": "Mietauto",
-                      "en": "Rental Car"
-                  },
-                  "board": {
-                      "de": "Verpflegung",
-                      "en": "Board"
-                  },
-                  "accommodation": {
-                      "de": "Unterkunft",
-                      "en": "Accommodation"
-                  },
-                  "parking": {
-                      "de": "Parken",
-                      "en": "Parking"
-                  },
-                  "toll": {
-                      "de": "Maut",
-                      "en": "Toll"
-                  },
-                  "transportation": {
-                      "de": "Transport",
-                      "en": "Transportation"
-                  },
-                  "vignette": {
-                      "de": "Vignette",
-                      "en": "Vignette"
-                  },
-                  "other": {
-                      "de": "Sonstiges",
-                      "en": "Other"
-                  }                      
+            "value": {
+              "options": {
+                "yes":{
+                  "de": "Ja",
+                  "en": "Yes"
+                },
+                "no":{
+                  "de": "Nein",
+                  "en": "No"
                 }
               }
             }
@@ -282,18 +358,18 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": false
+            "required": true
           },
           "locationSingleLineTextInput": {
             "disable": false,
             "pdfHide": false,
-            "required": false
+            "required": true
           },
           "nameSingleLineTextInput": {
             "disable": false,
             "pdfHide": false,
-            "capitalizeFirstLetterOfEveryWord": false,
-            "required": false
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": true
           }
         },
         "pdfHide": false,
@@ -303,10 +379,8 @@
         "prefill": {
           "name": [
             {
-              "input": "currentUser",
-              "steps": [
-                "userToFullNameString"
-              ]
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "date": [
@@ -321,11 +395,54 @@
       }
     },
     {
-      "id": "05_send",
+      "id": "05_signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "required": true,
+        "headlineText": {
+          "de": "Unterschrift Kunde",
+          "en": "Signature Customer"
+        },
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": true
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "06_send",
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "de": "Stundenzettel als E-Mail senden/gesendet",
+          "de": "Stundenbericht als E-Mail senden/gesendet",
           "en": "Send/sent report as email"
         },
         "hidePreviewPdfButton": false,
@@ -350,7 +467,7 @@
             "staticEmails": []
           },
           "body": {
-            "de": "Stundenzettel",
+            "de": "Stundenbericht",
             "en": "Time Sheet"
           },
           "subject": {
