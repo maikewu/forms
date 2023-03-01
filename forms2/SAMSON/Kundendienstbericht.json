@@ -1,0 +1,1438 @@
+{
+  "general": {
+	  "timezone": "Europe/Berlin",
+		"hideInstanceCounterInPdf": true
+  },
+  "sections": [
+	  {
+		  "id": "0-ERP-refernez",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "ERP Reference No.",
+				  "de": "ERP-Referenznummer",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "ERP",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "ERP Reference No.",
+							  "de": "ERP-Referenznummer",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToERPReferenceString"
+									]
+								}
+							]
+						}
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "1-allgmeineInformationen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Customer Information",
+				  "de": "Kundeninformationen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_1",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "kundendienstbericht",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Customer Service Report",
+							  "de": "Kundendienstbericht",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "date",
+				  "type": "dateInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Date",
+							  "de": "Datum",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "creationDateTime",
+									"steps": ["dateTimeToDate"]
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "customer",
+				  "type": "companySingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Customer",
+							  "de": "Auftraggeber",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": true,
+						  "pdfHide": false
+					  },
+						"useAsFilterForFields": ["asset","asset2"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customerLocation"},
+                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "customerLocation",
+				  "type": "addressInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": {
+						  "street": false,
+						  "streetNumber": false,
+						  "supplement": false,
+						  "company": false,
+						  "zipPostCode": false,
+						  "city": false,
+						  "state": false,
+						  "country": false
+					  },
+					  "label": {
+						  "text": {
+							  "en": "Address",
+							  "de": "Adresse",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "pdfStartInNewLine": true,
+						  "pdfAddLineBreaks": true
+					  },
+						"prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+                },
+								{
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+                }
+              ]
+            }
+				  }
+			  },
+			  {
+				  "id": "text_1",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Offer",
+							  "de": "Angebot",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "text_2",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Accepted",
+							  "de": "Aufgenommen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "text_3",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Requested by",
+							  "de": "Angefordert durch",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "date_1",
+				  "type": "dateInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Requested at",
+							  "de": "Angefordert am",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "date_2",
+				  "type": "dateInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "confirmed date",
+							  "de": "zuges. Termin",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "text_4",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Order Number",
+							  "de": "Bestell-Nr.",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "phone_1",
+				  "type": "phoneNumberInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Phone",
+							  "de": "Tel.",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "time",
+				  "type": "timeInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Time",
+							  "de": "Zeit",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "2-objektInformationen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Object Informationen ",
+				  "de": "Objektinformationen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "asset",
+				  "type": "assetSingleSelect",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Object",
+							  "de": "Objekt",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "assetaddress"},
+                "steps": ["assetInfoToAsset","assetToLocationAddress"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "assetaddress",
+				  "type": "addressInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": {
+						  "street": false,
+						  "streetNumber": false,
+						  "supplement": false,
+						  "company": false,
+						  "zipPostCode": false,
+						  "city": false,
+						  "state": false,
+						  "country": false
+					  },
+					  "label": {
+						  "text": {
+							  "en": "Object Address",
+							  "de": "Objektadresse",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "pdfStartInNewLine": true,
+						  "pdfAddLineBreaks": true
+					  },
+						"prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "10-signature_technician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "11-signature_customer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "text_5",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Contact person",
+							  "de": "Ansprechpartner",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "phone_2",
+				  "type": "phoneNumberInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Phone",
+							  "de": "Tel.",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "helptext_3",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "<br><b style='font-size:9pt'>Added from:</b><br>",
+						  "de": "<br><b style='font-size:9pt'>Zugegen von:</b><br>",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "text_8",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.25,
+					  "label": {
+						  "text": {
+							  "en": "Client",
+							  "de": "Auftraggeber",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "text_9",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.25,
+					  "label": {
+						  "text": {
+							  "en": "Operator",
+							  "de": "Betreiber",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "userselect_3",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.25,
+					  "label": {
+						  "text": {
+							  "en": "SAMSON",
+							  "de": "SAMSON",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "assignedUserId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "3-objektInformationen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Work and Travel Times",
+				  "de": "Arbeits- und Reisezeiten",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "worktime",
+				  "type": "timeTrackingListInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "requiredAmountOfEntries": 0,
+					  "label": {
+						  "text": {
+							  "en": "Work and Travel Times",
+							  "de": "Arbeits- und Reisezeiten",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "fields": {
+						  "breakNumericInput": {
+							  "disabled": false,
+							  "pdfHide": false
+						  },
+						  "durationDisplay": {
+							  "disabled": false,
+							  "pdfHide": false
+						  },
+						  "distanceNumericInput": {
+							  "disabled": false,
+							  "pdfHide": false
+						  },
+						  "technicianUserSingleSelect": {
+							  "disabled": false,
+							  "pdfHide": false
+						  },
+						  "commentMultiLineTextInput": {
+							  "disabled": false,
+							  "pdfHide": false
+						  }
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "4-objektInformationen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Device Information",
+				  "de": "Geräteinformationen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_4",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "additionalAssets",
+				  "type": "fieldRepeater",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Device Information",
+							  "de": "Geräteinformationen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+					  "fields": [
+						  {
+							  "id": "asset2",
+							  "type": "assetSingleSelect",
+							  "config": {
+								  "required": false,
+								  "disabled": false,
+								  "pdfHide": false,
+								  "label": {
+									  "text": {
+										  "en": "Devices",
+										  "de": "Geräte",
+										  "fr": "",
+										  "it": "",
+										  "tr": "",
+										  "es": ""
+									  },
+									  "pdfHide": false
+								  },
+								  "value": {
+									  "disableCreation": false,
+									  "pdfHide": false
+								  }
+							  }
+						  }
+					  ]
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "5-objektInformationen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Reclamation",
+				  "de": "Beanstandung",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_5",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "richtext_1",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Reclamation",
+							  "de": "Beanstandung",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "6-objektInformationen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Material Usage / Variant ID / Part No.",
+				  "de": "Materialverbrauch / Varianten-ID / Sach-Nr.",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "spareparts",
+				  "type": "partListInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "requiredAmountOfEntries": 0,
+					  "label": {
+						  "text": {
+							  "en": "Spare Parts",
+							  "de": "Materialverbrauch",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "fields": {
+						  "partNumberSingleLineTextInput": {
+							  "required": true,
+							  "pdfHide": false,
+							  "placeHolderText": {
+								  "en": "Part Number",
+								  "de": "Artikelnummer",
+								  "fr": "",
+								  "it": "",
+								  "tr": "",
+								  "es": ""
+							  }
+						  },
+						  "quantityNumericInput": {
+							  "required": true,
+							  "pdfHide": false
+						  },
+						  "descriptionMultiLineTextInput": {
+							  "enable": true,
+							  "required": false,
+							  "pdfHide": false,
+							  "placeHolderText": {
+								  "en": "Description",
+								  "de": "Beschreibung",
+								  "fr": "",
+								  "it": "",
+								  "tr": "",
+								  "es": ""
+							  }
+						  },
+						  "deliverToStaticSingleSelect": {
+							  "enable": false,
+							  "required": false,
+							  "pdfHide": true
+						  },
+						  "invoiceToStaticSingleSelect": {
+							  "enable": false,
+							  "required": false,
+							  "pdfHide": true
+						  },
+						  "warrantyBooleanInput": {
+							  "enable": false,
+							  "pdfHide": true
+						  }
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "7-objektInformationen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Report",
+				  "de": "Bericht",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_7",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "richtext_2",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Report",
+							  "de": "Bericht",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "helptext_1",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "The fulfillment of this order is based on our terms and conditions for customer service orders.",
+						  "de": "Die Ausführung dieses Auftrags erfolgt unter Zugrundelegung unserer Bedingungen für Kundendienstaufträge.",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "userselect_1",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "You were served by",
+							  "de": "Sie wurden betreut von",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "assignedUserId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "9-objektInformationen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "SAMSON Aktiengesellschaft",
+				  "de": "SAMSON Aktiengesellschaft",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_9",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+			  {
+				  "id": "header_9",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+						"uiHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "SAMSON Aktiengesellschaft",
+						  "de": "SAMSON Aktiengesellschaft",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+				{
+				  "id": "text_61",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Dept. Customer Service",
+							  "de": "Abt. Kundendienst",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "userselect_2",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Technician",
+							  "de": "Techniker",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "assignedUserId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "phone_3",
+				  "type": "phoneNumberInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Phone",
+							  "de": "Telefon",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.33,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "text_6",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.3,
+					  "label": {
+						  "text": {
+							  "en": "Fax",
+							  "de": "Fax",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "text_7",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.3,
+					  "label": {
+						  "text": {
+							  "en": "E-mail",
+							  "de": "E-Mail",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "helptext_2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " <br>With his signature, the customer confirms receipt of the services described and the installation/receipt of the parts and equipment.",
+						  "de": " <br>Mit seiner Unterschrift bestätigt der Kunde den Erhalt der beschriebenen Leistungen sowie den Einbau/Empfang der Teile und Geräte.",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "10-signature_technician",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true,
+					  "capitalizeFirstLetterOfEveryWord": true
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  }
+			  },
+			  "required": true,
+			  "headlineText": {
+				  "en": "Signature SAMSON",
+				  "de": "Unterschrift SAMSON",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+		  }
+	  },
+	  {
+		  "id": "11-signature_customer",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true,
+					  "capitalizeFirstLetterOfEveryWord": true
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  }
+			  },
+			  "required": true,
+			  "headlineText": {
+				  "en": "Signature customer",
+				  "de": "Unterschrift Kunde",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
+        }
+		  }
+	  },
+	  {
+		  "id": "12-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent form as E-Mail",
+				  "de": "Bericht als E-Mail senden/gesendet",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 0,
+			  "pdfHide": true,
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "cc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "After-Sales Service Report",
+					  "de": "After-Sales Service Report",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  },
+				  "body": {
+					  "en": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n Sehr geehrte Damen und Herren,\n\nanbei erhalten sie den Bericht des letzten Serviceeinsatzes in Ihrem Unternehmen.\n\nMit freundlichen Grüßen\nSAMSON AG\n\n--\n\nDear Sir and Madam,\n\nPlease find enclosed the report of our last service assignment in your company.\n\nKind regards\nSAMSON AG",
+					  "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n Sehr geehrte Damen und Herren,\n\nanbei erhalten sie den Bericht des letzten Serviceeinsatzes in Ihrem Unternehmen.\n\nMit freundlichen Grüßen\nSAMSON AG\n\n--\n\nDear Sir and Madam,\n\nPlease find enclosed the report of our last service assignment in your company.\n\nKind regards\nSAMSON AG",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  }
+  ]
+}
