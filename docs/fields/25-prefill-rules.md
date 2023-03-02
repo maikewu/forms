@@ -77,7 +77,7 @@ that should be prepopulate to the form
 | Current user | `currentUserId` | `USER_ID` (equals `STRING`)
 | Current account | `currentAccount` | `ACCOUNT`
 | Current account  |`currentAccountId` | `ACCOUNT_ID` (equals `STRING`)
-| [Custom Property](#Custom-Work-Oder-Property) | `UNKNOWN`| `UNKNOWN`
+| [Custom Work Order Property](#Custom-Work-Order-Property) | `UNKNOWN`| `UNKNOWN`
 | [WorkOrder view](#work-order-view) |`assignedUserId` | `USER_ID` (equals `STRING`)
 | [WorkOrder view](#work-order-view) |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
