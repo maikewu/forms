@@ -1,0 +1,6340 @@
+{
+  "general": {
+	  "timezone": "Europe/Berlin"
+  },
+  "sections": [
+	  {
+		  "id": "1-maschine",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "General Information",
+				  "de": "Allgemeine Informationen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "asset",
+				  "type": "assetSingleSelect",
+				  "config": {
+					  "required": true,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Asset",
+							  "de": "Maschine",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customer"},
+                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "reportId",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Service Order Number",
+							  "de": "Service-Auftragsnummer",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToERPReferenceString"
+									]
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "technicians",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Service technician",
+							  "de": "Servicetechniker",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "assignedUserId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "customer",
+				  "type": "companySingleSelect",
+				  "config": {
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Customer (Company)",
+							  "de": "Kunde (Firma)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": true,
+						  "pdfHide": false
+					  },
+						"useAsFilterForFields": ["asset"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {"id": "customerLocation"},
+                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress"]
+              }
+            ]
+				  }
+			  },
+			  {
+				  "id": "customerLocation",
+				  "type": "addressInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": {
+						  "street": false,
+						  "streetNumber": false,
+						  "supplement": false,
+						  "company": false,
+						  "zipPostCode": false,
+						  "city": false,
+						  "state": false,
+						  "country": false
+					  },
+					  "label": {
+						  "text": {
+							  "en": "Destination and place",
+							  "de": "Reiseziel- und Ort",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "pdfStartInNewLine": true,
+						  "pdfAddLineBreaks": true
+					  },
+						"prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+                },
+								{
+                  "input": "organizationId",
+                  "steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "06-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "07-signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "4 - Instandhaltungsmassnahmen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Maintenance measures",
+				  "de": "Instandhaltungsmaßnahmen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_4",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "header_4",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Maintenance measures",
+						  "de": "Instandhaltungsmaßnahmen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H1",
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "headlineSichtkontrolle",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Visual inspection of bellows, seals, cabin and power lines for mechanical damage; replace if necessary",
+						  "de": "Sichtkontrolle von Faltenbälgen, Abdichtungen Kabine und Energieleitungen auf mechanische Beschädigungen; falls nötig ersetzen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "Sichtkontrolle",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Visual inspection of bellows, seals, cabin and power lines for mechanical damage; replace if necessary",
+							  "de": "Sichtkontrolle von Faltenbälgen, Abdichtungen Kabine und Energieleitungen auf mechanische Beschädigungen; falls nötig ersetzen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "sichtkontrolleNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "headlineSchmierungPneumatik",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Lubrication, pneumatics",
+						  "de": "Schmierung, Pneumatik",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "kontrolleSchmieranlage",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check of the lubrication system for damage, function check of all valves and pressure switches",
+						  "de": "Kontrolle der Schmieranlage auf Beschädigung, Funktionskontrolle aller Ventile und Druckschalter",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "kontrolleSchmieranlage2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "kontrollederSchmieranlage",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check of the lubrication system for damage, function check of all valves and pressure switches",
+							  "de": "Kontrolle der Schmieranlage auf Beschädigung, Funktionskontrolle aller Ventile und Druckschalter",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "schmieranlageNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine1",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelwechsel",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Oil change lubrication and hydraulics (2000 operating hours), check oil levels lubrication and hydraulics",
+						  "de": "Ölwechsel Schmierung und Hydraulik (2000 Betriebsstunde), prüfen der Ölstände Schmierung und Hydraulik",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelwechselSchmierungHydraulik",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Oil change lubrication and hydraulics (2000 operating hours), check oil levels lubrication and hydraulics",
+							  "de": "Ölwechsel Schmierung und Hydraulik (2000 Betriebsstunde), prüfen der Ölstände Schmierung und Hydraulik",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelwechselNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "filterAendern",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "The filters of lubrication, hydraulic and pneumatic system change",
+						  "de": "Die Filter der Schmierung, Hydraulik- und Pneumatik-System ändern",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "filterAendernDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "The filters of lubrication, hydraulic and pneumatic system change",
+							  "de": "Die Filter der Schmierung, Hydraulik- und Pneumatik-System ändern",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "filterNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine3",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "druckPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check and if necessary correct the set pressure",
+						  "de": "Überprüfen und falls nötig den eingestellten Druck korrigieren",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "druckPruefungDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check and if necessary correct the set pressure",
+							  "de": "Überprüfen und falls nötig den eingestellten Druck korrigieren",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "druckNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine4",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "leitungenSchlaeuchePruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check all lines and hoses for lubrication and hydraulic oil supply and compressed air system for leaks and mechanical damage",
+						  "de": "Überprüfen Sie alle Leitungen und Schläuche für die Schmierung und Hydraulikölversorgung und Druckluftsystem auf Dichtheit und mechanische Beschädigungen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "leitungenSchlaeucheDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check all lines and hoses for lubrication and hydraulic oil supply and compressed air system for leaks and mechanical damage",
+							  "de": "Überprüfung aller Leitungen und Schläuche für die Schmierung und Hydraulikölversorgung und Druckluftsystem auf Dichtheit und mechanische Beschädigungen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "leitungenSchlaeucheNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine5",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelkuehlerPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Inspection of the oil cooler",
+						  "de": "Inspektion des Ölkühlers",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelkuehlerDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Inspection of the oil cooler",
+							  "de": "Inspektion des Ölkühlers",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelkuehlerNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine6",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "notauskreisPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Functional test of the emergency stop circuit",
+						  "de": "Funktionsprüfung des Notauskreises",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "notauskreisDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Functional test of the emergency stop circuit",
+							  "de": "Funktionsprüfung des Notauskreises",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "notauskreisNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine7",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "handbediengeraetPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Performance test of the external manual control unit",
+						  "de": "Leistungstest des externen Handbediengerätes",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "handbediengeraetDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Performance test of the external manual control unit",
+							  "de": "Leistungstest des externen Handbediengerätes",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "handbediengeraetNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine8",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "marpossPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check function of Marposs unit",
+						  "de": "Funktion der Marposs Einheit prüfen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "marpossDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check function of Marposs unit",
+							  "de": "Funktion der Marposs Einheit prüfen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "marpossNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine9",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "messervorrichtungPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Inspection of the knife device",
+						  "de": "Inspektion der Messervorrichtung",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "messervorrichtungDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Inspection of the knife device",
+							  "de": "Inspektion der Messervorrichtung",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "messervorrichtungNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine10",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "werkstueckspannungPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Checking the workpiece clamping",
+						  "de": "Überprüfen der Werkstückspannung",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "werkstueckspannungDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Checking the workpiece clamping",
+							  "de": "Überprüfen der Werkstückspannung",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "werkstueckspannungNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine11",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "messermessstationPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Function of the knife measuring station",
+						  "de": "Funktion der Messermessstation",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "messermessstationDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Function of the knife measuring station",
+							  "de": "Funktion der Messermessstation",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "messermessstationNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine12",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelnebelabsaugungPruefung",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Oil mist extraction system",
+						  "de": "Ölnebelabsaugungsanlage",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "oelnebelabsaugungsfilterPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check oil mist extraction filter, clean if necessary",
+						  "de": "Ölnebelabsaugungsfilter überprüfen, wenn nötig reinigen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelnebelabsaugungsfilterDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check oil mist extraction filter, clean if necessary",
+							  "de": "Ölnebelabsaugungsfilter überprüfen, wenn nötig reinigen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "oelnebelabsaugungsfilterNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "10-Mechanisch",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Maintenance measures - Mechanical",
+				  "de": "Instandhaltungsmaßnahmen - Mechanisch",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_10",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "header_10",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Maintenance measures - mechanical",
+						  "de": "Instandhaltungsmaßnahmen - Mechanisch",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H1",
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "achsenPruefung",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Axes",
+						  "de": "Achsen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "umkehrspielAchsen",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Backlash all axes",
+						  "de": "Umkehrspiel alle Achsen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "umkehrspielAchsenDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Backlash all axes",
+							  "de": "Umkehrspiel alle Achsen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "umkehrspielAchsenNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine15",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "kugelrollspindelPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Visual inspection of the ball screw and belt drives",
+						  "de": "Sichtkontrolle der Kugelrollspindel und Riementrieben",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "kugelrollspindelDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Visual inspection of the ball screw and belt drives",
+							  "de": "Sichtkontrolle der Kugelrollspindel und Riementrieben",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "kugelrollspindelNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine13",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "greiffingerPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check gripper finger small/large",
+						  "de": "Greiffinger klein/groß prüfen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "greiffingerDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check gripper finger small/large",
+							  "de": "Greiffinger klein/groß prüfen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "greiffingerNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine27",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "yachsePruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Inspection of the Y-axis brake",
+						  "de": "Inspektion der Y-Achsen Bremse",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "yachseDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Inspection of the Y-axis brake",
+							  "de": "Inspektion der Y-Achsen Bremse",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "yachseNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine28",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "linearPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Visual inspection of the linear tests for wear and damage",
+						  "de": "Sichtprüfung der Linearprüfungen auf Verschleiß und Beschädigung",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "linearPrDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Visual inspection of the linear tests for wear and damage",
+							  "de": "Sichtprüfung der Linearprüfungen auf Verschleiß und Beschädigung",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "linearPrNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine29",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "testPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Geometric check according to test protocol (to be checked separately)",
+						  "de": "Geometrische Prüfung nach Testprotokoll (separat zu prüfen)",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "testDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Geometric check according to test protocol (to be checked separately)",
+							  "de": "Geometrische Prüfung nach Testprotokoll (separat zu prüfen)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "testNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine30",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "doorPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check the automatic door for wear and protection profile",
+						  "de": "Überprüfen der automatischen Tür auf Verschleiß- und Schutzprofil",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "doorDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check the automatic door for wear and protection profile",
+							  "de": "Überprüfen der automatischen Tür auf Verschleiß- und Schutzprofil",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "doorNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine31",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "handlingPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Visual and functional inspection of the handling",
+						  "de": "Sicht- und Funktionsprüfung des Handlings",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "handlingDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Visual and functional inspection of the handling",
+							  "de": "Sicht- und Funktionsprüfung des Handlings",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "handlingNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "messerPruefung",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Knives",
+						  "de": "Messer",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "geomPr",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Geometric check according to test protocol (to be checked separately)",
+						  "de": "Geometrische Prüfung nach Testprotokoll (separat zu Prüfen)",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "geomPrDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Geometric check according to test protocol (to be checked separately)",
+							  "de": "Geometrische Prüfung nach Testprotokoll (separat zu Prüfen)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "geomPrNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine47",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "visInspPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "ONLY AT THE 3- & 8-YEARS-REVIEW: Visual inspection of the filter system",
+						  "de": "NUR BEI DER 3- & 8-JAHRE-DURCHSICHT: Visuelle Inspektion der Filteranlage",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "visInspDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Visual inspection of the filter system (only at 3- & 8-years-review)",
+							  "de": "Visuelle Inspektion der Filteranlage (nur bei 3- & 8-Jahre-Durchsicht)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "visInspNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine43",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "schlammsackPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "ONLY AT THE 3- & 8-YEARS-REVIEW: Exchange sludge bag",
+						  "de": "NUR BEI DER 3- & 8-JAHRE-DURCHSICHT: Austausch Schlammsack",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "schlammsackDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Exchange sludge bag (only at 3- & 8-years-review)",
+							  "de": "Austausch Schlammsack (nur bei 3- & 8-Jahre-Durchsicht)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "schlammsackNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine41",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "sperrluftPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Checking the sealing air supply for linear measuring systems (optional)",
+						  "de": "Überprüfen der Sperrluftversorgung für lineare Messsysteme (optional)",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "sperrluftDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Checking the sealing air supply for linear measuring systems (optional)",
+							  "de": "Überprüfen der Sperrluftversorgung für lineare Messsysteme (optional)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "sperrluftNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine48",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "oszilloPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "ONLY AT THE 3- & 8-YEARS-REVIEW: Checking and recording the clamping circuits with an oscilloscope",
+						  "de": "NUR BEI DER 3- & 8-JAHRE-DURCHSICHT: Überprüfen und Erfassen der Spannschaltungen mit Oszilloskop",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "oszilloDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Checking and recording the clamping circuits with an oscilloscope (only at 3- & 8-years-review)",
+							  "de": "Überprüfen und Erfassen der Spannschaltungen mit Oszilloskop (nur bei 3- & 8-Jahre-Durchsicht)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "oszilloNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "11-Elektrisch",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Maintenance measures - Electrical",
+				  "de": "Instandhaltungsmaßnahmen - Elektrisch",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "space_11",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "header_11",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Maintenance measures - electric",
+						  "de": "Instandhaltungsmaßnahmen - Elektrisch",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H1",
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "electricalPruefung",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Electrical equipment",
+						  "de": "Elektrische Geräte",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "safteyHT",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "ONLY AT THE 1-YEAR-REVIEW: Function control Saftey integrated brake test",
+						  "de": "NUR BEI DER 1-JAHR-DURCHSICHT: Funktionskontrolle Saftey integrated Bremsentest",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "safteyDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Function control Saftey integrated brake test (only at 1-year-review)",
+							  "de": "Funktionskontrolle Saftey integrated Bremsentest (nur bei 1-Jahr-Durchsicht)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "safteyNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine44",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "safteyHT2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "ONLY AT THE 3- & 8-YEARS-REVIEW: Function control Saftey integrated",
+						  "de": "NUR BEI DER 3- & 8-JAHRE-DURCHSICHT: Funktionskontrolle Saftey integrated",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "safteyDropdown2",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Function control Saftey integrated (only at 3 & 8-years-review)",
+							  "de": "Funktionskontrolle Saftey integrated (nur bei 3- & 8-Jahre-Durchsicht)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "safteyNotizen2",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine45",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "axeEndposPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "ONLY AT THE 1-YEAR-REVIEW: Performance test axes End position",
+						  "de": "NUR BEI DER 1-JAHR-DURCHSICHT: Leistungsprüfung Achsen Endposition",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "axeEndposDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Performance test axes End positio (only at 1-year-review)",
+							  "de": "Leistungsprüfung Achsen Endposition (nur bei 1-Jahr-Durchsicht)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "axeEndposNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine32",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "axeEndposPruefung2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "ONLY AT THE 3- & 8-YEARS-REVIEW: Performance test of all limit switches including axes end position",
+						  "de": "NUR BEI DER 3- & 8-JAHRE-DURCHSICHT: Leistungsprüfung aller Endschalter einschließlich Achsen Endposition",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "axeEndposDropdown2",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Performance test of all limit switches including axes end position (only at 3- & 8-years-review)",
+							  "de": "Leistungsprüfung aller Endschalter einschließlich Achsen Endposition (nur bei 3- & 8-Jahre-Durchsicht)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "axeEndposNotizen2",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine46",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "loeschPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Visual inspection of the extinguishing system",
+						  "de": "Sichtkontrolle der Löschanlage",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "loeschDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Visual inspection of the extinguishing system",
+							  "de": "Sichtkontrolle der Löschanlage",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Checked"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "loeschNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "controlCabPruefung",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Control cabinet",
+						  "de": "Schaltschrank",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "controlCoolPr",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Performance test switch cabinet cooler",
+						  "de": "Leistungstest Schaltschrankkühler",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "controlCoolDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Performance test switch cabinet cooler",
+							  "de": "Leistungstest Schaltschrankkühler",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "controlCoolNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine17",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "filterCoolPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Replace filter mat in switch cabinet cooler if necessary",
+						  "de": "Filtermatte im Schaltschrankkühler ggf. ersetzen",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "filterCoolDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Replace filter mat in switch cabinet cooler if necessary",
+							  "de": "Filtermatte im Schaltschrankkühler ggf. ersetzen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "filterCoolNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine18",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "bedienfeldPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Control panel: power test of all buttons, lamps, keyboard, foot switch and two-hand control",
+						  "de": "Bedienfeld: Leistungsprüfung aller Knöpfe, Lampen, Tastatur, Fußschalter und Zweihandbedienung",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "bedienfeldDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Control panel: power test of all buttons, lamps, keyboard, foot switch and two-hand control",
+							  "de": "Bedienfeld: Leistungsprüfung aller Knöpfe, Lampen, Tastatur, Fußschalter und Zweihandbedienung",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "bedienfeldNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine19",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "visualCoolPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Visual inspection of the switch cabinet",
+						  "de": "Sichtprüfung des Schaltschrankes",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "visualCoolDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Visual inspection of the switch cabinet",
+							  "de": "Sichtprüfung des Schaltschrankes",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "visualCoolNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine20",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "akkuPruefung",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Battery charging/ function",
+						  "de": "Akku-Ladung/ Funktion",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "akkuDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Battery charging/ function",
+							  "de": "Akku-Ladung/ Funktion",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "akkuNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "elUsagePruefung",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Power consumption",
+						  "de": "Stromverbrauch",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "elAxesPr",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check the current consumption of the axis motors",
+						  "de": "Überprüfen des Stromverbrauches der Achsenmotoren",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "elAxesDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check the current consumption of the axis motors",
+							  "de": "Überprüfen des Stromverbrauches der Achsenmotoren",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "elAxesNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine21",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "documPruefung",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Protocols and documentation",
+						  "de": "Protokolle und Dokumentation",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "currencyPr",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check the documentation for topicality and completeness",
+						  "de": "Überprüfen der Dokumentation auf Aktualität und Vollständigkeit",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "currencyDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check the documentation for topicality and completeness",
+							  "de": "Überprüfen der Dokumentation auf Aktualität und Vollständigkeit",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "currencyNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine22",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "recMarPr",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Recording the measurement results Marposs compensation",
+						  "de": "Aufzeichnung der Messergebnisse Marposs Kompensation",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "recMarDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Recording the measurement results Marposs compensation",
+							  "de": "Aufzeichnung der Messergebnisse Marposs Kompensation",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "recMarNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine25",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "saveNewestPr",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Backup of the latest software version and documentation",
+						  "de": "Sicherung der neusten Software Version und Dokumentation",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "saveNewestDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Backup of the latest software version and documentation",
+							  "de": "Sicherung der neusten Software Version und Dokumentation",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "saveNewestNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine24",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "wrongEntryPr",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Check the last error entries in the log",
+						  "de": "Check der letzten Fehlereinträgen im Protokoll",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "wrongEntryDropdown",
+				  "type": "staticMultiSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Check the last error entries in the log",
+							  "de": "Check der letzten Fehlereinträgen im Protokoll",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "value": {
+						  "options": {
+							  "Gereinigt/Ersetzt": {
+								  "de": "Gereinigt/Ersetzt",
+								  "en": "Cleaned/Replaced"
+							  },
+							  "Geprueft": {
+								  "de": "Geprüft",
+								  "en": "Audited"
+							  },
+							  "OK": {
+								  "de": "OK",
+								  "en": "OK"
+							  },
+							  "reparaturErforderlich": {
+								  "de": "Reparatur erforderlich",
+								  "en": "Repair required"
+							  },
+							  "maengelRepariert": {
+								  "de": "Mängel repariert",
+								  "en": "Defects repaired"
+							  },
+							  "maengelNichtRepariert": {
+								  "de": "Mängel nicht repariert",
+								  "en": "Defects not repaired"
+							  },
+							  "zusAufwand": {
+								  "de": "Zusätzlicher Zeitaufwand",
+								  "en": "Additional time required"
+							  },
+							  "nichtAnwendbar": {
+								  "de": "Nicht anwendbar",
+								  "en": "Not applicable"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "wrongEntryNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "11-SonstigeAnmerkungen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Other remarks",
+				  "de": "Sonstige Anmerkungen",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "Sonstige Anmerkungen",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Remarks",
+							  "de": "Anmerkungen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "12-Ersatzteile",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Maintenance parts",
+				  "de": "Ersatzteile",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "headlineErsatzteile1",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Maintenance parts",
+						  "de": "Ersatzteile",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H1",
+						"uiHide": true
+				  }
+			  },
+				{
+				  "id": "headlineErsatzteile",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Note: Wear and spare parts are used for maintenance only<br>",
+						  "de": "Hinweis: Verschleiß- und Ersatzteile werden nur zur Wartung eingesetzt<br>",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "checkPneumaticsFilter",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Replaced pneumatic filter",
+							  "de": "Pneumatikfilter gewechselt",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "sparesAdd3Year",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "CONSIDER AT THE 3- & 8-YEARS-REVIEW ADDITIONALLY:",
+						  "de": "BEI DER 3- & 8-JAHRE-DURCHSICHT ZUSÄTZLICH BEACHTEN:",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "checkCogdrive",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Replace toothed belt (X-,Y-,Z-,U-,V-,W-, A1-,B-,C-,spindle stop, magazine)",
+							  "de": "Zahnriemen wechseln (X-,Y-,Z-,U-,V-,W-,A1-,B-,C-,Spindelstopp, Magazin)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkGreiffinger",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Check gripper finger small/large",
+							  "de": "Greiffinger klein/groß prüfen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkGasTension",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Change gas tension spring of the Y-axis",
+							  "de": "Gaszugfeder der Y-Achse wechseln",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkJointHead",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Changing the Y-axis joint rod head",
+							  "de": "Gelenkstangenkopf der Y-Achse wechseln",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkBallDisc",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Change ball disk and ball cup of the Y-axis",
+							  "de": "Kugelscheibe und Kugelpfanne der Y-Achse wechseln",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkBufferBattery",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Change buffer battery and UPS battery",
+							  "de": "Pufferbatterie und USV Batterie  wechseln",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "sparesAdd8Year",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "CONSIDER AT THE 8-YEARS-REVIEW ADDITIONALLY:",
+						  "de": "BEI DER 8-JAHRE-DURCHSICHT ZUSÄTZLICH BEACHTEN:",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "checkSecurityWindow",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Change security window",
+							  "de": "Sicherheitsfenster wechseln",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkBallScrew",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Replace ball screw drive incl. bearing and sealing rings (Y,Z,U axis)",
+							  "de": "Kugelgewindetrieb inkl. Lager und Dichtringen wechseln (Y-,Z-,U-Achse)",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkPermMagnBreak",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Change permanent magnet brake of the Y-axis",
+							  "de": "Permanentmagnetbremse der Y-Achse wechseln",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkBellows",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Change bellows left right",
+							  "de": "Faltenbalg links rechts wechseln",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkFuehrungBAchse",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Change B-axis guide",
+							  "de": "Führung B-Achse wechseln",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkGripper",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Replacing the parallel gripper",
+							  "de": "Auswechseln des Parallelgreifers",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": true,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "spareparts",
+				  "type": "partListInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "requiredAmountOfEntries": 0,
+					  "label": {
+						  "text": {
+							  "en": "Other maintenance parts",
+							  "de": "Weitere Ersatzteile",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "fields": {
+						  "partNumberSingleLineTextInput": {
+							  "required": false,
+							  "pdfHide": false,
+							  "placeHolderText": {
+								  "en": "Part Number",
+								  "de": "Artikelnummer",
+								  "fr": "",
+								  "it": "",
+								  "tr": "",
+								  "es": ""
+							  }
+						  },
+						  "quantityNumericInput": {
+							  "required": false,
+							  "pdfHide": false
+						  },
+						  "descriptionMultiLineTextInput": {
+							  "enable": true,
+							  "required": false,
+							  "pdfHide": false,
+							  "placeHolderText": {
+								  "en": "Description",
+								  "de": "Beschreibung",
+								  "fr": "",
+								  "it": "",
+								  "tr": "",
+								  "es": ""
+							  }
+						  },
+						  "deliverToStaticSingleSelect": {
+							  "enable": false,
+							  "required": false,
+							  "pdfHide": true
+						  },
+						  "invoiceToStaticSingleSelect": {
+							  "enable": false,
+							  "required": false,
+							  "pdfHide": true
+						  },
+						  "warrantyBooleanInput": {
+							  "enable": false,
+							  "pdfHide": true
+						  }
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine49",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "ersatzteileNotizen",
+				  "type": "richTextInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Notes",
+							  "de": "Notizen",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "placeHolderText": {
+						  "en": "Type here...",
+						  "de": "Hier tippen...",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyLine50",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "endHinweis",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "Work was done as listed below",
+						  "de": "Arbeiten wurden wie vorstehend aufgeführt erledigt",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "06-signatureTechnician",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false,
+					  "capitalizeFirstLetterOfEveryWord": true
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false
+				  }
+			  },
+			  "required": false,
+			  "headlineText": {
+				  "en": "Signature technician",
+				  "de": "Unterschrift Klingelnberg-Mitarbeiter",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser","userToFullNameString"]
+            }
+          ],
+					"location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ],
+					"date": [
+						{
+							"input": "creationDateTime",
+							"steps": ["dateTimeToDate"]
+						}
+					]
+        }
+		  }
+	  },
+	  {
+		  "id": "07-signatureCustomer",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false,
+					  "capitalizeFirstLetterOfEveryWord": true
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": false
+				  }
+			  },
+			  "required": false,
+			  "headlineText": {
+				  "en": "Signature customer",
+				  "de": "Unterschrift Kunde",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHide": false,
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ],
+					"date": [
+						{
+							"input": "creationDateTime",
+							"steps": ["dateTimeToDate"]
+						}
+					]
+        }
+		  }
+	  },
+	  {
+		  "id": "12-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent form as E-Mail",
+				  "de": "Protokoll als E-Mail senden/gesendet",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 1,
+			  "pdfHide": true,
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "cc": {
+					  "assignee": true,
+					  "staticEmails": [
+						  "tsm-h@klingelnberg.com",
+						  "TSI-H_Serviceberichte.TSI-H_Serviceberichte@KLINGELNBERG.COM"
+					  ]
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "Wartungsprotokoll B-Maschinen Durchsicht / Maintenance Protocol B-Machines Review",
+					  "de": "Wartungsprotokoll B-Maschinen Durchsicht / Maintenance Protocol B-Machines Review",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  },
+				  "body": {
+					  "en": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Klingelnberg GmbH / Klingelnberg AG.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihr zugehöriges Wartungsprotokoll als PDF.\n\n----------------\n\nThis e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\n\nThank you for your trust in the services of our company Klingelnberg GmbH / Klingelnberg AG.\nWe hope that we met your requirements and could convince you of our competences.\nFor further questions or concerns, please do not hesitate to contact us.\n\nAttached, you will find your maintenance protocol as PDF.",
+					  "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Klingelnberg GmbH / Klingelnberg AG.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihr zugehöriges Wartungsprotokoll als PDF.\n\n----------------\n\nThis e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\n\nThank you for your trust in the services of our company Klingelnberg GmbH / Klingelnberg AG.\nWe hope that we met your requirements and could convince you of our competences.\nFor further questions or concerns, please do not hesitate to contact us.\n\nAttached, you will find your maintenance protocol as PDF.",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  },
+	  {
+		  "id": "13-addendum",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Internal addendum",
+				  "de": "Interner Nachtrag",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "generalComments",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "General Comments",
+							  "de": "Allgemeine Bemerkungen & Hinweise",
+							  "fr": "",
+							  "it": "",
+							  "tr": "",
+							  "es": ""
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "14-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent form with internal addendum as e-mail",
+				  "de": "Wartungsprotokoll mit internem Nachtrag als E-Mail senden/gesendet",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 1,
+			  "pdfHide": true,
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": false,
+					  "staticEmails": [
+						  "Aftersales-TSM@klingelnberg.com"
+					  ]
+				  },
+				  "cc": {
+					  "assignee": true,
+					  "staticEmails": []
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "Wartungsprotokoll an den Innendienst",
+					  "de": "Wartungsprotokoll an den Innendienst",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  },
+				  "body": {
+					  "en": "This email was generated automatically.\nPlease do not reply to this email.\n\n",
+					  "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  }
+  ]
+}
