@@ -77,6 +77,7 @@ that should be prepopulate to the form
 | Current user | `currentUserId` | `USER_ID` (equals `STRING`)
 | Current account | `currentAccount` | `ACCOUNT`
 | Current account  |`currentAccountId` | `ACCOUNT_ID` (equals `STRING`)
+| [Custom Property](#Custom-Work-Oder-Property) | `UNKNOWN`| `UNKNOWN`
 | [WorkOrder view](#work-order-view) |`assignedUserId` | `USER_ID` (equals `STRING`)
 | [WorkOrder view](#work-order-view) |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
@@ -109,6 +110,22 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
 | `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
 | `workOrderToTasks` | `WORK_ORDER`| `TASKS`
+| `workOrderToTitleString` | `WORK_ORDER`| `STRING`
+| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING`
+| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING`
+| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID`
+| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING`
+| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING`
+| `workOrderToPriorityString` | `WORK_ORDER`| `STRING`
+| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID`
+| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING`
+| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
+| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
+| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
+| `workOrderToCustomPropertyValue` | `WORK_ORDER`| `UNKNOWN`
 | `staticString` | `[NONE, STRING]`| `STRING`
 | `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
 | `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
@@ -181,6 +198,67 @@ If you create a new forms instance from a work order, the following data is prov
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
 ---
+
+## Custom Work Order Property
+Custom Work Order Properties of the respective Space can be extracted. As they can have a variety of different value types, the value type has been marked `UNKNOWN`. To extract a custom Property, one must first know their respective ID.
+
+The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue`:
+
+
+```json (customPropertyValueToAccountId)
+"prefill": {
+                            "selectedCompany": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder",
+                                        [
+                                            "workOrderToCustomPropertyValue",
+                                            8
+                                        ],
+                                        "customPropertyValueToAccountId"
+                                    ]
+                                }
+                            ]
+                        }
+```
+
+```json (customPropertyValueToAssetId)
+"prefill": {
+                            "selectedAsset": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder",
+                                        [
+                                            "workOrderToCustomPropertyValue",
+                                            9
+                                        ],
+                                        "customPropertyValueToAssetId"
+                                    ]
+                                }
+                            ]
+                        }
+```
+```json (customPropertyValueToNumberString)
+"prefill": {
+                            "value": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder",
+                                        [
+                                            "workOrderToCustomPropertyValue",
+                                            10
+                                        ],
+                                        "customPropertyValueToNumberString"
+                                    ]
+                                }
+                            ]
+                        }
+```
+
+---
 ## Properties
 
 
@@ -208,6 +286,22 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
 | `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
 | `workOrderToTasks` | `WORK_ORDER`| `TASKS`
+| `workOrderToTitleString` | `WORK_ORDER`| `STRING`
+| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING`
+| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING`
+| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID`
+| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING`
+| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING`
+| `workOrderToPriorityString` | `WORK_ORDER`| `STRING`
+| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID`
+| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING`
+| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
+| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
+| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
+| `workOrderToCustomPropertyValue` | `WORK_ORDER`| `UNKNOWN`
 | `staticString` | `[NONE, STRING]`| `STRING`
 | `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
 | `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
