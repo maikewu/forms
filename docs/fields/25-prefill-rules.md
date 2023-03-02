@@ -77,6 +77,7 @@ that should be prepopulate to the form
 | Current user | `currentUserId` | `USER_ID` (equals `STRING`)
 | Current account | `currentAccount` | `ACCOUNT`
 | Current account  |`currentAccountId` | `ACCOUNT_ID` (equals `STRING`)
+| [Custom Property](#Custom-Work-Oder-Property) | `UNKNOWN`| `UNKNOWN`
 | [WorkOrder view](#work-order-view) |`assignedUserId` | `USER_ID` (equals `STRING`)
 | [WorkOrder view](#work-order-view) |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
@@ -195,6 +196,67 @@ If you create a new forms instance from a work order, the following data is prov
 | `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  | The ID of the current space 
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
+
+---
+
+## Custom Work Order Property
+Custom Work Order Properties of the respective Space can be extracted. As they can have a variety of different value types, the value type has been marked `UNKNOWN`. To extract a custom Property, one must first know their respective ID.
+
+The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue`:
+
+
+```json (customPropertyValueToAccountId)
+"prefill": {
+                            "selectedCompany": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder",
+                                        [
+                                            "workOrderToCustomPropertyValue",
+                                            8
+                                        ],
+                                        "customPropertyValueToAccountId"
+                                    ]
+                                }
+                            ]
+                        }
+```
+
+```json (customPropertyValueToAssetId)
+"prefill": {
+                            "selectedAsset": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder",
+                                        [
+                                            "workOrderToCustomPropertyValue",
+                                            9
+                                        ],
+                                        "customPropertyValueToAssetId"
+                                    ]
+                                }
+                            ]
+                        }
+```
+```json (customPropertyValueToNumberString)
+"prefill": {
+                            "value": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder",
+                                        [
+                                            "workOrderToCustomPropertyValue",
+                                            10
+                                        ],
+                                        "customPropertyValueToNumberString"
+                                    ]
+                                }
+                            ]
+                        }
+```
 
 ---
 ## Properties
