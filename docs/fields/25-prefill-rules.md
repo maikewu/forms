@@ -109,6 +109,22 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
 | `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
 | `workOrderToTasks` | `WORK_ORDER`| `TASKS`
+| `workOrderToTitleString` | `WORK_ORDER`| `STRING`
+| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING`
+| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE`
+| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING`
+| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID`
+| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING`
+| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING`
+| `workOrderToPriorityString` | `WORK_ORDER`| `STRING`
+| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID`
+| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING`
+| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
+| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
+| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
+| `workOrderToCustomPropertyValue` | `WORK_ORDER`| `UNKNOWN`
 | `staticString` | `[NONE, STRING]`| `STRING`
 | `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
 | `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
