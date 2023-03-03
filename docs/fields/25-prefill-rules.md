@@ -200,7 +200,7 @@ If you create a new forms instance from a work order, the following data is prov
 
 ## Custom Work Order Property
 
-Custom Work Order Properties of the respective Space can be extracted. As they can have a variety of different value types, the value type has been marked `UNKNOWN`. To extract a custom Property, one must first know their respective ID.
+Custom Work Order Properties of the respective Space can be extracted. To extract a custom Property, one must first know their respective ID.
 
 The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue`:
 
