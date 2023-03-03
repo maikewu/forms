@@ -207,55 +207,56 @@ The following examples illustrate the extraction of a custom property, the custo
 
 ```json (customPropertyValueToAccountId)
 "prefill": {
-                            "selectedCompany": [
-                                {
-                                    "input": "workOrderId",
-                                    "steps": [
-                                        "workOrderIdToWorkOrder",
-                                        [
-                                            "workOrderToCustomPropertyValue",
-                                            8
-                                        ],
-                                        "customPropertyValueToAccountId"
-                                    ]
-                                }
-                            ]
-                        }
+    "selectedCompany": [
+        {
+            "input": "workOrderId",
+            "steps": [
+                "workOrderIdToWorkOrder",
+                [
+                    "workOrderToCustomPropertyValue",
+                    8
+                ],
+                "customPropertyValueToAccountId"
+            ]
+        }
+    ]
+}
 ```
 
 ```json (customPropertyValueToAssetId)
 "prefill": {
-                            "selectedAsset": [
-                                {
-                                    "input": "workOrderId",
-                                    "steps": [
-                                        "workOrderIdToWorkOrder",
-                                        [
-                                            "workOrderToCustomPropertyValue",
-                                            9
-                                        ],
-                                        "customPropertyValueToAssetId"
-                                    ]
-                                }
-                            ]
-                        }
+    "selectedAsset": [
+        {
+            "input": "workOrderId",
+            "steps": [
+                "workOrderIdToWorkOrder",
+                [
+                    "workOrderToCustomPropertyValue",
+                    9
+                ],
+                "customPropertyValueToAssetId"
+            ]
+        }
+    ]
+}
 ```
 ```json (customPropertyValueToNumberString)
+
 "prefill": {
-                            "value": [
-                                {
-                                    "input": "workOrderId",
-                                    "steps": [
-                                        "workOrderIdToWorkOrder",
-                                        [
-                                            "workOrderToCustomPropertyValue",
-                                            10
-                                        ],
-                                        "customPropertyValueToNumberString"
-                                    ]
-                                }
-                            ]
-                        }
+    "value": [
+        {
+            "input": "workOrderId",
+            "steps": [
+                "workOrderIdToWorkOrder",
+                [
+                    "workOrderToCustomPropertyValue",
+                    10
+                ],
+                "customPropertyValueToNumberString"
+            ]
+        }   
+    ]
+}
 ```
 
 ---
