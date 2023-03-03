@@ -194,7 +194,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 
 Some Asset derived values first need be mapped to a real readable value, especially values from a custom property Multi Select. The following examples will illustrate the mapping process:
 
-```json (customPropertyValueToAccountId)
+```json (assetToCustomPropertyValue)
 {
     "id": "customPropertyValueToStringTestIdFromMultiSelect",
     "type": "staticMultiSelect",
@@ -259,6 +259,56 @@ If you create a new forms instance from a work order, the following data is prov
 
 Some Work Order derived values first need be mapped to a real readable value, especially values from a custom property Multi Select. The following examples will illustrate the mapping process:
 
+```json (assetToCustomPropertyValue)
+{
+    "id": "statusFromWO",
+    "type": "staticSingleSelect",
+    "config": {
+        "required": true,
+        "label": {
+            "text": {
+                "en": "status prefilled from Workorder",
+                "de": "Status vorauselektiert vom Auftrag"
+            }
+        },
+        "value": {
+            "options": {
+                "0": {
+                    "en": "Open",
+                    "de": "Offen"
+                },
+                "1": {
+                    "en": "In Progress",
+                    "de": "In Bearbeitung"
+                },
+                "2": {
+                    "en": "On Hold",
+                    "de": "Angehalten"
+                },
+                "3": {
+                    "en": "Completed",
+                    "de": "Abgeschlossen"
+                },
+                "4": {
+                    "en": "Closed",
+                    "de": "Geschlossen"
+                }
+            }
+        },
+        "prefill": {
+            "value": [
+                {
+                    "input": "workOrderId",
+                    "steps": [
+                        "workOrderIdToWorkOrder",
+                        "workOrderToStatusNumberString"
+                    ]
+                }
+            ]
+        }
+    }
+}
+```
 
 ---
 ## Custom Properties
