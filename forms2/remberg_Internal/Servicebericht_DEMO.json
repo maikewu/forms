@@ -24,7 +24,18 @@
                 "en": "Service Order Number"
               }
             },
-            "pdfWidth": 0.5
+            "pdfWidth": 0.5,
+            "prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToERPReferenceString"
+									]
+								}
+							]
+						}
           }
         },
         {
@@ -142,6 +153,10 @@
               }
             },
             "pdfWidth": 0.5,
+            "useAsFilterForFields": [
+              "asset",
+              "customerContactPerson"
+            ],
             "prefill": {
               "selectedCompany": [
                 {
@@ -221,7 +236,18 @@
                 "target": {"id": "11-signatureCustomer","propertyName": "name"},
                 "steps": ["userToFullNameString"]
               }
-            ]
+            ],
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerPersonUserId"
+                  ]
+                }
+              ]
+            }
           }
         }
       ]
@@ -661,24 +687,6 @@
           "de": "Unterschrift Techniker",
           "en": "Signature technician"
         },
-        "prefill": {
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
-              ]
-            }
-          ],
-          "name": [
-            {
-              "input": "currentUser",
-              "steps": [
-                "userToFullNameString"
-              ]
-            }
-          ]
-        },
         "required": true,
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
@@ -701,6 +709,34 @@
             "capitalizeFirstLetterOfEveryWord": true,
             "required": false
           }
+        },
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ],
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
         }
       }
     },
@@ -711,16 +747,6 @@
         "headlineText": {
           "de": "Unterschrift Kunde",
           "en": "Signature customer"
-        },
-        "prefill": {
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
-              ]
-            }
-          ]
         },
         "required": false,
         "pdfHide": false,
@@ -744,6 +770,37 @@
             "capitalizeFirstLetterOfEveryWord": true,
             "required": false
           }
+        },
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ],
+          "name": [
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToCustomerPersonUserId",
+                "userIdToUser",
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
+          ]
         }
       }
     },
