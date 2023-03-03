@@ -104,8 +104,19 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `assetToLocationAddress` | `ASSET`| `ADDRESS`
 | `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
 | `assetToAssetTypeNameString` | `ASSET`| `STRING`
+| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
 | `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
 | `addressToCityString` | `ADDRESS`| `STRING`
+| `customPropertyValueToString` | `UNKNOWN`| `STRING`
+| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
+| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
+| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER`
+| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN`
+| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID`
+| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID`
+| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID`
+| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE`
+| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME`
 | `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
 | `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
 | `workOrderToTasks` | `WORK_ORDER`| `TASKS`
@@ -124,7 +135,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
-| `workOrderToCustomPropertyValue` | `WORK_ORDER`| `UNKNOWN`
+| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
 | `staticString` | `[NONE, STRING]`| `STRING`
 | `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
 | `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
@@ -178,6 +189,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  |  Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  |  	The ID of the current space
+| [customProperty](#Custom-Properties) |  | One of the specific custom asset properties
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
 ---
@@ -190,72 +202,71 @@ If you create a new forms instance from a work order, the following data is prov
 | `WorkOrderId`  |  |  The ID of the work order from which the form is created
 | `organizationId`  | If WO has connected company | The ID of the company (contact) which is connected to the work order
 | `assetId`  | If WO has assets |  The ID of the asset which is part of the work order
-| [customProperty](#Custom-Work-Order-Property) |  | One of the specific custom work order properties
+| [customProperty](#Custom-Properties) |  | One of the specific custom work order properties
 | `currentUser`  |  | Information about the current user, including the name, ID, etc.
 | `currentUserId`  |  | The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  | The ID of the current space 
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
+---
+## Custom Properties
 
- ## Custom Work Order Property
+Custom Properties of the respective space can be extracted. These include Custom Work Order Properties and Custom Asset Properties. To extract a custom Property, one must first know their respective ID.
 
-Custom Work Order Properties of the respective Space can be extracted. As they can have a variety of different value types, the value type has been marked `UNKNOWN`. To extract a custom Property, one must first know their respective ID.
-
-The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue`:
+The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue` or `assetToCustomPropertyValue`:
 
 
 ```json (customPropertyValueToAccountId)
 "prefill": {
-                            "selectedCompany": [
-                                {
-                                    "input": "workOrderId",
-                                    "steps": [
-                                        "workOrderIdToWorkOrder",
-                                        [
-                                            "workOrderToCustomPropertyValue",
-                                            8
-                                        ],
-                                        "customPropertyValueToAccountId"
-                                    ]
-                                }
-                            ]
-                        }
+    "selectedCompany": [
+        {
+            "input": "workOrderId",
+            "steps": [
+                "workOrderIdToWorkOrder",
+                [
+                    "workOrderToCustomPropertyValue",
+                    8
+                ],
+                "customPropertyValueToAccountId"
+            ]
+        }
+    ]
+}
 ```
-
 ```json (customPropertyValueToAssetId)
 "prefill": {
-                            "selectedAsset": [
-                                {
-                                    "input": "workOrderId",
-                                    "steps": [
-                                        "workOrderIdToWorkOrder",
-                                        [
-                                            "workOrderToCustomPropertyValue",
-                                            9
-                                        ],
-                                        "customPropertyValueToAssetId"
-                                    ]
-                                }
-                            ]
-                        }
+    "selectedAsset": [
+        {
+            "input": "workOrderId",
+            "steps": [
+                "workOrderIdToWorkOrder",
+                [
+                    "workOrderToCustomPropertyValue",
+                    9
+                ],
+                "customPropertyValueToAssetId"
+            ]
+        }
+    ]
+}
 ```
 ```json (customPropertyValueToNumberString)
 "prefill": {
-                            "value": [
-                                {
-                                    "input": "workOrderId",
-                                    "steps": [
-                                        "workOrderIdToWorkOrder",
-                                        [
-                                            "workOrderToCustomPropertyValue",
-                                            10
-                                        ],
-                                        "customPropertyValueToNumberString"
-                                    ]
-                                }
-                            ]
-                        }
+    "value": [
+        {
+            "input": "workOrderId",
+            "steps": [
+                "workOrderIdToWorkOrder",
+                [
+                    "workOrderToCustomPropertyValue",
+                    10
+                ],
+                "customPropertyValueToNumberString"
+            ]
+        }   
+    ]
+}
 ```
 
 ---
@@ -281,8 +292,19 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `assetToLocationAddress` | `ASSET`| `ADDRESS`
 | `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
 | `assetToAssetTypeNameString` | `ASSET`| `STRING`
+| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
 | `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
 | `addressToCityString` | `ADDRESS`| `STRING`
+| `customPropertyValueToString` | `UNKNOWN`| `STRING`
+| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
+| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
+| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER`
+| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN`
+| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID`
+| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID`
+| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID`
+| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE`
+| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME`
 | `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
 | `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
 | `workOrderToTasks` | `WORK_ORDER`| `TASKS`
@@ -301,7 +323,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
-| `workOrderToCustomPropertyValue` | `WORK_ORDER`| `UNKNOWN`
+| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
 | `staticString` | `[NONE, STRING]`| `STRING`
 | `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
 | `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
