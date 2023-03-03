@@ -240,7 +240,6 @@ The following examples illustrate the extraction of a custom property, the custo
 }
 ```
 ```json (customPropertyValueToNumberString)
-
 "prefill": {
     "value": [
         {
