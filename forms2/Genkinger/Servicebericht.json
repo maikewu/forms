@@ -18,6 +18,21 @@
       },
       "fields": [
         {
+          "id": "HeadlineDisplay_1",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Customer Information",
+              "de": "Kundeninformationen"
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfTextColor": "#ef7d00",
+            "pdfWidth": 1
+          }
+        },
+        {
           "id": "customer",
           "type": "companySingleSelect",
           "config": {
@@ -27,7 +42,7 @@
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "Ordering party",
+                "en": "Ordering Party",
                 "de": "Auftraggeber",
                 "fr": "",
                 "it": "",
@@ -37,10 +52,10 @@
               "pdfHide": false
             },
             "value": {
-              "disableCreation": true,
+              "disableCreation": false,
               "pdfHide": false
             },
-            "useAsFilterForFields": ["asset","contactPersons"],
+            "useAsFilterForFields": ["asset"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -49,17 +64,17 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
             "onChange": [
               {
-                "target": {"id": "orderCustomerLocation"},
-                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress"]
+                "target": { "id": "orderCustomerLocation" },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
               }
             ]
           }
@@ -69,7 +84,7 @@
           "type": "addressInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "required": {
               "street": false,
@@ -83,7 +98,7 @@
             },
             "label": {
               "text": {
-                "en": "Address ordering party",
+                "en": "Address Ordering Party",
                 "de": "Adresse Auftraggeber",
                 "fr": "",
                 "it": "",
@@ -99,7 +114,10 @@
               "value": [
                 {
                   "input": "organizationId",
-                  "steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
                 }
               ]
             }
@@ -124,7 +142,7 @@
             },
             "label": {
               "text": {
-                "en": "Adress ship-to party",
+                "en": "Adress Ship-to Party",
                 "de": "Adresse Warenempfänger",
                 "fr": "",
                 "it": "",
@@ -140,11 +158,14 @@
               "value": [
                 {
                   "input": "workOrderId",
-                  "steps": ["workOrderIdToWorkOrder","workOrderToLocationAddress"]
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
                 },
                 {
                   "input": "assetId",
-                  "steps": ["assetIdToAsset","assetToLocationAddress"]
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -183,6 +204,21 @@
       },
       "fields": [
         {
+          "id": "HeadlineDisplay_2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Asset Information",
+              "de": "Geräte-Informationen"
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfTextColor": "#ef7d00",
+            "pdfWidth": 1
+          }
+        },
+        {
           "id": "asset",
           "type": "assetSingleSelect",
           "config": {
@@ -190,10 +226,10 @@
             "disabled": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Maschine",
+                "en": "Asset",
                 "de": "Gerät",
                 "fr": "",
                 "it": "",
@@ -216,8 +252,12 @@
             },
             "onChange": [
               {
-                "target": {"id": "customer"},
-                "steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+                "target": { "id": "customer" },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
               }
             ]
           }
@@ -230,10 +270,10 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Serial Number",
+                "en": "Fabrication No.",
                 "de": "Fabr.-Nr.",
                 "fr": "",
                 "it": "",
@@ -252,10 +292,10 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Serial Number",
+                "en": "Factory Number",
                 "de": "Werksnummer",
                 "fr": "",
                 "it": "",
@@ -263,6 +303,18 @@
                 "es": ""
               },
               "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue", 33],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -274,7 +326,7 @@
             "required": true,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Operating Hours",
@@ -299,7 +351,7 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Work time",
+                "en": "Working Time for the Asset",
                 "de": "Arbeitszeit für die Maschine",
                 "fr": "",
                 "it": "",
@@ -331,7 +383,7 @@
           "type": "taskListInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "requiredAmountOfEntries": 0,
             "label": {
@@ -350,10 +402,10 @@
                 "checkedByDefault": true
               },
               "highPrioBooleanInput": {
-                "disabled": true
+                "disabled": false
               },
               "notNecessaryBooleanInput": {
-                "disabled": true
+                "disabled": false
               }
             },
             "prefill": {
@@ -416,7 +468,7 @@
             "pdfHide": false,
             "label": {
               "text": {
-                "en": "Kleinteil",
+                "en": "Small Part",
                 "de": "Kleinteil",
                 "fr": "",
                 "it": "",
@@ -427,7 +479,7 @@
             },
             "disabled": false,
             "pdfWidth": 1,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "required": false
           }
         },
@@ -436,7 +488,7 @@
           "type": "partListInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "requiredAmountOfEntries": 0,
             "label": {
@@ -520,7 +572,7 @@
             "pdfHide": false,
             "label": {
               "text": {
-                "en": "Lump-sum Agreement for Travel Expenses",
+                "en": "Travel allowance",
                 "de": "Fahrtkostenpauschale",
                 "fr": "",
                 "it": "",
@@ -530,7 +582,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.5,
             "pdfHideIfValueIsEmpty": true,
             "required": false
           }
@@ -542,7 +594,7 @@
             "pdfHide": false,
             "label": {
               "text": {
-                "en": "Lump-sum Agreement for Maintenance Expenses",
+                "en": "Maintenance allowance",
                 "de": "Wartungspauschale",
                 "fr": "",
                 "it": "",
@@ -552,7 +604,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.5,
             "pdfHideIfValueIsEmpty": true,
             "required": false
           }
@@ -564,7 +616,7 @@
             "pdfHide": true,
             "pdfWidth": 1,
             "text": {
-              "en": "If travel oder maintenance expenses lump-sum agreement is checked, please do not enter travel and work times here but in the addendum part!",
+              "en": "If travel or maintenance allowance apply, please do not enter travel and work hours here, but note them in the addendum!",
               "de": "Wenn Fahrtkosten- oder Wartungspauschale zutreffen, bitte keinen Eintrag der Reise- und Arbeitszeiten hier vornehmen, sondern diese im Nachtrag vermerken!",
               "fr": "",
               "it": "",
@@ -638,7 +690,7 @@
           "config": {
             "label": {
               "text": {
-                "en": "Asset state",
+                "en": "Asset condition",
                 "de": "Gerätzustand",
                 "fr": "",
                 "it": "",
@@ -648,8 +700,8 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
             "disabled": false,
             "required": false,
             "value": {
@@ -711,8 +763,8 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
             "required": false
           }
         },
@@ -733,7 +785,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.5,
             "pdfHideIfValueIsEmpty": true,
             "required": false
           }
@@ -767,7 +819,7 @@
             "pdfHide": false,
             "pdfWidth": 1,
             "text": {
-              "en": "Proper execution of the order is confirmed, written times, kilometers and parts are approved.",
+              "en": "The proper execution of the work order is confirmed, written times, kilometers and parts are approved.",
               "de": "Die ordnungsgemäße Ausführung des Auftrags wird bestätigt, geschriebene Zeiten, Kilometer und Teile sind genehmigt.",
               "fr": "",
               "it": "",
@@ -792,7 +844,7 @@
             "disable": false,
             "pdfHide": false,
             "required": true,
-            "capitalizeFirstLetterOfEveryWord": false
+            "capitalizeFirstLetterOfEveryWord": true
           },
           "locationSingleLineTextInput": {
             "disable": false,
@@ -802,7 +854,7 @@
         },
         "required": true,
         "headlineText": {
-          "en": "Signature technician",
+          "en": "Signature Technician",
           "de": "Unterschrift Monteur",
           "fr": "",
           "it": "",
@@ -810,20 +862,34 @@
           "es": ""
         },
         "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
           "name": [
             {
               "input": "assignedUserId",
-              "steps": ["userIdToUser","userToFullNameString"]
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
             {
               "input": "workOrderId",
-              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "assetId",
-              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
             }
           ]
         }
@@ -843,7 +909,7 @@
             "disable": false,
             "pdfHide": false,
             "required": true,
-            "capitalizeFirstLetterOfEveryWord": false
+            "capitalizeFirstLetterOfEveryWord": true
           },
           "locationSingleLineTextInput": {
             "disable": false,
@@ -853,7 +919,7 @@
         },
         "required": true,
         "headlineText": {
-          "en": "Signature customer",
+          "en": "Signature Customer",
           "de": "Unterschrift Auftraggeber",
           "fr": "",
           "it": "",
@@ -861,14 +927,28 @@
           "es": ""
         },
         "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
           "location": [
             {
               "input": "workOrderId",
-              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "assetId",
-              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
             }
           ]
         }
@@ -879,7 +959,7 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "en": "Send filled out form to customer",
+          "en": "Send filled-in service report to customer",
           "de": "Ausgefüllten Servicebericht an Kunden senden",
           "fr": "",
           "it": "",
@@ -905,23 +985,22 @@
             "staticEmails": []
           },
           "subject": {
-            "en": "",
-            "de": "Genkinger Servicebericht (Kundenausfertigung)",
+            "en": "Genkinger: Service Report",
+            "de": "Genkinger: Servicebericht",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
           "body": {
-            "en": "",
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Genkinger GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen | Best regards",
+            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\n\nDear Sir or Madam,\n\nThank you for your trust in the services of our company Genkinger GmbH.\nWe hope that we have met your requirements and that we have been able to convince you of our competences.\nFor further questions or concerns, please do not hesitate to contact us.\n\nIn the attachment you will find your associated service report as PDF.\n\nBest regards\nYour Genkinger Service Team",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n\nSehr geehrte Damen und Herren,\n\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma Genkinger GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen\nIhr Genkinger Service Team",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           }
-        },
-        "whitelistedDomains": false
+        }
       }
     },
     {
@@ -939,13 +1018,28 @@
       },
       "fields": [
         {
+          "id": "HeadlineDisplay_3",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Internal Addendum | Technician",
+              "de": "Interner Nachtrag | Monteur"
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfTextColor": "#ef7d00",
+            "pdfWidth": 1
+          }
+        },
+        {
           "id": "AdditionalTavelAndWorkingTimes",
           "type": "timeTrackingListInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
-            "requiredAmountOfEntries": 1,
+            "requiredAmountOfEntries": 0,
             "label": {
               "text": {
                 "en": "Additional Travel and Working Times",
@@ -1005,7 +1099,7 @@
                 "required": false,
                 "pdfHide": false,
                 "placeHolderText": {
-                  "en": "Part Number",
+                  "en": "Article Number",
                   "de": "Artikelnummer",
                   "fr": "",
                   "it": "",
@@ -1118,7 +1212,7 @@
           "type": "fileUpload",
           "config": {
             "disabled": false,
-            "pdfHide": false,
+            "pdfHide": true,
             "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
@@ -1130,10 +1224,10 @@
                 "tr": "",
                 "es": ""
               },
-              "pdfHide": false
+              "pdfHide": true
             },
             "value": {
-              "pdfHide": false
+              "pdfHide": true
             }
           }
         },
@@ -1144,11 +1238,11 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "General Notes",
+                "en": "General Remarks & Notes",
                 "de": "Allgemeine Bemerkungen & Hinweise",
                 "fr": "",
                 "it": "",
@@ -1181,12 +1275,27 @@
       },
       "fields": [
         {
+          "id": "HeadlineDisplay_4",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Internal Addendum | Backoffice",
+              "de": "Interner Nachtrag | Innendienst"
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfTextColor": "#ef7d00",
+            "pdfWidth": 1
+          }
+        },
+        {
           "id": "serviceNumber",
           "type": "staticSingleSelect",
           "config": {
             "label": {
               "text": {
-                "en": "Type",
+                "en": "Report type",
                 "de": "Bericht-Typ",
                 "fr": "",
                 "it": "",
@@ -1196,7 +1305,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "required": false,
@@ -1235,7 +1344,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Maintenance Lump-Sum",
@@ -1246,6 +1355,18 @@
                 "es": ""
               },
               "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue", 16],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -1257,7 +1378,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Travel Costs Lump-Sum",
@@ -1268,6 +1389,18 @@
                 "es": ""
               },
               "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue", 17],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -1279,7 +1412,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Small Parts",
@@ -1299,7 +1432,7 @@
           "config": {
             "label": {
               "text": {
-                "en": "General Comments",
+                "en": "General Remarks & Notes",
                 "de": "Allgemeine Bemerkungen & Hinweise",
                 "fr": "",
                 "it": "",
@@ -1341,6 +1474,21 @@
       },
       "fields": [
         {
+          "id": "HeadlineDisplay_5",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Internal Addendum | Accounting",
+              "de": "Interner Nachtrag | Abrechnungsabteilung"
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "pdfTextSize": "H1",
+            "pdfTextColor": "#ef7d00",
+            "pdfWidth": 1
+          }
+        },
+        {
           "id": "oinvoice",
           "type": "singleLineTextInput",
           "config": {
@@ -1348,7 +1496,7 @@
             "required": true,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "SAP Document",
@@ -1370,7 +1518,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Customer Order Number",
@@ -1381,6 +1529,18 @@
                 "es": ""
               },
               "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    ["workOrderToCustomPropertyValue", 3],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -1391,11 +1551,11 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "General Notes",
+                "en": "General Remarks & Notes",
                 "de": "Allgemeine Bemerkungen & Hinweise",
                 "fr": "",
                 "it": "",
