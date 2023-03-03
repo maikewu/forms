@@ -23,7 +23,18 @@
                 "en": "Service Order Number"
               }
             },
-            "pdfWidth": 0.5
+            "pdfWidth": 0.5,
+            "prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToERPReferenceString"
+									]
+								}
+							]
+						}
           }
         },
         {
@@ -73,7 +84,8 @@
             "pdfWidth": 0.5,
             "required": false,
             "useAsFilterForFields": [
-              "asset"
+              "asset",
+              "customerContactPerson"
             ],
             "onChange": [
               {
@@ -159,17 +171,38 @@
           }
         },
         {
-          "id": "customerContact",
-          "type": "singleLineTextInput",
+          "type": "userSingleSelect",
+          "id": "customerContactPerson",
           "config": {
             "label": {
               "text": {
                 "de": "Ansprechpartner",
-                "en": "Contact Person"
+                "en": "Contact person"
               }
             },
+            "required": false,
             "pdfWidth": 0.5,
-            "pdfHideIfValueIsEmpty": true
+            "pdfHideIfValueIsEmpty": true,
+            "value": {
+              "pdfPrintEmailAddress": false
+            },
+            "onChange": [
+              {
+                "target": {"id": "09-signatureCustomer","propertyName": "name"},
+                "steps": ["userToFullNameString"]
+              }
+            ],
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerPersonUserId"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
@@ -711,6 +744,16 @@
               "input": "creationDateTime",
               "steps": ["dateTimeToDate"]
             }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+            }
           ]
         }
       }
@@ -751,6 +794,27 @@
             {
               "input": "creationDateTime",
               "steps": ["dateTimeToDate"]
+            }
+          ],
+          "name": [
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToCustomerPersonUserId",
+                "userIdToUser",
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+            },
+            {
+              "input": "assetId",
+              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
             }
           ]
         }
@@ -793,139 +857,6 @@
           "subject": {
             "de": "Digitaler Servicebericht",
             "en": "Digital Service Report"
-          }
-        }
-      }
-    },
-    {
-      "id": "11-addendum",
-      "type": "fieldSection",
-      "config": {
-        "headlineText": {
-          "de": "Nachtrag",
-          "en": "Addendum"
-        }
-      },
-      "fields": [
-        {
-          "id": "commentAddendum",
-          "type": "richTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Bemerkungen & Hinweise",
-                "en": "Comments & Notes"
-              }
-            },
-            "pdfWidth": 1,
-            "placeHolderText": {
-              "de": "Hier tippen...",
-              "en": "Type here..."
-            }
-          }
-        },
-        {
-          "id": "tavelAndWorkingTimes_addendum",
-          "type": "timeTrackingListInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Rückreisezeit",
-                "en": "Return Travel Times"
-              }
-            },
-            "pdfWidth": 1,
-            "fields": {
-              "timeTrackingTypeStaticSingleSelect": {
-                "pdfHide": false
-              },
-              "startDateTimeInput": {
-                "pdfHide": false
-              },
-              "endDateTimeInput": {
-                "pdfHide": false
-              },
-              "breakNumericInput": {
-                "disabled": false,
-                "required": false,
-                "pdfHide": false
-              },
-              "durationDisplay": {
-                "disabled": false,
-                "pdfHide": false
-              },
-              "distanceNumericInput": {
-                "disabled": false,
-                "required": false,
-                "pdfHide": false
-              },
-              "technicianUserSingleSelect": {
-                "disabled": true,
-                "required": false,
-                "pdfHide": true,
-                "pdfPrintEmailAddress": false
-              },
-              "commentMultiLineTextInput": {
-                "disabled": false,
-                "required": false,
-                "pdfHide": false
-              }
-            }
-          }
-        },
-        {
-          "id": "files2",
-          "type": "fileUpload",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Dateien",
-                "en": "Files"
-              }
-            },
-            "pdfHideIfValueIsEmpty": false,
-            "pdfHide": true
-          }
-        }
-      ]
-    },
-    {
-      "id": "12-send",
-      "type": "emailSection",
-      "config": {
-        "headlineText": {
-          "de": "Bericht als E-Mail senden/gesendet",
-          "en": "Send/sent form as E-Mail"
-        },
-        "hidePreviewPdfButton": false,
-        "hideDownloadPdfButton": false,
-        "pdfHide": true,
-        "emailDialogPrefill": {
-          "bcc": {
-            "assignee": false,
-            "creator": false,
-            "currentUser": false,
-            "staticEmails": []
-          },
-          "cc": {
-            "assignee": false,
-            "creator": false,
-            "currentUser": false,
-            "staticEmails": []
-          },
-          "to": {
-            "assignee": false,
-            "creator": false,
-            "currentUser": false,
-            "staticEmails": []
-          },
-          "body": {
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Servicebericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service Team",
-            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\nDear Sir or Madam,\nIn the attachment you will find the completed service report as a PDF.\nBest regards,\nYour service team."
-          },
-          "subject": {
-            "de": "Digitaler Servicebericht - Nachtrag",
-            "en": "Digital Service Report - Addendum"
           }
         }
       }
