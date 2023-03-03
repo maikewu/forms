@@ -192,6 +192,54 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | [customProperty](#Custom-Properties) |  | One of the specific custom asset properties
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
+Some Asset derived values first need be mapped to a real readable value, especially values from a custom property Multi Select. The following examples will illustrate the mapping process:
+
+```json (assetToCustomPropertyValue)
+{
+    "id": "customPropertyValueToStringTestIdFromMultiSelect",
+    "type": "staticMultiSelect",
+    "config": {
+        "label": {
+            "text": {
+                "en": "preffiled from asset custom property Multi Select",
+                "de": "preffiled from asset custom property Multi Select"
+            }
+        },
+        "value": {
+            "options": {
+                "Option 1": {
+                    "en": "Option 1",
+                    "de": "Option 1"
+                },
+                "Option 62374": {
+                    "en": "Option 62374",
+                    "de": "Option 62374"
+                },
+                "Option 101": {
+                    "en": "Option 101",
+                    "de": "Option 101"
+                }
+            }
+        },
+        "prefill": {
+            "value": [
+                {
+                    "input": "assetId",
+                    "steps": [
+                        "assetIdToAsset",
+                        [
+                            "assetToCustomPropertyValue",
+                            9
+                        ],
+                        "customPropertyValueToArrayOfStrings"
+                    ]
+                }
+            ]
+        }
+    }
+}
+```
+
 ---
  ## Work Order View
 If you create a new forms instance from a work order, the following data is provided:
@@ -208,6 +256,59 @@ If you create a new forms instance from a work order, the following data is prov
 | `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  | The ID of the current space 
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
+
+Some Work Order derived values first need be mapped to a real readable value, especially values from a custom property Multi Select. The following examples will illustrate the mapping process:
+
+```json (assetToCustomPropertyValue)
+{
+    "id": "statusFromWO",
+    "type": "staticSingleSelect",
+    "config": {
+        "required": true,
+        "label": {
+            "text": {
+                "en": "status prefilled from Workorder",
+                "de": "Status vorauselektiert vom Auftrag"
+            }
+        },
+        "value": {
+            "options": {
+                "0": {
+                    "en": "Open",
+                    "de": "Offen"
+                },
+                "1": {
+                    "en": "In Progress",
+                    "de": "In Bearbeitung"
+                },
+                "2": {
+                    "en": "On Hold",
+                    "de": "Angehalten"
+                },
+                "3": {
+                    "en": "Completed",
+                    "de": "Abgeschlossen"
+                },
+                "4": {
+                    "en": "Closed",
+                    "de": "Geschlossen"
+                }
+            }
+        },
+        "prefill": {
+            "value": [
+                {
+                    "input": "workOrderId",
+                    "steps": [
+                        "workOrderIdToWorkOrder",
+                        "workOrderToStatusNumberString"
+                    ]
+                }
+            ]
+        }
+    }
+}
+```
 
 ---
 ## Custom Properties
