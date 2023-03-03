@@ -200,7 +200,7 @@ If you create a new forms instance from a work order, the following data is prov
 | `WorkOrderId`  |  |  The ID of the work order from which the form is created
 | `organizationId`  | If WO has connected company | The ID of the company (contact) which is connected to the work order
 | `assetId`  | If WO has assets |  The ID of the asset which is part of the work order
-| [Custom Work Order Property](#Custom-Work-Order-Property) |  | One of the specific custom work order properties
+| [customProperty](#Custom-Work-Order-Property) |  | One of the specific custom work order properties
 | `currentUser`  |  | Information about the current user, including the name, ID, etc.
 | `currentUserId`  |  | The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
