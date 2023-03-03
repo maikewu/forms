@@ -77,7 +77,6 @@ that should be prepopulate to the form
 | Current user | `currentUserId` | `USER_ID` (equals `STRING`)
 | Current account | `currentAccount` | `ACCOUNT`
 | Current account  |`currentAccountId` | `ACCOUNT_ID` (equals `STRING`)
-| [Custom Work Order Property](#Custom-Work-Order-Property) | `UNKNOWN`| `UNKNOWN`
 | [WorkOrder view](#work-order-view) |`assignedUserId` | `USER_ID` (equals `STRING`)
 | [WorkOrder view](#work-order-view) |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
@@ -191,15 +190,16 @@ If you create a new forms instance from a work order, the following data is prov
 | `WorkOrderId`  |  |  The ID of the work order from which the form is created
 | `organizationId`  | If WO has connected company | The ID of the company (contact) which is connected to the work order
 | `assetId`  | If WO has assets |  The ID of the asset which is part of the work order
+| [customProperty](#Custom-Work-Order-Property) |  | One of the specific custom work order properties
 | `currentUser`  |  | Information about the current user, including the name, ID, etc.
 | `currentUserId`  |  | The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  | The ID of the current space 
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
----
 
-## Custom Work Order Property
+ ## Custom Work Order Property
+
 Custom Work Order Properties of the respective Space can be extracted. As they can have a variety of different value types, the value type has been marked `UNKNOWN`. To extract a custom Property, one must first know their respective ID.
 
 The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue`:
