@@ -197,7 +197,7 @@ If you create a new forms instance from a work order, the following data is prov
 | `currentAccountId`  |  | The ID of the current space 
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
-
+---
 ## Custom Work Order Property
 
 Custom Work Order Properties of the respective Space can be extracted. To extract a custom Property, one must first know their respective ID.
