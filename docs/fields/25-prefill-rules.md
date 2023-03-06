@@ -192,7 +192,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | [customProperty](#Custom-Properties) |  | One of the specific custom asset properties
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
-Some Asset derived values first need be mapped to a real readable value, especially values from a custom property Multi Select. The following examples will illustrate the mapping process:
+Some Asset derived values first need be mapped to a real readable value, especially values from a custom property multi select. The following examples will illustrate the mapping process:
 
 ```json (assetToCustomPropertyValue)
 {
@@ -257,7 +257,7 @@ If you create a new forms instance from a work order, the following data is prov
 | `currentAccountId`  |  | The ID of the current space 
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
-Some Work Order derived values first need be mapped to a real readable value, especially values from a custom property Multi Select. The following examples will illustrate the mapping process:
+Some Work Order derived values first need be mapped to a real readable value. The following examples will illustrate the mapping process:
 
 ```json (assetToCustomPropertyValue)
 {
