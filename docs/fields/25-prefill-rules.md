@@ -189,7 +189,7 @@ If you create a new forms instance from an asset (Asset View), the following dat
 | `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  |  Information about the current space, including the name, address, ID, etc.
 | `currentAccountId`  |  |  	The ID of the current space
-| [customProperty](#Custom-Properties) |  | One of the specific custom asset properties
+| [customProperty](#custom-properties) |  | One of the specific custom asset properties
 | `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
 
 Some Asset derived values first need be mapped to a real readable value, especially values from a custom property multi select. The following examples will illustrate the mapping process:
@@ -250,7 +250,7 @@ If you create a new forms instance from a work order, the following data is prov
 | `WorkOrderId`  |  |  The ID of the work order from which the form is created
 | `organizationId`  | If WO has connected company | The ID of the company (contact) which is connected to the work order
 | `assetId`  | If WO has assets |  The ID of the asset which is part of the work order
-| [customProperty](#Custom-Properties) |  | One of the specific custom work order properties
+| [customProperty](#custom-properties) |  | One of the specific custom work order properties
 | `currentUser`  |  | Information about the current user, including the name, ID, etc.
 | `currentUserId`  |  | The ID of the user who is logged in and creates the form instance
 | `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
