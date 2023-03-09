@@ -14,21 +14,21 @@ Each field can have multiple prefill rules. When a form is created, the backend 
 Schema:
 ```json (Prefill schema)
 "prefill": {
-    "target_type": [
-        { // These brackets contain the first prefill rule
-            "input": "provided_data1", 
-            "steps": [
-                "transformation_step1" // step to transform the data type
-            ]
-        }
-        { // These brackets contain the second prefill rule, which got only applied when the first input value "rule1_value1" isn't available
-            "input": "provided_data2",
-            "steps": [
-              "transformation_step2_1", // steps to transform the data type
-              "transformation_step2_2"
-            ]
-        }
-    ]
+	"target_type": [
+		{ // These brackets contain the first prefill rule
+			"input": "provided_data1", 
+			"steps": [
+				"transformation_step1" // step to transform the data type
+			]
+		}
+		{ // These brackets contain the second prefill rule, which got only applied when the first input value "rule1_value1" isn't available
+			"input": "provided_data2",
+			"steps": [
+			  "transformation_step2_1", // steps to transform the data type
+			  "transformation_step2_2"
+			]
+		}
+	]
 }
 ```
 
@@ -196,47 +196,47 @@ Some Asset derived values first need be mapped to a real readable value, especia
 
 ```json (assetToCustomPropertyValue)
 {
-    "id": "customPropertyValueToStringTestIdFromMultiSelect",
-    "type": "staticMultiSelect",
-    "config": {
-        "label": {
-            "text": {
-                "en": "preffiled from asset custom property Multi Select",
-                "de": "preffiled from asset custom property Multi Select"
-            }
-        },
-        "value": {
-            "options": {
-                "Option 1": {
-                    "en": "Option 1",
-                    "de": "Option 1"
-                },
-                "Option 62374": {
-                    "en": "Option 62374",
-                    "de": "Option 62374"
-                },
-                "Option 101": {
-                    "en": "Option 101",
-                    "de": "Option 101"
-                }
-            }
-        },
-        "prefill": {
-            "value": [
-                {
-                    "input": "assetId",
-                    "steps": [
-                        "assetIdToAsset",
-                        [
-                            "assetToCustomPropertyValue",
-                            9
-                        ],
-                        "customPropertyValueToArrayOfStrings"
-                    ]
-                }
-            ]
-        }
-    }
+	"id": "customPropertyValueToStringTestIdFromMultiSelect",
+	"type": "staticMultiSelect",
+	"config": {
+		"label": {
+			"text": {
+				"en": "preffiled from asset custom property Multi Select",
+				"de": "preffiled from asset custom property Multi Select"
+			}
+		},
+		"value": {
+			"options": {
+				"Option 1": {
+					"en": "Option 1",
+					"de": "Option 1"
+				},
+				"Option 62374": {
+					"en": "Option 62374",
+					"de": "Option 62374"
+				},
+				"Option 101": {
+					"en": "Option 101",
+					"de": "Option 101"
+				}
+			}
+		},
+		"prefill": {
+			"value": [
+				{
+					"input": "assetId",
+					"steps": [
+						"assetIdToAsset",
+						[
+							"assetToCustomPropertyValue",
+							9
+						],
+						"customPropertyValueToArrayOfStrings"
+					]
+				}
+			]
+		}
+	}
 }
 ```
 
@@ -261,52 +261,52 @@ Some Work Order derived values first need be mapped to a real readable value. Th
 
 ```json (assetToCustomPropertyValue)
 {
-    "id": "statusFromWO",
-    "type": "staticSingleSelect",
-    "config": {
-        "required": true,
-        "label": {
-            "text": {
-                "en": "status prefilled from Workorder",
-                "de": "Status vorauselektiert vom Auftrag"
-            }
-        },
-        "value": {
-            "options": {
-                "0": {
-                    "en": "Open",
-                    "de": "Offen"
-                },
-                "1": {
-                    "en": "In Progress",
-                    "de": "In Bearbeitung"
-                },
-                "2": {
-                    "en": "On Hold",
-                    "de": "Angehalten"
-                },
-                "3": {
-                    "en": "Completed",
-                    "de": "Abgeschlossen"
-                },
-                "4": {
-                    "en": "Closed",
-                    "de": "Geschlossen"
-                }
-            }
-        },
-        "prefill": {
-            "value": [
-                {
-                    "input": "workOrderId",
-                    "steps": [
-                        "workOrderIdToWorkOrder",
-                        "workOrderToStatusNumberString"
-                    ]
-                }
-            ]
-        }
-    }
+	"id": "statusFromWO",
+	"type": "staticSingleSelect",
+	"config": {
+		"required": true,
+		"label": {
+			"text": {
+				"en": "status prefilled from Workorder",
+				"de": "Status vorauselektiert vom Auftrag"
+			}
+		},
+		"value": {
+			"options": {
+				"0": {
+					"en": "Open",
+					"de": "Offen"
+				},
+				"1": {
+					"en": "In Progress",
+					"de": "In Bearbeitung"
+				},
+				"2": {
+					"en": "On Hold",
+					"de": "Angehalten"
+				},
+				"3": {
+					"en": "Completed",
+					"de": "Abgeschlossen"
+				},
+				"4": {
+					"en": "Closed",
+					"de": "Geschlossen"
+				}
+			}
+		},
+		"prefill": {
+			"value": [
+				{
+					"input": "workOrderId",
+					"steps": [
+						"workOrderIdToWorkOrder",
+						"workOrderToStatusNumberString"
+					]
+				}
+			]
+		}
+	}
 }
 ```
 
@@ -318,55 +318,195 @@ Custom Properties of the respective space can be extracted. These include Custom
 The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue` or `assetToCustomPropertyValue`:
 
 
-```json (customPropertyValueToAccountId)
+```json (CompanySingleSelect)
+//prefill companySingleSelect in form with company of remberg_company custom property in work order
 "prefill": {
-    "selectedCompany": [
-        {
-            "input": "workOrderId",
-            "steps": [
-                "workOrderIdToWorkOrder",
-                [
-                    "workOrderToCustomPropertyValue",
-                    8
-                ],
-                "customPropertyValueToAccountId"
-            ]
-        }
-    ]
+	"selectedCompany": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				[
+					"workOrderToCustomPropertyValue",
+					8
+				],
+				"customPropertyValueToAccountId"
+			]
+		}
+	]
 }
 ```
-```json (customPropertyValueToAssetId)
+```json (AssetSingleSelect)
+//prefill assetSingleSelect in form with asset of remberg_asset custom property in work order
 "prefill": {
-    "selectedAsset": [
-        {
-            "input": "workOrderId",
-            "steps": [
-                "workOrderIdToWorkOrder",
-                [
-                    "workOrderToCustomPropertyValue",
-                    9
-                ],
-                "customPropertyValueToAssetId"
-            ]
-        }
-    ]
+	"selectedAsset": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				[
+					"workOrderToCustomPropertyValue",
+					9
+				],
+				"customPropertyValueToAssetId"
+			]
+		}
+	]
+}
+```
+```json (SingleLineTextInput)
+//prefill work order singleLine custom property
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",1],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
+```
+```json (BooleanInput)
+//Prefill from work order custom property checkbox
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",2],
+				"customPropertyValueToBoolean"
+			]
+		}
+	]
+}
+```
+```json (staticSingleSelect)
+//prefill from work order single select custom property
+"value": {
+	"options": {
+		"Option 01010": {
+			"en": "Option 01010",
+			"de": "Option 01010"
+		},
+		"Option 202020": {
+			"en": "Option 202020",
+			"de": "Option 202020"
+		},
+		"Option 0303030": {
+			"en": "Option 0303030",
+			"de": "Option 0303030"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",3],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
+```
+```json (staticMultiSelect)
+//prefill from work order multi select custom property
+"value": {
+	"options": {
+		"multi Option 1": {
+			"de": "multi Option 1",
+			"en": "multi Option 1"
+		},
+		"multi Option 2": {
+			"de": "multi Option 2",
+			"en": "multi Option 2"
+		},
+		"multi Option 3": {
+			"de": "multi Option 3",
+			"en": "multi Option 3"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",4],
+				"customPropertyValueToArrayOfStrings"
+			]
+		}
+	]
+}
+```
+```json (DateInput)
+//prefill from work order date custom property
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",5],
+				"customPropertyValueToDate"
+			]
+		}
+	]
+}
+```
+```json (DateTimeInput)
+// Do not copy comments!
+//prefill work order datetime custom property
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",6],
+				"customPropertyValueToDateTime"
+			]
+		}
+	]
+}
+```
+```json (userSingleSelect)
+//prefill work order remberg_user custom property
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",7],
+				"customPropertyValueToUserId"
+			]
+		}
+	]
 }
 ```
 ```json (customPropertyValueToNumberString)
 "prefill": {
-    "value": [
-        {
-            "input": "workOrderId",
-            "steps": [
-                "workOrderIdToWorkOrder",
-                [
-                    "workOrderToCustomPropertyValue",
-                    10
-                ],
-                "customPropertyValueToNumberString"
-            ]
-        }   
-    ]
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				[
+					"workOrderToCustomPropertyValue",
+					10
+				],
+				"customPropertyValueToNumberString"
+			]
+		}   
+	]
 }
 ```
 
@@ -442,182 +582,391 @@ By chaining steps, the desired data type can be achieved "step by step".
 ### Schema and Examples
 
 Prefill can have several rules for a target, which get executed sequentially until on rule can be applied when the required input data is available.
-<details>
-<summary>Prefill examples of certain fields</summary>
 
-```json (SignatureSection)
+```json (CompanySingleSelect)
 // Do not copy comments!
-// Prefills signature section with name of the current user
-// There are four different prefill rules for the location. 1. To enter the asset location 2. To enter the location of the costumer which the asset belongs to 3. To enter the customers location 4. To enter a default location
+// Prefills company select with company of work order or asset (depending, on how form was created)
 
 "prefill": {
-    "name": [
-        {
-            "input": "currentUser", 
-            "steps": [
-                "userToFullNameString"
-            ]
-        }
-    ]
-    "location": [
-        {
-            "input": "assetId",
-            "steps": [
-                "assetIdToAsset",
-                "assetToLocationAddress",
-                "addressToCityString"
-            ]
-        }
-        {
-            "input": "assetId",
-            "steps": [
-                "assetIdToAsset",
-                "assetToCustomerAccountId",
-                "accountIdToAccount",
-                "accountToBillingAddressAddress",
-                "addressToCityString"
-            ]
-        }
-        {
-            "input": "organizationId",
-            "steps": [
-                "accountIdToAccount",
-                "accountToBillingAddressAddress",
-                "addressToCityString"
-            ]
-        }
-        {
-            "input": "none",
-            "steps": [
-                [
-                    "staticString",
-                    "Default Location"
-                ]
-            ]
-        }
-    ]
-    "date": [
-        {
-            "input": "creationDateTime",
-            "steps": ["dateTimeToDate"]
-        }
-    ]
+	"selectedCompany": [
+		{
+			"input": "organizationId",
+			"steps": []
+		},
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToCustomerAccountId"
+			]
+		}
+	]
 }
+
+//prefill companySingleSelect in form with company of remberg_company custom property in work order
+"prefill": {
+	"selectedCompany": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				[
+					"workOrderToCustomPropertyValue",
+					8
+				],
+				"customPropertyValueToAccountId"
+			]
+		}
+	]
+}
+```
+```json (SignatureSection)
+// Do not copy comments!
+// Prefills signature section with name of the assigned user
+// There are four different prefill rules for the location. 1. Work order address 2. Asset location 3. To enter the customers location 
+
+"prefill": {
+	"name": [
+		{
+			"input": "assignedUserId", 
+			"steps": [
+				"userToFullNameString"
+			]
+		}
+	]
+	"location": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder", 
+				"workOrderToLocationAddress", 
+				"addressToCityString"
+			]
+		},
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToLocationAddress",
+				"addressToCityString"
+			]
+		},
+		{
+			"input": "organizationId",
+			"steps": [
+				"accountIdToAccount",
+				"accountToBillingAddressAddress",
+				"addressToCityString"
+			]
+		}
+	],
+	"date": [
+		{
+			"input": "creationDateTime",
+			"steps": ["dateTimeToDate"]
+		}
+	]
+}
+
+//Prefill name of current user
+"prefill": {
+	"name": [
+		{
+			"input": "currentUserId", 
+			"steps": [
+				"userToFullNameString"
+			]
+		}
+	]
+}	
+
+//Prefill location of the customer which the asset belongs to
+"prefill": {
+	"location": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToCustomerAccountId",
+				"accountIdToAccount",
+				"accountToBillingAddressAddress",
+				"addressToCityString"
+			]
+		}
+	]
+}	
+
+//Prefill static location
+"prefill": {
+	"location": [
+		{
+			"input": "none",
+			"steps": [
+				[
+					"staticString",
+					"Entenhausen"
+				]
+			]
+		}
+	]
+}	
+
+//Prefill city of billing address of company associated in work order
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToOrganizationAccountId",
+				"accountIdToAccount",
+				"accountToBillingAddressAddress",
+				"addressToCityString"
+		]
+		}
+	]
+}
+
 ```
 ```json (AddressInput)
 // Do not copy comments!
+// Prefills the address with work order address, if empty then the asset location, if empty the company billing address
+
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+		},
+		{
+			"input": "assetId",
+			"steps": ["assetIdToAsset", "assetToLocationAddress"]
+		},
+		{
+			"input": "organizationId",
+			"steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+		}
+	]
+}
+
 // Prefills AddressInput with a default address when the form is created
 
 "prefill": {
-    "value": [
-        {
-            "input": "none",
-            "steps": [
-                [
-                    "staticAddress",
-                    {
-                        "city": "Default City",
-                        "street": "Default Street",
-                        "streetNumber": "1",
-                        "country": "Default Country",
-                        "other": "Default supplement",
-                        "countryProvince": "Default state",
-                        "company": "Default Company"
-                    }
-                ]
-            ]
-        }
-    ]
+	"value": [
+		{
+			"input": "none",
+			"steps": [
+				[
+					"staticAddress",
+					{
+						"city": "Default City",
+						"street": "Default Street",
+						"streetNumber": "1",
+						"country": "Default Country",
+						"other": "Default supplement",
+						"countryProvince": "Default state",
+						"company": "Default Company"
+					}
+				]
+			]
+		}
+	]
 }
 ```
-```json (AddressInput2)
+```json (AssetSingleSelect)
 // Do not copy comments!
-// Prefills the address of the work order of the connected company 
+// Prefills the asset
 
 "prefill": {
-    "value": [
-        {
-            "input": "workOrderId",
-            "steps": [
-                "workOrderIdToWorkOrder",
-                "workOrderToLocationAddress"
-            ]
-        }
-    ]
+	"selectedAsset": [
+		{
+			"input": "assetId",
+			"steps": []
+		}
+	]
+}
+
+//prefill assetSingleSelect in form with asset of remberg_asset custom property in work order
+"prefill": {
+	"selectedAsset": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				[
+					"workOrderToCustomPropertyValue",
+					9
+				],
+				"customPropertyValueToAssetId"
+			]
+		}
+	]
 }
 ```
 ```json (TaskListInput)
 // Do not copy comments!
-// Prefills predefined task to the taskList
-
-"prefill": {
-    "entries": [
-        {
-            "input": "none",
-            "steps": [
-                [
-                    "staticTasks",
-                    [{
-                        "done": false,
-                        "title": "Task 1",
-                        "comment": "This task was prefilled 1",
-                        "highPriority": false,
-                        "necessary": false
-                    },
-                    {
-                        "done": false,
-                        "title": "Task 2",
-                        "comment": "This task was prefilled 2",
-                        "highPriority": true,
-                        "necessary": true
-                    },
-                    {
-                        "done": true,
-                        "title": "Task 3",
-                        "comment": "This task was prefilled 3",
-                        "highPriority": false,
-                        "necessary": true
-                    },
-                    {
-                        "done": false,
-                        "title": "Task 4",
-                        "comment": "This task was prefilled 4",
-                        "highPriority": true,
-                        "necessary": false
-                    }]
-                ]
-            ]
-        }
-    ]
-}
-```
-```json (TaskListInput2)
-// Do not copy comments!
 // Prefills task of the work order 
 
 "prefill": {
-    "entries": [
-        {
-            "input": "workOrderId",
-            "steps": [ "workOrderIdToWorkOrder", "workOrderToTasks" ]
-        }
-    ]
+	"entries": [
+		{
+			"input": "workOrderId",
+			"steps": [ "workOrderIdToWorkOrder", "workOrderToTasks" ]
+		}
+	]
+}
+
+// Prefills predefined task to the taskList
+
+"prefill": {
+	"entries": [
+		{
+			"input": "none",
+			"steps": [
+				[
+					"staticTasks",
+					[{
+						"done": false,
+						"title": "Task 1",
+						"comment": "This task was prefilled 1",
+						"highPriority": false,
+						"necessary": false
+					},
+					{
+						"done": false,
+						"title": "Task 2",
+						"comment": "This task was prefilled 2",
+						"highPriority": true,
+						"necessary": true
+					},
+					{
+						"done": true,
+						"title": "Task 3",
+						"comment": "This task was prefilled 3",
+						"highPriority": false,
+						"necessary": true
+					},
+					{
+						"done": false,
+						"title": "Task 4",
+						"comment": "This task was prefilled 4",
+						"highPriority": true,
+						"necessary": false
+					}]
+				]
+			]
+		}
+	]
 }
 ```
 ```json (SingleLineTextInput)
 // Do not copy comments!
-// Prefills the name of the asset as a STRING 
-
+//Prefill ERP Reference work order field
 "prefill": {
-    "value": [
-        {
-            "input": "assetId",
-            "steps": [
-                "assetIdToAsset",
-                "assetToAssetTypeNameString"
-            ]
-        }
-    ]
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToERPReferenceString"
+			]
+		}
+	]
+}
+
+//prefill WO subject
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToTitleString"
+			]
+		}
+	]
+}
+
+//prefill additional contact information string
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToAdditionalContactInformationString"
+			]
+		}
+	]
+}
+
+//prefill work order singleLine custom property; also works for URL property
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",1],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
+
+// Prefills the name of the asset as a STRING 
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToAssetTypeNameString"
+			]
+		}
+	]
+}
+
+//Prefill subject of case associated with work order
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToCaseSubjectString"
+			]
+		}
+	]
+}
+
+//Prefill subject & ID of case associated with work order
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToCaseTicketAndSubjectString"
+			]
+		}
+	]
+}
+
+//Prefill city of billing address of company associated in work order
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToOrganizationAccountId",
+				"accountIdToAccount",
+				"accountToBillingAddressAddress",
+				"addressToCityString"
+		]
+		}
+	]
 }
 ```
 ```json (MultiLineTextInput)
@@ -625,31 +974,44 @@ Prefill can have several rules for a target, which get executed sequentially unt
 // Prefills a default multi line text
 
 "prefill": {
-    "value": [{
-            "input": "none",
-            "steps": [[
-                    "staticString",
-                    "Default \n Multi \n Line \n Text"
-             ]]
-     }]
+	"value": [{
+			"input": "none",
+			"steps": [[
+					"staticString",
+					"Default \n Multi \n Line \n Text"
+			 ]]
+	 }]
 }
 ```
 ```json (RichTextInput)
 // Do not copy comments!
-// Prefills a default HTML text
+//Prefill work order description
 
 "prefill": {
-    "value": [
-        {
-            "input": "none",
-            "steps": [
-                [
-                    "staticString",
-                    "Default rich text content"
-                ]
-            ]
-        }
-    ]
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToDescriptionString"
+			]
+		}
+	]
+}
+
+// Prefills a default HTML text
+"prefill": {
+	"value": [
+		{
+			"input": "none",
+			"steps": [
+				[
+					"staticString",
+					"<b>Default rich text content</b>"
+				]
+			]
+		}
+	]
 }
 ```
 ```json (UserSingleSelect)
@@ -657,21 +1019,139 @@ Prefill can have several rules for a target, which get executed sequentially unt
 // Prefills the current user
 
 "prefill": {
-    "value": [{
-            "input": "currentUserId",
-            "steps": []
-    }]
+	"value": [
+		{
+			"input": "currentUserId",
+			"steps": []
+		]
+	}
+}
+
+//prefills the forms' assigned user
+"prefill": {
+	"value": [
+		{
+			"input": "assignedUserId",
+			"steps": []
+		}
+	]
+}
+
+//prefill the work orders' responsible user
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToResponsibleUserId"
+			]
+		}
+	]
+}
+
+//prefill work order remberg_user custom property
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",7],
+				"customPropertyValueToUserId"
+			]
+		}
+	]
 }
 ```
 ```json (BooleanInput)
 // Do not copy comments!
+
+//Prefill from work order custom property checkbox
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",2],
+				"customPropertyValueToBoolean"
+			]
+		}
+	]
+}
+
 // Prefills `true` 
 
 "prefill": {
-    "value": [{
-        "input": "none",
-        "steps": [["staticBoolean", true]]
-    }]
+	"value": [{
+		"input": "none",
+		"steps": [["staticBoolean", true]]
+	}]
+}
+```
+```json (DateInput)
+//Prefill with creation date
+"prefill":{
+	"value":[
+		{
+			"input": "creationDateTime",
+			"steps": ["dateTimeToDate"]
+		}
+	]
+}
+
+//Prefill work order due date
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToDueDate"
+			]
+		}
+	]
+}
+
+//Prefill work order planned start date
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToStartDate"
+			]
+		}
+	]
+}
+
+//Prefill work order planned end date
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToEndDate"
+			]
+		}
+	]
+}
+
+//prefill from work order date custom property
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",5],
+				"customPropertyValueToDate"
+			]
+		}
+	]
 }
 ```
 ```json (TimeInput)
@@ -679,29 +1159,205 @@ Prefill can have several rules for a target, which get executed sequentially unt
 // Prefills a default time 
 
 "prefill": {
-    "value": [{
-        "input": "none",
-        "steps": [[
-            "staticTime",
-            "22:22"
-        ]]
-    }]
+	"value": [{
+		"input": "none",
+		"steps": [[
+			"staticTime",
+			"22:22"
+		]]
+	}]
 }
 ```
 ```json (DateTimeInput)
 // Do not copy comments!
-// Prefills a default date time with of certain time timezone
-
+//prefill work order datetime custom property
 "prefill": {
-    "value": [{
-        "input": "none",
-        "steps": [[
-            "staticDateTime",
-            "2022-02-22T22:22:00.000Z_Europe/Berlin"
-        ]]
-    }]
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",6],
+				"customPropertyValueToDateTime"
+			]
+		}
+	]
+}
+
+// Prefills a default date time with of certain time timezone
+"prefill": {
+	"value": [{
+		"input": "none",
+		"steps": [[
+			"staticDateTime",
+			"2022-02-22T22:22:00.000Z_Europe/Berlin"
+		]]
+	}]
 }
 ```
-</details>
+```json (staticSingleSelect)
+// Do not copy comments!
+// Prefill work order priority
+"value": {
+	"options": {
+		"000_low": {
+			"en": "Low priority",
+			"de": "Niedrige prio"
+		},
+		"010_normal": {
+			"en": "Normal priority",
+			"de": "Normale prio"
+		},
+		"020_high": {
+			"en": "High priority",
+			"de": "Hohe prio"
+		},
+		"030_critical": {
+			"en": "Critical priority",
+			"de": "Priorität kritisch"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToPriorityString"
+			]
+		}
+	]
+}
+
+//prefill work order type
+//adapt value options to space's work order types -> keep option ids starting with 0
+"value": {
+	"options": {
+		"0": {
+			"en": "Repair",
+			"de": "Reperatur"
+		},
+		"1": {
+			"en": "Commissioning",
+			"de": "Inbetriebnahme"
+		},
+		"2": {
+			"en": "Maintenance",
+			"de": "Instandhaltung"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToTypeNumberString"
+			]
+		}
+	]
+}
+
+//prefill work order status
+//adapt value options to space's work order status -> keep option ids starting with 0
+"value": {
+	"options": {
+		"0": {
+			"en": "Open",
+			"de": "Offen"
+		},
+		"1": {
+			"en": "In Progress",
+			"de": "In Bearbeitung"
+		},
+		"2": {
+			"en": "On Hold",
+			"de": "Angehalten"
+		},
+		"3": {
+			"en": "Completed",
+			"de": "Abgeschlossen"
+		},
+		"4": {
+			"en": "Closed",
+			"de": "Geschlossen"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToStatusNumberString"
+			]
+		}
+	]
+}
+
+//prefill from work order single select custom property
+"value": {
+	"options": {
+		"Option 01010": {
+			"en": "Option 01010",
+			"de": "Option 01010"
+		},
+		"Option 202020": {
+			"en": "Option 202020",
+			"de": "Option 202020"
+		},
+		"Option 0303030": {
+			"en": "Option 0303030",
+			"de": "Option 0303030"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",3],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
+```
+```json (staticMultiSelect)
+//prefill from work order multi select custom property
+"value": {
+	"options": {
+		"multi Option 1": {
+			"de": "multi Option 1",
+			"en": "multi Option 1"
+		},
+		"multi Option 2": {
+			"de": "multi Option 2",
+			"en": "multi Option 2"
+		},
+		"multi Option 3": {
+			"de": "multi Option 3",
+			"en": "multi Option 3"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				["workOrderToCustomPropertyValue",4],
+				"customPropertyValueToArrayOfStrings"
+			]
+		}
+	]
+}
+```
 
 
