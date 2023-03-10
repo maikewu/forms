@@ -353,6 +353,20 @@ The following examples illustrate the extraction of a custom property, the custo
 		}
 	]
 }
+
+//prefill remberg_asset_select custom asset property 
+"prefill": {
+	"selectedAsset": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",1],
+				"customPropertyValueToAssetId"
+			]
+		}
+	]
+}
 ```
 ```json (SingleLineTextInput)
 //prefill work order singleLine custom property
@@ -368,6 +382,35 @@ The following examples illustrate the extraction of a custom property, the custo
 		}
 	]
 }
+
+//prefill string from asset custom property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",5],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
+```
+```json (MultiLineTextInput)
+//prefill asset text area or text input custom property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",5],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
 ```
 ```json (BooleanInput)
 //Prefill from work order custom property checkbox
@@ -378,6 +421,20 @@ The following examples illustrate the extraction of a custom property, the custo
 			"steps": [
 				"workOrderIdToWorkOrder",
 				["workOrderToCustomPropertyValue",2],
+				"customPropertyValueToBoolean"
+			]
+		}
+	]
+}
+
+//prefill from asset custom property checkbox
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",4],
 				"customPropertyValueToBoolean"
 			]
 		}
@@ -416,7 +473,7 @@ The following examples illustrate the extraction of a custom property, the custo
 }
 ```
 ```json (staticMultiSelect)
-//prefill from work order multi select custom property
+//prefill from work order multi select custom property (order of options must be same as in custom prop)
 "value": {
 	"options": {
 		"multi Option 1": {
@@ -445,6 +502,36 @@ The following examples illustrate the extraction of a custom property, the custo
 		}
 	]
 }
+
+//prefill from asset multi select custom property (order of options must be same as in custom prop)
+"value": {
+	"options": {
+		"Option 1": {
+			"en": "Option 1",
+			"de": "Option 1"
+		},
+		"Option 62374": {
+			"en": "Option 62374",
+			"de": "Option 62374"
+		},
+		"Option 101": {
+			"en": "Option 101",
+			"de": "Option 101"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",9],
+				"customPropertyValueToArrayOfStrings"
+			]
+		}
+	]
+}
 ```
 ```json (DateInput)
 //prefill from work order date custom property
@@ -455,6 +542,20 @@ The following examples illustrate the extraction of a custom property, the custo
 			"steps": [
 				"workOrderIdToWorkOrder",
 				["workOrderToCustomPropertyValue",5],
+				"customPropertyValueToDate"
+			]
+		}
+	]
+}
+
+//prefill asset date custom property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",7],
 				"customPropertyValueToDate"
 			]
 		}
@@ -476,6 +577,20 @@ The following examples illustrate the extraction of a custom property, the custo
 		}
 	]
 }
+
+//prefill asset datetime custom property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",8],
+				"customPropertyValueToDateTime"
+			]
+		}
+	]
+}
 ```
 ```json (userSingleSelect)
 //prefill work order remberg_user custom property
@@ -486,6 +601,46 @@ The following examples illustrate the extraction of a custom property, the custo
 			"steps": [
 				"workOrderIdToWorkOrder",
 				["workOrderToCustomPropertyValue",7],
+				"customPropertyValueToUserId"
+			]
+		}
+	]
+}
+
+//prefill manufacturer (tenant) contact person of asset
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToManufacturerPersonUserId"
+			]
+		}
+	]
+}
+
+//prefill customer contact person of asset
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToCustomerPersonUserId"
+			]
+		}
+	]
+}
+
+//prefill user from remberg_user custom asset property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",2],
 				"customPropertyValueToUserId"
 			]
 		}
@@ -603,6 +758,16 @@ Prefill can have several rules for a target, which get executed sequentially unt
 	]
 }
 
+//prefill tenant account
+"prefill": {
+	"selectedCompany": [
+		{
+			"input": "currentAccountId",
+			"steps": []
+		}
+	]
+}
+
 //prefill companySingleSelect in form with company of remberg_company custom property in work order
 "prefill": {
 	"selectedCompany": [
@@ -615,6 +780,63 @@ Prefill can have several rules for a target, which get executed sequentially unt
 					8
 				],
 				"customPropertyValueToAccountId"
+			]
+		}
+	]
+}
+```
+```json (AssetSingleSelect)
+// Do not copy comments!
+// Prefills the asset
+
+"prefill": {
+	"selectedAsset": [
+		{
+			"input": "assetId",
+			"steps": []
+		}
+	]
+}
+
+//prefill assetSingleSelect in form with asset of remberg_asset custom property in work order
+"prefill": {
+	"selectedAsset": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				[
+					"workOrderToCustomPropertyValue",
+					9
+				],
+				"customPropertyValueToAssetId"
+			]
+		}
+	]
+}
+
+//prefill parent asset of prefilled asset (selected in work order or asset detail page)
+"prefill": {
+	"selectedAsset": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToParentAssetId"
+			]
+		}
+	]
+}
+
+//prefill remberg_asset_select custom asset property 
+"prefill": {
+	"selectedAsset": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",1],
+				"customPropertyValueToAssetId"
 			]
 		}
 	]
@@ -668,6 +890,21 @@ Prefill can have several rules for a target, which get executed sequentially unt
 	]
 }
 
+//Prefill static location
+"prefill": {
+	"location": [
+		{
+			"input": "none",
+			"steps": [
+				[
+					"staticString",
+					"Entenhausen"
+				]
+			]
+		}
+	]
+}	
+
 //Prefill name of current user
 "prefill": {
 	"name": [
@@ -691,21 +928,6 @@ Prefill can have several rules for a target, which get executed sequentially unt
 				"accountIdToAccount",
 				"accountToBillingAddressAddress",
 				"addressToCityString"
-			]
-		}
-	]
-}	
-
-//Prefill static location
-"prefill": {
-	"location": [
-		{
-			"input": "none",
-			"steps": [
-				[
-					"staticString",
-					"Entenhausen"
-				]
 			]
 		}
 	]
@@ -768,36 +990,6 @@ Prefill can have several rules for a target, which get executed sequentially unt
 						"company": "Default Company"
 					}
 				]
-			]
-		}
-	]
-}
-```
-```json (AssetSingleSelect)
-// Do not copy comments!
-// Prefills the asset
-
-"prefill": {
-	"selectedAsset": [
-		{
-			"input": "assetId",
-			"steps": []
-		}
-	]
-}
-
-//prefill assetSingleSelect in form with asset of remberg_asset custom property in work order
-"prefill": {
-	"selectedAsset": [
-		{
-			"input": "workOrderId",
-			"steps": [
-				"workOrderIdToWorkOrder",
-				[
-					"workOrderToCustomPropertyValue",
-					9
-				],
-				"customPropertyValueToAssetId"
 			]
 		}
 	]
@@ -914,6 +1106,20 @@ Prefill can have several rules for a target, which get executed sequentially unt
 	]
 }
 
+//prefill string from asset custom property (also works if custom prop is a single select, number, url)
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",5],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
+
 // Prefills the name of the asset as a STRING 
 "prefill": {
 	"value": [
@@ -982,6 +1188,20 @@ Prefill can have several rules for a target, which get executed sequentially unt
 			 ]]
 	 }]
 }
+
+//prefill asset text area or text input custom property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",5],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
 ```
 ```json (RichTextInput)
 // Do not copy comments!
@@ -1023,8 +1243,8 @@ Prefill can have several rules for a target, which get executed sequentially unt
 		{
 			"input": "currentUserId",
 			"steps": []
-		]
-	}
+		}
+	]
 }
 
 //prefills the forms' assigned user
@@ -1063,6 +1283,46 @@ Prefill can have several rules for a target, which get executed sequentially unt
 		}
 	]
 }
+
+//prefill manufacturer (tenant) contact person of asset
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToManufacturerPersonUserId"
+			]
+		}
+	]
+}
+
+//prefill customer contact person of asset
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				"assetToCustomerPersonUserId"
+			]
+		}
+	]
+}
+
+//prefill user from remberg_user custom asset property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",2],
+				"customPropertyValueToUserId"
+			]
+		}
+	]
+}
 ```
 ```json (BooleanInput)
 // Do not copy comments!
@@ -1075,6 +1335,20 @@ Prefill can have several rules for a target, which get executed sequentially unt
 			"steps": [
 				"workOrderIdToWorkOrder",
 				["workOrderToCustomPropertyValue",2],
+				"customPropertyValueToBoolean"
+			]
+		}
+	]
+}
+
+//prefill from asset custom property checkbox
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",4],
 				"customPropertyValueToBoolean"
 			]
 		}
@@ -1153,6 +1427,20 @@ Prefill can have several rules for a target, which get executed sequentially unt
 		}
 	]
 }
+
+//prefill asset date custom property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",7],
+				"customPropertyValueToDate"
+			]
+		}
+	]
+}
 ```
 ```json (TimeInput)
 // Do not copy comments!
@@ -1178,6 +1466,20 @@ Prefill can have several rules for a target, which get executed sequentially unt
 			"steps": [
 				"workOrderIdToWorkOrder",
 				["workOrderToCustomPropertyValue",6],
+				"customPropertyValueToDateTime"
+			]
+		}
+	]
+}
+
+//prefill asset datetime custom property
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",8],
 				"customPropertyValueToDateTime"
 			]
 		}
@@ -1329,7 +1631,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
 }
 ```
 ```json (staticMultiSelect)
-//prefill from work order multi select custom property
+//prefill from work order multi select custom property (order of options must be same as in custom prop)
 "value": {
 	"options": {
 		"multi Option 1": {
@@ -1353,6 +1655,36 @@ Prefill can have several rules for a target, which get executed sequentially unt
 			"steps": [
 				"workOrderIdToWorkOrder",
 				["workOrderToCustomPropertyValue",4],
+				"customPropertyValueToArrayOfStrings"
+			]
+		}
+	]
+}
+
+//prefill from asset multi select custom property (order of options must be same as in custom prop)
+"value": {
+	"options": {
+		"Option 1": {
+			"en": "Option 1",
+			"de": "Option 1"
+		},
+		"Option 62374": {
+			"en": "Option 62374",
+			"de": "Option 62374"
+		},
+		"Option 101": {
+			"en": "Option 101",
+			"de": "Option 101"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",9],
 				"customPropertyValueToArrayOfStrings"
 			]
 		}

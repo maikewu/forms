@@ -32,83 +32,154 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 
 ```json (Example: singleLineTextInput)
 "onChange": [
-    {
-      "target": { "id": "exampleSignatureSection", "propertyName": "name" },
-      "steps": []
-    },
+	{
+	  "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+	  "steps": []
+	},
 ]
 ```
 ```json (Example: userSingleSelect)
 "onChange": [
-    {
-      "target": { "id": "exampleSignatureSection", "propertyName": "name" },
-      "steps": ["userToFullNameString"]
-    },
+	{
+	  "target": { "id": "exampleSignatureSection", "propertyName": "name" },
+	  "steps": ["userToFullNameString"]
+	},
 ]
 ```
 
 ---
-### More Examples
+### More Examples & Use Cases
 
 ```json (Address to signatureSection location)
-"onChange": [{
-    "target": { "id": "exampleSignatureSection", "propertyName": "location" },    
-    "steps": ["addressToCityString"]
-}]
+"onChange": [
+	{
+		"target": {
+			"id": "signature_technician",
+			"propertyName": "location"
+		},
+		"steps": ["addressToCityString"]
+	},
+	{
+		"target": {
+			"id": "signature_customer",
+			"propertyName": "location"
+		},
+		"steps": ["addressToCityString"]
+	}
+]
 ```
 ```json (Asset location to addressInput location)
-"onChange": [{
-    "target": {"id": "exampleAddressInput_1"},
-    "steps": [ "assetInfoToAsset","assetToLocationAddress"]
-}],
+"onChange": [
+	{
+		"target": {"id": "exampleAddressInput_1"},
+		"steps": [ "assetInfoToAsset","assetToLocationAddress"]
+	}
+]
 ```
 ```json (Asset name to STRING)
-"onChange": [{
-    "target": {"id": "exampleMultiLineTextInput_1"},
-    "steps": ["assetToAssetTypeNameString"]
-}]
+"onChange": [
+	{
+		"target": {"id": "exampleMultiLineTextInput_1"},
+		"steps": ["assetToAssetTypeNameString"]
+	}
+]
 ```
-```json (Company name to STRING)
-"onChange": [{
-    "target": { "id": "disabledSingleLineInput_1" },
-    "steps": ["accountInfoTioCompanyName"],
-}],
+```json (Asset's company to company select)
+"onChange": [
+	{
+		"target": {"id": "customer"},
+		"steps": ["assetInfoToCustomerId", "accountIdToAccount", "accountToAccountInfo"]
+	}
+]
 ```
-```json (Company phone number to STRING)
-"onChange": [{
-    "target": { "id": "exampleSingleLineInput_2" },
-    "steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],                
-}],
+```json (Asset custom property to field)
+//exchange property ID with respective field ID found in admin console
+"onChange": [
+	{
+		"target": {"id": "baujahr"},
+		"steps": ["assetInfoToAsset",["assetToCustomPropertyValue",4]]
+	}
+]
 ```
 ```json (Company address to AddressInput)
-"onChange": [{
-    "target": { "id": "exampleAddressInput_1" },
-    "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress"],
-}],
+"onChange": [
+	{
+		"target": {"id": "customerLocation"},
+		"steps": ["accountInfoToAccount", "accountToBillingAddressAddress"]
+	}
+]
 ```
-```json (Company city to signature location)
-"onChange": [{
-    "target": { "id": "exampleSignatureSection", "propertyName": "location" },
-    "steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
-}],
+```json (Company address to signature location)
+"onChange": [
+	{
+		"target": { "id": "exampleSignatureSection", "propertyName": "location" },
+		"steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
+	}
+]
+```
+```json (Company name to STRING)
+"onChange": [
+	{
+		"target": { "id": "disabledSingleLineInput_1" },
+		"steps": ["accountInfoTioCompanyName"],
+	}
+]
+```
+```json (Company phone number to STRING)
+"onChange": [
+	{
+		"target": { "id": "exampleSingleLineInput_2" },
+		"steps": ["accountInfoToAccount", "accountToPhoneNumberString" ],                
+	}
+]
 ```
 ```json (Company phone to phoneNumber )
-"onChange": [{
-    "target": { "id": "examplePhoneNumberInput_1" },
-    "steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
-}],
+"onChange": [
+	{
+		"target": { "id": "examplePhoneNumberInput_1" },
+		"steps": [ "accountInfoToAccount", "accountToPhoneNumberString", "phoneNumberStringToPhoneNumberObject" ],
+	}
+]
+```
+```json (Company to second company select)
+"onChange": [
+	{
+		"target": {"id": "customer2"},
+		"steps": []
+	}
+]
 ```
 ```json (User name to signature name)
-"onChange": [{
-        "target": { "id": "exampleSignatureSection", "propertyName": "name" },
-        "steps": [ "userToFullNameString" ],
-}],
+"onChange": [
+	{
+		"target": {"id": "signature_customer","propertyName": "name"},
+		"steps": ["userToFullNameString"]
+	}
+]
 ```
 ```json (User to phoneNumberInput)
-"onChange": [{
-    "target": { "id": "examplePhoneNumberInput_1" },
-    "steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
-}],
+"onChange": [
+	{
+		"target": { "id": "examplePhoneNumberInput_1" },
+		"steps": ["userInfoToUser", "userToPhoneNumberString", "phoneNumberStringToPhoneNumberObject"],
+	}
+]
+```
+```json (String to String)
+"onChange": [
+	{
+		"target": {"id": "string"},
+		"steps": []
+	}
+]
+```
+```json (String to Signature Name)
+"onChange": [
+	{
+		"target": {"id": "10-signature_customer","propertyName": "name"},
+		"steps": []
+	}
+]
 ```
 ```json (...)
 "More examples can be added."
