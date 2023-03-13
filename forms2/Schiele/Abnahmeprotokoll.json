@@ -1,0 +1,766 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true
+  },
+  "sections": [
+    {
+      "id": "1-Informationen",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Customer Information",
+          "de": "Kundeninformationen"
+        }
+      },
+      "fields": [
+        {
+          "id": "headline1",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Customer information",
+              "de": "Kundeninformationen"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfTextColor": "#005e9c",
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "1-Informationen||customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": false,
+            "useAsFilterForFields": ["2-Informationen||asset"],
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": { "id": "1-Informationen||customerLocation" },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "1-Informationen||customerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "label": {
+              "text": {
+                "en": "Customer Address",
+                "de": "Kundenadresse"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "10-signature_technician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "11-signature_customer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "1-Informationen||text_1",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Responsible",
+                "de": "Zuständig"
+              },
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToPerformByUserId",
+                    "userIdToUser",
+                    "userToFullNameString"
+                  ]
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": ["userIdToUser", "userToFullNameString"]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-Informationen",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Asset and acceptance information",
+          "de": "Anlagen- und Abnahmeinformationen"
+        }
+      },
+      "fields": [
+        {
+          "id": "2-Informationen||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Asset and acceptance information",
+              "de": "Anlagen- und Abnahmeinformationen"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfTextColor": "#005e9c",
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "2-Informationen||asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Asset",
+                "de": "Anlage"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "1-Informationen||customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "2-Informationen||remarks233",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Asset, if not findable in the system",
+                "de": "Anlage, falls im System nicht auffindbar"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "2-Informationen||date_1",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Acceptance Date",
+                "de": "Abnahmedatum"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "2-Informationen||header_spacer_2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "2-Informationen||text_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "The delivery was made according to:",
+              "de": "Die Lieferung erfolgte gemäß:",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "2-Informationen||text_3",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Order number",
+                "de": "Bestellnummer"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "2-Informationen||date_2",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "from",
+                "de": "vom"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "2-Informationen||text_4",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Order confirmation number",
+                "de": "Auftragsbestätigungsnummer"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "2-Informationen||date_3",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "from",
+                "de": "vom"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "2-Informationen||helptext_1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "The above-mentioned asset was accepted by the undersigned on the above-mentioned acceptance date. In the presence of the customer, the asset was test-driven and commissioned. The asset is operating properly and is considered to have been taken over.",
+              "de": "Die oben genannte Anlage wurde zum genannten Abnahmedatum von dem Unterzeichneten abgenommen. Im Beisein des Kunden wurde die Anlage probegefahren und in Betrieb genommen. Die Anlage arbeitet ordnungsgemäß und gilt als übernommen.",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "3-Informationen",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "Further information",
+          "de": "Weitere Informationen"
+        }
+      },
+      "fields": [
+        {
+          "id": "3-Informationen||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline3",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Further information",
+              "de": "Weitere Informationen"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfTextColor": "#005e9c",
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "2-Informationen||helptext_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "The following details, which do not interfere with the proper operation of the asset, are being taken care of in the fastest way possible.",
+              "de": "Folgende Details, die den ordnungsgemäßen Betrieb der Anlage nicht stören, werden auf schnellstem Wege erledigt.",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "3-Informationen||furtherinformation",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Details & expected completion date",
+                "de": "Details & voraussichtlicher Erledigungstermin"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "placeHolderText": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "value": {
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "10-signature_technician",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          }
+        },
+        "required": true,
+        "pdfHide": false,
+        "headlineText": {
+          "en": "Signature delivery plant",
+          "de": "Unterschrift Lieferwerk"
+        },
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToPerformByUserId",
+                "userIdToUser",
+                "userToFullNameString"
+              ]
+            },
+            {
+              "input": "currentUser",
+              "steps": ["userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "11-signature_customer",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          }
+        },
+        "required": true,
+        "pdfHide": false,
+        "headlineText": {
+          "en": "Signature Customer",
+          "de": "Unterschrift Kunde"
+        },
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "location": [
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "12-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent completed acceptance protocol",
+          "de": "Ausgefülltes Abnahmeprotokoll senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "pdfHide": true,
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": true,
+            "staticEmails": []
+          },
+          "bcc": {
+            "assignee": false,
+            "staticEmails": [
+              "florian.schopp@schiele.de",
+              "christel.mueller@schiele.de",
+              "annette.klucker@schiele.de",
+              "birgit.gros@schiele.de",
+              "matthias.gros@schiele.de"
+            ]
+          },
+          "subject": {
+            "en": "Machine acceptance protocol",
+            "de": "Maschinen-Abnahmeprotokoll",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    }
+  ]
+}
