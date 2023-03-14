@@ -852,10 +852,10 @@ Prefill can have several rules for a target, which get executed sequentially unt
 		{
 			"input": "assignedUserId", 
 			"steps": [
-				"userToFullNameString"
+				"userIdToUser", "userToFullNameString"
 			]
 		}
-	]
+	],
 	"location": [
 		{
 			"input": "workOrderId",

@@ -113,7 +113,7 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 "onChange": [
 	{
 		"target": { "id": "exampleSignatureSection", "propertyName": "location" },
-		"steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"],
+		"steps": [ "accountInfoToAccount", "accountToBillingAddressAddress", "addressToCityString"]
 	}
 ]
 ```
