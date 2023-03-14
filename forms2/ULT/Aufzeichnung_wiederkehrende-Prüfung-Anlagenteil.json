@@ -1,0 +1,1074 @@
+{
+  "general": {
+	  "timezone": "Europe/Berlin"
+  },
+  "sections": [
+	  {
+		  "id": "01_generalInformation",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "General Information",
+				  "de": "Allgemeine Daten"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "customer",
+				  "type": "companySingleSelect",
+				  "config": {
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Customer",
+							  "de": "Kunde"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": true,
+						  "pdfHide": false
+					  },
+						"useAsFilterForFields": ["asset","customercontactperson"],
+						"prefill": {
+							"selectedCompany": [
+								{
+									"input": "organizationId",
+									"steps": []
+								},
+								{
+									"input": "assetId",
+									"steps": [
+										"assetIdToAsset",
+										"assetToCustomerAccountId"
+									]
+								}
+							]
+						},
+						"onChange": [
+							{
+								"target": {"id": "customerLocation"},
+								"steps": ["accountInfoToAccount", "accountToBillingAddressAddress"]
+							}
+						]
+				  }
+			  },
+			  {
+				  "id": "customerLocation",
+				  "type": "addressInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": {
+						  "street": false,
+						  "streetNumber": false,
+						  "supplement": false,
+						  "company": false,
+						  "zipPostCode": false,
+						  "city": false,
+						  "state": false,
+						  "country": false
+					  },
+					  "label": {
+						  "text": {
+							  "en": "Address of client / customer",
+							  "de": "Adresse Auftraggeber / Kunde"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "pdfStartInNewLine": true,
+						  "pdfAddLineBreaks": true
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
+								},
+								{
+									"input": "organizationId",
+									"steps": ["accountIdToAccount","accountToBillingAddressAddress"]
+								},
+								{
+									"input": "assetId",
+									"steps": ["assetIdToAsset", "assetToLocationAddress"]
+								}
+							]
+						},
+						"onChange": [
+							{
+								"target": {
+									"id": "07-signatureTechnician",
+									"propertyName": "location"
+								},
+								"steps": ["addressToCityString"]
+							}
+						]
+				  }
+			  },
+			  {
+				  "id": "customercontactperson",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Contact person (client)",
+							  "de": "Ansprechpartner (Auftraggeber)"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": true,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "assetId",
+									"steps": [
+										"assetIdToAsset",
+										"assetToCustomerPersonUserId"
+									]
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "customerContactText",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "In case the contact is not to be found above, please enter it manually below:",
+						  "de": "Falls der Kontakt oben nicht auffindbar ist, bitte folgend manuell eintippen:",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "contactPersons_customer_freetext",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Contact person (client)",
+							  "de": "Ansprechpartner (Auftraggeber)"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "customerContactPersonPhone",
+				  "type": "phoneNumberInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Telephone number of the contact person (client)",
+							  "de": "Telefonnummer des Ansprechpartners (Auftraggeber)"
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "deliveryTexts",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": true,
+					  "pdfWidth": 1,
+					  "text": {
+						  "en": "If different from the client, please fill in the following data on the plant location:",
+						  "de": "Falls abweichend vom Auftraggeber, bitte folgende Daten zum Anlagenstandort ausfüllen:",
+						  "fr": "",
+						  "it": "",
+						  "tr": "",
+						  "es": ""
+					  }
+				  }
+			  },
+			  {
+				  "id": "sameDeliveryAddress",
+				  "type": "addressInput",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": {
+						  "street": false,
+						  "streetNumber": false,
+						  "supplement": false,
+						  "company": false,
+						  "zipPostCode": false,
+						  "city": false,
+						  "state": false,
+						  "country": false
+					  },
+					  "label": {
+						  "text": {
+							  "en": "Operational location",
+							  "de": "Einsatzort"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "pdfStartInNewLine": true,
+						  "pdfAddLineBreaks": true
+					  }
+				  }
+			  },
+			  {
+				  "id": "deliveryContactPersons_customer_freetext",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Contact person (plant location)",
+							  "de": "Ansprechpartner (Anlagenstandort)"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "deliveryContactPersonPhone",
+				  "type": "phoneNumberInput",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Telephone number of the contact person (plant location)",
+							  "de": "Telefonnummer des Ansprechpartners (Anlagenstandort)"
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "required": false,
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "emptyRow10",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "de": " ",
+						  "en": " "
+					  }
+				  }
+			  },
+			  {
+				  "id": "technicians",
+				  "type": "userSingleSelect",
+				  "config": {
+					  "required": true,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Inspector/capable person",
+							  "de": "Prüfer/befähigte Person"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfPrintEmailAddress": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "assignedUserId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  },
+			  {
+				  "id": "vorgang",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Process number",
+							  "de": "Vorgangnummer"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "asset",
+				  "type": "assetSingleSelect",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Asset number",
+							  "de": "Anlagennummer"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "disableCreation": false,
+						  "pdfHide": false
+					  },
+						"prefill": {
+							"selectedAsset": [
+								{
+									"input": "assetId",
+									"steps": []
+								}
+							]
+						}
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "02_mission_infos",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Manufacturer's data / Technical data / Type plate",
+				  "de": "Herstellerangaben / Technische Daten / Typschild"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "header_spacer_2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "es": " ",
+						  "it": " ",
+						  "fr": " ",
+						  "tr": " "
+					  },
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "uiHide": true
+				  }
+			  },
+			  {
+				  "id": "header_text_2",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "text": {
+						  "en": "<b style='font-size:11pt'>Manufacturer's data / Technical data / Type plate</b>",
+						  "de": "<b style='font-size:11pt'>Herstellerangaben / Technische Daten / Typschild</b>"
+					  },
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "uiHide": true
+				  }
+			  },
+			  {
+				  "id": "manufacturernr",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Manufacturer no.",
+							  "de": "Hersteller-Nr."
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "manufacturingage",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Year of manufacture",
+							  "de": "Herstelljahr"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "serialnr",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Serial no.",
+							  "de": "Serien-Nr."
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "type",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Type",
+							  "de": "Typ"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "overpressure",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Allowed operating overpressure",
+							  "de": "Zul. Betriebsüberdruck"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "volume",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Volume",
+							  "de": "Volumen"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "temp",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Operating temperature",
+							  "de": "Betriebstemperatur"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "cenr",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "CE Number",
+							  "de": "CE Nummer"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "03_mission_infos",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Recurring internal and stability check",
+				  "de": "Wiederkehrende innere und Festigkeitsprüfung"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "header_spacer_3",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "text": {
+						  "en": " ",
+						  "de": " ",
+						  "es": " ",
+						  "it": " ",
+						  "fr": " ",
+						  "tr": " "
+					  },
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "uiHide": true
+				  }
+			  },
+			  {
+				  "id": "header_text_3",
+				  "type": "htmlDisplay",
+				  "config": {
+					  "text": {
+						  "en": "<b style='font-size:11pt'>Recurring internal and stability check</b>",
+						  "de": "<b style='font-size:11pt'>Wiederkehrende innere und Festigkeitsprüfung</b>"
+					  },
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "uiHide": true
+				  }
+			  },
+			  {
+				  "id": "opstest",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "The plant component (here pressure vessel) was in operation during the test",
+							  "de": "Der Anlagenanteil (hier Druckbehälter) war bei der Prüfung in Betrieb"
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "disabled": false,
+					  "required": false,
+					  "value": {
+						  "options": {
+							  "ok": {
+								  "de": "ja",
+								  "en": "yes"
+							  },
+							  "nok": {
+								  "de": "nein",
+								  "en": "no"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  },
+			  {
+				  "id": "conductedTest",
+				  "type": "headlineDisplay",
+				  "config": {
+					  "pdfHide": false,
+					  "pdfWidth": 1,
+					  "text": {
+						  "de": "Durchgeführte Prüfung",
+						  "en": "Performed test"
+					  },
+					  "uiTextSize": "H3",
+					  "pdfTextSize": "H3"
+				  }
+			  },
+			  {
+				  "id": "check1",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Inner test",
+							  "de": "Innere Prüfung"
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": false,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "check2",
+				  "type": "booleanInput",
+				  "config": {
+					  "pdfHide": false,
+					  "label": {
+						  "text": {
+							  "en": "Strength test",
+							  "de": "Festigkeitsprüfung"
+						  },
+						  "pdfHide": false
+					  },
+					  "disabled": false,
+					  "pdfWidth": 0.5,
+					  "pdfHideIfValueIsEmpty": false,
+					  "required": false
+				  }
+			  },
+			  {
+				  "id": "checkpressure",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Test pressure [in bar]",
+							  "de": "Prüfdruck [in bar]"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "checktime",
+				  "type": "singleLineTextInput",
+				  "config": {
+					  "disabled": false,
+					  "required": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 0.5,
+					  "label": {
+						  "text": {
+							  "en": "Test time [in min]",
+							  "de": "Prüfzeit [in min]"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {}
+				  }
+			  },
+			  {
+				  "id": "umaxtest",
+				  "type": "staticSingleSelect",
+				  "config": {
+					  "label": {
+						  "text": {
+							  "en": "Examination passed",
+							  "de": "Prüfung bestanden"
+						  },
+						  "pdfHide": false
+					  },
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": false,
+					  "pdfWidth": 0.5,
+					  "disabled": false,
+					  "required": false,
+					  "value": {
+						  "options": {
+							  "yes": {
+								  "de": "ja",
+								  "en": "yes"
+							  },
+							  "nok": {
+								  "de": "nein",
+								  "en": "no"
+							  }
+						  },
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "05_bemerkungen",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Comments",
+				  "de": "Bemerkungen"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "openPoints",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "placeHolderText": {},
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Comments",
+							  "de": "Bemerkungen"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "uiMinRows": 1,
+						  "uiMaxRows": 10
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "07-signatureTechnician",
+		  "type": "signatureSection",
+		  "config": {
+			  "fields": {
+				  "dateInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  },
+				  "nameSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true,
+					  "capitalizeFirstLetterOfEveryWord": true
+				  },
+				  "locationSingleLineTextInput": {
+					  "disable": false,
+					  "pdfHide": false,
+					  "required": true
+				  }
+			  },
+			  "required": true,
+			  "headlineText": {
+				  "en": "Signature Inspector",
+				  "de": "Unterschrift Prüfer"
+			  },
+			  "pdfHide": false,
+			  "helpTextHtmlAbove": {
+				  "en": "",
+				  "de": "",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "helpTextHtmlBelow": {
+				  "en": "",
+				  "de": "",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHideIfValueIsEmpty": false,
+			  "hideDownloadPdfButton": false,
+			  "hidePreviewPdfButton": false,
+				"prefill": {
+					"name": [
+						{
+							"input": "assignedUserId", 
+							"steps": [
+								"userIdToUser", "userToFullNameString"
+							]
+						}
+					],
+					"location": [
+						{
+							"input": "workOrderId",
+							"steps": [
+								"workOrderIdToWorkOrder", 
+								"workOrderToLocationAddress", 
+								"addressToCityString"
+							]
+						},
+						{
+							"input": "assetId",
+							"steps": [
+								"assetIdToAsset",
+								"assetToLocationAddress",
+								"addressToCityString"
+							]
+						},
+						{
+							"input": "organizationId",
+							"steps": [
+								"accountIdToAccount",
+								"accountToBillingAddressAddress",
+								"addressToCityString"
+							]
+						}
+					],
+					"date": [
+						{
+							"input": "creationDateTime",
+							"steps": ["dateTimeToDate"]
+						}
+					]
+				}
+		  }
+	  },
+	  {
+		  "id": "09-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent customer copy as e-mail",
+				  "de": "Kundenausfertigung als E-Mail senden/gesendet"
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 0,
+			  "pdfHide": true,
+			  "helpTextHtmlAbove": {
+				  "en": "",
+				  "de": "",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "helpTextHtmlBelow": {
+				  "en": "",
+				  "de": "",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "cc": {
+					  "assignee": true,
+					  "staticEmails": []
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "ULT Protokoll Druckbehälter / ULT Protocol Pressure Vessel",
+					  "de": "ULT Protokoll Druckbehälter / ULT Protocol Pressure Vessel",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  },
+				  "body": {
+					  "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\nattached you will find the completed protocol as a PDF.\nBest regards,\nYour field service team.",
+					  "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie das abgeschlossene Protokoll als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  },
+	  {
+		  "id": "10_addendum",
+		  "type": "fieldSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Addendum",
+				  "de": "Interner Nachtrag"
+			  }
+		  },
+		  "fields": [
+			  {
+				  "id": "commentAddendum",
+				  "type": "multiLineTextInput",
+				  "config": {
+					  "required": false,
+					  "disabled": false,
+					  "pdfHide": false,
+					  "placeHolderText": {},
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Comments & Notes",
+							  "de": "Bemerkungen & Hinweise"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false,
+						  "uiMinRows": 1,
+						  "uiMaxRows": 10
+					  }
+				  }
+			  },
+			  {
+				  "id": "files",
+				  "type": "fileUpload",
+				  "config": {
+					  "disabled": false,
+					  "pdfHide": false,
+					  "pdfHideIfValueIsEmpty": true,
+					  "pdfWidth": 1,
+					  "label": {
+						  "text": {
+							  "en": "Documents",
+							  "de": "Dokument(e)"
+						  },
+						  "pdfHide": false
+					  },
+					  "value": {
+						  "pdfHide": false
+					  }
+				  }
+			  }
+		  ]
+	  },
+	  {
+		  "id": "11-send",
+		  "type": "emailSection",
+		  "config": {
+			  "headlineText": {
+				  "en": "Send/sent protocol with internal addendum as e-mail",
+				  "de": "Protokoll mit internem Nachtrag als E-Mail senden/gesendet"
+			  },
+			  "hidePreviewPdfButton": false,
+			  "hideDownloadPdfButton": false,
+			  "requiredAmountOfOutgoingMails": 0,
+			  "pdfHide": true,
+			  "helpTextHtmlAbove": {
+				  "en": "",
+				  "de": "",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "helpTextHtmlBelow": {
+				  "en": "",
+				  "de": "",
+				  "fr": "",
+				  "it": "",
+				  "tr": "",
+				  "es": ""
+			  },
+			  "pdfHideIfValueIsEmpty": false,
+			  "emailDialogPrefill": {
+				  "to": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "cc": {
+					  "assignee": true,
+					  "staticEmails": []
+				  },
+				  "bcc": {
+					  "assignee": false,
+					  "staticEmails": []
+				  },
+				  "subject": {
+					  "en": "Protokoll Druckbehälter - Interner Nachtrag / Protocol Pressure Vessel - Internal Addendum",
+					  "de": "Protokoll Druckbehälter - Interner Nachtrag / Protocol Pressure Vessel - Internal Addendum",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  },
+				  "body": {
+					  "en": "This email was generated automatically.\nPlease do not reply to this email.\n\n",
+					  "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+					  "fr": "",
+					  "it": "",
+					  "tr": "",
+					  "es": ""
+				  }
+			  },
+			  "whitelistedDomains": []
+		  }
+	  }
+  ]
+}
