@@ -135,7 +135,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
+| `workOrderToCustomPropertyValue` | `[WORK_ORDER, NUMBER]`| `UNKNOWN`
 | `staticString` | `[NONE, STRING]`| `STRING`
 | `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
 | `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
