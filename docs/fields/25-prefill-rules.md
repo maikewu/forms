@@ -1601,6 +1601,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
 }
 
 //prefill from work order single select custom property
+//Option IDs must be same as dropdown values of work order single select !case sensitivity!
 "value": {
 	"options": {
 		"Option 01010": {
@@ -1629,9 +1630,41 @@ Prefill can have several rules for a target, which get executed sequentially unt
 		}
 	]
 }
+
+//prefill from asset single select custom property
+//Option IDs must be same as dropdown values of asset single select !case sensitivity!
+"value": {
+	"options": {
+		"Option 01010": {
+			"en": "Option 01010",
+			"de": "Option 01010"
+		},
+		"Option 202020": {
+			"en": "Option 202020",
+			"de": "Option 202020"
+		},
+		"Option 0303030": {
+			"en": "Option 0303030",
+			"de": "Option 0303030"
+		}
+	}
+},
+"prefill": {
+	"value": [
+		{
+			"input": "assetId",
+			"steps": [
+				"assetIdToAsset",
+				["assetToCustomPropertyValue",9],
+				"customPropertyValueToString"
+			]
+		}
+	]
+}
 ```
 ```json (staticMultiSelect)
 //prefill from work order multi select custom property (order of options must be same as in custom prop)
+//Option IDs must be same as dropdown values of work order multi select !case sensitivity!
 "value": {
 	"options": {
 		"multi Option 1": {
@@ -1662,6 +1695,7 @@ Prefill can have several rules for a target, which get executed sequentially unt
 }
 
 //prefill from asset multi select custom property (order of options must be same as in custom prop)
+//Option IDs must be same as dropdown values of asset multi select !case sensitivity!
 "value": {
 	"options": {
 		"Option 1": {
