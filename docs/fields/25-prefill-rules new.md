@@ -1,5 +1,5 @@
 ---
-title: New PrefillRules
+title: PrefillRules
 category: 635ce1e7775bc60045570ffb
 parentDoc: 635ce486ae5fac003cef279e
 ---
@@ -34,7 +34,7 @@ Schema:
 
 --- 
 `target` locates the property to which data is to be written. The target name has to be written to the `"input":` section of the prefill rule
-<summary>All available <code>target</code> values </summary>
+<details> <summary>All available <code>target</code> values </summary>
 
 | Section                  |      `target type`      |
 | :------------------------- | :--------------|
