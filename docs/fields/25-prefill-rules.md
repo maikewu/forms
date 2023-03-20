@@ -90,11 +90,12 @@ Each field has an expected data type:
 | `DATE` | `REMBERG_DATE`|
 
 ---
+## Input Sources
+
 `input` can be a separate source that already contains information, e.g. a work order, or a own defined input value,
 that should be prepopulate to the form
 
-<details>
-<summary>All available <code>input</code> sources, their values and data types</summary>
+All available <code>input</code> sources, their values and data types
 
 `none` has to be used, when you would like to prepopulate a own defined value to the property.
 
@@ -111,9 +112,9 @@ that should be prepopulate to the form
 | [WorkOrder view](#work-order-view) |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
 
-</details>
 
 ---
+## Steps 
 `steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`.
 
 <details>
