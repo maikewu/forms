@@ -33,6 +33,8 @@ Schema:
 ```
 
 --- 
+## Target Values and Data Types
+
 `target` locates the property to which data is to be written. The target name has to be written to the `"input":` section of the prefill rule
 
 All available <code>target</code> values
