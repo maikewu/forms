@@ -34,6 +34,7 @@ Schema:
 
 --- 
 `target` locates the property to which data is to be written. The target name has to be written to the `"input":` section of the prefill rule
+
 All available <code>target</code> values
 
 | Section                  |      `target type`      |
@@ -58,6 +59,33 @@ All available <code>target</code> values
 |UserSingleSelect| `value`
 |CompanySingleSelect| `selectedCompany` 
 </details>
+
+---
+Each field has an expected data type:
+
+| Field name               | Expected data type                   |
+| :----------------------------- | :---------------------------|
+| `singleLineTextInput` | `STRING` |
+| `multiLineTextInput` | `STRING` |
+| `booleanInput`| `BOOLEAN`|
+| `richTextInput`| `STRING`|
+| `assetSingleSelect` | `ASSET_ID`|
+| `addressInput` | `ADDRESS`|
+| `dateInput` | `REMBERG_DATE`|
+| `timeInput` | `REMBERG_TIME`|
+| `dateTimeInput` | `REMBERG_DATETIME`|
+| `staticSingleSelect` | `STRING`|
+| `staticMultiSelect` | `ARRAY_OF_STRINGS`|
+| `userSingleSelect` | `USER_ID`|
+| `phoneNumberInput` | `PHONE_NUMBER`|
+| `companySingleSelect` | `ACCOUNT_ID`|
+| `taskListInput` | `TASKS`|
+
+| `signatureSection`: property Name              | Expected data type                   |
+| :----------------------------- | :---------------------------|
+| `NAME` | `STRING`|
+| `LOCATION` | `STRING`|
+| `DATE` | `REMBERG_DATE`|
 
 ---
 `input` can be a separate source that already contains information, e.g. a work order, or a own defined input value,
