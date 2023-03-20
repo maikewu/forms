@@ -108,7 +108,7 @@ All available <code>input</code> sources, their values and data types
 | Current user | `currentUserId` | `USER_ID` (equals `STRING`)
 | Current account | `currentAccount` | `ACCOUNT`
 | Current account  |`currentAccountId` | `ACCOUNT_ID` (equals `STRING`)
-| [WorkOrder view](#work-order-view) |`assignedUserId` | `USER_ID` (equals `STRING`)
+| [Custom Property](#custom-property-view)  |`customPropertyID` | `UNKNOWN`
 | [WorkOrder view](#work-order-view) |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
 
