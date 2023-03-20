@@ -115,7 +115,7 @@ All available <code>input</code> sources, their values and data types
 
 ---
 ## Steps 
-`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`.
+`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`. There are [General Steps](#general-steps), [Asset Steps](#asset-steps), [Work Order Steps](#asset-steps)  and [Custom Property Steps](#custom-property-steps).
 
 <details>
 <summary>All available <code>steps</code> and their input and output data type </summary>
