@@ -102,7 +102,7 @@
 						  "disableCreation": true,
 						  "pdfHide": false
 					  },
-						"useAsFilterForFields": ["asset","asset2","asset3","asset4","asset5"],
+						"useAsFilterForFields": ["asset","asset2","asset3","asset4","asset5","customerContactPerson"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -130,8 +130,62 @@
 						]
 				  }
 			  },
+				{
+					"id": "customerContactPerson",
+					"type": "userSingleSelect",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Contact Person",
+								"de": "Ansprechpartner",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfPrintEmailAddress": true,
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"target": {"id": "07-signatureCustomer", "propertyName": "name"},
+								"steps": ["userToFullNameString"]
+							},
+							{
+								"target": {"id": "customer_phone"},
+								"steps": ["userInfoToUser","userToPhoneNumberString"]
+							}
+						]
+					}
+				},
+				{
+					"id": "helptext_contactPerson",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "If contact person is not selectable in list, please fill out following fields:",
+							"de": "Wenn Kontaktperson nicht in Dropdown ausgewählt werden kann, bitte folgende Felder ausfüllen:",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": true,
+						"pdfWidth": 1
+					}
+				},
 			  {
-				  "id": "customerContactPerson",
+				  "id": "customerContactPerson_freetext",
 				  "type": "singleLineTextInput",
 				  "config": {
 					  "disabled": false,
@@ -150,6 +204,17 @@
 						  },
 						  "pdfHide": false
 					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToAdditionalContactInformationString"
+									]
+								}
+							]
+						},
 						"onChange": [
 							{
 								"target": {"id": "07-signatureCustomer", "propertyName": "name"},
@@ -384,38 +449,65 @@
 					  "required": true,
 					  "value": {
 						  "options": {
-							  "repair": {
+							  "0": {
+								  "de": "Ersatzteile",
+								  "en": "Spare Parts"
+							  },
+							  "1": {
+								  "de": "Inbetriebnahme",
+								  "en": "Installation"
+							  },
+							  "2": {
+								  "de": "Leihanfrage",
+								  "en": "Lending Request"
+							  },
+							  "3": {
+								  "de": "Maschinenergänzung",
+								  "en": "Installation of Additional Set(s)"
+							  },
+							  "4": {
 								  "de": "Reparatur",
 								  "en": "Repair"
 							  },
-							  "installation": {
-								  "de": "Installation",
-								  "en": "Installation"
+							  "5": {
+								  "de": "Reparatur In-House",
+								  "en": "Repair in-house"
 							  },
-							  "tests": {
-								  "de": "Versuche / Tests",
-								  "en": "Tests"
+								"6": {
+								  "de": "Testlauf",
+								  "en": "Test run"
 							  },
-							  "montage": {
-								  "de": "Montage von Zusatzaggregat(en)",
-								  "en": "Installation of Additional Set(s)"
+								"7": {
+								  "de": "Training",
+								  "en": "Training"
 							  },
-							  "setup": {
+								"8": {
 								  "de": "Wartung",
 								  "en": "Maintenance"
 							  },
-							  "consultation": {
+								"9": {
 								  "de": "Beratung",
-								  "en": "Consultation"
+								  "en": "Consulting"
 							  }
 						  },
 						  "pdfHide": false
-					  }
+					  },
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToTypeNumberString"
+									]
+								}
+							]
+						}
 				  }
 			  },
 			  {
 				  "id": "mission_reason",
-				  "type": "multiLineTextInput",
+				  "type": "richTextInput",
 				  "config": {
 					  "required": true,
 					  "disabled": false,
@@ -432,7 +524,26 @@
 							  "es": ""
 						  },
 						  "pdfHide": false
-					  }
+					  },
+						"placeHolderText": {
+							"en": "Type here...",
+							"de": "Hier tippen...",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										"workOrderToDescriptionString"
+									]
+								}
+							]
+						}
 				  }
 			  },
 			  {
@@ -457,56 +568,33 @@
 					  "required": false,
 					  "value": {
 						  "options": {
-							  "Yes": {
+							  "Ja": {
 								  "de": "Ja",
 								  "en": "Yes"
 							  },
-							  "No": {
-								  "de": "Keine",
-								  "en": "None"
+							  "Nein": {
+								  "de": "Nein",
+								  "en": "No"
 							  },
-							  "partial": {
+							  "Teilweise": {
 								  "de": "Teilweise",
 								  "en": "Partial"
 							  }
 						  },
 						  "pdfHide": false
-					  }
-				  }
-			  },
-			  {
-				  "id": "reclamation",
-				  "type": "staticSingleSelect",
-				  "config": {
-					  "label": {
-						  "text": {
-							  "en": "Reclamation",
-							  "de": "Reklamation",
-							  "fr": "",
-							  "it": "",
-							  "tr": "",
-							  "es": ""
-						  },
-						  "pdfHide": false
 					  },
-					  "pdfHide": false,
-					  "pdfHideIfValueIsEmpty": true,
-					  "pdfWidth": 0.3,
-					  "disabled": false,
-					  "required": false,
-					  "value": {
-						  "options": {
-							  "Yes": {
-								  "de": "Ja",
-								  "en": "Yes"
-							  },
-							  "No": {
-								  "de": "Nein",
-								  "en": "No"
-							  }
-						  },
-						  "pdfHide": false
-					  }
+						"prefill": {
+							"value": [
+								{
+									"input": "workOrderId",
+									"steps": [
+										"workOrderIdToWorkOrder",
+										["workOrderToCustomPropertyValue",1],
+										"customPropertyValueToString"
+									]
+								}
+							]
+						}
 				  }
 			  },
 			  {
@@ -594,12 +682,23 @@
 						  },
 						  "technicianUserSingleSelect": {
 							  "disabled": false,
-							  "pdfHide": false
+							  "pdfHide": false,
+								"pdfPrintEmailAddress": false,
+								"required": false
 						  },
 						  "commentMultiLineTextInput": {
 							  "disabled": false,
 							  "pdfHide": false
-						  }
+						  },
+							"startDateTimeInput": {
+								"pdfHide": false
+							},
+							"endDateTimeInput": {
+								"pdfHide": false
+							},
+							"timeTrackingTypeStaticSingleSelect": {
+								"pdfHide": false
+							}
 					  }
 				  }
 			  }
@@ -1295,6 +1394,7 @@
 			  "emailDialogPrefill": {
 				  "to": {
 					  "assignee": false,
+						"creator": true,
 					  "staticEmails": []
 				  },
 				  "cc": {
