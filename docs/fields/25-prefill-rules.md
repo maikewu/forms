@@ -34,7 +34,7 @@ Schema:
 
 --- 
 `target` locates the property to which data is to be written. The target name has to be written to the `"input":` section of the prefill rule
-<summary>All available <code>target</code> values </summary>
+All available <code>target</code> values
 
 | Section                  |      `target type`      |
 | :------------------------- | :--------------|
