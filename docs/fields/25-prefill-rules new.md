@@ -33,11 +33,8 @@ Schema:
 ```
 
 --- 
-## Target Values and Data Types
-
 `target` locates the property to which data is to be written. The target name has to be written to the `"input":` section of the prefill rule
-
-All available <code>target</code> values
+<details> <summary>All available <code>target</code> values </summary>
 
 | Section                  |      `target type`      |
 | :------------------------- | :--------------|
@@ -63,39 +60,11 @@ All available <code>target</code> values
 </details>
 
 ---
-Each field has an expected data type:
-
-| Field name               | Expected data type                   |
-| :----------------------------- | :---------------------------|
-| `singleLineTextInput` | `STRING` |
-| `multiLineTextInput` | `STRING` |
-| `booleanInput`| `BOOLEAN`|
-| `richTextInput`| `STRING`|
-| `assetSingleSelect` | `ASSET_ID`|
-| `addressInput` | `ADDRESS`|
-| `dateInput` | `REMBERG_DATE`|
-| `timeInput` | `REMBERG_TIME`|
-| `dateTimeInput` | `REMBERG_DATETIME`|
-| `staticSingleSelect` | `STRING`|
-| `staticMultiSelect` | `ARRAY_OF_STRINGS`|
-| `userSingleSelect` | `USER_ID`|
-| `phoneNumberInput` | `PHONE_NUMBER`|
-| `companySingleSelect` | `ACCOUNT_ID`|
-| `taskListInput` | `TASKS`|
-
-| `signatureSection`: property Name              | Expected data type                   |
-| :----------------------------- | :---------------------------|
-| `NAME` | `STRING`|
-| `LOCATION` | `STRING`|
-| `DATE` | `REMBERG_DATE`|
-
----
-## Input Sources
-
 `input` can be a separate source that already contains information, e.g. a work order, or a own defined input value,
 that should be prepopulate to the form
 
-All available <code>input</code> sources, their values and data types
+<details>
+<summary>All available <code>input</code> sources, their values and data types</summary>
 
 `none` has to be used, when you would like to prepopulate a own defined value to the property.
 
@@ -108,55 +77,27 @@ All available <code>input</code> sources, their values and data types
 | Current user | `currentUserId` | `USER_ID` (equals `STRING`)
 | Current account | `currentAccount` | `ACCOUNT`
 | Current account  |`currentAccountId` | `ACCOUNT_ID` (equals `STRING`)
-| [Custom Property](#custom-property-view)  |`customPropertyID` | `UNKNOWN`
+| [WorkOrder view](#work-order-view) |`assignedUserId` | `USER_ID` (equals `STRING`)
 | [WorkOrder view](#work-order-view) |`workOrderId` | `WORK_ORDER_ID` (equals `STRING`)
 | - | `none`| `NONE`
 
+</details>
 
 ---
-## Steps 
-`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`. There are [General Steps](#general-steps), [Asset Steps](#asset-steps), [Work Order Steps](#asset-steps)  and [Custom Property Steps](#custom-property-steps).
+`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`.
+
+<details>
+<summary>All available <code>steps</code> and their input and output data type </summary>
 
 `steps` have an input (expected) data type and an output (provided) data type. 
 By chaining steps, the desired data type can be achieved "step by step". 
 
 **Note:** `OrganizationID` can use the same steps which convert the `accountID` datatype.
 
-## General Steps 
-
-| `steps`               | input data type  | output data type | description |
+| `steps`               | input data type  | output data type |
 | :----------------------------- | :----- | :-----|
 | `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `userIdToUser` | `USER_ID`| `USER_INFO`
-| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
-| `userToFullNameString` | `USER_INFO` | `STRING`
-| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
-| `addressToCityString` | `ADDRESS`| `STRING`
-| `staticString` | `[NONE, STRING]`| `STRING`
-| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
-| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
-| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS`
-| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE`
-| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME`
-| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
-| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
-| `staticTasks` | `[NONE, TASKS]`| `TASKS`
-
-## Asset Steps
-
-| `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----|
-| `assetToLocationAddress` | `ASSET`| `ADDRESS`
-| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
-| `assetToAssetTypeNameString` | `ASSET`| `STRING`
-| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-
-## Work Order Steps
-
-| `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----|
-| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `assetIdToUser` | `ASSET_ID`| `ASSET`
+| `assetIdToAsset` | `ASSET_ID`| `ASSET`
 | `userIdToUser` | `USER_ID`| `USER_INFO`
 | `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
 | `userToFullNameString` | `USER_INFO` | `STRING`
@@ -194,7 +135,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
+| `workOrderToCustomPropertyValue` | `[WORK_ORDER, NUMBER]`| `UNKNOWN`
 | `staticString` | `[NONE, STRING]`| `STRING`
 | `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
 | `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
@@ -204,6 +145,36 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
 | `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
 | `staticTasks` | `[NONE, TASKS]`| `TASKS`
+
+</details>
+
+---
+
+### Prefill: expected data type
+
+| Field name               | Expected data type                   |
+| :----------------------------- | :---------------------------|
+| `singleLineTextInput` | `STRING` |
+| `multiLineTextInput` | `STRING` |
+| `booleanInput`| `BOOLEAN`|
+| `richTextInput`| `STRING`|
+| `assetSingleSelect` | `ASSET_ID`|
+| `addressInput` | `ADDRESS`|
+| `dateInput` | `REMBERG_DATE`|
+| `timeInput` | `REMBERG_TIME`|
+| `dateTimeInput` | `REMBERG_DATETIME`|
+| `staticSingleSelect` | `STRING`|
+| `staticMultiSelect` | `ARRAY_OF_STRINGS`|
+| `userSingleSelect` | `USER_ID`|
+| `phoneNumberInput` | `PHONE_NUMBER`|
+| `companySingleSelect` | `ACCOUNT_ID`|
+| `taskListInput` | `TASKS`|
+
+| `signatureSection`: property Name              | Expected data type                   |
+| :----------------------------- | :---------------------------|
+| `NAME` | `STRING`|
+| `LOCATION` | `STRING`|
+| `DATE` | `REMBERG_DATE`|
 
 ---
 ## Asset View
