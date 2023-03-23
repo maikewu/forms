@@ -1,10 +1,11 @@
 {
   "general": {
-    "singleInstanceForm": false
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": false
   },
   "sections": [
     {
-      "id": "generalInformation",
+      "id": "01-generalInformation",
       "type": "fieldSection",
       "config": {
         "headlineText": {
@@ -13,44 +14,51 @@
       },
       "fields": [
         {
-          "id": "customer0",
-          "type": "companySingleSelect",
+          "id": "01-generalInformation||header_text",
+          "type": "htmlDisplay",
           "config": {
-            "label": {
-              "text": {
-                "de": "Auftraggeber"
-              }
+            "text": {
+              "de": "<b style='font-size:11pt'>Allgemeine Informationen</b>"
             },
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "value": {
-              "pdfPrintCompanyNumber": true
-            }
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
           }
         },
         {
-          "id": "customer1",
+          "id": "01-generalInformation||customer0",
           "type": "companySingleSelect",
           "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "useAsFilterForFields": ["01-01-Serviceauftrag||asset"],
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Warenempfänger"
-              }
+                "de": "Auftraggeber"
+              },
+              "pdfHide": false
             },
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
             "value": {
-              "pdfPrintCompanyNumber": true
+              "disableCreation": true,
+              "pdfHide": false
             },
-            "useAsFilterForFields": [
-              "contactPerson",
-              addresselect
-            ],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            },
             "onChange": [
               {
-                "target": {
-                  "id": "customer1Address"
-                },
+                "target": { "id": "01-generalInformation||customerLocation" },
                 "steps": [
                   "accountInfoToAccount",
                   "accountToBillingAddressAddress"
@@ -60,27 +68,462 @@
           }
         },
         {
-          "id": "customer1Address",
+          "id": "01-generalInformation||customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Warenempfänger"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue", 26],
+                    "customPropertyValueToAccountId"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "01-generalInformation||customerLocation",
           "type": "addressInput",
           "config": {
-            "required": {
-              "street": false,
-              "streetNumber": false,
-              "supplement": false,
-              "company": false,
-              "zipPostCode": false,
-              "city": false,
-              "state": false,
-              "country": false
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": {},
+            "label": {
+              "text": {
+                "de": "Bezirk"
+              },
+              "pdfHide": false
             },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "B1-signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "01-generalInformation||meldender",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Meldender"
+              },
+              "pdfHide": false
+            },
+            "value": {},
+            "onChange": [
+              {
+                "target": {
+                  "id": "B1-signatureCustomer",
+                  "propertyName": "name"
+                },
+                "steps": []
+              }
+            ]
+          }
+        },
+        {
+          "id": "01-generalInformation||Meldedatum",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Datum"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "01-generalInformation||contactPerson",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Ansprechpartner"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfPrintEmailAddress": false,
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "01-generalInformation||bestellnummer",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Best.-Nr."
+              },
+              "pdfHide": false
+            },
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "01-generalInformation||bestDatum",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Datum"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "creationDateTime",
+                  "steps": ["dateTimeToDate"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "01-generalInformation||meldung",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Meldung"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "01-01-Serviceauftrag",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Serviceauftrag"
+        }
+      },
+      "fields": [
+        {
+          "id": "01-01-Serviceauftrag||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "01-01-Serviceauftrag||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:11pt'>Serviceauftrag</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "01-01-Serviceauftrag||servicenummer",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Serviceauftrag-Nr."
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "01-01-Serviceauftrag||servicemeldung",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Servicemeldung"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "01-01-Serviceauftrag||asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
             "disabled": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Bezirk"
+                "de": "Masch-Nr."
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": { "id": "05-maschinestatus||asset" },
+                "steps": []
+              },
+              {
+                "target": { "id": "01-01-Serviceauftrag||anlagenbezeichnung" },
+                "steps": ["assetToAssetTypeNameString"]
+              },
+              {
+                "target": {
+                  "id": "05-maschinestatus||Anlagenbez"
+                },
+                "steps": ["assetToAssetTypeNameString"]
+              },
+              {
+                "target": { "id": "01-generalInformation||customer0" },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              },
+              {
+                "target": { "id": "01-01-Serviceauftrag||asset_runningtime" },
+                "steps": [
+                  "assetInfoToAsset",
+                  ["assetToCustomPropertyValue", 22]
+                ]
+              },
+              {
+                "target": {
+                  "id": "01-generalInformation||customer"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  ["assetToCustomPropertyValue", 26]
+                ]
               }
+            ]
+          }
+        },
+        {
+          "id": "01-01-Serviceauftrag||technischesObjekt",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Technisches Objekt"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "01-01-Serviceauftrag||anlagenbezeichnung",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Anlagenbezeichnung"
+              },
+              "pdfHide": false
+            },
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToAssetTypeNameString"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "01-01-Serviceauftrag||asset_runningtime",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Gewährleistungsende"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue", 22],
+                    "customPropertyValueToDate"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "01-01-Serviceauftrag||sachbearbeiter",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Sachbearbeiter"
+              },
+              "pdfHide": false
             },
             "value": {
               "pdfHide": false
@@ -88,81 +531,641 @@
             "prefill": {
               "value": [
                 {
-                  "input": 
-
-
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToResponsibleUserId"
+                  ]
                 }
               ]
             }
           }
         },
         {
-          "id": "notifier",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "meldender"
-              }
-            }
-          }
-        },
-        {
-          "id": "Date",
-          "type": "dateInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Datum"
-              }
-            }
-          }
-        },
-        {
-          "id": "contactPerson",
+          "id": "01-01-Serviceauftrag||serviceTechnicians",
           "type": "userSingleSelect",
           "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Ansprechpartner"
-              }
+                "de": "Servicetechniker"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
             }
           }
         },
         {
-          "id": "orderNumber",
+          "id": "01-01-Serviceauftrag||berechnungsMotiv",
           "type": "singleLineTextInput",
           "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Best.-Nr."
-              }
-            }
+                "de": "Berechnungsmotiv"
+              },
+              "pdfHide": false
+            },
+            "value": {}
           }
         },
         {
-          "id": "orderDate",
-          "type": "dateInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Datum"
-              }
-            }
-          }
-        },
-        {
-          "id": "notification",
+          "id": "01-01-Serviceauftrag||leistungsart",
           "type": "singleLineTextInput",
           "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Meldung"
+                "de": "IH-Leistungsart"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "02-testSteps",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Ausgeführte Tätigkeiten"
+        }
+      },
+      "fields": [
+        {
+          "id": "02-testSteps||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "02-testSteps||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:11pt'>Ausgeführte Tätigkeiten</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "02-testSteps||header",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "",
+              "de": "Nachfolgend aufgeführten Leistungen wurden nach Aufwand erbracht. Nicht aufgeführte Leistungen wurden gemäß Auftragspauschale durchgeführt.",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "02-testSteps||tasks",
+          "type": "taskListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Ausgeführte Tätigkeiten"
+              },
+              "pdfHide": true
+            },
+            "fields": {
+              "highPrioBooleanInput": {
+                "pdfHide": true
+              },
+              "notNecessaryBooleanInput": {
+                "pdfHide": true
+              }
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "02-testSteps||tasksComment",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "placeHolderText": {},
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Kommentar"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03-reiseUndArbeitszeiten",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Arbeitszeiten / gefahrene Kilometer"
+        }
+      },
+      "fields": [
+        {
+          "id": "03-reiseUndArbeitszeiten||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "03-reiseUndArbeitszeiten||times",
+          "type": "timeTrackingListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Arbeitszeiten / gefahrene Kilometer"
+              },
+              "pdfHide": false
+            },
+            "fields": {
+              "breakNumericInput": {},
+              "durationDisplay": {},
+              "distanceNumericInput": {},
+              "technicianUserSingleSelect": {},
+              "commentMultiLineTextInput": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04-materialverwendung",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Materialverwendung"
+        }
+      },
+      "fields": [
+        {
+          "id": "04-materialverwendung||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "04-materialverwendung||spareparty",
+          "type": "partListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Materialverwendung"
+              },
+              "pdfHide": false
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Item Number",
+                  "de": "Artikelnummer",
+                  "fr": "Numéro d'article",
+                  "it": "Numero di articolo",
+                  "tr": "Ürün Numarası",
+                  "es": "Número de artículo"
+                }
+              },
+              "quantityNumericInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Description",
+                  "de": "Beschreibung",
+                  "fr": "Description",
+                  "it": "Descrizione",
+                  "tr": "Açıklama",
+                  "es": "Descripción"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": true
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": true
+              },
+              "warrantyBooleanInput": {
+                "enable": false,
+                "pdfHide": true
               }
             }
           }
         }
       ]
+    },
+    {
+      "id": "05-maschinestatus",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Maschinen- und Auftragsstatus"
+        }
+      },
+      "fields": [
+        {
+          "id": "05-maschinestatus||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "05-maschinestatus||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b style='font-size:11pt'>Maschinen- und Auftragsstatus</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "05-maschinestatus||asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Serialnummer"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "05-maschinestatus||Anlagenbez",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Anlagenbez."
+              },
+              "pdfHide": false
+            },
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToAssetTypeNameString"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "05-maschinestatus||Testlauf",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "de": "Testlauf erfolgreich durchgeführt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+        {
+          "id": "05-maschinestatus||Auftrag",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "de": "Störung beseitigt / Auftrag erledigt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+        {
+          "id": "05-maschinestatus||comment",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "placeHolderText": {},
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Kommentar"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        },
+        {
+          "id": "exampleFileUploadInput_1",
+          "type": "fileUpload",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "de": "Dateianhang"
+              }
+            },
+            "value": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "B1-signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          }
+        },
+        "required": false,
+        "pdfHide": false,
+        "headlineText": {
+          "de": "Unterschrift Kunde"
+        },
+        "helpTextHtmlAbove": {
+          "en": "undefined",
+          "de": "Alle Leistungen wurden auf Grundlage der aktuellen Fessmann Berechnungssätze für Serviceleistungen ausgeführt.\nWenn diese dem Auftraggeber nicht vorliegen können sie jederzeit zur Verfügung gestellt werden.\nDer Unterzeichner bestätigt die ordnungsgemäße Ausführung der Arbeiten und die Funktion der Anlage zum Zeitpunkt der Unterschrift.",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
+          "location": [
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "B2-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Servicebericht als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "pdfHide": true,
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "bcc": {
+            "assignee": true,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "",
+            "de": "Fessmann: Servicebericht",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
     }
   ]
 }
