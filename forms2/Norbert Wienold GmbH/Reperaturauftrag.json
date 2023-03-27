@@ -14,32 +14,48 @@
       },
       "fields": [
         {
+          "id": "space_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "headline_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Kundendaten",
+              "en": "Customer Data"
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": false
+          }
+        },
+        {
           "id": "customer",
           "type": "companySingleSelect",
           "config": {
+            "required": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Kunde",
                 "en": "Customer"
               }
             },
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "required": true,
             "useAsFilterForFields": [
               "asset",
               "customerContactPerson"
-            ],
-            "onChange": [
-              {
-                "target": {
-                  "id": "customerLocation"
-                },
-                "steps": [
-                  "accountInfoToAccount",
-                  "accountToBillingAddressAddress"
-                ]
-              }
             ],
             "prefill": {
               "selectedCompany": [
@@ -55,54 +71,71 @@
                   ]
                 }
               ]
-            }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
           }
         },
         {
           "id": "customerContactPerson",
           "type": "userSingleSelect",
           "config": {
+            "required": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Ansprechpartner (Kunde)",
                 "en": "Contact Person (Customer)"
               }
-            },
-            "pdfWidth": 0.5
+            }
           }
         },
         {
           "id": "customerLocation",
           "type": "addressInput",
           "config": {
+            "required": {
+              "company": true,
+              "city": true,
+              "zipPostCode": true,
+              "street": true,
+              "streetNumber": true
+            },
             "label": {
               "text": {
                 "de": "Kundenadresse",
                 "en": "Shipping Address"
               }
             },
-            "pdfWidth": 0.5,
-            "pdfHideIfValueIsEmpty": true,
-            "onChange": [
-              {
-                "target": {
-                  "id": "10_signatureTechnician",
-                  "propertyName": "location"
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId",
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
-              },
-              {
-                "target": {
-                  "id": "11_signatureCustomer",
-                  "propertyName": "location"
-                },
-                "steps": [
-                  "addressToCityString"
-                ]
-              }
-            ]
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
@@ -121,39 +154,93 @@
           "id": "billingAddress",
           "type": "addressInput",
           "config": {
+            "required": {
+              "company": true,
+              "city": true,
+              "zipPostCode": true,
+              "street": true,
+              "streetNumber": true
+            },
             "label": {
               "text": {
                 "de": "Rechnungsadresse",
                 "en": "Billing Address"
               }
             },
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId",
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            }
           }
         }
       ]
     },
     {
-      "id": "02_generalInformation",
+      "id": "02_workorderInformation",
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Allgemeine Informationen",
-          "en": "General Information"
+          "de": "Informationen zum Arbeitsauftrag",
+          "en": "Workorder Information"
         }
       },
       "fields": [
         {
+          "id": "space_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": false
+          }
+        },
+        {
+          "id": "headline_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Auftragsdaten",
+              "en": "Workorder Data"
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": false
+          }
+        },
+        {
           "id": "orderNumber",
           "type": "singleLineTextInput",
           "config": {
+            "required": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Reperaturauftrag-Nr:",
-                "en": "Service Order Number"
+                "de": "Reperaturauftrag-Nr (ERP)",
+                "en": "Service Order Number (ERP)"
               }
             },
-            "pdfWidth": 0.5,
             "prefill": {
               "value": [
                 {
@@ -171,13 +258,14 @@
           "id": "technician",
           "type": "userSingleSelect",
           "config": {
+            "required": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Techniker",
                 "en": "Technician"
               }
             },
-            "pdfWidth": 0.5,
             "prefill": {
               "value": [
                 {
@@ -201,17 +289,105 @@
       },
       "fields": [
         {
+          "id": "space_03",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "headline_03",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "location",
+          "type": "addressInput",
+          "config": {
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "de": "Standort des Gerätes",
+                "en": "Location of the machine"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId",
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "10_signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "11_signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        },
+        {
           "id": "asset",
           "type": "assetSingleSelect",
           "config": {
+            "required": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Maschine",
                 "en": "Machine"
               }
             },
-            "required": true,
-            "pdfWidth": 0.5,
             "prefill": {
               "selectedAsset": [
                 {
@@ -238,6 +414,8 @@
           "id": "operatingHours",
           "type": "singleLineTextInput",
           "config": {
+            "required": true,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Betriebsstunden",
@@ -250,34 +428,11 @@
           "id": "Station",
           "type": "singleLineTextInput",
           "config": {
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Station",
                 "en": "Station"
-              }
-            }
-          }
-        },
-        {
-          "id": "SN",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "S/N",
-                "en": "serialnumber"
-              }
-            }
-          }
-        },
-        {
-          "id": "location",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Standort des Gerätes",
-                "en": "Location of the machine"
               }
             }
           }
@@ -294,6 +449,34 @@
         }
       },
       "fields": [
+        {
+          "id": "space_04",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": false
+          }
+        },
+        {
+          "id": "headline_04",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Kostenaufstellung",
+              "en": "Cost Overview"
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": false
+          }
+        },
         {
           "id": "tasks",
           "type": "taskListInput",
@@ -353,6 +536,34 @@
       },
       "fields": [
         {
+          "id": "space_05",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "headline_05",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": true
+          }
+        },
+        {
           "id": "spareParts",
           "type": "partListInput",
           "config": {
@@ -384,8 +595,8 @@
                 "required": true,
                 "pdfHide": false,
                 "placeHolderText": {
-                  "de": "Beschreibung",
-                  "en": "Description",
+                  "de": "Entnommen aus Lager",
+                  "en": "Used from Storage",
                   "tr": "Description Placeholder Text",
                   "fr": "Description Placeholder Text",
                   "es": "Description Placeholder Text",
@@ -393,17 +604,17 @@
                 }
               },
               "deliverToStaticSingleSelect": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false
+                "enable": false,
+                "required": false,
+                "pdfHide": true
               },
               "invoiceToStaticSingleSelect": {
-                "enable": true,
-                "required": true,
-                "pdfHide": false
+                "enable": false,
+                "required": false,
+                "pdfHide": true
               },
               "warrantyBooleanInput": {
-                "enable": true,
+                "enable": false,
                 "pdfHide": false
               }
             }
@@ -421,6 +632,34 @@
         }
       },
       "fields": [
+        {
+          "id": "space_06",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "headline_06",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": true
+          }
+        },
         {
           "id": "tavelAndWorkingTimes",
           "type": "timeTrackingListInput",
@@ -443,7 +682,7 @@
               },
               "breakNumericInput": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false
               },
               "durationDisplay": {
@@ -463,7 +702,7 @@
               },
               "commentMultiLineTextInput": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false
               }
             }
@@ -481,6 +720,34 @@
         }
       },
       "fields": [
+        {
+          "id": "space_07",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "headline_07",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": true
+          }
+        },
         {
           "id": "expenses",
           "type": "expenseListInput",
@@ -500,7 +767,7 @@
               "commentMultiLineTextInput": {
                 "pdfHide": false,
                 "disabled": false,
-                "required": true
+                "required": false
               },
               "expenseAmountNumericInput": {
                 "pdfHide": false,
@@ -560,44 +827,49 @@
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "de": "Spesen",
-          "en": "Expenses"
+          "de": "Gesamtbetrag",
+          "en": "Total Expenses"
         }
       },
       "fields": [
         {
-          "id": "brutto",
-          "type": "singleLineTextInput",
+          "id": "space_08",
+          "type": "headlineDisplay",
           "config": {
-            "label": {
-              "text": {
-                "de": "Brutto (€)",
-                "en": "Brutto (€)"
-              }
-            }
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": true
           }
         },
         {
-          "id": "mwst",
-          "type": "singleLineTextInput",
+          "id": "headline_08",
+          "type": "headlineDisplay",
           "config": {
-            "label": {
-              "text": {
-                "de": "MwSt. (%)",
-                "en": "vAT. (%)"
-              }
-            }
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": true
           }
         },
         {
-          "id": "netto",
-          "type": "singleLineTextInput",
+          "id": "html_expenses",
+          "type": "htmlDisplay",
           "config": {
-            "label": {
-              "text": {
-                "de": "Netto (€)",
-                "en": "Netto (€)"
-              }
+            "pdfWidth": 1,
+            "uiHide": true,
+            "pdfHide": false,
+            "text": {
+              "de": "<p style=\"font-size:xx-small;\">Allgemeine Hinweise:</p><p style=\"font-size:xx-small;\">Aktuell g&uuml;ltiger Stundensatz 08/2022 exkl. MwSt.:</p><ul><li style=\"font-size:xx-small;\">Monteurstunde Material- u. Personenlifte: 73,00 &euro;</li><li style=\"font-size:xx-small;\">Monteurstunde Arbeitsb&uuml;hnen u. Selbstfahrer: 85,00 &euro;</li><li style=\"font-size:xx-small;\">Fahrtkosten: 59,00 &euro; / Stunde sowie 0,80 &euro; / Kilometer</li></ul><p style=\"font-size:xx-small;\">Die Reparatur erfolgt unter Anwendung unserer allgemeinen Verkaufsbedingungen, abrufbar unter <a>www.wienold-lifte.de/de/agb/</a>. Wir behalten uns insbesondere das Eigentum an den gelieferten bzw. verarbeiteten Sachen bis zur vollst&auml;ndigen Zahlung s&auml;mtlicher Forderungen gem. &sect; 7 AGB vor.&nbsp;</p>",
+              "en": "<p style=\"font-size:xx-small;\">Allgemeine Hinweise:</p><p style=\"font-size:xx-small;\">Aktuell g&uuml;ltiger Stundensatz 08/2022 exkl. MwSt.:</p><ul><li style=\"font-size:xx-small;\">Monteurstunde Material- u. Personenlifte: 73,00 &euro;</li><li style=\"font-size:xx-small;\">Monteurstunde Arbeitsb&uuml;hnen u. Selbstfahrer: 85,00 &euro;</li><li style=\"font-size:xx-small;\">Fahrtkosten: 59,00 &euro; / Stunde sowie 0,80 &euro; / Kilometer</li></ul><p style=\"font-size:xx-small;\">Die Reparatur erfolgt unter Anwendung unserer allgemeinen Verkaufsbedingungen, abrufbar unter <a>www.wienold-lifte.de/de/agb/</a>. Wir behalten uns insbesondere das Eigentum an den gelieferten bzw. verarbeiteten Sachen bis zur vollst&auml;ndigen Zahlung s&auml;mtlicher Forderungen gem. &sect; 7 AGB vor.&nbsp;</p>"
             }
           }
         }
@@ -614,9 +886,38 @@
       },
       "fields": [
         {
+          "id": "space_09",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiTextSize": "H3",
+            "uiHide": true,
+            "pdfTextSize": "H3",
+            "pdfHide": false
+          }
+        },
+        {
+          "id": "headline_09",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Weitere Informationen",
+              "en": "Further Information"
+            },
+            "uiTextSize": "H1",
+            "uiHide": true,
+            "pdfTextSize": "H1",
+            "pdfHide": false
+          }
+        },
+        {
           "id": "commentsGeneral",
           "type": "multiLineTextInput",
           "config": {
+            "required": true,
             "label": {
               "text": {
                 "de": "Kommentar",
@@ -629,10 +930,11 @@
           "id": "files",
           "type": "fileUpload",
           "config": {
+            "requiredAmountOfFiles": 3,
             "label": {
               "text": {
-                "de": "Datein",
-                "en": "Files"
+                "de": "3 Fotos: Typenschild, Anlage, Details",
+                "en": "3 Pictures: Label, Asset, Details"
               }
             }
           }
@@ -787,8 +1089,8 @@
             "pdfWidth": 1,
             "uiHide": false,
             "text": {
-              "de": "<p>Reparaturen sind sofort nach Rechnungstellung ohne weiteren Abzug zahlbar. Wir danken für ihren Auftrag</p>",
-              "en": "<p>Repairs are payable immediately after invoicing without further deduction. Thank you for your order</p>"
+              "de": "<p style=\"font-size:xx-small;\">Reparaturen sind sofort nach Rechnungstellung ohne weiteren Abzug zahlbar. Wir danken für ihren Auftrag</p>",
+              "en": "<p style=\"font-size:xx-small;\">Repairs are payable immediately after invoicing without further deduction. Thank you for your order</p>"
             }
           }
         }

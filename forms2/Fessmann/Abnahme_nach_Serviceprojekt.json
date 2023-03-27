@@ -1,0 +1,2354 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": false
+  },
+  "sections": [
+    {
+      "id": "1-allgmeineInformationen",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "General information",
+          "de": "Allgemeine Informationen"
+        }
+      },
+      "fields": [
+        {
+          "id": "1-allgmeineInformationen||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b style='font-size:11pt'>General information</b>",
+              "de": "<b style='font-size:11pt'>Allgemeine Informationen</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "1-allgmeineInformationen||orderNumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Order number",
+                "de": "Auftragsnummer"
+              },
+              "pdfHide": false
+            },
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "1-allgmeineInformationen||customer",
+          "type": "companySingleSelect",
+          "config": {
+            "useAsFilterForFields": [
+              "1-allgmeineInformationen||personPresentCustomer_1",
+              "2-projektInformationen||asset",
+              "2-projektInformationen||asset_1",
+              "2-projektInformationen||asset_2"
+            ],
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "1-allgmeineInformationen||customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "1-allgmeineInformationen||contractor",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "<b>Contractor: </b>Fessmann GmbH & Co. KG",
+              "de": "<b>Auftragnehmer: </b>Fessmann GmbH & Co. KG",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "1-allgmeineInformationen||customerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "label": {
+              "text": {
+                "en": "Customer address",
+                "de": "Kundenadresse"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "7-signature_technician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "8-signature_customer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "11-signature_technician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "12-signature_customer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "1-allgmeineInformationen||personPresentCustomer_1",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Person present (customer)",
+                "de": "Anwesende Person (Kunde)"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfPrintEmailAddress": false,
+              "pdfHide": false
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "8-signature_customer",
+                  "propertyName": "name"
+                },
+                "steps": ["userToFullNameString"]
+              },
+              {
+                "target": {
+                  "id": "12-signature_customer",
+                  "propertyName": "name"
+                },
+                "steps": ["userToFullNameString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "1-allgmeineInformationen||personPresentCustomer_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": true,
+            "pdfWidth": 1,
+            "text": {
+              "en": "Please use the following text field if person is not available in selection:",
+              "de": "Bitte nachfolgendes Textfeld nutzen, falls Person in Auswahl nicht verfügbar ist:",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "1-allgmeineInformationen||personPresentCustomer_3",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Person present (customer)",
+                "de": "Anwesende Person (Kunde)"
+              },
+              "pdfHide": false
+            },
+            "value": {},
+            "onChange": [
+              {
+                "target": {
+                  "id": "8-signature_customer",
+                  "propertyName": "name"
+                },
+                "steps": []
+              },
+              {
+                "target": {
+                  "id": "12-signature_customer",
+                  "propertyName": "name"
+                },
+                "steps": []
+              }
+            ]
+          }
+        },
+        {
+          "id": "1-allgmeineInformationen||personPresentContractor",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Person present (contractor)",
+                "de": "Anwesende Person (Auftragnehmer)"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "7-signature_technician",
+                  "propertyName": "name"
+                },
+                "steps": ["userToFullNameString"]
+              },
+              {
+                "target": {
+                  "id": "11-signature_technician",
+                  "propertyName": "name"
+                },
+                "steps": ["userToFullNameString"]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-projektInformationen",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "1. Scope of project",
+          "de": "1. Projektumfang"
+        }
+      },
+      "fields": [
+        {
+          "id": "2-projektInformationen||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "2-projektInformationen||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b style='font-size:11pt'>1. Scope of project</b>",
+              "de": "<b style='font-size:11pt'>1. Projektumfang</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "2-projektInformationen||system",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Description of the existing system",
+                "de": "Beschreibung der bestehenden Anlage"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "2-projektInformationen||asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Serial no.",
+                "de": "Serial-Nr."
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": { "id": "1-allgmeineInformationen||customer" },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "2-projektInformationen||customRepeater",
+          "type": "fieldRepeater",
+          "config": {
+            "pdfEnableListView": false,
+            "label": {
+              "text": {
+                "en": "",
+                "de": "",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "fields": [
+              {
+                "id": "2-projektInformationen||customRepeater||serviceType",
+                "type": "headlineDisplay",
+                "config": {
+                  "pdfHide": false,
+                  "text": {
+                    "de": "Art des Projekts",
+                    "en": "Type of project"
+                  },
+                  "uiTextSize": "H3",
+                  "pdfTextSize": "H3"
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater||controlConversion",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": false,
+                  "label": {
+                    "text": {
+                      "en": "Control conversion type",
+                      "de": "Art Steuerungsumbau"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater||smokeGenerator",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": false,
+                  "label": {
+                    "text": {
+                      "en": "Serial no. smoke generator retrofit",
+                      "de": "Serial-Nr. Raucherzeuger nachrüsten"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater||afterburnerRetrofit",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": false,
+                  "label": {
+                    "text": {
+                      "en": "Serial no. afterburner retrofit",
+                      "de": "Serial-Nr. NV nachrüsten"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater||other",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": false,
+                  "label": {
+                    "text": {
+                      "en": "Other",
+                      "de": "Sonstiges"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "2-projektInformationen||system_1",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Description of the existing system",
+                "de": "Beschreibung der bestehenden Anlage"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "2-projektInformationen||asset_1",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Serial no.",
+                "de": "Serial-Nr."
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "2-projektInformationen||customRepeater_1",
+          "type": "fieldRepeater",
+          "config": {
+            "pdfEnableListView": false,
+            "label": {
+              "text": {
+                "en": "",
+                "de": "",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "fields": [
+              {
+                "id": "2-projektInformationen||customRepeater_1||serviceType",
+                "type": "headlineDisplay",
+                "config": {
+                  "pdfHide": false,
+                  "text": {
+                    "de": "Art des Projekts",
+                    "en": "Type of project"
+                  },
+                  "uiTextSize": "H3",
+                  "pdfTextSize": "H3"
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater_1||controlConversion",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "en": "Control conversion type",
+                      "de": "Art Steuerungsumbau"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater_1||smokeGenerator",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "en": "Serial no. smoke generator retrofit",
+                      "de": "Serial-Nr. Raucherzeuger nachrüsten"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater_1||afterburnerRetrofit",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "en": "Serial no. afterburner retrofit",
+                      "de": "Serial-Nr. NV nachrüsten"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater_1||other",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "en": "Other",
+                      "de": "Sonstiges"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "2-projektInformationen||system_2",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Description of the existing system",
+                "de": "Beschreibung der bestehenden Anlage"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "2-projektInformationen||asset_2",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Serial no.",
+                "de": "Serial-Nr."
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "2-projektInformationen||customRepeater_2",
+          "type": "fieldRepeater",
+          "config": {
+            "pdfEnableListView": false,
+            "label": {
+              "text": {
+                "en": "",
+                "de": "",
+                "fr": "",
+                "it": "",
+                "tr": "",
+                "es": ""
+              },
+              "pdfHide": false
+            },
+            "fields": [
+              {
+                "id": "2-projektInformationen||customRepeater_2||serviceType",
+                "type": "headlineDisplay",
+                "config": {
+                  "pdfHide": false,
+                  "text": {
+                    "de": "Art des Projekts",
+                    "en": "Type of project"
+                  },
+                  "uiTextSize": "H3",
+                  "pdfTextSize": "H3"
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater_2||controlConversion",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "en": "Control conversion type",
+                      "de": "Art Steuerungsumbau"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater_2||smokeGenerator",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "en": "Serial no. smoke generator retrofit",
+                      "de": "Serial-Nr. Raucherzeuger nachrüsten"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater_2||afterburnerRetrofit",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "en": "Serial no. afterburner retrofit",
+                      "de": "Serial-Nr. NV nachrüsten"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              },
+              {
+                "id": "2-projektInformationen||customRepeater_2||other",
+                "type": "singleLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "required": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": true,
+                  "label": {
+                    "text": {
+                      "en": "Other",
+                      "de": "Sonstiges"
+                    },
+                    "pdfHide": false
+                  },
+                  "value": {}
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "3-operatorInstruction",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "2. Instruction of operator",
+          "de": "2. Einweisung für den Betreiber"
+        }
+      },
+      "fields": [
+        {
+          "id": "3-operatorInstruction||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "3-operatorInstruction||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b style='font-size:11pt'>2. Instruction of operator</b>",
+              "de": "<b style='font-size:11pt'>2. Einweisung für den Betreiber</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "3-operatorInstruction||unit_1",
+          "type": "headlineDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "de": "Steuerung",
+              "en": "Control"
+            },
+            "uiTextSize": "H3",
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "3-operatorInstruction||description_1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "- operating level and its function explained (service level, single step level, automatic step level, program creation, temperature adjustment)<br>- start/stop function explained",
+              "de": "- Bedienebene und deren Funktion erklärt (Serviceebene, Einzelschrittebene, Automatikschrittebene, Programmerstellung, Temperaturabgleich)<br>- Start-/ Stopp-Funktion erläutert",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_1_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "done",
+                "de": "erledigt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_1_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "checked",
+                "de": "geprüft"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_1_3",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "not required",
+                "de": "nicht erforderlich"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||unit_2",
+          "type": "headlineDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "de": "Raucherzeuger",
+              "en": "Smoke generator"
+            },
+            "uiTextSize": "H3",
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "3-operatorInstruction||description_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "- operation of the smoke generator explained and points out the dangers<br>- components and their function explained (swell pot, annealing rod, smoke, cleaning, etc.)<br>- how the vacuum setting works explained",
+              "de": "- Funktionsweise des Raucherzeugers erklärt und auf Gefahren hingewiesen<br>- Bauteile und deren Funktion erläutert (Verschweltopf, Glühstab, Rauchklappe, Reinigung, usw.)<br>- Funktionsweise der Unterdruckeinstellung erläutert",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_2_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "done",
+                "de": "erledigt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_2_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "checked",
+                "de": "geprüft"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_2_3",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "not required",
+                "de": "nicht erforderlich"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||unit_3",
+          "type": "headlineDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "de": "Nachverbrenner",
+              "en": "Afterburner"
+            },
+            "uiTextSize": "H3",
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "3-operatorInstruction||description_3",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "- functionality of the afterburner explained and pointed out dangers<br>- components and their function explained",
+              "de": "- Funktionsweise des Nachverbrenners erklärt und auf Gefahren hingewiesen<br>- Bauteile und deren Funktion erläutert",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_3_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "done",
+                "de": "erledigt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_3_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "checked",
+                "de": "geprüft"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_3_3",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "not required",
+                "de": "nicht erforderlich"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||unit_4",
+          "type": "headlineDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "de": "Sonstiges",
+              "en": "Other"
+            },
+            "uiTextSize": "H3",
+            "pdfTextSize": "H3"
+          }
+        },
+        {
+          "id": "3-operatorInstruction||description_4",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "placeHolderText": {},
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Description",
+                "de": "Beschreibung"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_4_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "done",
+                "de": "erledigt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_4_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "checked",
+                "de": "geprüft"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+        {
+          "id": "3-operatorInstruction||checkbox_4_3",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "not required",
+                "de": "nicht erforderlich"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "4-documentation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "3. Documentation",
+          "de": "3. Dokumentation"
+        }
+      },
+      "fields": [
+        {
+          "id": "4-documentation||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "4-documentation||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b style='font-size:11pt'>3. Documentation</b>",
+              "de": "<b style='font-size:11pt'>3. Dokumentation</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "4-documentation||document_1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.4,
+            "text": {
+              "en": "1. wiring diagrams / data sheets / schemes of the system",
+              "de": "1. Schaltpläne / Datenblätter / Schemata der Anlage",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_1_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "available",
+                "de": "vorhanden"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_1_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "missing",
+                "de": "fehlt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_1_3",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "not required",
+                "de": "nicht erforderlich"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||comment_1",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Remarks",
+                "de": "Bemerkung"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "4-documentation||document_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.4,
+            "text": {
+              "en": "2. operating instructions and behaviour in the event of malfunctions",
+              "de": "2. Betriebsanleitungen und Verhalten bei Störfällen",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_2_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "available",
+                "de": "vorhanden"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_2_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "missing",
+                "de": "fehlt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_2_3",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "not required",
+                "de": "nicht erforderlich"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||comment_2",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Remarks",
+                "de": "Bemerkung"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "4-documentation||document_3",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.4,
+            "text": {
+              "en": "2. Service report",
+              "de": "2. Servicebericht",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_3_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "available",
+                "de": "vorhanden"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_3_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "missing",
+                "de": "fehlt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_3_3",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "not required",
+                "de": "nicht erforderlich"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||comment_3",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Remarks",
+                "de": "Bemerkung"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "4-documentation||helptext",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.3,
+            "text": {
+              "en": "The documentation has been",
+              "de": "Die Dokumentation wurde",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "fully submitted",
+                "de": "vollständig vorgelegt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "4-documentation||checkbox_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "submitted incompletely",
+                "de": "unvollständig vorgelegt"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "5-remarks",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "4. Remarks",
+          "de": "4. Bemerkungen"
+        }
+      },
+      "fields": [
+        {
+          "id": "5-remarks||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "5-remarks||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b style='font-size:11pt'>4. Remarks</b>",
+              "de": "<b style='font-size:11pt'>4. Bemerkungen</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "5-remarks||remarks",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": " ",
+                "de": " "
+              },
+              "pdfHide": true
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "placeHolderText": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "value": {
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "6-acceptance",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "5. Acceptance",
+          "de": "5. Abnahme"
+        }
+      },
+      "fields": [
+        {
+          "id": "6-acceptance||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "6-acceptance||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b style='font-size:11pt'>5. Acceptance</b>",
+              "de": "<b style='font-size:11pt'>5. Abnahme</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "6-acceptance||helptext",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "text": {
+              "en": "The legal acceptance reaches its validity when the acceptance protocol is signed by the customer and contractor. Insignificant defects do not entitle the customer to refuse acceptance.<br>It is confirmed that the activities mentioned under 1. have been checked and the completed tasks listed in the service report have been tested, as well as are in technically perfect condition. If there are residual defects, these must be remedied by the contractor at short notice. Irrespective of this written confirmation of acceptance, acceptance shall be deemed to have taken place no later than 1 week after the recommissioning of the system by the customer.<br>The customer confirms that he has been instructed in the operation, maintenance and hazards to be observed of the location(s). Above the systems, the ambient temperature must not exceed 40°C. In the event of damage caused by temperature exceedances, there is no warranty claim.",
+              "de": "Die rechtsgeschäftliche Abnahme erreicht bei Unterzeichnung des Abnahmeprotokolls durch den Kunden und Auftragnehmer ihre Gültigkeit. Unwesentliche Mängel berechtigen den Kunden nicht zur Verweigerung der Abnahme.<br>Es wird bestätigt, dass die unter 1. genannten Tätigkeiten geprüft und die im Servicebericht aufgeführten erledigten Aufgaben getestet wurden, sowie in technisch einwandfreiem Zustand sind. Falls Restmängel bestehen, müssen diese vom Auftragnehmer kurzfristig beseitigt werden. Unabhängig dieser schriftlichen Abnahmebestätigung gilt die Abnahme spätestens 1 Woche nach Wiederinbetriebnahme der Anlage durch den Kunden als erfolgt.<br>Der Kunde bestätigt, dass er in die Bedienung, Wartung und zu beachtende Gefahren der Anlage(n) eingewiesen wurde. Oberhalb der Anlagen darf die Umgebungstemperatur 40°C nicht überschreiten. Bei Schäden durch Temperaturüberschreitungen besteht kein Garantieanspruch.",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "6-acceptance||date",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Date of acceptance",
+                "de": "Datum der Abnahme"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "creationDateTime",
+                  "steps": ["dateTimeToDate"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "6-acceptance||checkbox_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Systems are free of defects (Point 6 omitted)",
+                "de": "Anlagen sind mängelfrei (Punkt 6 entfällt)"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "6-acceptance||checkbox_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "The defects described in point 4 must be remedied at short notice.",
+                "de": "Die unter Punkt 4 beschriebenen Mängel sind kurzfristig zu beheben."
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "7-signature_technician",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          }
+        },
+        "required": false,
+        "pdfHide": false,
+        "headlineText": {
+          "en": "Signature contractor",
+          "de": "Unterschrift Auftragnehmer"
+        },
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "8-signature_customer",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          }
+        },
+        "required": false,
+        "pdfHide": false,
+        "headlineText": {
+          "en": "Signature customer",
+          "de": "Unterschrift Kunde"
+        },
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "9-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent form as E-Mail",
+          "de": "Formular als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "pdfHide": true,
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": true,
+            "staticEmails": []
+          },
+          "bcc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "Acceptance after service project",
+            "de": "Abnahme nach Serviceprojekt",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    },
+    {
+      "id": "10-defectsRemoval",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "en": "6. Technical acceptance of the removal of defects",
+          "de": "6. Technische Abnahme der Mängelbeseitigung"
+        }
+      },
+      "fields": [
+        {
+          "id": "10-defectsRemoval||header_spacer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " ",
+              "es": " ",
+              "it": " ",
+              "fr": " ",
+              "tr": " "
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "10-defectsRemoval||header_text",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b style='font-size:11pt'>6. Technical acceptance of the removal of defects</b>",
+              "de": "<b style='font-size:11pt'>6. Technische Abnahme der Mängelbeseitigung</b>"
+            },
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "uiHide": true
+          }
+        },
+        {
+          "id": "10-defectsRemoval||date",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Date of acceptance",
+                "de": "Datum der Abnahme"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "10-defectsRemoval||checkbox_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "All defects have been remedied",
+                "de": "Alle Mängel wurden behoben"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "10-defectsRemoval||checkbox_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "The new mentions under point 4 are to be remedied at short notice.",
+                "de": "Die unter Punkt 4 neu vermerkten Mängel sind kurzfristig zu beheben."
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "11-signature_technician",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          }
+        },
+        "required": false,
+        "pdfHide": false,
+        "headlineText": {
+          "en": "Signature contractor",
+          "de": "Unterschrift Auftragnehmer"
+        },
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "12-signature_customer",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          }
+        },
+        "required": false,
+        "pdfHide": false,
+        "headlineText": {
+          "en": "Signature customer",
+          "de": "Unterschrift Kunde"
+        },
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "13-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent form as E-Mail",
+          "de": "Formular als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "pdfHide": true,
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": true,
+            "staticEmails": []
+          },
+          "bcc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "Acceptance after service project",
+            "de": "Abnahme nach Serviceprojekt",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    }
+  ]
+}

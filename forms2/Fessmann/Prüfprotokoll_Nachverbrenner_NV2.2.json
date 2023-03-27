@@ -1,0 +1,1755 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01-generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen"
+        }
+      },
+      "fields": [
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Name des Betreibers"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ],
+            "useAsFilterForFields": ["asset"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToOrganizationAccountId"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Standort der Anlage"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "onChange": [
+              {
+                "target": {
+                  "id": "A1-signatureTechnican",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "B1-signatureTechnican",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "A1-signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "B1-signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ],
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "assetCustomer",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kundenanlagen-Bezeichnung"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue", 27],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Serialnummer"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "assetRunningtime",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Baujahr"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue", 18],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "serviceTechnicians",
+          "type": "userSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "FESSMANN Servicetechniker"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToPerformByUserId"
+                  ]
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "testDate",
+          "type": "dateInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Prüfdatum"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "creationDateTime",
+                  "steps": ["dateTimeToDate"]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_testSteps",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Prüfschritte"
+        }
+      },
+      "fields": [
+        {
+          "id": "sectionHeadline0",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " "
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1"
+          }
+        },
+        {
+          "id": "sectionHeadline1",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " "
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1"
+          }
+        },
+        {
+          "id": "sectionHeadline",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Prüfschritte"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1"
+          }
+        },
+        {
+          "id": "line0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline1",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1001"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Parameter und Funktion der Abkühltemp. (100 °C) prüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select1",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note1",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1002"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Parameter und Funktion der Arbeitstemperatur (500 °C) prüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select2",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note2",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline3",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1003"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Parameter und Funktion der Solltemperatur (550 °C) prüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select3",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note3",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline4",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1004"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline4",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Parameter und Funktion der Abschalttemp. (620 °C) prüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select4",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note4",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace4",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline5",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1005"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline5",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Stromaufnahme Heizkörper</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select5",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note5",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "headerAssets5",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Messwerte</b></h4>"
+            },
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "l1-5",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L1 in A"
+              }
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "l2-5",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L2 in A"
+              }
+            },
+            "pdfWidth": 0.25
+          }
+        },
+        {
+          "id": "l3-5",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L3 in A"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace5",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline6",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1006"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline6",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Motorschutzschalter Einstellung Heizkörper prüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select6",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note6",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "headerAssets6",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Messwerte</b></h4>"
+            },
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "l1-6",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L1 in A"
+              }
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "l2-6",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L2 in A"
+              }
+            },
+            "pdfWidth": 0.25
+          }
+        },
+        {
+          "id": "l3-6",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L3 in A"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace6",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline7",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1007"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline7",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Drehrichtung Gebläsemotor</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select7",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note7",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "turnSelect7",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Drehfeldrichtung"
+              }
+            },
+            "pdfWidth": 0.3,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Rechtsdrehfeld"
+                },
+                "2": {
+                  "de": "Linksdrehfeld"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "whitespace7",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline8",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1008"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline8",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Stromaufnahme Gebläsemotor</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select8",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note8",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "headerAssets8",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Messwerte</b></h4>"
+            },
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "l1-8",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L1 in A"
+              }
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "l2-8",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L2 in A"
+              }
+            },
+            "pdfWidth": 0.25
+          }
+        },
+        {
+          "id": "l3-8",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "L3 in A"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace8",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline9",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1009"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline9",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Motorschutzschalter Einstellung Gebläsemotor prüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select9",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note9",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "l1-9",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "A"
+              }
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "l2-9",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "A"
+              }
+            },
+            "pdfWidth": 0.25
+          }
+        },
+        {
+          "id": "l3-9",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "A"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace9",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline10",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1010"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline10",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Roh- und Reingaskanal auf Sauberkeit prüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select10",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note10",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace10",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline11",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1011"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline11",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Aufhängung des Nachverbrenners auf fester Sitz prüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select11",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note11",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace11",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline12",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Leistungskennziffer 1012"
+            },
+            "pdfWidth": 1,
+            "pdfTextSize": "H3",
+            "uiTextSize": "H3"
+          }
+        },
+        {
+          "id": "subline12",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4><b>Gehäuse/Korpus auf Schäden überprüfen</b></h4>"
+            },
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "select12",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zustand"
+              }
+            },
+            "pdfWidth": 0.25,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "i.O."
+                },
+                "2": {
+                  "de": "Defekt"
+                },
+                "3": {
+                  "de": "Nicht vorhanden"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "note12",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung"
+              }
+            },
+            "pdfWidth": 0.45
+          }
+        },
+        {
+          "id": "whitespace12",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_defects",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Defekte und Betrieb der Anlage"
+        }
+      },
+      "fields": [
+        {
+          "id": "sectionHeadline2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Defekte und Betrieb der Anlage"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1"
+          }
+        },
+        {
+          "id": "defects",
+          "type": "multiLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": false,
+            "label": {
+              "text": {
+                "de": "Die Inspektion ergab Defekte bei folgenden Positionen"
+              }
+            }
+          }
+        },
+        {
+          "id": "boolean0",
+          "type": "staticSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": false,
+            "label": {
+              "text": {
+                "de": "Ein sicherer Betrieb der Anlage ist möglich"
+              }
+            },
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Ja"
+                },
+                "2": {
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "boolean1",
+          "type": "staticSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": false,
+            "label": {
+              "text": {
+                "de": "Die Anlage darf weiter betrieben werden"
+              }
+            },
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Ja"
+                },
+                "2": {
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "defects0",
+          "type": "richTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Weitere Bemerkungen"
+              }
+            },
+            "placeHolderText": {
+              "de": "Hier tippen..."
+            }
+          }
+        },
+        {
+          "id": "nextExamination",
+          "type": "dateInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Nächste Prüfung spätestens am"
+              }
+            }
+          }
+        },
+        {
+          "id": "files",
+          "type": "fileUpload",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Bildanhang"
+              }
+            }
+          }
+        },
+        {
+          "id": "whitespace57",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "pdfTextSize": "H2"
+          }
+        },
+        {
+          "id": "line57",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "A1-signatureTechnican",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Servicetechniker"
+        },
+        "helpTextHtmlAbove": {
+          "de": "Durch die nachfolgende Unterschrift bestätigt der Servicetechniker die ordnungsgemäße Durchführung der Sicherheitsprüfung."
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": ["userToFullNameString"]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "A1-signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Betreiber"
+        },
+        "helpTextHtmlAbove": {
+          "de": "Das Prüfprotokoll sowie das Ergebnis der Prüfung wurden zur Kenntnis genommen."
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "A1-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Prüfprotokoll als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": true,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "en": "This email was generated automatically.\nPlease do not reply to this email."
+          },
+          "subject": {
+            "de": "Prüfprotokoll Nachverbrenner NV2.2",
+            "en": "Test Protocol After Burner NV2.2"
+          }
+        }
+      }
+    },
+    {
+      "id": "status",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Reparatur nach Sicherheitsprüfung"
+        }
+      },
+      "fields": [
+        {
+          "id": "sectionHeadline3",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Reparatur nach Sicherheitsprüfung"
+            },
+            "uiHide": true,
+            "pdfTextSize": "H1"
+          }
+        },
+        {
+          "id": "richText",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Folgende Defekte sollen behoben werden:"
+              }
+            },
+            "placeHolderText": {
+              "de": "Defekte eingeben..."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B1-signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Betreiber"
+        },
+        "helpTextHtmlAbove": {
+          "de": "Hiermit beauftragen wir den Auftrag zur Behebung der oben genannten Defekte."
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false
+      }
+    },
+    {
+      "id": "B1-signatureTechnican",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Servicetechniker"
+        },
+        "helpTextHtmlAbove": {
+          "de": "Die vorgenannten Defekte wurden behoben."
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": ["userToFullNameString"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "B1-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Prüfprotokoll als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": true,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "en": "This email was generated automatically.\nPlease do not reply to this email."
+          },
+          "subject": {
+            "de": "Prüfprotokoll Nachverbrenner NV2.2",
+            "en": "Test Protocol Adter Burner NV2.2"
+          }
+        }
+      }
+    }
+  ]
+}
