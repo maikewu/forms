@@ -143,14 +143,20 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `staticTasks` | `[NONE, TASKS]`| `TASKS`
 
 ## Asset Steps
+
+When a new form instance is created from an asset detail page (Asset View), the `assetId` can be used to create prefilling steps that extract attributes of the related asset. Therefore, the first step must be `assetIdToAsset` followed by these available steps:
+
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----|
+| `assetIdToAsset` | `ASSET_ID`| `ASSET`
 | `assetToLocationAddress` | `ASSET`| `ADDRESS`
 | `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
 | `assetToAssetTypeNameString` | `ASSET`| `STRING`
 | `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
 
 ## Work Order Steps
+
+When a new form instance is created from an work order detail page (Work Order View), the `workOrderId` can be used to create prefilling steps that extract attributes of the related work order. Therefore, the first step must be `workOrderIdToWorkOrder` followed by these available steps:
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----|
