@@ -150,11 +150,11 @@ When a new form instance is created from an asset detail page (Asset View), the 
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----| :-----------------------------|
-| `assetIdToAsset` | `ASSET_ID`| `ASSET`
-| `assetToLocationAddress` | `ASSET`| `ADDRESS`
-| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
-| `assetToAssetTypeNameString` | `ASSET`| `STRING`
-| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
+| `assetIdToAsset` | `ASSET_ID`| `ASSET` | Converts the `ASSET_ID` to a `ASSET`
+| `assetToLocationAddress` | `ASSET`| `ADDRESS` | Extracts the defined asset location
+| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID` | Extracts the `ACCOUNT_ID` of the company associated with the asset
+| `assetToAssetTypeNameString` | `ASSET`| `STRING` | Extracts the name of the asset type as a `STRING`
+| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `ASSET` and the number of the respective custom asset  property as `NUMBER` as inputs and extracts the respective custom property value 
 
 ## Work Order Steps
 
@@ -188,8 +188,8 @@ Custom Properties of the respective space can be extracted. These include Custom
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----| :-----------------------------|
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
+| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `WORK_ORDER` and the number of the respective custom work order property as `NUMBER` as inputs and extracts the respective custom property value 
+| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `ASSET` and the number of the respective custom asset  property as `NUMBER` as inputs and extracts the respective custom property value 
 | `customPropertyValueToString` | `UNKNOWN`| `STRING`
 | `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
 | `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
