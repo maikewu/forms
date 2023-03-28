@@ -162,26 +162,26 @@ When a new form instance is created from an work order detail page (Work Order V
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----| :------------------|
-| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`| Test description
-| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS` | Test description
-| `workOrderToTasks` | `WORK_ORDER`| `TASKS` | Test description
-| `workOrderToTitleString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE` | Test description
-| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE` | Test description
-| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE` | Test description
-| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID` | Test description
-| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID` | Test description
-| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING` | Test description
-| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID` | Test description
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Test description
-
+| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`| Converts the `WORK_ORDER_ID` to a `WORK_ORDER`
+| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS` | Extracts the defined asset location of the work order
+| `workOrderToTasks` | `WORK_ORDER`| `TASKS` | Extracts the tasks added to the work order
+| `workOrderToTitleString` | `WORK_ORDER`| `STRING` | Extracts the title of the work order
+| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING` | Extracts the description of the work order
+| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE` | Extracts the due date of the work order
+| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE` | Extracts the start date of the work order
+| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE` | Extracts the start date of the work order
+| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING` | Extracts the ERP reference of the work order as a `STRING`
+| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID` | Extracts the userId of the user responsible for the work order
+| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Extracts the status of the work order as a number: 0: Open, 1: In Progress, 2: On Hold, 3: Completed, 4: Closed
+| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Extracts the type of the work order as a number: 0: Repair, 1: Commissioning, 2: Maintenance
+| `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Extracts the priority of the work order as a `STRING`: 000_low: Low priority, "010_normal: Normal priority, 020_high: High priority, 030_critical: Critical priority
+| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID` | Extracts the userId of the user performing the work order
+| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING` | Extracts the additional contact information associated with the work order as a `STRING`
+| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject title from the service case
+| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject and title from service case
+| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID` | Extracts the organization/company associated with the work order as an `ACCOUNT_ID`
+| `workOrderToCustomPropertyValue` | `[WORK_ORDER, NUMBER]`| `UNKNOWN` | Takes the `WORK_ORDER` and the number of the respective custom work order property as `NUMBER` as inputs and extracts the respective custom property value 
+ 
 ## Custom Property Steps 
 
 Custom Properties of the respective space can be extracted. These include Custom Work Order Properties and Custom Asset Properties. To extract a custom Property, one must first know their respective ID.
