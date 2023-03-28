@@ -190,16 +190,16 @@ Custom Properties of the respective space can be extracted. These include Custom
 | :----------------------------- | :----- | :-----| :-----------------------------|
 | `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `WORK_ORDER` and the number of the respective custom work order property as `NUMBER` as inputs and extracts the respective custom property value 
 | `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `ASSET` and the number of the respective custom asset  property as `NUMBER` as inputs and extracts the respective custom property value 
-| `customPropertyValueToString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
-| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER`
-| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN`
-| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID`
-| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID`
-| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID`
-| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE`
-| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME`
+| `customPropertyValueToString` | `UNKNOWN`| `STRING` | Converts the customPropertyValue (which can have many types) to a `STRING`
+| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS` | Converts the customPropertyValue (which can have many types) to an `ARRAY_OF_STRINGS`
+| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING` | Converts the customPropertyValue (which can have many types) to a number as a `STRING`
+| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER` | Converts the customPropertyValue (which can have many types) to a `NUMBER`
+| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN` | Converts the customPropertyValue (which can have many types) to `BOOLEAN`
+| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID` | Converts the customPropertyValue (which can have many types) to an `ASSET_ID`
+| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID` | Converts the customPropertyValue (which can have many types) to an `ACCOUNT_ID`
+| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID` | Converts the customPropertyValue (which can have many types) to an `USER_ID`
+| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE` | Converts the customPropertyValue (which can have many types) to a `REMBERG_DATE`
+| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME` | Converts the customPropertyValue (which can have many types) to a `REMBERG_DATETIME`
 
 The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue` or `assetToCustomPropertyValue`:
 
