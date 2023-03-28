@@ -127,7 +127,7 @@ By chaining steps, the desired data type can be achieved "step by step".
 General steps can be used to transform data types to fit desired field data type.
 
 | `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----| :---------|
+| :----------------------------- | :----- | :-----| :------------------|
 | `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
 | `userIdToUser` | `USER_ID`| `USER_INFO`
 | `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
@@ -149,7 +149,7 @@ General steps can be used to transform data types to fit desired field data type
 When a new form instance is created from an asset detail page (Asset View), the `assetId` can be used to create prefilling steps that extract attributes of the related asset. Therefore, the first step must be `assetIdToAsset` followed by these available steps:
 
 | `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----| :---------|
+| :----------------------------- | :----- | :-----| :------------------|
 | `assetIdToAsset` | `ASSET_ID`| `ASSET`
 | `assetToLocationAddress` | `ASSET`| `ADDRESS`
 | `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
@@ -161,7 +161,7 @@ When a new form instance is created from an asset detail page (Asset View), the 
 When a new form instance is created from an work order detail page (Work Order View), the `workOrderId` can be used to create prefilling steps that extract attributes of the related work order. Therefore, the first step must be `workOrderIdToWorkOrder` followed by these available steps:
 
 | `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----| :---------|
+| :----------------------------- | :----- | :-----| :------------------|
 | `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`| Test description
 | `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS` | Test description
 | `workOrderToTasks` | `WORK_ORDER`| `TASKS` | Test description
@@ -187,7 +187,7 @@ When a new form instance is created from an work order detail page (Work Order V
 Custom Properties of the respective space can be extracted. These include Custom Work Order Properties and Custom Asset Properties. To extract a custom Property, one must first know their respective ID.
 
 | `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----| :---------|
+| :----------------------------- | :----- | :-----| :------------------|
 | `assetToAssetTypeNameString` | `ASSET`| `STRING`
 | `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
 | `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
