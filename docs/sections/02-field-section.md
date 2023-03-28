@@ -39,7 +39,7 @@ The FieldSection contains all fields of the form.
 ```
 ---
 
-# Configuration Parameters
+## Configuration Parameters
 
 ## `fields` 
 
@@ -71,6 +71,8 @@ You can find a list of possible fields below. Besides them a form consists of a 
 | [fieldRepeater](./21-field-repeater)                     | The FieldRepeater allows the user to add a table of certain fields. |
 | [richTextInput](./22-rich-text-input)                    | The RichTextInput is a text field that allows text formatting. |
 | [htmlDisplay](./23-html-display)                         | The HtmlDisplay allows the user to enter html text. |
+
+---
 
 ## `headlineText`
 
