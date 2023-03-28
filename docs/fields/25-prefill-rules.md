@@ -182,144 +182,27 @@ When a new form instance is created from an work order detail page (Work Order V
 | `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
 | `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
 
----
-## Asset View
-If you create a new forms instance from an asset (Asset View), the following data is provided:
-
-| Data | Condition | Description |
-| :------------------------- | :--------------| :---- |
-| `assetId`  |  |  The ID of the asset form which the new form is created
-| `organizationId` | | The ID of the assigned company in the work order or from the asset
-| `creationDateTime`  |  | The creation date time of form 
-| `currentUser`  |  |  	Information about the current user, including the name, ID, etc.
-| `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
-| `currentAccount`  |  |  Information about the current space, including the name, address, ID, etc.
-| `currentAccountId`  |  |  	The ID of the current space
-| [customProperty](#custom-properties) |  | One of the specific custom asset properties
-| `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
-
-Some Asset derived values first need be mapped to a real readable value, especially values from a custom property multi select. The following examples will illustrate the mapping process:
-
-```json (assetToCustomPropertyValue)
-{
-	"id": "customPropertyValueToStringTestIdFromMultiSelect",
-	"type": "staticMultiSelect",
-	"config": {
-		"label": {
-			"text": {
-				"en": "preffiled from asset custom property Multi Select",
-				"de": "preffiled from asset custom property Multi Select"
-			}
-		},
-		"value": {
-			"options": {
-				"Option 1": {
-					"en": "Option 1",
-					"de": "Option 1"
-				},
-				"Option 62374": {
-					"en": "Option 62374",
-					"de": "Option 62374"
-				},
-				"Option 101": {
-					"en": "Option 101",
-					"de": "Option 101"
-				}
-			}
-		},
-		"prefill": {
-			"value": [
-				{
-					"input": "assetId",
-					"steps": [
-						"assetIdToAsset",
-						[
-							"assetToCustomPropertyValue",
-							9
-						],
-						"customPropertyValueToArrayOfStrings"
-					]
-				}
-			]
-		}
-	}
-}
-```
-
----
- ## Work Order View
-If you create a new forms instance from a work order, the following data is provided:
-
-
-| Data | Condition | Description |
-| :------------------------- | :--------------| :---- |
-| `WorkOrderId`  |  |  The ID of the work order from which the form is created
-| `organizationId`  | If WO has connected company | The ID of the company (contact) which is connected to the work order
-| `assetId`  | If WO has assets |  The ID of the asset which is part of the work order
-| [customProperty](#custom-properties) |  | One of the specific custom work order properties
-| `currentUser`  |  | Information about the current user, including the name, ID, etc.
-| `currentUserId`  |  | The ID of the user who is logged in and creates the form instance
-| `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
-| `currentAccountId`  |  | The ID of the current space 
-| `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
-
-Some Work Order derived values first need be mapped to a real readable value. The following examples will illustrate the mapping process:
-
-```json (assetToCustomPropertyValue)
-{
-	"id": "statusFromWO",
-	"type": "staticSingleSelect",
-	"config": {
-		"required": true,
-		"label": {
-			"text": {
-				"en": "status prefilled from Workorder",
-				"de": "Status vorauselektiert vom Auftrag"
-			}
-		},
-		"value": {
-			"options": {
-				"0": {
-					"en": "Open",
-					"de": "Offen"
-				},
-				"1": {
-					"en": "In Progress",
-					"de": "In Bearbeitung"
-				},
-				"2": {
-					"en": "On Hold",
-					"de": "Angehalten"
-				},
-				"3": {
-					"en": "Completed",
-					"de": "Abgeschlossen"
-				},
-				"4": {
-					"en": "Closed",
-					"de": "Geschlossen"
-				}
-			}
-		},
-		"prefill": {
-			"value": [
-				{
-					"input": "workOrderId",
-					"steps": [
-						"workOrderIdToWorkOrder",
-						"workOrderToStatusNumberString"
-					]
-				}
-			]
-		}
-	}
-}
-```
-
----
-## Custom Properties
+## Custom Property Steps 
 
 Custom Properties of the respective space can be extracted. These include Custom Work Order Properties and Custom Asset Properties. To extract a custom Property, one must first know their respective ID.
+
+| `steps`               | input data type  | output data type | description |
+| :----------------------------- | :----- | :-----|
+| `assetToAssetTypeNameString` | `ASSET`| `STRING`
+| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
+| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
+| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
+| `addressToCityString` | `ADDRESS`| `STRING`
+| `customPropertyValueToString` | `UNKNOWN`| `STRING`
+| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
+| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
+| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER`
+| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN`
+| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID`
+| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID`
+| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID`
+| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE`
+| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME`
 
 The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue` or `assetToCustomPropertyValue`:
 
@@ -670,13 +553,109 @@ The following examples illustrate the extraction of a custom property, the custo
 	]
 }
 ```
+Some Asset derived values first need be mapped to a real readable value, especially values from a custom property multi select. The following examples will illustrate the mapping process:
+
+```json (assetToCustomPropertyValue)
+{
+	"id": "customPropertyValueToStringTestIdFromMultiSelect",
+	"type": "staticMultiSelect",
+	"config": {
+		"label": {
+			"text": {
+				"en": "preffiled from asset custom property Multi Select",
+				"de": "preffiled from asset custom property Multi Select"
+			}
+		},
+		"value": {
+			"options": {
+				"Option 1": {
+					"en": "Option 1",
+					"de": "Option 1"
+				},
+				"Option 62374": {
+					"en": "Option 62374",
+					"de": "Option 62374"
+				},
+				"Option 101": {
+					"en": "Option 101",
+					"de": "Option 101"
+				}
+			}
+		},
+		"prefill": {
+			"value": [
+				{
+					"input": "assetId",
+					"steps": [
+						"assetIdToAsset",
+						[
+							"assetToCustomPropertyValue",
+							9
+						],
+						"customPropertyValueToArrayOfStrings"
+					]
+				}
+			]
+		}
+	}
+}
+```
+
+---
+
+```json (assetToCustomPropertyValue)
+{
+	"id": "statusFromWO",
+	"type": "staticSingleSelect",
+	"config": {
+		"required": true,
+		"label": {
+			"text": {
+				"en": "status prefilled from Workorder",
+				"de": "Status vorauselektiert vom Auftrag"
+			}
+		},
+		"value": {
+			"options": {
+				"0": {
+					"en": "Open",
+					"de": "Offen"
+				},
+				"1": {
+					"en": "In Progress",
+					"de": "In Bearbeitung"
+				},
+				"2": {
+					"en": "On Hold",
+					"de": "Angehalten"
+				},
+				"3": {
+					"en": "Completed",
+					"de": "Abgeschlossen"
+				},
+				"4": {
+					"en": "Closed",
+					"de": "Geschlossen"
+				}
+			}
+		},
+		"prefill": {
+			"value": [
+				{
+					"input": "workOrderId",
+					"steps": [
+						"workOrderIdToWorkOrder",
+						"workOrderToStatusNumberString"
+					]
+				}
+			]
+		}
+	}
+}
+```
 
 ---
 ## Properties
-
-
-
-
 
 <details>
 <summary>All available <code>steps</code> and their input and output data type </summary>
