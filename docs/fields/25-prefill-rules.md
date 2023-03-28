@@ -122,7 +122,9 @@ By chaining steps, the desired data type can be achieved "step by step".
 
 **Note:** `OrganizationID` can use the same steps which convert the `accountID` datatype.
 
-## General Steps 
+## General Steps
+
+General steps can be used to transform data types to fit desired field data type.
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----|
