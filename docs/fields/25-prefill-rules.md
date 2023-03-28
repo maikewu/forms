@@ -554,7 +554,7 @@ The following examples illustrate the extraction of a custom property, the custo
 ```
 
 --- 
-### Schema and Examples
+### Further Examples
 
 Prefill can have several rules for a target, which get executed sequentially until on rule can be applied when the required input data is available.
 
