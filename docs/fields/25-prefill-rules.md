@@ -115,7 +115,7 @@ All available <code>input</code> sources, their values and data types
 
 ---
 ## Steps 
-`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`. There are [General Steps](#general-steps), [Asset Steps](#asset-steps), [Work Order Steps](#asset-steps) and [Custom Property Steps](#custom-property-steps).
+`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`. There are [General Steps](#general-steps), [Asset Steps](#asset-steps), [Work Order Steps](#work-order-steps) and [Custom Property Steps](#custom-property-steps).
 
 `steps` have an input (expected) data type and an output (provided) data type. 
 By chaining steps, the desired data type can be achieved "step by step". 
@@ -202,6 +202,8 @@ Custom Properties of the respective space can be extracted. These include Custom
 | `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME` | Converts the customPropertyValue (which can have many types) to a `REMBERG_DATETIME`
 
 The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue` or `assetToCustomPropertyValue`:
+
+**Note**: Some custom property derived values first need be mapped to a real readable value, especially values from a custom property multi select. The following examples will illustrate the mapping process:
 
 
 ```json (CompanySingleSelect)
@@ -550,170 +552,6 @@ The following examples illustrate the extraction of a custom property, the custo
 	]
 }
 ```
-Some Asset derived values first need be mapped to a real readable value, especially values from a custom property multi select. The following examples will illustrate the mapping process:
-
-```json (assetToCustomPropertyValue)
-{
-	"id": "customPropertyValueToStringTestIdFromMultiSelect",
-	"type": "staticMultiSelect",
-	"config": {
-		"label": {
-			"text": {
-				"en": "preffiled from asset custom property Multi Select",
-				"de": "preffiled from asset custom property Multi Select"
-			}
-		},
-		"value": {
-			"options": {
-				"Option 1": {
-					"en": "Option 1",
-					"de": "Option 1"
-				},
-				"Option 62374": {
-					"en": "Option 62374",
-					"de": "Option 62374"
-				},
-				"Option 101": {
-					"en": "Option 101",
-					"de": "Option 101"
-				}
-			}
-		},
-		"prefill": {
-			"value": [
-				{
-					"input": "assetId",
-					"steps": [
-						"assetIdToAsset",
-						[
-							"assetToCustomPropertyValue",
-							9
-						],
-						"customPropertyValueToArrayOfStrings"
-					]
-				}
-			]
-		}
-	}
-}
-```
-
----
-
-```json (assetToCustomPropertyValue)
-{
-	"id": "statusFromWO",
-	"type": "staticSingleSelect",
-	"config": {
-		"required": true,
-		"label": {
-			"text": {
-				"en": "status prefilled from Workorder",
-				"de": "Status vorauselektiert vom Auftrag"
-			}
-		},
-		"value": {
-			"options": {
-				"0": {
-					"en": "Open",
-					"de": "Offen"
-				},
-				"1": {
-					"en": "In Progress",
-					"de": "In Bearbeitung"
-				},
-				"2": {
-					"en": "On Hold",
-					"de": "Angehalten"
-				},
-				"3": {
-					"en": "Completed",
-					"de": "Abgeschlossen"
-				},
-				"4": {
-					"en": "Closed",
-					"de": "Geschlossen"
-				}
-			}
-		},
-		"prefill": {
-			"value": [
-				{
-					"input": "workOrderId",
-					"steps": [
-						"workOrderIdToWorkOrder",
-						"workOrderToStatusNumberString"
-					]
-				}
-			]
-		}
-	}
-}
-```
-
----
-## Properties
-
-<details>
-<summary>All available <code>steps</code> and their input and output data type </summary>
-
-`steps` have an input (expected) data type and an output (provided) data type. 
-By chaining steps, the desired data type can be achieved "step by step". 
-
-| `steps`               | input data type  | output data type |
-| :----------------------------- | :----- | :-----|
-| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `assetIdToUser` | `ASSET_ID`| `ASSET`
-| `userIdToUser` | `USER_ID`| `USER_INFO`
-| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
-| `userToFullNameString` | `USER_INFO` | `STRING`
-| `assetToLocationAddress` | `ASSET`| `ADDRESS`
-| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
-| `assetToAssetTypeNameString` | `ASSET`| `STRING`
-| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
-| `addressToCityString` | `ADDRESS`| `STRING`
-| `customPropertyValueToString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
-| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER`
-| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN`
-| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID`
-| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID`
-| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID`
-| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE`
-| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME`
-| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
-| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
-| `workOrderToTasks` | `WORK_ORDER`| `TASKS`
-| `workOrderToTitleString` | `WORK_ORDER`| `STRING`
-| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING`
-| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING`
-| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID`
-| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING`
-| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING`
-| `workOrderToPriorityString` | `WORK_ORDER`| `STRING`
-| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID`
-| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING`
-| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
-| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
-| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `staticString` | `[NONE, STRING]`| `STRING`
-| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
-| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
-| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS`
-| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE`
-| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME`
-| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
-| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
-| `staticTasks` | `[NONE, TASKS]`| `TASKS`
-
-</details>
-
 
 --- 
 ### Schema and Examples
