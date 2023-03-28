@@ -115,7 +115,7 @@ All available <code>input</code> sources, their values and data types
 
 ---
 ## Steps 
-`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`. There are [General Steps](#general-steps), [Asset Steps](#asset-steps), [Work Order Steps](#asset-steps)  and [Custom Property Steps](#custom-property-steps).
+`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`. There are [General Steps](#general-steps), [Asset Steps](#asset-steps), [Work Order Steps](#asset-steps) and [Custom Property Steps](#custom-property-steps).
 
 `steps` have an input (expected) data type and an output (provided) data type. 
 By chaining steps, the desired data type can be achieved "step by step". 
@@ -128,21 +128,21 @@ General steps can be used to transform data types to fit desired field data type
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----| :-----------------------------|
-| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `userIdToUser` | `USER_ID`| `USER_INFO`
-| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
-| `userToFullNameString` | `USER_INFO` | `STRING`
-| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
-| `addressToCityString` | `ADDRESS`| `STRING`
-| `staticString` | `[NONE, STRING]`| `STRING`
-| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
-| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
-| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS`
-| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE`
-| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME`
-| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
-| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
-| `staticTasks` | `[NONE, TASKS]`| `TASKS`
+| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE` | Extracts the date
+| `userIdToUser` | `USER_ID`| `USER_INFO` | Converts the `USER_ID` to `USER_INFO`
+| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT` | Converts the `ACCOUNT_ID` to `ACCOUNT`
+| `userToFullNameString` | `USER_INFO` | `STRING` | Converts the `USER_INFO` to the full name as a `STRING`
+| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS` | Converts the `ACCOUNT` to the associated billing address as `ADDRESS`
+| `addressToCityString` | `ADDRESS`| `STRING` | Extract the city name from an `ADDRESS` as a `STRING`
+| `staticString` | `[NONE, STRING]`| `STRING` | Provides a static `STRING`
+| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS` | Provides a static `ARRAY_OF_STRINGS`
+| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN` | Provides a static `BOOLEAN`
+| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS` | Provides a static `ADDRESS`
+| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE` | Provides a static `ADDRESS`
+| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME` | Provides a static `REMBERG_TIME`
+| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER` | Provides a static `PHONE_NUMBER`
+| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME` | Provides a static `REMBERG_DATETIME`
+| `staticTasks` | `[NONE, TASKS]`| `TASKS` | Provides a static list of `TASKS`
 
 ## Asset Steps
 
@@ -174,8 +174,8 @@ When a new form instance is created from an work order detail page (Work Order V
 | `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID` | Extracts the userId of the user responsible for the work order
 | `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Extracts the status of the work order as a number: 0: Open, 1: In Progress, 2: On Hold, 3: Completed, 4: Closed
 | `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Extracts the type of the work order as a number: 0: Repair, 1: Commissioning, 2: Maintenance
-| `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Extracts the priority of the work order as a `STRING`: 000_low: Low priority, "010_normal: Normal priority, 020_high: High priority, 030_critical: Critical priority
-| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID` | Extracts the userId of the user performing the work order
+| `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Extracts the priority of the work order as a `STRING`: 000_low: Low priority, 010_normal: Normal priority, 020_high: High priority, 030_critical: Critical priority
+| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID` | Extracts the `USER_ID` of the user performing the work order
 | `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING` | Extracts the additional contact information associated with the work order as a `STRING`
 | `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject title from the service case
 | `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject and title from service case
@@ -188,11 +188,8 @@ Custom Properties of the respective space can be extracted. These include Custom
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----| :-----------------------------|
-| `assetToAssetTypeNameString` | `ASSET`| `STRING`
 | `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
 | `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
-| `addressToCityString` | `ADDRESS`| `STRING`
 | `customPropertyValueToString` | `UNKNOWN`| `STRING`
 | `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
 | `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
