@@ -49,6 +49,9 @@ You can find a list below, that contains all sections.
 }
 ```
 ---
+
+# Configuration Parameters
+
 ## `pdfTitle`
 
 | `pdfTitle`       |                 |
@@ -69,7 +72,7 @@ Sets the title displayed at the top of the pdf
       "it": "Test Title"
     }
 ```
----
+
 ## `hideInstanceCounterInPdf`
 
 | `hideInstanceCounterInPdf`       |                 |
@@ -83,7 +86,7 @@ Setting the `hideInstanceCounterInPdf` config option to `true` hides the instanc
 ```json
 "hideInstanceCounterInPdf": false
 ```
----
+
 ## `timezone`
 
 | `timezone`       |                 |
