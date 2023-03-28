@@ -162,25 +162,25 @@ When a new form instance is created from an work order detail page (Work Order V
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----| :---------|
-| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
-| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
-| `workOrderToTasks` | `WORK_ORDER`| `TASKS`
-| `workOrderToTitleString` | `WORK_ORDER`| `STRING`
-| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING`
-| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING`
-| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID`
-| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING`
-| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING`
-| `workOrderToPriorityString` | `WORK_ORDER`| `STRING`
-| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID`
-| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING`
-| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
-| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
-| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
+| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`| Test description
+| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS` | Test description
+| `workOrderToTasks` | `WORK_ORDER`| `TASKS` | Test description
+| `workOrderToTitleString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE` | Test description
+| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE` | Test description
+| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE` | Test description
+| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID` | Test description
+| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID` | Test description
+| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING` | Test description
+| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID` | Test description
+| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Test description
 
 ## Custom Property Steps 
 
