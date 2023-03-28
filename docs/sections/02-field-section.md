@@ -21,12 +21,15 @@ The FieldSection contains all fields of the form.
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "en": "Example Field Section",
-          "de": "Beispiel Feld Sektion",
-          "tr": "Example Field Section [TR]",
-          "fr": "Example Field Section [FR]",
-          "es": "Example Field Section [ES]",
-          "it": "Example Field Section [IT]"
+          "text": {
+            "en": "Example Field Section",
+            "de": "Beispiel Feld Sektion",
+            "tr": "Example Field Section [TR]",
+            "fr": "Example Field Section [FR]",
+            "es": "Example Field Section [ES]",
+            "it": "Example Field Section [IT]"
+          },
+          "pdfHide": false
         }
       },
       "fields": [

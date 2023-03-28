@@ -12,6 +12,7 @@ You can find a list below, that contains all sections.
 
 | general property                                                 | Description                                                                                                  |
 | :--------------------------------------------------------| :----------------------------------------------------------------------------------------------------------- |
+| [pdfTitle](#pdfTitle)       | Sets the title displayed at the top of the pdf 
 | [hideInstanceCounterInPdf](#hideinstancecounterinpdf)       | Setting this to `true` hides the counter of the form instance in the PDF view |
 | [timezone](#timezone)                                       | Defines the timezone of the form |
 
@@ -46,6 +47,27 @@ You can find a list below, that contains all sections.
     }
   ]
 }
+```
+---
+## `pdfTitle`
+
+| `pdfTitle`       |                 |
+| :-------------- | :-------------- |
+| Possible Values | [MultiLanguageText](./24-general-properties/#multilanguagetext) |
+| Required        | no              |
+| Default Value   | -             |
+
+Sets the title displayed at the top of the pdf
+
+```json
+"pdfTitle": {
+      "de": "Test Title",
+      "en": "Test Title",
+      "tr": "Test Title",
+      "fr": "Test Title",
+      "es": "Test Title",
+      "it": "Test Title"
+    }
 ```
 ---
 ## `hideInstanceCounterInPdf`
