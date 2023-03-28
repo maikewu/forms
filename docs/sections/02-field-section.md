@@ -77,7 +77,7 @@ You can find a list of possible fields below. Besides them a form consists of a 
 
 | Property                                                    | Description                       |
 | :---------------------------------------------------------- | :-------------------------------- |
-| [text](./24-general-properties/#text)                       | Localized label text of the field. Shown in the UI and the PDF. |
-| [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the label in the PDF. |
+| [text](./24-general-properties/#text)                       | Headline text of the field section. Shown in the UI and the PDF. |
+| [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the headline in the PDF. |
 
 
