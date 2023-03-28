@@ -10,7 +10,7 @@ The FieldSection contains all fields of the form.
 
 | Property                                                                     | Description                      |
 | :--------------------------------------------------------------------------- | :--------------------------------|
-| [headlineText](#fields)                   | Configurate the displayed field lable |
+| [headlineText](#headlineText)                   | Configurate the displayed field lable |
 | [fields](#fields)                                                            | Field properties of a form. |
 
 
