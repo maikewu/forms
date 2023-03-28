@@ -155,27 +155,6 @@ By chaining steps, the desired data type can be achieved "step by step".
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----|
-| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `assetIdToUser` | `ASSET_ID`| `ASSET`
-| `userIdToUser` | `USER_ID`| `USER_INFO`
-| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
-| `userToFullNameString` | `USER_INFO` | `STRING`
-| `assetToLocationAddress` | `ASSET`| `ADDRESS`
-| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
-| `assetToAssetTypeNameString` | `ASSET`| `STRING`
-| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
-| `addressToCityString` | `ADDRESS`| `STRING`
-| `customPropertyValueToString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
-| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER`
-| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN`
-| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID`
-| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID`
-| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID`
-| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE`
-| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME`
 | `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
 | `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
 | `workOrderToTasks` | `WORK_ORDER`| `TASKS`
@@ -195,15 +174,6 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
 | `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
 | `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `staticString` | `[NONE, STRING]`| `STRING`
-| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
-| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
-| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS`
-| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE`
-| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME`
-| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
-| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
-| `staticTasks` | `[NONE, TASKS]`| `TASKS`
 
 ---
 ## Asset View
