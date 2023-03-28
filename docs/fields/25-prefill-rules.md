@@ -143,7 +143,6 @@ By chaining steps, the desired data type can be achieved "step by step".
 | `staticTasks` | `[NONE, TASKS]`| `TASKS`
 
 ## Asset Steps
-
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----|
 | `assetToLocationAddress` | `ASSET`| `ADDRESS`
