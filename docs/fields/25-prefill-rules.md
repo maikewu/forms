@@ -115,236 +115,95 @@ All available <code>input</code> sources, their values and data types
 
 ---
 ## Steps 
-`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`. There are [General Steps](#general-steps), [Asset Steps](#asset-steps), [Work Order Steps](#asset-steps)  and [Custom Property Steps](#custom-property-steps).
+`steps` can be used to transform the data if the `input` data type does not match the expected data type of the `target`. There are [General Steps](#general-steps), [Asset Steps](#asset-steps), [Work Order Steps](#work-order-steps) and [Custom Property Steps](#custom-property-steps).
 
 `steps` have an input (expected) data type and an output (provided) data type. 
 By chaining steps, the desired data type can be achieved "step by step". 
 
 **Note:** `OrganizationID` can use the same steps which convert the `accountID` datatype.
 
-## General Steps 
+## General Steps
+
+General steps can be used to transform data types to fit desired field data type.
 
 | `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----|
-| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `userIdToUser` | `USER_ID`| `USER_INFO`
-| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
-| `userToFullNameString` | `USER_INFO` | `STRING`
-| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
-| `addressToCityString` | `ADDRESS`| `STRING`
-| `staticString` | `[NONE, STRING]`| `STRING`
-| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
-| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
-| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS`
-| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE`
-| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME`
-| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
-| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
-| `staticTasks` | `[NONE, TASKS]`| `TASKS`
+| :----------------------------- | :----- | :-----| :-----------------------------|
+| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE` | Extracts the date
+| `userIdToUser` | `USER_ID`| `USER_INFO` | Converts the `USER_ID` to `USER_INFO`
+| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT` | Converts the `ACCOUNT_ID` to `ACCOUNT`
+| `userToFullNameString` | `USER_INFO` | `STRING` | Converts the `USER_INFO` to the full name as a `STRING`
+| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS` | Converts the `ACCOUNT` to the associated billing address as `ADDRESS`
+| `addressToCityString` | `ADDRESS`| `STRING` | Extract the city name from an `ADDRESS` as a `STRING`
+| `staticString` | `[NONE, STRING]`| `STRING` | Provides a static `STRING`
+| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS` | Provides a static `ARRAY_OF_STRINGS`
+| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN` | Provides a static `BOOLEAN`
+| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS` | Provides a static `ADDRESS`
+| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE` | Provides a static `ADDRESS`
+| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME` | Provides a static `REMBERG_TIME`
+| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER` | Provides a static `PHONE_NUMBER`
+| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME` | Provides a static `REMBERG_DATETIME`
+| `staticTasks` | `[NONE, TASKS]`| `TASKS` | Provides a static list of `TASKS`
 
 ## Asset Steps
 
+When a new form instance is created from an asset detail page (Asset View), the `assetId` can be used to create prefilling steps that extract attributes of the related asset. Therefore, the first step must be `assetIdToAsset` followed by these available steps:
+
 | `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----|
-| `assetToLocationAddress` | `ASSET`| `ADDRESS`
-| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
-| `assetToAssetTypeNameString` | `ASSET`| `STRING`
-| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
+| :----------------------------- | :----- | :-----| :-----------------------------|
+| `assetIdToAsset` | `ASSET_ID`| `ASSET` | Converts the `ASSET_ID` to a `ASSET`
+| `assetToLocationAddress` | `ASSET`| `ADDRESS` | Extracts the defined asset location
+| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID` | Extracts the `ACCOUNT_ID` of the company associated with the asset
+| `assetToAssetTypeNameString` | `ASSET`| `STRING` | Extracts the name of the asset type as a `STRING`
+| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `ASSET` and the number of the respective custom asset  property as `NUMBER` as inputs and extracts the respective custom property value 
 
 ## Work Order Steps
 
+When a new form instance is created from an work order detail page (Work Order View), the `workOrderId` can be used to create prefilling steps that extract attributes of the related work order. Therefore, the first step must be `workOrderIdToWorkOrder` followed by these available steps:
+
 | `steps`               | input data type  | output data type | description |
-| :----------------------------- | :----- | :-----|
-| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `assetIdToUser` | `ASSET_ID`| `ASSET`
-| `userIdToUser` | `USER_ID`| `USER_INFO`
-| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
-| `userToFullNameString` | `USER_INFO` | `STRING`
-| `assetToLocationAddress` | `ASSET`| `ADDRESS`
-| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
-| `assetToAssetTypeNameString` | `ASSET`| `STRING`
-| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
-| `addressToCityString` | `ADDRESS`| `STRING`
-| `customPropertyValueToString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
-| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER`
-| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN`
-| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID`
-| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID`
-| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID`
-| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE`
-| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME`
-| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
-| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
-| `workOrderToTasks` | `WORK_ORDER`| `TASKS`
-| `workOrderToTitleString` | `WORK_ORDER`| `STRING`
-| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING`
-| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING`
-| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID`
-| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING`
-| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING`
-| `workOrderToPriorityString` | `WORK_ORDER`| `STRING`
-| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID`
-| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING`
-| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
-| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
-| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `staticString` | `[NONE, STRING]`| `STRING`
-| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
-| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
-| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS`
-| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE`
-| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME`
-| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
-| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
-| `staticTasks` | `[NONE, TASKS]`| `TASKS`
-
----
-## Asset View
-If you create a new forms instance from an asset (Asset View), the following data is provided:
-
-| Data | Condition | Description |
-| :------------------------- | :--------------| :---- |
-| `assetId`  |  |  The ID of the asset form which the new form is created
-| `organizationId` | | The ID of the assigned company in the work order or from the asset
-| `creationDateTime`  |  | The creation date time of form 
-| `currentUser`  |  |  	Information about the current user, including the name, ID, etc.
-| `currentUserId`  |  |  The ID of the user who is logged in and creates the form instance
-| `currentAccount`  |  |  Information about the current space, including the name, address, ID, etc.
-| `currentAccountId`  |  |  	The ID of the current space
-| [customProperty](#custom-properties) |  | One of the specific custom asset properties
-| `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
-
-Some Asset derived values first need be mapped to a real readable value, especially values from a custom property multi select. The following examples will illustrate the mapping process:
-
-```json (assetToCustomPropertyValue)
-{
-	"id": "customPropertyValueToStringTestIdFromMultiSelect",
-	"type": "staticMultiSelect",
-	"config": {
-		"label": {
-			"text": {
-				"en": "preffiled from asset custom property Multi Select",
-				"de": "preffiled from asset custom property Multi Select"
-			}
-		},
-		"value": {
-			"options": {
-				"Option 1": {
-					"en": "Option 1",
-					"de": "Option 1"
-				},
-				"Option 62374": {
-					"en": "Option 62374",
-					"de": "Option 62374"
-				},
-				"Option 101": {
-					"en": "Option 101",
-					"de": "Option 101"
-				}
-			}
-		},
-		"prefill": {
-			"value": [
-				{
-					"input": "assetId",
-					"steps": [
-						"assetIdToAsset",
-						[
-							"assetToCustomPropertyValue",
-							9
-						],
-						"customPropertyValueToArrayOfStrings"
-					]
-				}
-			]
-		}
-	}
-}
-```
-
----
- ## Work Order View
-If you create a new forms instance from a work order, the following data is provided:
-
-
-| Data | Condition | Description |
-| :------------------------- | :--------------| :---- |
-| `WorkOrderId`  |  |  The ID of the work order from which the form is created
-| `organizationId`  | If WO has connected company | The ID of the company (contact) which is connected to the work order
-| `assetId`  | If WO has assets |  The ID of the asset which is part of the work order
-| [customProperty](#custom-properties) |  | One of the specific custom work order properties
-| `currentUser`  |  | Information about the current user, including the name, ID, etc.
-| `currentUserId`  |  | The ID of the user who is logged in and creates the form instance
-| `currentAccount`  |  | Information about the current space, including the name, address, ID, etc.
-| `currentAccountId`  |  | The ID of the current space 
-| `assignedUserId`  | Optional |  The ID of the user, who is assigned to the new form instance
-
-Some Work Order derived values first need be mapped to a real readable value. The following examples will illustrate the mapping process:
-
-```json (assetToCustomPropertyValue)
-{
-	"id": "statusFromWO",
-	"type": "staticSingleSelect",
-	"config": {
-		"required": true,
-		"label": {
-			"text": {
-				"en": "status prefilled from Workorder",
-				"de": "Status vorauselektiert vom Auftrag"
-			}
-		},
-		"value": {
-			"options": {
-				"0": {
-					"en": "Open",
-					"de": "Offen"
-				},
-				"1": {
-					"en": "In Progress",
-					"de": "In Bearbeitung"
-				},
-				"2": {
-					"en": "On Hold",
-					"de": "Angehalten"
-				},
-				"3": {
-					"en": "Completed",
-					"de": "Abgeschlossen"
-				},
-				"4": {
-					"en": "Closed",
-					"de": "Geschlossen"
-				}
-			}
-		},
-		"prefill": {
-			"value": [
-				{
-					"input": "workOrderId",
-					"steps": [
-						"workOrderIdToWorkOrder",
-						"workOrderToStatusNumberString"
-					]
-				}
-			]
-		}
-	}
-}
-```
-
----
-## Custom Properties
+| :----------------------------- | :----- | :-----| :-----------------------------|
+| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`| Converts the `WORK_ORDER_ID` to a `WORK_ORDER`
+| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS` | Extracts the defined asset location of the work order
+| `workOrderToTasks` | `WORK_ORDER`| `TASKS` | Extracts the tasks added to the work order
+| `workOrderToTitleString` | `WORK_ORDER`| `STRING` | Extracts the title of the work order
+| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING` | Extracts the description of the work order
+| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE` | Extracts the due date of the work order
+| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE` | Extracts the start date of the work order
+| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE` | Extracts the start date of the work order
+| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING` | Extracts the ERP reference of the work order as a `STRING`
+| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID` | Extracts the userId of the user responsible for the work order
+| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Extracts the status of the work order as a number: 0: Open, 1: In Progress, 2: On Hold, 3: Completed, 4: Closed
+| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Extracts the type of the work order as a number: 0: Repair, 1: Commissioning, 2: Maintenance
+| `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Extracts the priority of the work order as a `STRING`: 000_low: Low priority, 010_normal: Normal priority, 020_high: High priority, 030_critical: Critical priority
+| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID` | Extracts the `USER_ID` of the user performing the work order
+| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING` | Extracts the additional contact information associated with the work order as a `STRING`
+| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject title from the service case
+| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject and title from service case
+| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID` | Extracts the organization/company associated with the work order as an `ACCOUNT_ID`
+| `workOrderToCustomPropertyValue` | `[WORK_ORDER, NUMBER]`| `UNKNOWN` | Takes the `WORK_ORDER` and the number of the respective custom work order property as `NUMBER` as inputs and extracts the respective custom property value 
+ 
+## Custom Property Steps 
 
 Custom Properties of the respective space can be extracted. These include Custom Work Order Properties and Custom Asset Properties. To extract a custom Property, one must first know their respective ID.
 
+| `steps`               | input data type  | output data type | description |
+| :----------------------------- | :----- | :-----| :-----------------------------|
+| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `WORK_ORDER` and the number of the respective custom work order property as `NUMBER` as inputs and extracts the respective custom property value 
+| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `ASSET` and the number of the respective custom asset  property as `NUMBER` as inputs and extracts the respective custom property value 
+| `customPropertyValueToString` | `UNKNOWN`| `STRING` | Converts the customPropertyValue (which can have many types) to a `STRING`
+| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS` | Converts the customPropertyValue (which can have many types) to an `ARRAY_OF_STRINGS`
+| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING` | Converts the customPropertyValue (which can have many types) to a number as a `STRING`
+| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER` | Converts the customPropertyValue (which can have many types) to a `NUMBER`
+| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN` | Converts the customPropertyValue (which can have many types) to `BOOLEAN`
+| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID` | Converts the customPropertyValue (which can have many types) to an `ASSET_ID`
+| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID` | Converts the customPropertyValue (which can have many types) to an `ACCOUNT_ID`
+| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID` | Converts the customPropertyValue (which can have many types) to an `USER_ID`
+| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE` | Converts the customPropertyValue (which can have many types) to a `REMBERG_DATE`
+| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME` | Converts the customPropertyValue (which can have many types) to a `REMBERG_DATETIME`
+
 The following examples illustrate the extraction of a custom property, the custom property ID is always placed in between the [] brackets after the step `workOrderToCustomPropertyValue` or `assetToCustomPropertyValue`:
+
+**Note**: Some custom property derived values first need be mapped to a real readable value, especially values from a custom property multi select. The following examples will illustrate the mapping process:
 
 
 ```json (CompanySingleSelect)
@@ -694,76 +553,8 @@ The following examples illustrate the extraction of a custom property, the custo
 }
 ```
 
----
-## Properties
-
-
-
-
-
-<details>
-<summary>All available <code>steps</code> and their input and output data type </summary>
-
-`steps` have an input (expected) data type and an output (provided) data type. 
-By chaining steps, the desired data type can be achieved "step by step". 
-
-| `steps`               | input data type  | output data type |
-| :----------------------------- | :----- | :-----|
-| `dateTimeToDate` | `REMBERG_DATETIME`| `REMBERG_DATE`
-| `assetIdToUser` | `ASSET_ID`| `ASSET`
-| `userIdToUser` | `USER_ID`| `USER_INFO`
-| `accountIdToAccount` | `ACCOUNT_ID`| `ACCOUNT`
-| `userToFullNameString` | `USER_INFO` | `STRING`
-| `assetToLocationAddress` | `ASSET`| `ADDRESS`
-| `assetToCustomerAccountId` | `ASSET`| `ACCOUNT_ID`
-| `assetToAssetTypeNameString` | `ASSET`| `STRING`
-| `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `accountToBillingAddressAddress` | `ACCOUNT`| `ADDRESS`
-| `addressToCityString` | `ADDRESS`| `STRING`
-| `customPropertyValueToString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS`
-| `customPropertyValueToNumberString` | `UNKNOWN`| `STRING`
-| `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER`
-| `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN`
-| `customPropertyValueToAssetId` | `UNKNOWN`| `ASSET_ID`
-| `customPropertyValueToAccountId` | `UNKNOWN`| `ACCOUNT_ID`
-| `customPropertyValueToUserId` | `UNKNOWN`| `USER_ID`
-| `customPropertyValueToDate` | `UNKNOWN`| `REMBERG_DATE`
-| `customPropertyValueToDateTime` | `UNKNOWN`| `REMBERG_DATETIME`
-| `workOrderIdToWorkOrder` | `WORK_ORDER_ID`| `WORK_ORDER`
-| `workOrderToLocationAddress` | `WORK_ORDER`| `ADDRESS`
-| `workOrderToTasks` | `WORK_ORDER`| `TASKS`
-| `workOrderToTitleString` | `WORK_ORDER`| `STRING`
-| `workOrderToDescriptionString` | `WORK_ORDER`| `STRING`
-| `workOrderToDueDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToStartDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE`
-| `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING`
-| `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID`
-| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING`
-| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING`
-| `workOrderToPriorityString` | `WORK_ORDER`| `STRING`
-| `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID`
-| `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING`
-| `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING`
-| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING`
-| `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID`
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN`
-| `staticString` | `[NONE, STRING]`| `STRING`
-| `staticStringArray` | `[NONE, ARRAY_OF_STRINGS]`| `ARRAY_OF_STRINGS`
-| `staticBoolean` | `[NONE, BOOLEAN]`| `BOOLEAN`
-| `staticAddress` | `[NONE, ADDRESS]`| `ADDRESS`
-| `staticDate` | `[NONE, REMBERG_DATE]`| `REMBERG_DATE`
-| `staticTime` | `[NONE, REMBERG_TIME]`| `REMBERG_TIME`
-| `staticPhoneNumber` | `[NONE, PHONE_NUMBER]`| `PHONE_NUMBER`
-| `staticDateTime` | `[NONE, REMBERG_DATETIME]`| `REMBERG_DATETIME`
-| `staticTasks` | `[NONE, TASKS]`| `TASKS`
-
-</details>
-
-
 --- 
-### Schema and Examples
+### Further Examples
 
 Prefill can have several rules for a target, which get executed sequentially until on rule can be applied when the required input data is available.
 
