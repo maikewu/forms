@@ -10,7 +10,7 @@ The FieldSection contains all fields of the form.
 
 | Property                                                                     | Description                      |
 | :--------------------------------------------------------------------------- | :--------------------------------|
-| [headlineText](./24-general-properties/#mulitlanguagetext)                   | Configurate the displayed field lable |
+| [headlineText](#headlineText)                   | Configurate the displayed field lable |
 | [fields](#fields)                                                            | Field properties of a form. |
 
 
@@ -21,12 +21,15 @@ The FieldSection contains all fields of the form.
       "type": "fieldSection",
       "config": {
         "headlineText": {
-          "en": "Example Field Section",
-          "de": "Beispiel Feld Sektion",
-          "tr": "Example Field Section [TR]",
-          "fr": "Example Field Section [FR]",
-          "es": "Example Field Section [ES]",
-          "it": "Example Field Section [IT]"
+          "text": {
+            "en": "Example Field Section",
+            "de": "Beispiel Feld Sektion",
+            "tr": "Example Field Section [TR]",
+            "fr": "Example Field Section [FR]",
+            "es": "Example Field Section [ES]",
+            "it": "Example Field Section [IT]"
+          },
+          "pdfHide": false
         }
       },
       "fields": [
@@ -39,7 +42,7 @@ The FieldSection contains all fields of the form.
 ```
 ---
 
-# Configuration Parameters
+## Configuration Parameters
 
 ## `fields` 
 
@@ -71,5 +74,13 @@ You can find a list of possible fields below. Besides them a form consists of a 
 | [fieldRepeater](./21-field-repeater)                     | The FieldRepeater allows the user to add a table of certain fields. |
 | [richTextInput](./22-rich-text-input)                    | The RichTextInput is a text field that allows text formatting. |
 | [htmlDisplay](./23-html-display)                         | The HtmlDisplay allows the user to enter html text. |
+
+
+## `headlineText`
+
+| Property                                                    | Description                       |
+| :---------------------------------------------------------- | :-------------------------------- |
+| [text](./24-general-properties/#text)                       | Headline text of the field section. Shown in the UI and the PDF. |
+| [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the headline in the PDF. |
 
 
