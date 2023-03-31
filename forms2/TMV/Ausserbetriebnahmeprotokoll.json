@@ -1,0 +1,299 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headlineText": {
+          "de": "Allgemeine Informationen",
+          "en": "General Information"
+        }
+      },
+      "fields": [
+        {
+          "id": "company",
+          "type": "companySingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftraggeber",
+                "en": "Client"
+              }
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToOrganizationAccountId"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "02_signatureClient",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress",
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "03_signatureContractor",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress",
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "assetLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ],
+            "useAsFilterForFields": [
+              "assetType"
+            ]
+          }
+        },
+        {
+          "id": "assetLocation",
+          "type": "addressInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ort der Anlage",
+                "en": "Asset location"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "assetType",
+          "type": "assetSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlagenart",
+                "en": "Asset type"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "dateHelpText",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h4>Oben stehende Anlage wurde zu folgemden Datum fachgerecht außer Betrieb genommen und entsprechend gekennzeichnet.</h4>",
+              "en": "<h4>The above plant was professionally decommissioned on the following date and marked accordingly.</h4>"
+            },
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "date",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Datum der Ausserbetriebnahme",
+                "en": "Date of decommissioning"
+              }
+            },
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "furtherComments",
+          "type": "multiLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Weitere Bemerkungen",
+                "en": "Further comments"
+              }
+            },
+            "pdfWidth": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_signatureClient",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Auftraggeber",
+          "en": "Signature Client"
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "03_signatureContractor",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Auftragnehmer",
+          "en": "Signature Contrator"
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "04_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Außerbetriebnahmeprotokoll als E-Mail senden",
+          "en": "Send decommissioning protocol as e-mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": true,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "en": "This email was generated automatically.\nPlease do not reply to this email."
+          },
+          "subject": {
+            "de": "Außerbetriebnahmeprotokoll",
+            "en": "Decommissioning protocol"
+          }
+        }
+      }
+    }
+  ]
+}
