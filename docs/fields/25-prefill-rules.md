@@ -556,7 +556,7 @@ The following examples illustrate the extraction of a custom property, the custo
 --- 
 ### Further Examples
 
-Prefill can have several rules for a target, which get executed sequentially until on rule can be applied when the required input data is available.
+These examples further illustrate the use of prefilling for all available fields:
 
 ```json (CompanySingleSelect)
 // Do not copy comments!
