@@ -14,38 +14,28 @@
       },
       "fields": [
         {
-          "id": "headlineDisplay_1",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "en": "General Information",
-              "de": "Allgemeine Informationen"
-            },
-            "uiHide": true,
-            "pdfHide": false,
-            "pdfTextSize": "H1",
-            "pdfTextColor": "#ff0000",
-            "pdfWidth": 1
-          }
-        },
-        {
           "id": "customer",
           "type": "companySingleSelect",
           "config": {
-            "useAsFilterForFields": ["asset"],
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "useAsFilterForFields": ["asset", "contactPerson_0"],
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Kunde",
                 "en": "Customer"
               }
             },
+            "value": { "pdfPrintCompanyNumber": true },
             "prefill": {
               "selectedCompany": [
                 {
                   "input": "organizationId",
                   "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
@@ -71,8 +61,12 @@
             "label": {
               "text": {
                 "de": "Kundenadresse",
-                "en": "Custommer Address"
+                "en": "Customer Address"
               }
+            },
+            "value": {
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
@@ -95,9 +89,13 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Auftragsadresse",
-                "en": "Work Order Address"
+                "de": "Montageort",
+                "en": "Place of Action"
               }
+            },
+            "value": {
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
@@ -107,6 +105,10 @@
                     "workOrderIdToWorkOrder",
                     "workOrderToLocationAddress"
                   ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -136,23 +138,20 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Auftragsnummer",
+                "de": "Bestellnummer",
                 "en": "Order Number"
               }
-            }
-          }
-        },
-        {
-          "id": "installationReportNumber",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Montageberichtsnummer",
-                "en": "Installation Report Number"
-              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -171,6 +170,10 @@
             "prefill": {
               "value": [
                 {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
                   "input": "currentUserId",
                   "steps": []
                 }
@@ -179,28 +182,60 @@
           }
         },
         {
-          "id": "AAWEditor",
-          "type": "singleLineTextInput",
+          "id": "contactPerson_0",
+          "type": "userSingleSelect",
           "config": {
+            "required": false,
+            "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "AAW-Bearbeiter",
-                "en": "AAW Editor"
+                "en": "Contact Person",
+                "de": "Kontaktpersonen"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfPrintEmailAddress": false,
+              "pdfHide": false
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "signatureCustomer",
+                  "propertyName": "name"
+                },
+                "steps": ["userToFullNameString"]
               }
+            ]
+          }
+        },
+        {
+          "id": "contact_manual_helptext",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": true,
+            "pdfWidth": 1,
+            "text": {
+              "en": "If the contact person is not in the system, please add the name here:",
+              "de": "Wenn die Kontaktperson nicht im System ist, bitte den Namen hier eintragen:",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
             }
           }
         },
         {
-          "id": "contactPerson",
+          "id": "contactPerson_1",
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Ansprechperson",
+                "de": "Kontaktpersonen",
                 "en": "Contact Person"
               }
             },
@@ -230,20 +265,6 @@
           }
         },
         {
-          "id": "faxNumber",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Fax",
-                "en": "Fax"
-              }
-            }
-          }
-        },
-        {
           "id": "asset",
           "type": "assetSingleSelect",
           "config": {
@@ -251,8 +272,8 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Gerät und Seriennummer",
-                "en": "Device And Serial Number"
+                "de": "Gerät / Seriennummer",
+                "en": "Machine Type / Serial Number"
               }
             },
             "prefill": {
@@ -262,7 +283,17 @@
                   "steps": []
                 }
               ]
-            }
+            },
+            "onChange": [
+              {
+                "target": { "id": "customer" },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
           }
         },
         {
@@ -274,7 +305,7 @@
             "label": {
               "text": {
                 "de": "Geschäftsfeld",
-                "en": "Business Unit"
+                "en": "Division"
               }
             },
             "value": {
@@ -308,7 +339,7 @@
             "label": {
               "text": {
                 "de": "Kostenstelle",
-                "en": "Cost Center"
+                "en": "Cost Cerrier"
               }
             }
           }
@@ -322,7 +353,7 @@
             "label": {
               "text": {
                 "de": "Servicevertrag",
-                "en": "Service Contract"
+                "en": "Maintenance Contract"
               }
             },
             "value": {
@@ -356,11 +387,11 @@
           "type": "timeTrackingListInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "Work And Travel Times",
+                "en": "Working and Travel Times",
                 "de": "Arbeits- und Reisezeiten"
               },
               "pdfHide": false
@@ -393,7 +424,7 @@
                 "disabled": false,
                 "required": false,
                 "pdfHide": false,
-                "pdfPrintEmailAddress": true
+                "pdfPrintEmailAddress": false
               },
               "commentMultiLineTextInput": {
                 "disabled": false,
@@ -419,9 +450,10 @@
           "id": "exampleTaskListInput_2",
           "type": "taskListInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
-                "en": "Type Of Working Steps",
+                "en": "Work Report",
                 "de": "Art der Arbeiten"
               }
             },
@@ -453,29 +485,31 @@
       },
       "fields": [
         {
-          "id": "headlineDisplay_4",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "en": "Installation Report",
-              "de": "Montagebericht"
-            },
-            "uiHide": true,
-            "pdfHide": false,
-            "pdfTextSize": "H1",
-            "pdfTextColor": "#ff0000",
-            "pdfWidth": 1
-          }
-        },
-        {
-          "id": "fullReport",
+          "id": "fullReport_0",
           "type": "richTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
-                "de": "Vollständiger Bericht",
-                "en": "Full report"
+                "de": "Beschreibung Kunde",
+                "en": "Description Customer"
+              }
+            },
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            }
+          }
+        },
+        {
+          "id": "fullReport_1",
+          "type": "richTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Sonstiges",
+                "en": "Others"
               }
             },
             "placeHolderText": {
@@ -500,6 +534,7 @@
           "id": "SparePartsList",
           "type": "partListInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
                 "de": "Ersatzteile",
@@ -545,7 +580,6 @@
             }
           }
         },
-
         {
           "id": "helpText",
           "type": "htmlDisplay",
@@ -565,10 +599,10 @@
         "required": false,
         "headlineText": {
           "de": "Unterschrift Monteur",
-          "en": "Signature Assembler"
+          "en": "Signature Technician"
         },
         "pdfHide": false,
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "fields": {
@@ -585,15 +619,15 @@
           "nameSingleLineTextInput": {
             "disable": false,
             "pdfHide": false,
-            "capitalizeFirstLetterOfEveryWord": false,
+            "capitalizeFirstLetterOfEveryWord": true,
             "required": false
           }
         },
         "prefill": {
           "name": [
             {
-              "input": "currentUser",
-              "steps": ["userToFullNameString"]
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
@@ -610,16 +644,6 @@
               "steps": [
                 "assetIdToAsset",
                 "assetToLocationAddress",
-                "addressToCityString"
-              ]
-            },
-            {
-              "input": "assetId",
-              "steps": [
-                "assetIdToAsset",
-                "assetToCustomerAccountId",
-                "accountIdToAccount",
-                "accountToBillingAddressAddress",
                 "addressToCityString"
               ]
             },
@@ -668,17 +692,11 @@
           "nameSingleLineTextInput": {
             "disable": false,
             "pdfHide": false,
-            "capitalizeFirstLetterOfEveryWord": false,
+            "capitalizeFirstLetterOfEveryWord": true,
             "required": false
           }
         },
         "prefill": {
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": ["dateTimeToDate"]
-            }
-          ],
           "location": [
             {
               "input": "workOrderId",
@@ -697,22 +715,18 @@
               ]
             },
             {
-              "input": "assetId",
-              "steps": [
-                "assetIdToAsset",
-                "assetToCustomerAccountId",
-                "accountIdToAccount",
-                "accountToBillingAddressAddress",
-                "addressToCityString"
-              ]
-            },
-            {
               "input": "organizationId",
               "steps": [
                 "accountIdToAccount",
                 "accountToBillingAddressAddress",
                 "addressToCityString"
               ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": ["dateTimeToDate"]
             }
           ]
         }
@@ -724,17 +738,18 @@
       "config": {
         "headlineText": {
           "de": "Ausgefüllten Montagebericht absenden",
-          "en": "Send filled Installation Report"
+          "en": "Send filled Service Report"
         },
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "emailDialogPrefill": {
           "bcc": {
-            "currentUser": true
+            "currentUser": true,
+            "assignee": true
           },
           "subject": {
-            "de": "Montagebericht",
-            "en": "Installation report"
+            "de": "Herrmann Ultraschalltechnik: Montagebericht",
+            "en": "Herrmann Ultrasonics: Service Report"
           },
           "body": {
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
@@ -772,6 +787,7 @@
           "id": "commentAddendum",
           "type": "richTextInput",
           "config": {
+            "pdfHideIfValueIsEmpty": false,
             "label": {
               "text": {
                 "de": "Interne Bemerkungen, Hinweise und To-Dos",
@@ -792,17 +808,18 @@
       "config": {
         "headlineText": {
           "de": "Ausgefüllten Montagebericht mit internem Nachtrag absenden",
-          "en": "Send filled Installation Report with internal addendum"
+          "en": "Send filled Service Report with internal addendum"
         },
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "emailDialogPrefill": {
           "bcc": {
-            "currentUser": true
+            "currentUser": true,
+            "assignee": true
           },
           "subject": {
             "de": "Montagebericht - Interner Nachtrag",
-            "en": "Installation Report - Internal addendum"
+            "en": "Service Report - Internal addendum"
           },
           "body": {
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
