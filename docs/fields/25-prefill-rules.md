@@ -662,6 +662,20 @@ These examples further illustrate the use of prefilling for all available fields
 	]
 }
 ```
+```json (AssetMultiSelect)
+//prefill all asset selected in the work order
+"prefill": {
+	"selectedAssets": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToAssetIds"
+			]
+		}
+	]
+}
+```
 ```json (SignatureSection)
 // Do not copy comments!
 // Prefills signature section with name of the assigned user
@@ -700,12 +714,6 @@ These examples further illustrate the use of prefilling for all available fields
 				"accountToBillingAddressAddress",
 				"addressToCityString"
 			]
-		}
-	],
-	"date": [
-		{
-			"input": "creationDateTime",
-			"steps": ["dateTimeToDate"]
 		}
 	]
 }
