@@ -15,7 +15,7 @@ You find all available fields in the list below.
 | [headlineDisplay](./03-headline-display)                 | The HeadlineDisplay is a field that displays headlines to structure content in the form and provisde information.|
 | [addressInput](./04-address-input)                       | The AddressInput contains various fields for every information of an address. |
 | [assetSingleSelect](./05-asset-single-select)            | The AssetSingleSelect field allows to select an asset from the account or a certain customer.  |
-| [assetMultiSelect](./27-asset-multi-select.md)           | The AssetMultiSelect field allows to select assets from the account or a certain customer.  |
+| [assetMultiSelect](./27-asset-multi-select)           | The AssetMultiSelect field allows to select assets from the account or a certain customer.  |
 | [companySingleSelect](./06-company-single-select)        | The CompanySingleSelect field allows the user to choose one of the customer companys. |
 | [personListInput](./07-person-list-input)                | The PersonListInput field allows to enter user. |
 | [userSingleSelect](./08-user-single-select)              | The UserSingleSelect field allows to select a user from the own or from a customers organisation. |
