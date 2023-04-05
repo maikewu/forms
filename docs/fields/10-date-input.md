@@ -52,7 +52,8 @@ The DateInput field allows to input a date.
       "validators": {
         "minDate": "2000-02-22",
         "maxDate": "2022-02-22"
-      }
+      },
+      "autofill": ""
     },
     "prefill": {
       "value": [{
@@ -111,6 +112,7 @@ The DateInput field allows to input a date.
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
 | [validators.minDate](#minDate)                                                  | Minimum number of characters for the input value to be valid.                                   |
 | [validators.maxDate](#maxDate)                                                  | Maximum number of characters for the input value to be valid.                                   |
+| autofill | Setting this to `always` will update the field with the current date every time the form is opened, regardless of the date being changed previously. Setting this to `only-empty` will autofill the current date only if field is empty |
 
 
 ---

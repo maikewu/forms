@@ -52,7 +52,7 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
             },
             "breakNumericInput": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false
             },
             "durationDisplay": {
@@ -61,18 +61,18 @@ The timeTrackingListInput allows the user to enter times for travel, working or 
             },
             "distanceNumericInput": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false
             },
             "technicianUserSingleSelect": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false,
                 "pdfPrintEmailAddress": true
             },
             "commentMultiLineTextInput": {
                 "disabled": false,
-                "required": true,
+                "required": false,
                 "pdfHide": false
             }
         }

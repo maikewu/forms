@@ -4,7 +4,7 @@ category: 635ce1e7775bc60045570ffb
 parentDoc: 635ce486ae5fac003cef279e
 ---
 
-The AssetSingleSelect field allows to select an asset from the account or a certain costumer.
+The AssetSingleSelect field allows to select an asset from the account or a certain customer.
 
 # Configuration Overview
 
@@ -102,6 +102,8 @@ The AssetSingleSelect field allows to select an asset from the account or a cert
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
+| [disableCreation](./24-general-properties/#disablecreation)             | Hides the create button, so that no new asset can be created.    |
+| [disableAssetFormInstanceRelationship](./24-general-properties.md/#disableAssetFormInstanceRelationship) | Setting this to `true` will unlink the form from the asset detail pages |
 
 ---
 ## `prefill`
