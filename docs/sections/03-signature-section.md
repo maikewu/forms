@@ -60,6 +60,7 @@ The SignatureSection contains field to sign and to finish the form.
                 "disable": false,
                 "pdfHide": false,
                 "required": false,
+                "autofill": ""
             },
             "locationSingleLineTextInput": {
                 "disable": false,
@@ -221,6 +222,7 @@ hideDownloadPdfButton: true,
 | [disabled](./24-general-properties/#disabled)  (Required!)               | Setting this to `true` permanently disables the field in the UI. |
 | [pdfHide](./24-general-properties/#pdfhide)    (Required!)               | Setting this to `true` hides the label in the PDF. |
 | [onChange](./26-on-change-rules)                                                        | Configuration to change the field with a certain value when pre defined event get executed |
+| autofill | Setting this to `always` will update the field with the current date every time the form is opened, regardless of the date being changed previously. Setting this to `only-empty` will autofill the current date only if field is empty |
 
 ---
 ### `locationSingleLineTextInput`

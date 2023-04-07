@@ -130,7 +130,7 @@ Property                                                    | Description       
 | [pdfTextSize](./24-general-properties/#pdftextsize)                             | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
-| [disableCreation](#disablecreation)             | Hides the create button, so that no new companies can be created.                                                                                            |
+| [disableCreation](./24-general-properties/#disablecreation)             | Hides the create button, so that no new companies can be created.                                                                                            |
 | [pdfPrintCompanyNumber](#pdfprintcompanynumber) | Setting this to `true` prints the company number in the PDF.                                                                                             |
 
 ---

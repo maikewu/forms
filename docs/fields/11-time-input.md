@@ -50,7 +50,8 @@ The TimeInput field allows to enter a time.
             "pdfHide": false,
             "pdfTextSize": 14,
             "pdfTextColor": "#facc2e",
-            "pdfStartInNewLine": false
+            "pdfStartInNewLine": false,
+            "autofill": ""
         },
         "prefill": {
             "value": [{
@@ -109,6 +110,7 @@ The TimeInput field allows to enter a time.
 | [pdfTextColor](./24-general-properties/#pdftextcolor)                           | Text color of the label in the PDF. |
 | [pdfStartInNewLine](./24-general-properties/#pdfstartinnewline)                 | Setting this to `true` will show the field value in the PDF in a separate line below the label. |
 | [dropdownInterval](#dropdowninterval)                                           | Defines interval between dropdown values in minutes. |
+| autofill | Setting this to `always` will update the field with the current time every time the form is opened, regardless of the time being changed previously. Setting this to `only-empty` will autofill the current time only if field is empty |
 
 ---
 ### `dropDownInterval`

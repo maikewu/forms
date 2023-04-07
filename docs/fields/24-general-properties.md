@@ -277,6 +277,8 @@ By setting `requiredAmountOfEntries`, it specify how many repeating entries are 
 | [validators.maxCharacters](#validatorsmaxcharacters)      | Maximum number of characters for the input value to be valid. |
 | [validators.minCharacters](#validatorsmincharacters)      | Minimum number of characters for the input value to be valid. |
 | [validators.regex](#validatorsregex)                      | Allowing only specific characters as inputs. |
+| [disableCreation](#disablecreation)                       | Hides the create button, so that no new companies can be created. |
+| [disableAssetFormInstanceRelationship](#disableAssetFormInstanceRelationship) | Setting this to `true` will unlink the form from the asset detail pages |
 
 ---
 ### `pdfStartInNewLine`
@@ -406,6 +408,35 @@ If `enable` is set to `true`, the sub-property appears in the UI.
  "enable": true
 
 ```
+---
+### `disableCreation`
+
+| `disableCreation` |                 |
+| :---------------- | :-------------- |
+| Possible Values   | `true`, `false` |
+| Required          | no              |
+| Default Value     | `false`         |
+
+If `disableCreation` is set to `true`, the create button is hidden, so that no new companies can be created while working in forms.
+
+```json
+"disableCreation": true
+```
+---
+### `disableAssetFormInstanceRelationship`
+
+| `disableAssetFormInstanceRelationship` |                 |
+| :---------------- | :-------------- |
+| Possible Values   | `true`, `false` |
+| Required          | no              |
+| Default Value     | `false`         |
+
+If `disableAssetFormInstanceRelationship` is set to `true`, the form will not be linked to the asset(s) and therefore not be shown in the asset detail page(s).
+
+```json
+"disableAssetFormInstanceRelationship": true
+```
+
 ---
 ## `prefill`
 
