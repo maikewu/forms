@@ -686,7 +686,8 @@ These examples further illustrate the use of prefilling for all available fields
 		{
 			"input": "assignedUserId", 
 			"steps": [
-				"userIdToUser", "userToFullNameString"
+				"userIdToUser", 
+				"userToFullNameString"
 			]
 		}
 	],
