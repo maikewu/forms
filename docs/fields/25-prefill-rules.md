@@ -172,26 +172,30 @@ When a new form instance is created from an work order detail page (Work Order V
 | `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE` | Extracts the start date of the work order
 | `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING` | Extracts the ERP reference of the work order as a `STRING`
 | `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID` | Extracts the userId of the user responsible for the work order
-| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Extracts the status of the work order as a number: 0: Open, 1: In Progress, 2: On Hold, 3: Completed, 4: Closed
-| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Extracts the type of the work order as a number: 0: Repair, 1: Commissioning, 2: Maintenance
-| `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Extracts the priority of the work order as a `STRING`: 000_low: Low priority, 010_normal: Normal priority, 020_high: High priority, 030_critical: Critical priority
+| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Extracts the status of the work order as a number (see the special case after this table)
+| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Extracts the type of the work order as a number (see the special case note this table)
+| `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Extracts the priority of the work order as a `STRING` which will be one of: 000_low: Low priority, 010_normal: Normal priority, 020_high: High priority, 030_critical: Critical priority
 | `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID` | Extracts the `USER_ID` of the user performing the work order
 | `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING` | Extracts the additional contact information associated with the work order as a `STRING`
 | `workOrderToCaseSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject title from the service case
-| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject and title from service case
+| `workOrderToCaseTicketAndSubjectString` | `WORK_ORDER`| `STRING` | Extracts the prefilled subject and title from service case. Eg: `[#000473] Case subject`
 | `workOrderToOrganizationAccountId` | `WORK_ORDER`| `ACCOUNT_ID` | Extracts the organization/company associated with the work order as an `ACCOUNT_ID`
 | `workOrderToCustomPropertyValue` | `[WORK_ORDER, NUMBER]`| `UNKNOWN` | Takes the `WORK_ORDER` and the number of the respective custom work order property as `NUMBER` as inputs and extracts the respective custom property value 
  
+> ### Special case for WorkOrder-Status and -Type
+> The available types and statuses can be different on every account. They are configured in the admin interface under `/account/Work Order/`. The steps `workOrderToStatusNumberString` and `workOrderToTypeNumberString` return only the position of the type or status that is currently defined on the work order. The form template configuration need to match the account configuration. See the example code for `staticSingleSelect` for a configuration example. 
+> Hint: If these values should not be editable in the form, simply configure the staticSingleSelect field as `disabled`.
+
 ## Custom Property Steps 
 
-Custom Properties of the respective space can be extracted. These include Custom Work Order Properties and Custom Asset Properties. To extract a custom Property, one must first know their respective ID.
+Custom Properties of the respective space can be extracted. These include Custom Work Order Properties and Custom Asset Properties. To extract a custom Property, one must first know their respective ID. The available custom properties configured for a certain account can be found under `/account/Custom Properties/` in the admin interface. The first column in the custom propertie settings will hold its respective ID. 
 
 | `steps`               | input data type  | output data type | description |
 | :----------------------------- | :----- | :-----| :-----------------------------|
-| `workOrderToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `WORK_ORDER` and the number of the respective custom work order property as `NUMBER` as inputs and extracts the respective custom property value 
+| `workOrderToCustomPropertyValue` | `[WORK_ORDER, NUMBER]`| `UNKNOWN` | Takes the `WORK_ORDER` and the number of the respective custom work order property as `NUMBER` as inputs and extracts the respective custom property value 
 | `assetToCustomPropertyValue` | `[ASSET, NUMBER]`| `UNKNOWN` | Takes the `ASSET` and the number of the respective custom asset  property as `NUMBER` as inputs and extracts the respective custom property value 
 | `customPropertyValueToString` | `UNKNOWN`| `STRING` | Converts the customPropertyValue (which can have many types) to a `STRING`
-| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS` | Converts the customPropertyValue (which can have many types) to an `ARRAY_OF_STRINGS`
+| `customPropertyValueToArrayOfStrings` | `UNKNOWN`| `ARRAY_OF_STRINGS` | Converts the customPropertyValue (which can have many types) to an `ARRAY_OF_STRINGS` (see config example `staticMultiSelect`)
 | `customPropertyValueToNumberString` | `UNKNOWN`| `STRING` | Converts the customPropertyValue (which can have many types) to a number as a `STRING`
 | `customPropertyValueToNumber` | `UNKNOWN`| `NUMBER` | Converts the customPropertyValue (which can have many types) to a `NUMBER`
 | `customPropertyValueToBoolean` | `UNKNOWN`| `BOOLEAN` | Converts the customPropertyValue (which can have many types) to `BOOLEAN`
