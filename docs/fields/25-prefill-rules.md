@@ -172,8 +172,8 @@ When a new form instance is created from an work order detail page (Work Order V
 | `workOrderToEndDate` | `WORK_ORDER`| `REMBERG_DATE` | Extracts the start date of the work order
 | `workOrderToERPReferenceString` | `WORK_ORDER`| `STRING` | Extracts the ERP reference of the work order as a `STRING`
 | `workOrderToResponsibleUserId` | `WORK_ORDER`| `USER_ID` | Extracts the userId of the user responsible for the work order
-| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Extracts the status of the work order as a number (see the special case after this table)
-| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Extracts the type of the work order as a number (see the special case note this table)
+| `workOrderToStatusNumberString` | `WORK_ORDER`| `STRING` | Extracts the status of the work order as a number (see the note below this table)
+| `workOrderToTypeNumberString` | `WORK_ORDER`| `STRING` | Extracts the type of the work order as a number (see the note below this table)
 | `workOrderToPriorityString` | `WORK_ORDER`| `STRING` | Extracts the priority of the work order as a `STRING` which will be one of: 000_low: Low priority, 010_normal: Normal priority, 020_high: High priority, 030_critical: Critical priority
 | `workOrderToPerformByUserId` | `WORK_ORDER`| `USER_ID` | Extracts the `USER_ID` of the user performing the work order
 | `workOrderToAdditionalContactInformationString` | `WORK_ORDER`| `STRING` | Extracts the additional contact information associated with the work order as a `STRING`
