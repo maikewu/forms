@@ -233,6 +233,7 @@ You can find a list below, that contains all implemented `steps`, which can be u
 | `accountToAccountInfo` | `ACCOUNT`| `ACCOUNT_INFO` |
 | `accountInfoToAccount` | `ACCOUNT_INFO`| `ACCOUNT` |
 | `accountToPhoneNumberString` | `ACCOUNT`| `STRING` |
+| `accountInfoToCustomerNumber` | `ACCOUNT_INFO`| `STRING` | 
 | `addressToCityString` | `ADDRESS`| `STRING` |
 | `assetIdToAsset` | `ASSET_ID`| `ASSET` |
 | `assetInfoToAsset` | `ASSET_INFO`| `ASSET` |
