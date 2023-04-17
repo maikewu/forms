@@ -212,6 +212,13 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 
 | Property name               | Provided / expected data type                   |
 | :----------------------------- | :---------------------------|
+
+---
+
+### EmailSection and data type
+
+| Property name               | Provided / expected data type                   |
+| :----------------------------- | :---------------------------|
 | `__default__` | `SIGNATURE` |
 | `date` | `REMBERG_DATE` |
 | `location`| `STRING`|
