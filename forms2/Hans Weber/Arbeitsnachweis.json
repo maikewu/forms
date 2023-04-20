@@ -1,6 +1,7 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true
   },
   "sections": [
     {
@@ -12,9 +13,7 @@
             "en": "General Information",
             "de": "Allgemeine Informationen"
           },
-          "pdfHide": false,
-          "pdfTextSize": 12,
-          "pdfTextColor": "#000000"
+          "pdfHide": true
         }
       },
       "fields": [
@@ -25,7 +24,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -52,7 +51,10 @@
             },
             "onChange": [
               {
-                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress"],
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ],
                 "target": {
                   "id": "customerAddress"
                 }
@@ -75,14 +77,28 @@
               }
             },
             "value": {
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
                 {
                   "input": "organizationId",
-                  "steps": ["accountIdToAccount", "accountToBillingAddressAddress"]
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -118,6 +134,17 @@
                 "en": "Order No.",
                 "de": "Auftr. Nr."
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -137,11 +164,25 @@
               }
             },
             "prefill": {
-              "selectedAsset": [{
-                "input": "assetId",
-                "steps": []
-              }]
-            }
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
           }
         },
         {
@@ -168,7 +209,7 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -177,10 +218,16 @@
               }
             },
             "prefill": {
-              "value": [{
-                "input": "currentUserId",
-                "steps": []
-              }]
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
             }
           }
         },
@@ -198,6 +245,18 @@
                 "en": "Motor Vehicle No.",
                 "de": "KFZ-Nr."
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    ["workOrderToCustomPropertyValue", 3],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -218,16 +277,43 @@
             },
             "value": {
               "options": {
-                "1": {
+                "pauschal": {
                   "en": "lump sum",
                   "de": "pauschal"
                 },
-                "2":{
+                "in Verbindung": {
                   "en": "in conjunction",
                   "de": "in Verbindung"
                 }
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    ["workOrderToCustomPropertyValue", 4],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
             }
+          }
+        },
+        {
+          "id": "whitespace0",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": " ",
+              "de": " "
+            },
+            "uiHide": false,
+            "uiTextSize": "H1",
+            "pdfTextSize": "H1",
+            "pdfHide": false,
+            "pdfWidth": 1
           }
         }
       ]
@@ -250,18 +336,15 @@
           "type": "timeTrackingListInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "requiredAmountOfEntries": 0,
-            "maximumDuration": 0,
             "label": {
               "text": {
                 "en": "Arrival, working and expected return time",
                 "de": "Anreise-, Arbeits- und voraussichtliche Rückreisezeit"
               },
-              "pdfHide": false,
-              "pdfTextSize": 12,
-              "pdfTextColor": "#000000"
+              "pdfHide": false
             },
             "fields": {
               "timeTrackingTypeStaticSingleSelect": {
@@ -329,9 +412,7 @@
                 "en": "Performed Tasks",
                 "de": "Durchgeführte Aufgaben"
               },
-              "pdfHide": false,
-              "pdfTextSize": 12,
-              "pdfTextColor": "#000000"
+              "pdfHide": false
             },
             "fields": {
               "checkboxBooleanInput": {
@@ -407,7 +488,7 @@
           "type": "partListInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "requiredAmountOfEntries": 0,
             "label": {
@@ -415,9 +496,7 @@
                 "en": "Material",
                 "de": "Material"
               },
-              "pdfHide": false,
-              "pdfTextSize": 12,
-              "pdfTextColor": "#000000"
+              "pdfHide": false
             },
             "fields": {
               "partNumberSingleLineTextInput": {
@@ -445,7 +524,7 @@
               },
               "warrantyBooleanInput": {
                 "enable": false,
-                "pdfHide": true
+                "pdfHide": false
               }
             }
           }
@@ -455,8 +534,8 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "en": "",
-              "de": ""
+              "en": " ",
+              "de": " "
             },
             "uiHide": false,
             "uiTextSize": "H1",
@@ -472,7 +551,7 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -486,7 +565,7 @@
                   "en": "Yes",
                   "de": "Ja"
                 },
-                "2":{
+                "2": {
                   "en": "No",
                   "de": "Nein"
                 }
@@ -506,7 +585,7 @@
           "de": "Unterschrift Hans Weber"
         },
         "pdfHide": false,
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
         "fields": {
@@ -534,6 +613,10 @@
         "prefill": {
           "name": [
             {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
               "input": "currentUser",
               "steps": ["userToFullNameString"]
             }
@@ -541,15 +624,27 @@
           "location": [
             {
               "input": "workOrderId",
-              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "assetId",
-              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "organizationId",
-              "steps": ["accountIdToAccount", "accountToBillingAddressAddress", "addressToCityString"]
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
             }
           ]
         }
@@ -565,7 +660,7 @@
           "de": "Unterschrift Kunde"
         },
         "pdfHide": false,
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
         "fields": {
@@ -586,7 +681,7 @@
             "disable": false,
             "required": false,
             "pdfHide": false,
-            "capitalizeFirstLetterOfEveryWord": false,
+            "capitalizeFirstLetterOfEveryWord": true,
             "onChange": []
           }
         },
@@ -595,15 +690,27 @@
           "location": [
             {
               "input": "workOrderId",
-              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "assetId",
-              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "organizationId",
-              "steps": ["accountIdToAccount", "accountToBillingAddressAddress", "addressToCityString"]
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
             }
           ]
         }
@@ -637,7 +744,7 @@
           },
           "bcc": {
             "currentUser": true,
-            "assignee": false,
+            "assignee": true,
             "creator": false,
             "staticEmails": []
           },
@@ -674,9 +781,7 @@
             "es": "",
             "it": ""
           },
-          "pdfHide": false,
-          "pdfTextSize": 12,
-          "pdfTextColor": "#000000"
+          "pdfHide": false
         }
       },
       "fields": [
@@ -685,18 +790,15 @@
           "type": "timeTrackingListInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "requiredAmountOfEntries": 0,
-            "maximumDuration": 0,
             "label": {
               "text": {
                 "en": "Actual Return Time",
                 "de": "Tatsächliche Rückreisezeit"
               },
-              "pdfHide": false,
-              "pdfTextSize": 11,
-              "pdfTextColor": "#000000"
+              "pdfHide": false
             },
             "fields": {
               "timeTrackingTypeStaticSingleSelect": {
@@ -787,7 +889,7 @@
           },
           "bcc": {
             "currentUser": true,
-            "assignee": false,
+            "assignee": true,
             "creator": false,
             "staticEmails": []
           },
