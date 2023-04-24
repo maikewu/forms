@@ -1,6 +1,7 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true
   },
   "sections": [
     {
@@ -12,9 +13,7 @@
             "en": "General Information",
             "de": "Allgemeine Informationen"
           },
-          "pdfHide": false,
-          "pdfTextSize": 12,
-          "pdfTextColor": "#000000"
+          "pdfHide": true
         }
       },
       "fields": [
@@ -25,7 +24,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -52,7 +51,10 @@
             },
             "onChange": [
               {
-                "steps": ["accountInfoToAccount", "accountToBillingAddressAddress"],
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ],
                 "target": {
                   "id": "customerAddress"
                 }
@@ -75,14 +77,28 @@
               }
             },
             "value": {
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
                 {
                   "input": "organizationId",
-                  "steps": ["accountIdToAccount", "accountToBillingAddressAddress"]
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -118,6 +134,17 @@
                 "en": "Order No.",
                 "de": "Auftr. Nr."
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -137,11 +164,25 @@
               }
             },
             "prefill": {
-              "selectedAsset": [{
-                "input": "assetId",
-                "steps": []
-              }]
-            }
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
           }
         },
         {
@@ -158,7 +199,16 @@
                 "en": "Present Customer Contact",
                 "de": "Anwesender Kundenkontakt"
               }
-            }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "04_signatureCustomer",
+                  "propertyName": "name"
+                },
+                "steps": []
+              }
+            ]
           }
         },
         {
@@ -168,7 +218,7 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -177,10 +227,16 @@
               }
             },
             "prefill": {
-              "value": [{
-                "input": "currentUserId",
-                "steps": []
-              }]
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
             }
           }
         },
@@ -190,6 +246,7 @@
           "config": {
             "disabled": false,
             "required": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfHide": false,
             "pdfWidth": 0.5,
             "label": {
@@ -208,8 +265,8 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "",
-              "en": ""
+              "de": " ",
+              "en": " "
             },
             "pdfTextSize": "H1",
             "uiHide": true
@@ -226,9 +283,7 @@
             "en": "Report",
             "de": "Bericht"
           },
-          "pdfHide": false,
-          "pdfTextSize": 12,
-          "pdfTextColor": "#000000"
+          "pdfHide": false
         }
       },
       "fields": [
@@ -276,7 +331,7 @@
           "config": {
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "requiredAmountOfFiles": 0,
             "acceptedFileTypes": [],
@@ -300,7 +355,7 @@
           "de": "Unterschrift Hans Weber"
         },
         "pdfHide": false,
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
         "fields": {
@@ -328,6 +383,10 @@
         "prefill": {
           "name": [
             {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
               "input": "currentUser",
               "steps": ["userToFullNameString"]
             }
@@ -335,15 +394,27 @@
           "location": [
             {
               "input": "workOrderId",
-              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "assetId",
-              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "organizationId",
-              "steps": ["accountIdToAccount", "accountToBillingAddressAddress", "addressToCityString"]
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
             }
           ]
         }
@@ -359,7 +430,7 @@
           "de": "Unterschrift Kunde"
         },
         "pdfHide": false,
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
         "fields": {
@@ -389,15 +460,27 @@
           "location": [
             {
               "input": "workOrderId",
-              "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress", "addressToCityString"]
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "assetId",
-              "steps": ["assetIdToAsset", "assetToLocationAddress", "addressToCityString"]
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
             },
             {
               "input": "organizationId",
-              "steps": ["accountIdToAccount", "accountToBillingAddressAddress", "addressToCityString"]
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
             }
           ]
         }
@@ -431,7 +514,7 @@
           },
           "bcc": {
             "currentUser": true,
-            "assignee": false,
+            "assignee": true,
             "creator": false,
             "staticEmails": []
           },
@@ -464,9 +547,7 @@
             "en": "Addendum",
             "de": "Interner Nachtrag"
           },
-          "pdfHide": false,
-          "pdfTextSize": 12,
-          "pdfTextColor": "#000000"
+          "pdfHide": false
         }
       },
       "fields": [
@@ -525,7 +606,7 @@
           },
           "bcc": {
             "currentUser": true,
-            "assignee": false,
+            "assignee": true,
             "creator": false,
             "staticEmails": []
           },
