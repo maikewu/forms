@@ -60,19 +60,34 @@ The EmailSection contains fields to send the finshed form.
                 "assignee": false,
                 "creator": false,
                 "currentUser": false,
-                "staticEmails": []
+                "staticEmails": [],
+                "fieldIds": [
+                    "fieldId1",
+                    "fieldId2"
+                    "fieldIdn"
+                ]
             },
             "cc": {
                 "assignee": false,
                 "creator": true,
                 "currentUser": false,
-                "staticEmails": []
+                "staticEmails": [],
+                "fieldIds": [
+                    "fieldId1",
+                    "fieldId2"
+                    "fieldIdn"
+                ]
             },
             "bcc": {
                 "assignee": false,
                 "creator": false,
                 "currentUser": false,
-                "staticEmails": []
+                "staticEmails": [],
+                "fieldIds": [
+                    "fieldId1",
+                    "fieldId2"
+                    "fieldIdn"
+                ]
             },
             "subject": {
                 "en": "Example Email Section",
@@ -153,19 +168,33 @@ By setting `emailDialogPrefill` you ensure that mails are only sent to recipient
         "assignee": true,
         "creator": false,
         "currentUser": false,
-        "staticEmails": []
+        "staticEmails": [],
+        "fieldIds": [
+            "fieldId1",
+            "fieldId2"
+            "fieldIdn"
+        ]
     },
     "cc": {
         "assignee": false,
         "creator": true,
         "currentUser": false,
-        "staticEmails": []
+        "staticEmails": [],
+        "fieldIds": [
+            "fieldId1",
+            "fieldId2"
+            "fieldIdn"
+        ]
     },
     "bcc": {
         "assignee": false,
         "creator": false,
         "currentUser": true,
-        "staticEmails": []
+        "staticEmails": [],
+        "fieldIds": [
+            "fieldId1",
+            "fieldId2"
+        ]
     },
     "subject": {
         "en": "Example Email Section",
@@ -197,13 +226,19 @@ Duplications happens when currentUser=assignee=creator!
 | [assignee]                                         | Setting this to `true` prefills the field with the assignee. |
 | [creator]                                           | Setting this to `true` prefills the field with the creator. |
 | [staticEmails]                                 | Defines list of email addresses |
+| [fieldIds]                                 | Defines list of field IDs used to prefill the `to` section. Allowed field types are [UserSingleSelect](./08-user-single-select) and [PersonListInput](./07-person-list-input) |
 
 ```typescript
 "to": {
     "assignee": true,
     "creator": false,
     "currentUser": false,
-    "staticEmails": []
+    "staticEmails": [],
+    "fieldIds": [
+        "fieldId1",
+        "fieldId2"
+        "fieldIdn"
+    ]
 },
 ```
 ---
@@ -217,13 +252,19 @@ Duplications happens when currentUser=assignee=creator!
 | [assignee]                                         | Setting this to `true` prefills the field with the assignee. |
 | [creator]                                           | Setting this to `true` prefills the field with the creator. |
 | [staticEmails]                                 | Defines list of email addresses |
+| [fieldIds]                                 | Defines list of field IDs used to prefill the `cc` section. Allowed field types are [UserSingleSelect](./08-user-single-select) and [PersonListInput](./07-person-list-input) |
 
 ```typescript
 "cc": {
     "assignee": false,
     "creator": true,
     "currentUser": false,
-    "staticEmails": []
+    "staticEmails": [],
+    "fieldIds": [
+        "fieldId1",
+        "fieldId2"
+        "fieldIdn"
+    ]
 },
 ```
 ---
@@ -237,13 +278,19 @@ Duplications happens when currentUser=assignee=creator!
 | [assignee]                                         | Setting this to `true` prefills the field with the assignee. |
 | [creator]                                           | Setting this to `true` prefills the field with the creator. |
 | [staticEmails]                                 | Defines list of email addresses |
+| [fieldIds]                                 | Defines list of field IDs used to prefill the `bcc` section. Allowed field types are [UserSingleSelect](./08-user-single-select) and [PersonListInput](./07-person-list-input) |
 
 ```typescript
 "bcc": {
     "assignee": false,
     "creator": false,
     "currentUser": true,
-    "staticEmails": []
+    "staticEmails": [],
+    "fieldIds": [
+        "fieldId1",
+        "fieldId2"
+        "fieldIdn"
+    ]
 },
 ```
 ---
