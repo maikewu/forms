@@ -220,13 +220,6 @@ But if you would like to transfer the name from `userSingleSelect` (provided typ
 
 ---
 
-### EmailSection and data type
-
-| Property name               | Provided / expected data type                   |
-| :----------------------------- | :---------------------------|
-
----
-
 ## List of all dynamic action steps
 
 You can find a list below, that contains all implemented `steps`, which can be used to transform data.
