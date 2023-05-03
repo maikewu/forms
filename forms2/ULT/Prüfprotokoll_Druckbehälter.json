@@ -22,7 +22,7 @@
           "config": {
             "required": true,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -35,10 +35,7 @@
               "disableCreation": true,
               "pdfHide": false
             },
-            "useAsFilterForFields": [
-              "asset",
-              "customercontactperson"
-            ],
+            "useAsFilterForFields": ["asset", "customercontactperson"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -47,10 +44,7 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
@@ -86,25 +80,18 @@
             },
             "label": {
               "text": {
-                "en": "Address of client / customer",
+                "en": "Address client / customer",
                 "de": "Adresse Auftraggeber / Kunde"
               },
               "pdfHide": false
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
                 {
                   "input": "organizationId",
                   "steps": [
@@ -113,11 +100,15 @@
                   ]
                 },
                 {
-                  "input": "assetId",
+                  "input": "workOrderId",
                   "steps": [
-                    "assetIdToAsset",
-                    "assetToLocationAddress"
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
                   ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -127,9 +118,7 @@
                   "id": "07-signatureTechnician",
                   "propertyName": "location"
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
+                "steps": ["addressToCityString"]
               }
             ]
           }
@@ -144,23 +133,20 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Contact person (client)",
+                "en": "Contact person (Customer)",
                 "de": "Ansprechpartner (Auftraggeber)"
               },
               "pdfHide": false
             },
             "value": {
-              "pdfPrintEmailAddress": true,
+              "pdfPrintEmailAddress": false,
               "pdfHide": false
             },
             "prefill": {
               "value": [
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerPersonUserId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerPersonUserId"]
                 }
               ]
             }
@@ -193,7 +179,7 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Contact person (client)",
+                "en": "Contact person (Customer)",
                 "de": "Ansprechpartner (Auftraggeber)"
               },
               "pdfHide": false
@@ -207,7 +193,7 @@
           "config": {
             "label": {
               "text": {
-                "en": "Telephone number of the contact person (client)",
+                "en": "Telephone number of the contact person (Customer)",
                 "de": "Telefonnummer des Ansprechpartners (Auftraggeber)"
               },
               "pdfHide": false
@@ -228,7 +214,7 @@
             "pdfHide": true,
             "pdfWidth": 1,
             "text": {
-              "en": "If different from the client, please fill in the following data on the plant location:",
+              "en": "If different from the customer, please fill in the following data on the asset location:",
               "de": "Falls abweichend vom Auftraggeber, bitte folgende Daten zum Anlagenstandort ausfüllen:",
               "fr": "",
               "it": "",
@@ -263,9 +249,33 @@
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
-            }
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "07-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
           }
         },
         {
@@ -279,7 +289,7 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Contact person (plant location)",
+                "en": "Contact person (Asset location)",
                 "de": "Ansprechpartner (Anlagenstandort)"
               },
               "pdfHide": false
@@ -293,7 +303,7 @@
           "config": {
             "label": {
               "text": {
-                "en": "Telephone number of the contact person (plant location)",
+                "en": "Telephone number of the contact person (Asset location)",
                 "de": "Telefonnummer des Ansprechpartners (Anlagenstandort)"
               },
               "pdfHide": false
@@ -308,25 +318,13 @@
           }
         },
         {
-          "id": "emptyRow10",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "text": {
-              "de": " ",
-              "en": " "
-            }
-          }
-        },
-        {
           "id": "technicians",
           "type": "userSingleSelect",
           "config": {
             "required": true,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Inspector/capable person",
@@ -343,6 +341,10 @@
                 {
                   "input": "assignedUserId",
                   "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
                 }
               ]
             }
@@ -356,7 +358,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Process number",
@@ -364,7 +366,18 @@
               },
               "pdfHide": false
             },
-            "value": {}
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
@@ -374,8 +387,8 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Asset number",
@@ -396,6 +409,17 @@
               ]
             }
           }
+        },
+        {
+          "id": "whitespace1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -408,40 +432,10 @@
             "en": "Manufacturer's data / Technical data / Type plate",
             "de": "Herstellerangaben / Technische Daten / Typschild"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Manufacturer's data / Technical data / Type plate</b>",
-              "de": "<b style='font-size:11pt'>Herstellerangaben / Technische Daten / Typschild</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "manufacturernr",
           "type": "singleLineTextInput",
@@ -449,7 +443,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -496,7 +490,19 @@
               },
               "pdfHide": false
             },
-            "value": {}
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue", 10],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
@@ -593,6 +599,17 @@
             },
             "value": {}
           }
+        },
+        {
+          "id": "whitespace2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -605,47 +622,17 @@
             "en": "Recurring internal and stability check",
             "de": "Wiederkehrende innere und Festigkeitsprüfung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_3",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_3",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Recurring internal and stability check</b>",
-              "de": "<b style='font-size:11pt'>Wiederkehrende innere und Festigkeitsprüfung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "opstest",
           "type": "staticSingleSelect",
           "config": {
             "label": {
               "text": {
-                "en": "The plant component (here pressure vessel) was in operation during the test",
+                "en": "The asset component (here pressure vessel) was in operation during the test",
                 "de": "Der Anlagenanteil (hier Druckbehälter) war bei der Prüfung in Betrieb"
               },
               "pdfHide": false
@@ -728,7 +715,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "en": "Test pressure [in bar]",
@@ -747,7 +734,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "en": "Test time [in min]",
@@ -770,8 +757,8 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
             "disabled": false,
             "required": false,
             "value": {
@@ -838,7 +825,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": true
+            "required": true,
+            "autofill": "always"
           },
           "nameSingleLineTextInput": {
             "disable": false,
@@ -880,17 +868,14 @@
           },
           "pdfHide": true
         },
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "prefill": {
           "name": [
             {
               "input": "assignedUserId",
-              "steps": [
-                "userIdToUser",
-                "userToFullNameString"
-              ]
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
@@ -916,14 +901,6 @@
                 "accountIdToAccount",
                 "accountToBillingAddressAddress",
                 "addressToCityString"
-              ]
-            }
-          ],
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
               ]
             }
           ]
@@ -966,22 +943,23 @@
           },
           "cc": {
             "assignee": true,
-            "staticEmails": []
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
           },
           "bcc": {
             "assignee": false,
             "staticEmails": []
           },
           "subject": {
-            "en": "ULT Protokoll Druckbehälter / ULT Protocol Pressure Vessel",
-            "de": "ULT Protokoll Druckbehälter / ULT Protocol Pressure Vessel",
+            "en": "ULT – Protocol Pressure Vessel",
+            "de": "ULT – Protokoll Druckbehälter",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
           "body": {
-            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\nattached you will find the completed protocol as a PDF.\nBest regards,\nYour field service team.",
+            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\nattached you will find the completed protocol as a PDF.\n\nBest regards,\nYour field service team.",
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie das abgeschlossene Protokoll als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
             "fr": "",
             "it": "",
@@ -1001,7 +979,7 @@
             "en": "Addendum",
             "de": "Interner Nachtrag"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
@@ -1013,7 +991,7 @@
             "disabled": false,
             "pdfHide": false,
             "placeHolderText": {},
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -1087,22 +1065,23 @@
           },
           "cc": {
             "assignee": true,
-            "staticEmails": []
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
           },
           "bcc": {
             "assignee": false,
             "staticEmails": []
           },
           "subject": {
-            "en": "Protokoll Druckbehälter - Interner Nachtrag / Protocol Pressure Vessel - Internal Addendum",
-            "de": "Protokoll Druckbehälter - Interner Nachtrag / Protocol Pressure Vessel - Internal Addendum",
+            "en": "ULT – Protocol Pressure Vessel (Internal Addendum)",
+            "de": "ULT – Protokoll Druckbehälter (Interner Nachtrag)",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
           "body": {
-            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\n",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.",
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
             "fr": "",
             "it": "",
