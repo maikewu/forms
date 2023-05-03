@@ -35,10 +35,7 @@
               "disableCreation": true,
               "pdfHide": false
             },
-            "useAsFilterForFields": [
-              "asset",
-              "customercontactperson"
-            ],
+            "useAsFilterForFields": ["asset", "customercontactperson"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -47,10 +44,7 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
@@ -86,25 +80,18 @@
             },
             "label": {
               "text": {
-                "en": "Address of client / customer",
+                "en": "Address client / customer",
                 "de": "Adresse Auftraggeber / Kunde"
               },
               "pdfHide": false
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
                 {
                   "input": "organizationId",
                   "steps": [
@@ -113,11 +100,15 @@
                   ]
                 },
                 {
-                  "input": "assetId",
+                  "input": "workOrderId",
                   "steps": [
-                    "assetIdToAsset",
-                    "assetToLocationAddress"
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
                   ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -127,9 +118,7 @@
                   "id": "07-signatureTechnician",
                   "propertyName": "location"
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
+                "steps": ["addressToCityString"]
               }
             ]
           }
@@ -144,23 +133,20 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Contact person (client)",
+                "en": "Contact person (Customer)",
                 "de": "Ansprechpartner (Auftraggeber)"
               },
               "pdfHide": false
             },
             "value": {
-              "pdfPrintEmailAddress": true,
+              "pdfPrintEmailAddress": false,
               "pdfHide": false
             },
             "prefill": {
               "value": [
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerPersonUserId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerPersonUserId"]
                 }
               ]
             }
@@ -193,12 +179,23 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Contact person (client)",
+                "en": "Contact person (Customer)",
                 "de": "Ansprechpartner (Auftraggeber)"
               },
               "pdfHide": false
             },
-            "value": {}
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToAdditionalContactInformationString"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
@@ -207,7 +204,7 @@
           "config": {
             "label": {
               "text": {
-                "en": "Telephone number of the contact person (client)",
+                "en": "Telephone number of the contact person (Customer)",
                 "de": "Telefonnummer des Ansprechpartners (Auftraggeber)"
               },
               "pdfHide": false
@@ -228,7 +225,7 @@
             "pdfHide": true,
             "pdfWidth": 1,
             "text": {
-              "en": "In case the contact is not to be found above, please enter it manually below:",
+              "en": "If different from the customer, please fill in the following data on the asset location:",
               "de": "Falls abweichend vom Auftraggeber, bitte folgende Daten zum Anlagenstandort ausfüllen:",
               "fr": "",
               "it": "",
@@ -263,9 +260,33 @@
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
-            }
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "07-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
           }
         },
         {
@@ -279,7 +300,7 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Contact Person of Customer",
+                "en": "Contact person (asset location)",
                 "de": "Ansprechpartner (Anlagenstandort)"
               },
               "pdfHide": false
@@ -293,7 +314,7 @@
           "config": {
             "label": {
               "text": {
-                "en": "Contact person (asset location)",
+                "en": "Telephone number of the contact person (asset location)",
                 "de": "Telefonnummer des Ansprechpartners (Anlagenstandort)"
               },
               "pdfHide": false
@@ -311,9 +332,9 @@
           "id": "technicians",
           "type": "userSingleSelect",
           "config": {
-            "required": true,
+            "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -330,6 +351,10 @@
               "value": [
                 {
                   "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
                   "steps": []
                 }
               ]
@@ -352,7 +377,18 @@
               },
               "pdfHide": false
             },
-            "value": {}
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
@@ -362,7 +398,7 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -397,7 +433,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "value": {
@@ -445,6 +481,17 @@
             },
             "value": {}
           }
+        },
+        {
+          "id": "whitespace1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -457,40 +504,10 @@
             "en": "Visual inspection",
             "de": "Sichtprüfung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Visual inspection</b>",
-              "de": "<b style='font-size:11pt'>Sichtprüfung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "check1",
           "type": "booleanInput",
@@ -570,8 +587,8 @@
             "pdfHide": false,
             "label": {
               "text": {
-                "en": "PE ; L ; and N not mistaken",
-                "de": "PE ; L ; u. N nicht verwechselt"
+                "en": "PE, L, and N not mistaken",
+                "de": "PE, L, u. N nicht verwechselt"
               },
               "pdfHide": false
             },
@@ -598,6 +615,17 @@
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
+        },
+        {
+          "id": "whitespace2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -608,42 +636,12 @@
         "headline": {
           "text": {
             "en": "Service Information",
-            "de": "Service Information"
+            "de": "Serviceinformation"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_3",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_3",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Service Information</b>",
-              "de": "<b style='font-size:11pt'>Service Information</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "test_device",
           "type": "headlineDisplay",
@@ -686,7 +684,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "value": {
@@ -716,7 +714,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "value": {
@@ -773,7 +771,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "value": {
@@ -822,7 +820,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "value": {
@@ -878,26 +876,10 @@
           "type": "htmlDisplay",
           "config": {
             "pdfHide": false,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "text": {
-              "en": "I(test) &gt; 10 AAC",
-              "de": "I(Prüf) &gt; 10 AAC",
-              "fr": "",
-              "it": "",
-              "tr": "",
-              "es": ""
-            }
-          }
-        },
-        {
-          "id": "grenzwert1",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "text": {
-              "en": "Limit value U (PE) &lt;/= 0.30 Ω",
-              "de": "Grenzwert U (PE) &lt;/= 0,30 Ω",
+              "en": "I(test) &gt; 10 AAC | Limit value U (PE) &lt;/= 0.30 Ω",
+              "de": "I(Prüf) &gt; 10 AAC | Grenzwert U (PE) &lt;/= 0,30 Ω",
               "fr": "",
               "it": "",
               "tr": "",
@@ -947,7 +929,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -966,7 +948,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -985,7 +967,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -1004,7 +986,7 @@
             "pdfHide": false,
             "pdfWidth": 1,
             "text": {
-              "de": "Isolationswiderstandsmessung:",
+              "de": "Isolationswiderstandsmessung",
               "en": "Insulation resistance measurement"
             },
             "uiTextSize": "H3",
@@ -1034,7 +1016,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -1067,24 +1049,8 @@
             "pdfHide": false,
             "pdfWidth": 0.5,
             "text": {
-              "en": "U(test) = 1000V/500VA",
-              "de": "U(Prüf) = 1000V/500VA",
-              "fr": "",
-              "it": "",
-              "tr": "",
-              "es": ""
-            }
-          }
-        },
-        {
-          "id": "dauer",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfHide": false,
-            "pdfWidth": 0.5,
-            "text": {
-              "en": "Duration t = / &gt; 1s",
-              "de": "Dauer t = / &gt; 1s",
+              "en": "U(test) = 1000V/500VA | Duration t = / &gt; 1s",
+              "de": "U(Prüf) = 1000V/500VA | Dauer t = / &gt; 1s",
               "fr": "",
               "it": "",
               "tr": "",
@@ -1104,7 +1070,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "required": false,
@@ -1130,8 +1096,8 @@
             "pdfHide": false,
             "pdfWidth": 1,
             "text": {
-              "de": "Schutz gegen Restspannung (Restspannungsmessung):",
-              "en": "Protection against residual voltage (residual voltage measurement):"
+              "de": "Schutz gegen Restspannung (Restspannungsmessung)",
+              "en": "Protection against residual voltage (residual voltage measurement)"
             },
             "uiTextSize": "H3",
             "pdfTextSize": "H3"
@@ -1144,24 +1110,8 @@
             "pdfHide": false,
             "pdfWidth": 0.5,
             "text": {
-              "en": "U (max) =/&lt; 60 V",
-              "de": "U (max) =/&lt; 60 V",
-              "fr": "",
-              "it": "",
-              "tr": "",
-              "es": ""
-            }
-          }
-        },
-        {
-          "id": "grenzwertt",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfHide": false,
-            "pdfWidth": 0.5,
-            "text": {
-              "en": "Limit value t = / &lt; 5.0 / 1.0 s",
-              "de": "Grenzwert t = / &lt; 5,0 / 1,0 s",
+              "en": "U (max) =/&lt; 60 V | Limit value t = / &lt; 5.0 / 1.0 s",
+              "de": "U (max) =/&lt; 60 V | Grenzwert t = / &lt; 5,0 / 1,0 s",
               "fr": "",
               "it": "",
               "tr": "",
@@ -1181,7 +1131,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "required": false,
@@ -1207,8 +1157,8 @@
             "pdfHide": false,
             "pdfWidth": 1,
             "text": {
-              "de": "Ableitstrom (Differenzstrommessung):",
-              "en": "Leakage current (differential current measurement):"
+              "de": "Ableitstrom (Differenzstrommessung)",
+              "en": "Leakage current (differential current measurement)"
             },
             "uiTextSize": "H3",
             "pdfTextSize": "H3"
@@ -1226,7 +1176,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "value": {
@@ -1283,7 +1233,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "value": {
@@ -1325,7 +1275,7 @@
           "type": "htmlDisplay",
           "config": {
             "pdfHide": false,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "text": {
               "en": "Limit value IΔ (error) =/&lt; 3.5 mA",
               "de": "Grenzwert IΔ (Fehler) =/&lt; 3,5 mA",
@@ -1343,7 +1293,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -1376,7 +1326,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -1395,7 +1345,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -1414,7 +1364,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -1424,6 +1374,17 @@
               "pdfHide": false
             },
             "value": {}
+          }
+        },
+        {
+          "id": "whitespace3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -1437,40 +1398,10 @@
             "en": "Function test",
             "de": "Funktionsprüfung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Function test</b>",
-              "de": "<b style='font-size:11pt'>Funktionsprüfung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "ventilator",
           "type": "staticSingleSelect",
@@ -1886,7 +1817,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": true
+            "required": true,
+            "autofill": "always"
           },
           "nameSingleLineTextInput": {
             "disable": false,
@@ -1928,17 +1860,14 @@
           },
           "pdfHide": true
         },
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "prefill": {
           "name": [
             {
               "input": "assignedUserId",
-              "steps": [
-                "userIdToUser",
-                "userToFullNameString"
-              ]
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
@@ -1964,14 +1893,6 @@
                 "accountIdToAccount",
                 "accountToBillingAddressAddress",
                 "addressToCityString"
-              ]
-            }
-          ],
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
               ]
             }
           ]
@@ -2014,22 +1935,23 @@
           },
           "cc": {
             "assignee": true,
-            "staticEmails": []
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
           },
           "bcc": {
             "assignee": false,
             "staticEmails": []
           },
           "subject": {
-            "en": "ULT Protokoll DGUV 3 / Protocol DGUV 3",
-            "de": "ULT Protokoll DGUV 3 / Protocol DGUV 3",
+            "en": "ULT – Protocol DGUV 3",
+            "de": "ULT – Protokoll DGUV 3",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
           "body": {
-            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\nDear Sir or Madam,\nIn the attachment you will find the completed test protocol as a PDF.\nBest regards,\nYour field service field team",
+            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\nIn the attachment you will find the completed test protocol as a PDF.\n\nBest regards,\nYour field service team",
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie das abgeschlossene Prüfprotokoll als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
             "fr": "",
             "it": "",
@@ -2049,7 +1971,7 @@
             "en": "Addendum",
             "de": "Interner Nachtrag"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
@@ -2061,7 +1983,7 @@
             "disabled": false,
             "pdfHide": false,
             "placeHolderText": {},
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -2084,10 +2006,10 @@
             "disabled": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "Documents",
+                "en": "Document(s)",
                 "de": "Dokument(e)"
               },
               "pdfHide": false
@@ -2135,22 +2057,23 @@
           },
           "cc": {
             "assignee": true,
-            "staticEmails": []
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
           },
           "bcc": {
             "assignee": false,
             "staticEmails": []
           },
           "subject": {
-            "en": "Protokoll - Interner Nachtrag / Protocol - Internal Addendum",
-            "de": "Protokoll - Interner Nachtrag / Protocol - Internal Addendum",
+            "en": "ULT – Protocol DGUV 3 (internal addendum)",
+            "de": "ULT – Protokoll DGUV 3 (interner Nachtrag)",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
           "body": {
-            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\n",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.",
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
             "fr": "",
             "it": "",
