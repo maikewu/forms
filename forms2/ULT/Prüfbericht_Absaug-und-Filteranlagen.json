@@ -1,6 +1,11 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true,
+    "pdfTitle": {
+      "de": "Prüfbericht für Absaug- und Filteranlagen",
+      "en": "Test report for extraction and filtration systems"
+    }
   },
   "sections": [
     {
@@ -16,307 +21,6 @@
         }
       },
       "fields": [
-        {
-          "id": "customer",
-          "type": "companySingleSelect",
-          "config": {
-            "required": true,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Customer",
-                "de": "Kunde"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "disableCreation": true,
-              "pdfHide": false
-            },
-            "useAsFilterForFields": ["asset", "customercontactperson"],
-            "prefill": {
-              "selectedCompany": [
-                {
-                  "input": "organizationId",
-                  "steps": []
-                },
-                {
-                  "input": "assetId",
-                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
-                }
-              ]
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "customerLocation"
-                },
-                "steps": [
-                  "accountInfoToAccount",
-                  "accountToBillingAddressAddress"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "id": "customerLocation",
-          "type": "addressInput",
-          "config": {
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "required": {
-              "street": false,
-              "streetNumber": false,
-              "supplement": false,
-              "company": false,
-              "zipPostCode": false,
-              "city": false,
-              "state": false,
-              "country": false
-            },
-            "label": {
-              "text": {
-                "en": "Address client / customer",
-                "de": "Adresse Auftraggeber / Kunde"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "pdfHide": false,
-              "pdfStartInNewLine": false,
-              "pdfAddLineBreaks": false
-            },
-            "prefill": {
-              "value": [
-                {
-                  "input": "organizationId",
-                  "steps": [
-                    "accountIdToAccount",
-                    "accountToBillingAddressAddress"
-                  ]
-                },
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
-                {
-                  "input": "assetId",
-                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
-                }
-              ]
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "07-signatureTechnician",
-                  "propertyName": "location"
-                },
-                "steps": ["addressToCityString"]
-              }
-            ]
-          }
-        },
-        {
-          "id": "customercontactperson",
-          "type": "userSingleSelect",
-          "config": {
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Contact person (Customer)",
-                "de": "Ansprechpartner (Auftraggeber)"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "pdfPrintEmailAddress": false,
-              "pdfHide": false
-            },
-            "prefill": {
-              "value": [
-                {
-                  "input": "assetId",
-                  "steps": ["assetIdToAsset", "assetToCustomerPersonUserId"]
-                }
-              ]
-            }
-          }
-        },
-        {
-          "id": "customerContactText",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfHide": true,
-            "pdfWidth": 1,
-            "text": {
-              "en": "In case the contact is not to be found above, please enter it manually below:",
-              "de": "Falls der Kontakt oben nicht auffindbar ist, bitte folgend manuell eintippen:",
-              "fr": "",
-              "it": "",
-              "tr": "",
-              "es": ""
-            }
-          }
-        },
-        {
-          "id": "contactPersons_customer_freetext",
-          "type": "singleLineTextInput",
-          "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Contact person (Customer)",
-                "de": "Ansprechpartner (Auftraggeber)"
-              },
-              "pdfHide": false
-            },
-            "value": {}
-          }
-        },
-        {
-          "id": "customerContactPersonPhone",
-          "type": "phoneNumberInput",
-          "config": {
-            "label": {
-              "text": {
-                "en": "Telephone number of the contact person (Customer)",
-                "de": "Telefonnummer des Ansprechpartners (Auftraggeber)"
-              },
-              "pdfHide": false
-            },
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "required": false,
-            "value": {
-              "pdfHide": false
-            }
-          }
-        },
-        {
-          "id": "deliveryTexts",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfHide": true,
-            "pdfWidth": 1,
-            "text": {
-              "en": "If different from the customer, please fill in the following data on the asset location:",
-              "de": "Falls abweichend vom Auftraggeber, bitte folgende Daten zum Anlagenstandort ausfüllen:",
-              "fr": "",
-              "it": "",
-              "tr": "",
-              "es": ""
-            }
-          }
-        },
-        {
-          "id": "sameDeliveryAddress",
-          "type": "addressInput",
-          "config": {
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "required": {
-              "street": false,
-              "streetNumber": false,
-              "supplement": false,
-              "company": false,
-              "zipPostCode": false,
-              "city": false,
-              "state": false,
-              "country": false
-            },
-            "label": {
-              "text": {
-                "en": "Operational location",
-                "de": "Einsatzort"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "pdfHide": false,
-              "pdfStartInNewLine": false,
-              "pdfAddLineBreaks": false
-            },
-            "prefill": {
-              "value": [
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
-                {
-                  "input": "assetId",
-                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
-                }
-              ]
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "07-signatureTechnician",
-                  "propertyName": "location"
-                },
-                "steps": ["addressToCityString"]
-              }
-            ]
-          }
-        },
-        {
-          "id": "deliveryContactPersons_customer_freetext",
-          "type": "singleLineTextInput",
-          "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Contact person (Asset location)",
-                "de": "Ansprechpartner (Anlagenstandort)"
-              },
-              "pdfHide": false
-            },
-            "value": {}
-          }
-        },
-        {
-          "id": "deliveryContactPersonPhone",
-          "type": "phoneNumberInput",
-          "config": {
-            "label": {
-              "text": {
-                "en": "Telephone number of the contact person (Asset location)",
-                "de": "Telefonnummer des Ansprechpartners (Anlagenstandort)"
-              },
-              "pdfHide": false
-            },
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "required": false,
-            "value": {
-              "pdfHide": false
-            }
-          }
-        },
         {
           "id": "technicians",
           "type": "userSingleSelect",
@@ -447,6 +151,318 @@
           }
         },
         {
+          "id": "whitespace0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "useAsFilterForFields": ["asset", "customercontactperson"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customerLocation",
+          "type": "addressInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "label": {
+              "text": {
+                "en": "Address customer",
+                "de": "Adresse Kunde"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "07-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customercontactperson",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Contact person (Customer)",
+                "de": "Ansprechpartner (Kunde)"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfPrintEmailAddress": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerPersonUserId"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customerContactText",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": true,
+            "pdfWidth": 1,
+            "text": {
+              "en": "In case the contact is not to be found above, please enter it manually below:",
+              "de": "Falls der Kontakt oben nicht auffindbar ist, bitte folgend manuell eintippen:",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "contactPersons_customer_freetext",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Contact person (Customer)",
+                "de": "Ansprechpartner (Kunde)"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "customerContactPersonPhone",
+          "type": "phoneNumberInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Tel. no. of contact person (customer)",
+                "de": "Tel.-Nr. d. Ansprechpartners (Kunde)"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "deliveryTexts",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": true,
+            "pdfWidth": 1,
+            "text": {
+              "en": "If different from the customer, please fill in the following data on the operation location:",
+              "de": "Falls abweichend vom Kunde, bitte folgende Daten zum Einsatzort ausfüllen:",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "sameDeliveryAddress",
+          "type": "addressInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "label": {
+              "text": {
+                "en": "Operational location",
+                "de": "Einsatzort"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "07-signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "deliveryContactPersons_customer_freetext",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Contact person (operation location)",
+                "de": "Ansprechpartner (Einsatzort)"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "deliveryContactPersonPhone",
+          "type": "phoneNumberInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Tel. no. of contact person (operation location)",
+                "de": "Tel.-Nr. d. Ansprechpartners (Einsatzort)"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
           "id": "whitespace1",
           "type": "htmlDisplay",
           "config": {
@@ -484,7 +500,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "required": false,
@@ -1080,7 +1096,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "disabled": false,
             "required": false,
@@ -1645,7 +1661,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -2900,7 +2916,7 @@
             "staticEmails": []
           },
           "subject": {
-            "en": "ULT – Test report for extraction and filter systems",
+            "en": "ULT – Test report for extraction and filtration systems",
             "de": "ULT – Prüfbericht für Absaug- und Filteranlagen",
             "fr": "",
             "it": "",
@@ -2983,8 +2999,8 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "en": "Send/sent report with internal addendum as e-mail",
-          "de": "Bericht mit internem Nachtrag als E-Mail senden/gesendet"
+          "en": "Send/sent test report with internal addendum as e-mail",
+          "de": "Prüfbericht mit internem Nachtrag als E-Mail senden/gesendet"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -3022,8 +3038,8 @@
             "staticEmails": []
           },
           "subject": {
-            "en": "ULT – Test protocol - Internal Addendum",
-            "de": "ULT – Prüfbericht - Interner Nachtrag",
+            "en": "ULT – Test protocol for extraction and filtration systems (internal addendum)",
+            "de": "ULT - Prüfbericht für Absaug- und Filteranlagen (interner Nachtrag)",
             "fr": "",
             "it": "",
             "tr": "",
