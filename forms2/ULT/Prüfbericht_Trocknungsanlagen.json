@@ -1,6 +1,11 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true,
+    "pdfTitle": {
+      "de": "Prüfbericht für Trocknungsanlagen",
+      "en": "Test report for drying equipment"
+    }
   },
   "sections": [
     {
@@ -9,13 +14,103 @@
       "config": {
         "headline": {
           "text": {
-            "en": "Customer",
-            "de": "Kunde"
+            "en": "Allgemeine Daten",
+            "de": "General Daten"
           },
           "pdfHide": true
         }
       },
       "fields": [
+        {
+          "id": "technicians",
+          "type": "userSingleSelect",
+          "config": {
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Auditor",
+                "de": "Prüfer"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfPrintEmailAddress": true,
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "phoneNumber",
+          "type": "phoneNumberInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Phone",
+                "de": "Telefon"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": false,
+            "value": {
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Asset",
+                "de": "Anlage"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "whitespace0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
         {
           "id": "customer",
           "type": "companySingleSelect",
@@ -26,8 +121,8 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Customer Select",
-                "de": "Kundenauswahl"
+                "en": "Customer",
+                "de": "Kunde"
               },
               "pdfHide": false
             },
@@ -35,9 +130,7 @@
               "disableCreation": true,
               "pdfHide": false
             },
-            "useAsFilterForFields": [
-              "asset"
-            ],
+            "useAsFilterForFields": ["asset"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -46,10 +139,7 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
@@ -85,25 +175,18 @@
             },
             "label": {
               "text": {
-                "en": "Address of client / customer",
-                "de": "Adresse Auftraggeber / Kunde"
+                "en": "Address customer",
+                "de": "Adresse Kunde"
               },
               "pdfHide": false
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
                 {
                   "input": "organizationId",
                   "steps": [
@@ -112,11 +195,15 @@
                   ]
                 },
                 {
-                  "input": "assetId",
+                  "input": "workOrderId",
                   "steps": [
-                    "assetIdToAsset",
-                    "assetToLocationAddress"
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
                   ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -126,9 +213,7 @@
                   "id": "B1_signatureTechnician",
                   "propertyName": "location"
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
+                "steps": ["addressToCityString"]
               }
             ]
           }
@@ -152,118 +237,58 @@
             },
             "label": {
               "text": {
-                "en": "Address asset location",
-                "de": "Adresse Anlagenstandort"
+                "en": "Address asset",
+                "de": "Adresse Anlage"
               },
               "pdfHide": false
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
-            }
-          }
-        },
-        {
-          "id": "technicians",
-          "type": "userSingleSelect",
-          "config": {
-            "required": true,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
-            "label": {
-              "text": {
-                "en": "Auditor",
-                "de": "Prüfer"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "pdfPrintEmailAddress": false,
-              "pdfHide": false
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
                 {
-                  "input": "assignedUserId",
-                  "steps": []
-                }
-              ]
-            }
-          }
-        },
-        {
-          "id": "phoneNumber",
-          "type": "phoneNumberInput",
-          "config": {
-            "label": {
-              "text": {
-                "en": "Phone",
-                "de": "Telefon"
-              },
-              "pdfHide": false
-            },
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "required": true,
-            "value": {
-              "pdfHide": false
-            }
-          }
-        },
-        {
-          "id": "email",
-          "type": "singleLineTextInput",
-          "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "E-mail address",
-                "de": "E-Mail Adresse"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "validators": {
-                "emailAddress": true
-              }
-            }
-          }
-        },
-        {
-          "id": "asset",
-          "type": "assetSingleSelect",
-          "config": {
-            "required": true,
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
-            "label": {
-              "text": {
-                "en": "Asset number",
-                "de": "Anlage"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "disableCreation": false,
-              "pdfHide": false
-            },
-            "prefill": {
-              "selectedAsset": [
-                {
                   "input": "assetId",
-                  "steps": []
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
                 }
               ]
-            }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "B1_signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "whitespace1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -277,40 +302,10 @@
             "en": "Asset Description",
             "de": "Anlagenbeschreibung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Asset Description</b>",
-              "de": "<b style='font-size:11pt'>Anlagenbeschreibung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "Sorptionsmodul_2",
           "type": "htmlDisplay",
@@ -844,6 +839,17 @@
             },
             "value": {}
           }
+        },
+        {
+          "id": "whitespace2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -856,38 +862,24 @@
             "en": "Visual Check",
             "de": "Sichtprüfung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "header_spacer_3",
+          "id": "Sorptionsmodul1",
           "type": "htmlDisplay",
           "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
             "pdfHide": false,
             "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_3",
-          "type": "htmlDisplay",
-          "config": {
             "text": {
-              "en": "<b style='font-size:11pt'>Visual Check</b>",
-              "de": "<b style='font-size:11pt'>Sichtprüfung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
+              "en": "✓ if part is existing ",
+              "de": "✓ wenn Bauteil vorhanden",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
           }
         },
         {
@@ -2161,6 +2153,17 @@
               "pdfHide": false
             }
           }
+        },
+        {
+          "id": "whitespace3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -2173,40 +2176,10 @@
             "en": "Functional Check",
             "de": "Funktionsprüfung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_4",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_4",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Functional Check</b>",
-              "de": "<b style='font-size:11pt'>Funktionsprüfung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "Sorptionsmodul",
           "type": "htmlDisplay",
@@ -3123,6 +3096,17 @@
               "pdfHide": false
             }
           }
+        },
+        {
+          "id": "whitespace55",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -3135,40 +3119,10 @@
             "en": "Measurement results",
             "de": "Messergebnisse"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_5",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_5",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Measurement results</b>",
-              "de": "<b style='font-size:11pt'>Messergebnisse</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "v1",
           "type": "singleLineTextInput",
@@ -3807,23 +3761,6 @@
       },
       "fields": [
         {
-          "id": "header_spacer_7",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
           "id": "richTextField",
           "type": "richTextInput",
           "config": {
@@ -3845,6 +3782,17 @@
               "pdfHide": false
             }
           }
+        },
+        {
+          "id": "whitespace5",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -3857,40 +3805,10 @@
             "en": "Test Result",
             "de": "Prüfergebnis"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_6",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_6",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Test Result</b>",
-              "de": "<b style='font-size:11pt'>Prüfergebnis</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "dguv3",
           "type": "booleanInput",
@@ -3904,7 +3822,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.35,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -3922,7 +3840,7 @@
             },
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.2,
             "disabled": false,
             "required": false,
             "value": {
@@ -3949,7 +3867,7 @@
             "pdfHide": false,
             "placeHolderText": {},
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.45,
             "label": {
               "text": {
                 "en": "Necessary repairs",
@@ -3977,7 +3895,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.35,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -3995,7 +3913,7 @@
             },
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.2,
             "disabled": false,
             "required": false,
             "value": {
@@ -4022,7 +3940,7 @@
             "pdfHide": false,
             "placeHolderText": {},
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.45,
             "label": {
               "text": {
                 "en": "Necessary repairs",
@@ -4050,7 +3968,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.35,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -4068,7 +3986,7 @@
             },
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.2,
             "disabled": false,
             "required": false,
             "value": {
@@ -4095,7 +4013,7 @@
             "pdfHide": false,
             "placeHolderText": {},
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.45,
             "label": {
               "text": {
                 "en": "Necessary repairs",
@@ -4120,7 +4038,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": true
+            "required": true,
+            "autofill": "always"
           },
           "nameSingleLineTextInput": {
             "disable": false,
@@ -4162,17 +4081,18 @@
           },
           "pdfHide": true
         },
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "prefill": {
           "name": [
             {
               "input": "assignedUserId",
-              "steps": [
-                "userIdToUser",
-                "userToFullNameString"
-              ]
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
@@ -4198,14 +4118,6 @@
                 "accountIdToAccount",
                 "accountToBillingAddressAddress",
                 "addressToCityString"
-              ]
-            }
-          ],
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
               ]
             }
           ]
@@ -4248,23 +4160,146 @@
           },
           "cc": {
             "assignee": true,
-            "staticEmails": []
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
           },
           "bcc": {
             "assignee": false,
             "staticEmails": []
           },
           "subject": {
-            "en": "ULT test report for drying systems",
-            "de": "ULT Prüfbericht für Trocknungsanlagen / ULT test report for drying systems",
+            "en": "ULT – Test report for drying equipment",
+            "de": "ULT – Prüfbericht für Trocknungsanlagen",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
           "body": {
-            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\nIn the attachment you will find the completed test report as a PDF.\nBest regards,\nYour Field Service Team",
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Prüfbericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed test report as PDF.\n\nBest regards,\nYour ULT Field Service Team",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Prüfbericht als PDF.\n\nMit freundlichen Grüßen,\nIhr ULT Service-Außendienst",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    },
+    {
+      "id": "10_addendum",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Addendum",
+            "de": "Interner Nachtrag"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "commentAddendum",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "placeHolderText": {},
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Comments & Notes",
+                "de": "Bemerkungen & Hinweise"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        },
+        {
+          "id": "files",
+          "type": "fileUpload",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Document(s)",
+                "de": "Dokument(e)"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "11-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent test report with internal addendum as e-mail",
+          "de": "Prüfbericht mit internem Nachtrag als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "pdfHide": true,
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": true,
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
+          },
+          "bcc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "ULT – Test Report for drying equipment(internal addendum)",
+            "de": "ULT – Prüfbericht für Trocknungsanlagen (interner Nachtrag)",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
             "fr": "",
             "it": "",
             "tr": "",

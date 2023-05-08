@@ -1,6 +1,11 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true,
+    "pdfTitle": {
+      "de": "Inbetriebnahmeprotokoll",
+      "en": "Commissioning Protocol"
+    }
   },
   "sections": [
     {
@@ -9,13 +14,87 @@
       "config": {
         "headline": {
           "text": {
-            "en": "Customer",
-            "de": "Kunde"
+            "en": "General Information",
+            "de": "Allgemeine Daten"
           },
           "pdfHide": true
         }
       },
       "fields": [
+        {
+          "id": "technicians",
+          "type": "userSingleSelect",
+          "config": {
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Auditor",
+                "de": "Prüfer"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfPrintEmailAddress": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Asset",
+                "de": "Anlage"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "whitespace0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
         {
           "id": "customer",
           "type": "companySingleSelect",
@@ -27,7 +106,7 @@
             "label": {
               "text": {
                 "en": "Customer",
-                "de": "Kundenauswahl"
+                "de": "Kunde"
               },
               "pdfHide": false
             },
@@ -35,9 +114,7 @@
               "disableCreation": true,
               "pdfHide": false
             },
-            "useAsFilterForFields": [
-              "asset"
-            ],
+            "useAsFilterForFields": ["asset"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -46,10 +123,7 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
@@ -92,18 +166,11 @@
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
                 {
                   "input": "organizationId",
                   "steps": [
@@ -112,11 +179,15 @@
                   ]
                 },
                 {
-                  "input": "assetId",
+                  "input": "workOrderId",
                   "steps": [
-                    "assetIdToAsset",
-                    "assetToLocationAddress"
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
                   ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -126,70 +197,20 @@
                   "id": "B1_signatureTechnician",
                   "propertyName": "location"
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
+                "steps": ["addressToCityString"]
               }
             ]
           }
         },
         {
-          "id": "technicians",
-          "type": "userSingleSelect",
+          "id": "whitespace1",
+          "type": "htmlDisplay",
           "config": {
-            "required": true,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
-            "label": {
-              "text": {
-                "en": "Auditor",
-                "de": "Prüfer"
-              },
-              "pdfHide": false
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
             },
-            "value": {
-              "pdfPrintEmailAddress": false,
-              "pdfHide": false
-            },
-            "prefill": {
-              "value": [
-                {
-                  "input": "assignedUserId",
-                  "steps": []
-                }
-              ]
-            }
-          }
-        },
-        {
-          "id": "asset",
-          "type": "assetSingleSelect",
-          "config": {
-            "required": true,
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
-            "label": {
-              "text": {
-                "en": "Asset number",
-                "de": "Anlage"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "disableCreation": false,
-              "pdfHide": false
-            },
-            "prefill": {
-              "selectedAsset": [
-                {
-                  "input": "assetId",
-                  "steps": []
-                }
-              ]
-            }
+            "uiHide": true
           }
         }
       ]
@@ -203,40 +224,10 @@
             "en": "Asset Description",
             "de": "Anlagenbeschreibung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Asset Description</b>",
-              "de": "<b style='font-size:11pt'>Anlagenbeschreibung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "Sorptionsmodul",
           "type": "htmlDisplay",
@@ -770,6 +761,17 @@
             },
             "value": {}
           }
+        },
+        {
+          "id": "whitespace2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -782,38 +784,24 @@
             "en": "Visual Check",
             "de": "Sichtprüfung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "header_spacer_3",
+          "id": "Sorptionsmodul_0",
           "type": "htmlDisplay",
           "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
             "pdfHide": false,
             "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_3",
-          "type": "htmlDisplay",
-          "config": {
             "text": {
-              "en": "<b style='font-size:11pt'>Visual Check</b>",
-              "de": "<b style='font-size:11pt'>Sichtprüfung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
+              "en": "✓ if part is existing ",
+              "de": "✓ wenn Bauteil vorhanden",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
           }
         },
         {
@@ -2087,6 +2075,17 @@
               "pdfHide": false
             }
           }
+        },
+        {
+          "id": "whitespace3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -2099,40 +2098,10 @@
             "en": "Functional Check",
             "de": "Funktionsprüfung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_4",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_4",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Functional Check</b>",
-              "de": "<b style='font-size:11pt'>Funktionsprüfung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "Sorptionsmodul_4",
           "type": "htmlDisplay",
@@ -3049,6 +3018,17 @@
               "pdfHide": false
             }
           }
+        },
+        {
+          "id": "whitespace4",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -3061,40 +3041,10 @@
             "en": "Measurement results",
             "de": "Messergebnisse"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_5",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_5",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Measurement results</b>",
-              "de": "<b style='font-size:11pt'>Messergebnisse</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "v1",
           "type": "singleLineTextInput",
@@ -3754,6 +3704,17 @@
               "pdfHide": false
             }
           }
+        },
+        {
+          "id": "whitespace5",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -3766,40 +3727,10 @@
             "en": "Test Result",
             "de": "Prüfergebnis"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_6",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_6",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Test Result</b>",
-              "de": "<b style='font-size:11pt'>Prüfergebnis</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "dguv3",
           "type": "booleanInput",
@@ -3813,7 +3744,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.35,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -3831,7 +3762,7 @@
             },
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.2,
             "disabled": false,
             "required": false,
             "value": {
@@ -3858,7 +3789,7 @@
             "pdfHide": false,
             "placeHolderText": {},
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.45,
             "label": {
               "text": {
                 "en": "Necessary repairs",
@@ -3886,7 +3817,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.35,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -3904,7 +3835,7 @@
             },
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.2,
             "disabled": false,
             "required": false,
             "value": {
@@ -3931,7 +3862,7 @@
             "pdfHide": false,
             "placeHolderText": {},
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.45,
             "label": {
               "text": {
                 "en": "ComNecessary repairsment",
@@ -3959,7 +3890,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.35,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -3977,7 +3908,7 @@
             },
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.2,
             "disabled": false,
             "required": false,
             "value": {
@@ -4004,7 +3935,7 @@
             "pdfHide": false,
             "placeHolderText": {},
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.45,
             "label": {
               "text": {
                 "en": "Necessary repairs",
@@ -4029,7 +3960,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": true
+            "required": true,
+            "autofill": "always"
           },
           "nameSingleLineTextInput": {
             "disable": false,
@@ -4071,17 +4003,18 @@
           },
           "pdfHide": true
         },
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "prefill": {
           "name": [
             {
               "input": "assignedUserId",
-              "steps": [
-                "userIdToUser",
-                "userToFullNameString"
-              ]
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
@@ -4107,14 +4040,6 @@
                 "accountIdToAccount",
                 "accountToBillingAddressAddress",
                 "addressToCityString"
-              ]
-            }
-          ],
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
               ]
             }
           ]
@@ -4157,23 +4082,146 @@
           },
           "cc": {
             "assignee": true,
-            "staticEmails": []
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
           },
           "bcc": {
             "assignee": false,
             "staticEmails": []
           },
           "subject": {
-            "en": "ULT test report for drying systems",
-            "de": "ULT Prüfbericht für Trocknungsanlagen / ULT test report for drying systems",
+            "en": "ULT – Commissioning Protocol",
+            "de": "ULT – Inbetriebnahmeprotokoll",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
           "body": {
-            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\nIn the attachment you will find the completed test report as a PDF.\nBest regards,\nYour Field Service Team",
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie den abgeschlossenen Prüfbericht als PDF.\n\nMit freundlichen Grüßen,\nIhr Service-Außendienst",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed commissioning protocol as PDF.\n\nBest regards,\nYour ULT Field Service Team",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie das abgeschlossene Inbetriebnahmeprotokoll als PDF.\n\nMit freundlichen Grüßen,\nIhr ULT Service-Außendienst",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    },
+    {
+      "id": "10_addendum",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Addendum",
+            "de": "Interner Nachtrag"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "commentAddendum",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "placeHolderText": {},
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Comments & Notes",
+                "de": "Bemerkungen & Hinweise"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        },
+        {
+          "id": "files",
+          "type": "fileUpload",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Document(s)",
+                "de": "Dokument(e)"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "11-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent commissioning protocol with internal addendum as e-mail",
+          "de": "Inbetriebnahmeprotokoll mit internem Nachtrag als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "pdfHide": true,
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": true,
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
+          },
+          "bcc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "ULT – Commissioning Protocol (internal addendum)",
+            "de": "ULT – Inbetriebnahmeprotokoll (interner Nachtrag)",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
             "fr": "",
             "it": "",
             "tr": "",
