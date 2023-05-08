@@ -1,6 +1,11 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true,
+    "pdfTitle": {
+      "de": "Aufwand-Protokoll | Kundendienst- und Montageeinsätze",
+      "en": "Effort Protocol | Customer Service and Installation"
+    }
   },
   "sections": [
     {
@@ -23,7 +28,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.3,
             "label": {
               "text": {
@@ -33,6 +38,55 @@
               "pdfHide": false
             },
             "value": {}
+          }
+        },
+        {
+          "id": "text_7",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Project",
+                "de": "Projekt"
+              },
+              "pdfHide": false
+            },
+            "value": {}
+          }
+        },
+        {
+          "id": "text_8",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Procedure",
+                "de": "Vorgang"
+              },
+              "pdfHide": false
+            },
+            "value": {},
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
@@ -49,7 +103,7 @@
             },
             "disabled": false,
             "pdfWidth": 0.3,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "required": false
           }
         },
@@ -67,7 +121,7 @@
             },
             "disabled": false,
             "pdfWidth": 0.3,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "required": false
           }
         },
@@ -79,7 +133,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "en": "Others",
@@ -91,12 +145,23 @@
           }
         },
         {
+          "id": "whitespace0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
           "id": "customer",
           "type": "companySingleSelect",
           "config": {
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -109,9 +174,7 @@
               "disableCreation": true,
               "pdfHide": false
             },
-            "useAsFilterForFields": [
-              "asset"
-            ],
+            "useAsFilterForFields": ["asset"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -120,10 +183,7 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
@@ -145,8 +205,8 @@
           "type": "addressInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "required": {
               "street": false,
               "streetNumber": false,
@@ -159,25 +219,18 @@
             },
             "label": {
               "text": {
-                "en": "Customer Address",
-                "de": "Kundenadresse"
+                "en": "Address Customer",
+                "de": "Adresse Kunde"
               },
               "pdfHide": false
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
                 {
                   "input": "organizationId",
                   "steps": [
@@ -186,11 +239,15 @@
                   ]
                 },
                 {
-                  "input": "assetId",
+                  "input": "workOrderId",
                   "steps": [
-                    "assetIdToAsset",
-                    "assetToLocationAddress"
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
                   ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -200,18 +257,14 @@
                   "id": "5-signature_technician",
                   "propertyName": "location"
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
+                "steps": ["addressToCityString"]
               },
               {
                 "target": {
                   "id": "6-signature_customer",
                   "propertyName": "location"
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
+                "steps": ["addressToCityString"]
               }
             ]
           }
@@ -223,13 +276,13 @@
             "pdfHide": false,
             "label": {
               "text": {
-                "en": "Like Customer Address",
-                "de": "Wie Kundenadresse"
+                "en": "Asset location equals customer address",
+                "de": "Anlagenstandort entspricht Kundenadresse"
               },
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "pdfHideIfValueIsEmpty": true,
             "required": false
           }
@@ -240,7 +293,7 @@
           "config": {
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "required": {
               "street": false,
               "streetNumber": false,
@@ -260,9 +313,63 @@
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
-            }
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "5-signature_technician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "6-signature_customer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "whitespace6",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "whitespace0o",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         },
         {
@@ -272,12 +379,40 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 0.3,
             "label": {
               "text": {
                 "en": "Contact Person on site",
-                "de": "Ansprechpartner v. Ort"
+                "de": "Ansprechpartner vor Ort"
+              },
+              "pdfHide": false
+            },
+            "value": {},
+            "onChange": [
+              {
+                "target": {
+                  "id": "6-signature_customer",
+                  "propertyName": "name"
+                },
+                "steps": []
+              }
+            ]
+          }
+        },
+        {
+          "id": "text_4",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "E-Mail",
+                "de": "E-Mail"
               },
               "pdfHide": false
             },
@@ -296,7 +431,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 0.3,
             "required": false,
             "value": {
@@ -305,33 +440,13 @@
           }
         },
         {
-          "id": "text_4",
-          "type": "singleLineTextInput",
+          "id": "customercontactperson",
+          "type": "userSingleSelect",
           "config": {
-            "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.3,
-            "label": {
-              "text": {
-                "en": "E-Mail",
-                "de": "E-Mail"
-              },
-              "pdfHide": false
-            },
-            "value": {}
-          }
-        },
-        {
-          "id": "text_5",
-          "type": "singleLineTextInput",
-          "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.6,
             "label": {
               "text": {
                 "en": "ULT Contact Person",
@@ -339,7 +454,22 @@
               },
               "pdfHide": false
             },
-            "value": {}
+            "value": {
+              "pdfPrintEmailAddress": true,
+              "pdfStartInNewLine": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToResponsibleUserId"
+                  ]
+                }
+              ]
+            }
           }
         },
         {
@@ -354,7 +484,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 0.3,
             "required": false,
             "value": {
@@ -363,60 +493,14 @@
           }
         },
         {
-          "id": "text_6",
-          "type": "singleLineTextInput",
+          "id": "whitespace1",
+          "type": "htmlDisplay",
           "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.3,
-            "label": {
-              "text": {
-                "en": "E-Mail",
-                "de": "E-Mail"
-              },
-              "pdfHide": false
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
             },
-            "value": {}
-          }
-        },
-        {
-          "id": "text_7",
-          "type": "singleLineTextInput",
-          "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Project",
-                "de": "Projekt"
-              },
-              "pdfHide": false
-            },
-            "value": {}
-          }
-        },
-        {
-          "id": "text_8",
-          "type": "singleLineTextInput",
-          "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Procedure",
-                "de": "Process"
-              },
-              "pdfHide": false
-            },
-            "value": {}
+            "uiHide": true
           }
         }
       ]
@@ -430,27 +514,10 @@
             "en": "Equipment Information",
             "de": "Geräte Informationen"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "asset",
           "type": "assetSingleSelect",
@@ -458,7 +525,7 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -536,6 +603,17 @@
             "pdfHideIfValueIsEmpty": true,
             "required": false
           }
+        },
+        {
+          "id": "whitespace2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -545,8 +623,8 @@
       "config": {
         "headline": {
           "text": {
-            "en": "Travel and Work Times",
-            "de": "Arbeits- und Reisezeit"
+            "en": "Travel and Working Times",
+            "de": "Reise- und Arbeitszeiten"
           },
           "pdfHide": true
         }
@@ -557,12 +635,13 @@
           "type": "timeTrackingListInput",
           "config": {
             "pdfHide": false,
+            "requiredAmountOfEntries": 1,
             "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "Travel and Work Times",
-                "de": "Arbeits- und Reisezeit"
+                "en": "Travel and Working Times",
+                "de": "Reise- und Arbeitszeiten"
               },
               "pdfHide": false
             },
@@ -617,7 +696,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.5,
             "pdfHideIfValueIsEmpty": true,
             "required": false
           }
@@ -635,7 +714,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.5,
             "pdfHideIfValueIsEmpty": true,
             "required": false
           }
@@ -653,7 +732,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.5,
             "pdfHideIfValueIsEmpty": true,
             "required": false
           }
@@ -694,6 +773,17 @@
               "pdfHide": false
             },
             "value": {}
+          }
+        },
+        {
+          "id": "whitespace4",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -740,10 +830,7 @@
               "entries": [
                 {
                   "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToTasks"
-                  ]
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
                 }
               ]
             }
@@ -758,7 +845,7 @@
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "Material Used",
+                "en": "Material used",
                 "de": "Materialverbrauch"
               },
               "pdfHide": false
@@ -815,10 +902,10 @@
           "type": "htmlDisplay",
           "config": {
             "pdfHide": false,
-            "pdfWidth": 1,
+            "pdfWidth": 0.3,
             "text": {
-              "en": "Internally checked and done",
-              "de": "Intern geprüft und erledigt",
+              "en": "Internally checked and done:",
+              "de": "Intern geprüft und erledigt:",
               "fr": "",
               "it": "",
               "tr": "",
@@ -839,7 +926,7 @@
             },
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "required": false,
             "value": {
               "pdfHide": false
@@ -854,7 +941,7 @@
             "required": false,
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "en": "Name",
@@ -863,6 +950,17 @@
               "pdfHide": false
             },
             "value": {}
+          }
+        },
+        {
+          "id": "whitespace5",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -881,36 +979,6 @@
       },
       "fields": [
         {
-          "id": "header_spacer_5",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_5",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Remarks and Customer Wishes</b>",
-              "de": "<b style='font-size:11pt'>Bemerkungen und Kundenwünsche</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
           "id": "notes",
           "type": "richTextInput",
           "config": {
@@ -922,7 +990,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "placeHolderText": {
               "de": "Hier tippen...",
@@ -938,7 +1006,7 @@
           "type": "htmlDisplay",
           "config": {
             "pdfHide": false,
-            "pdfWidth": 0.25,
+            "pdfWidth": 1,
             "text": {
               "en": "Customer wishes",
               "de": "Kunde wünscht",
@@ -962,7 +1030,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.3,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -980,7 +1048,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.3,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -998,7 +1066,7 @@
               "pdfHide": false
             },
             "disabled": false,
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.3,
             "pdfHideIfValueIsEmpty": false,
             "required": false
           }
@@ -1010,8 +1078,8 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Others",
@@ -1034,8 +1102,8 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
             "disabled": false,
             "value": {
               "options": {
@@ -1074,7 +1142,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": true
+            "required": true,
+            "autofill": "always"
           },
           "nameSingleLineTextInput": {
             "disable": false,
@@ -1116,17 +1185,14 @@
           },
           "pdfHide": true
         },
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "prefill": {
           "name": [
             {
               "input": "assignedUserId",
-              "steps": [
-                "userIdToUser",
-                "userToFullNameString"
-              ]
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
@@ -1154,14 +1220,6 @@
                 "addressToCityString"
               ]
             }
-          ],
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
-              ]
-            }
           ]
         }
       }
@@ -1174,7 +1232,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": false
+            "required": false,
+            "autofill": "always"
           },
           "nameSingleLineTextInput": {
             "disable": false,
@@ -1216,7 +1275,7 @@
           },
           "pdfHide": true
         },
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "prefill": {
@@ -1245,14 +1304,6 @@
                 "addressToCityString"
               ]
             }
-          ],
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
-              ]
-            }
           ]
         }
       }
@@ -1262,8 +1313,8 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "en": "Send/Sent completed effort protocol",
-          "de": "Ausgefülltes Aufwand-Protokoll senden/gesendet"
+          "en": "Send/sent customer copy as email",
+          "de": "Kundenausfertigung als E-Mail senden/gesendet"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -1292,23 +1343,146 @@
             "staticEmails": []
           },
           "cc": {
-            "assignee": false,
-            "staticEmails": []
+            "assignee": true,
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
           },
           "bcc": {
             "assignee": true,
             "staticEmails": []
           },
           "subject": {
-            "en": "Effort protocol - customer service and assembly operations",
-            "de": "Aufwand-Protokoll – Kundendienst- und Montageeinsätze / Effort protocol - customer service and assembly operations",
+            "en": "ULT – Effort protocol (customer service and installation)",
+            "de": "ULT – Aufwand-Protokoll (Kundendienst- und Montageeinsätze)",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
           "body": {
-            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\n",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed effort protocol as PDF.\n\nBest regards,\nYour ULT Field Service Team",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nIm Anhang finden Sie das abgeschlossene Aufwand-Protokoll als PDF.\n\nMit freundlichen Grüßen,\nIhr ULT Service-Außendienst",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    },
+    {
+      "id": "10_addendum",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Addendum",
+            "de": "Interner Nachtrag"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "commentAddendum",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "placeHolderText": {},
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Comments & Notes",
+                "de": "Bemerkungen & Hinweise"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "uiMinRows": 1,
+              "uiMaxRows": 10
+            }
+          }
+        },
+        {
+          "id": "files",
+          "type": "fileUpload",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Document(s)",
+                "de": "Dokument(e)"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "11-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent effort protocol with internal addendum as e-mail",
+          "de": "Aufwand-Protokoll mit internem Nachtrag als E-Mail senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "pdfHide": true,
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "pdfHideIfValueIsEmpty": false,
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": true,
+            "currentUser": true,
+            "staticEmails": ["erik.scheifler@ult.de"]
+          },
+          "bcc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "ULT – Effort Protocol (internal addendum)",
+            "de": "ULT – Aufwand-Protokoll (interner Nachtrag)",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.",
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
             "fr": "",
             "it": "",
