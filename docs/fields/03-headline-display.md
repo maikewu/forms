@@ -12,12 +12,10 @@ The HeadlineDisplay is a field that displays headlines to structure content in t
 | :--------------------------------------------------------------------------- | :--------------------------------|
 | [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
 | [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
-| [pdfTextSize](./24-general-properties/#pdftextsize)         | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)       | Text color of the label in the PDF. |
 | [text](./24-general-properties/#text)                       | Localized label text of the field. Shown in the UI and the PDF. |
 | [uiHide](./24-general-properties/#uihide)                   | Setting this to `true` hides the label in the UI. |
-| [uiTextColor](./24-general-properties/#uitextcolor)         | Text color of a certain field in the UI.                                                                |
-| [uiTextSize](#uitextsize)         | Text size of a certain field in the UI.                                                                |
+| [type](#type)         | Text size of a certain field in the UI.                                                                |
 
 ---
 
@@ -35,10 +33,8 @@ The HeadlineDisplay is a field that displays headlines to structure content in t
             "it": "Headline display element sample [IT]"
         },
         "uiHide": false,
-        "uiTextSize": "H1",
-        "uiTextColor": "#facc2e",
+        "type": "H1",
         "pdfHide": false,
-        "pdfTextSize": "H1",
         "pdfTextColor": "#facc2e",
         "pdfWidth": 0.5
     }
@@ -46,16 +42,16 @@ The HeadlineDisplay is a field that displays headlines to structure content in t
 ```
 
 ---
-## `uiTextSize`
+## `type`
 
-| `uiTextSize`   |                  |
+| `type`   |                  |
 | :-------------- | :-------------- |
 | Possible Values | String `[H1, H2, H3]`     |
 | Required        | no              |
 | Default Value   | `H1`              |
 
-By setting `uiTextSize`, the field label will show up in the UI having the defined text size in pixels.
+By setting `type`, the field label will show up in the UI having the defined text size in pixels.
 
 ```json
-"uiTextSize": "H2"
+"type": "H2"
 ```

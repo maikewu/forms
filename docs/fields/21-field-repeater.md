@@ -108,10 +108,8 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
         "uiHideInRepeaterCardDisplay": false,
         "pdfFieldRepeaterCellAlignment": "right", 
         "uiHide": false,
-        "uiTextSize": "H1",
-        "uiTextColor": "#facc2e",
+        "type": "H1",
         "pdfHide": false,
-        "pdfTextSize": "H1",
         "pdfTextColor": "#facc2e",
         "pdfWidth": 0.5
     }
@@ -295,7 +293,6 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
           "it": "Address Input 1 [IT]"
         },
         "pdfHide": false,
-        "uiTextColor": "#facc2e",
         "pdfTextColor": "#facc2e",
         "pdfTextSize": 14
       },
@@ -877,7 +874,6 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
         "pdfFieldRepeaterCellAlignment": "right", 
         "label": {
             "pdfHide": false,
-            "uiTextColor": "#facc2e",
             "pdfTextColor": "#facc2e",
             "pdfTextSize": 14,
             "text": {

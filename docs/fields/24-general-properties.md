@@ -22,7 +22,6 @@ On this page you will find a list of repeating fields.
 | [pdfTextColor](#pdftextcolor)                      | Text color of a certain field in the PDF.                                                               |
 | [text](#text)                                      | Localized text of the field. Shown in the UI and the PDF.                                               |
 | [uiHide](#uihide)                                  | Setting this to `true` hides the field in the UI.                                                       |
-| [uiTextColor](#uitextcolor)                        | Text color of a certain field in the UI.                                                                |
 | [requiredAmountOfEntries](#requiredamountofentries)| Specify how many repeating entries are required to fill the form.                  |                                                                             |
 | [label](#lable)                                    | Several configurations for the label.                                                                 |
 | [values](#value)                                  | Several configurations for the values.                                                                 |
@@ -200,21 +199,6 @@ If `uiHide` is set to `true`, the label is not shown in the UI.
 ```
 
 ---
-## `uiTextColor`
-
-| `pdfTextColor`  |                 |
-| :-------------- | :-------------- |
-| Possible Values | Hex-Color-Code  |
-| Required        | no              |
-| Default Value   | `#000000`       |
-
-By setting `uiTextColor`, the field label in the UI will have the defined color.
-
-```json
-"uiTextColor": "#F1F8F1"
-```
-
----
 
 ## `requiredAmountOfEntries`
 
@@ -259,7 +243,6 @@ By setting `requiredAmountOfEntries`, it specify how many repeating entries are 
 | :------------------------------------------------| :-------------------------------- |
 | [text](#text)                                    | Localized label text of the field. Shown in the UI and the PDF. |
 | [uiHide](#uihide)                                | Setting this to `true` hides the label in the UI. |
-| [uiTextColor](#uitextcolor)                      | Text color of a certain field in the UI.                                                                |
 | [pdfHide](#pdfhide)                              | Setting this to `true` hides the label in the PDF. |
 | [pdfTextSize](#pdftextsize)                      | Text size of the label in the PDF. |
 | [pdfTextColor](#pdftextcolor)                    | Text color of the label in the PDF. |

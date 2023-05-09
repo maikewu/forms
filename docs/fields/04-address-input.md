@@ -49,7 +49,6 @@ The AddressInput contains various fields for every information of an address.
           "it": "Address Input 1 [IT]"
         },
         "pdfHide": false,
-        "uiTextColor": "#facc2e",
         "pdfTextColor": "#facc2e",
         "pdfTextSize": 14
       },

@@ -31,7 +31,6 @@ The booleanInput allows the user to mark a checkbox true or false.
         "pdfWidth": 1,
         "label": {
             "pdfHide": false,
-            "uiTextColor": "#facc2e",
             "pdfTextColor": "#facc2e",
             "pdfTextSize": 14,
             "text": {
@@ -81,7 +80,6 @@ The booleanInput allows the user to mark a checkbox true or false.
 | Property                                                    | Description                       |
 | :---------------------------------------------------------- | :-------------------------------- |
 | [text](./24-general-properties/#text)                       | Localized label text of the field. Shown in the UI and the PDF. |
-| [uiTextColor](./24-general-properties/#uitextcolor)         | Text color of a certain field in the UI.                                                                |
 | [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the label in the PDF. |
 | [pdfTextSize](./24-general-properties/#pdftextsize)         | Text size of the label in the PDF. |
 | [pdfTextColor](./24-general-properties/#pdftextcolor)       | Text color of the label in the PDF. |
