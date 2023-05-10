@@ -1,0 +1,2404 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_general_information",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Allgemeine Informationen",
+            "en": "General Informationen"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "instructed_by",
+          "type": "userSingleSelect",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Beauftragt von",
+                "en": "Instructed by"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToResponsibleUserId"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "responsible_technician",
+          "type": "userSingleSelect",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Verantwortlicher Monteur",
+                "en": "Responsible Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToPerformByUserId"
+                  ]
+                },
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "05_signature_Holmer",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": true,
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
+            },
+            "useAsFilterForFields": [
+              "asset"
+            ],
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer_location"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer_location",
+          "type": "addressInput",
+          "config": {
+            "required": {
+              "company": false,
+              "supplement": false,
+              "street": true,
+              "streetNumber": false,
+              "city": true,
+              "zipPostCode": true,
+              "state": false,
+              "country": true
+            },
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer Location"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "05_signature_Holmer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "06_signature_Customer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer_phone",
+          "type": "phoneNumberInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Telefon",
+                "en": "Phone"
+              }
+            }
+          }
+        },
+        {
+          "id": "space_01_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_01_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_workorder_information",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Auftrag",
+            "en": "Work Order"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "wo_type",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftragsart",
+                "en": "Work Order Type"
+              }
+            },
+            "value": {
+              "options": {
+                "GAR - Garantie": {
+                  "de": "GAR - Garantie",
+                  "en": "GAR - Guarantee"
+                },
+                "TKD - Kundendienst": {
+                  "de": "TKD - Kundendienst",
+                  "en": "TKD - Customer Service"
+                },
+                "KUG - Gebrauchtmaschinen": {
+                  "de": "KUG - Gebrauchtmaschinen",
+                  "en": "KUG - Used Machines"
+                },
+                "INM - Inbetriebnahme Neumaschinen": {
+                  "de": "INM - Inbetriebnahme Neumaschinen",
+                  "en": "INM - Commissioning Of New Machines"
+                },
+                "VOR - Vorführungen u. Vertrieb": {
+                  "de": "VOR - Vorführungen u. Vertrieb",
+                  "en": "VOR - Demonstrations And Distribution"
+                },
+                "SHL - Service Hotline": {
+                  "de": "SHL - Service Hotline",
+                  "en": "SHL - Service Hotline"
+                },
+                "NNM - Nacharbeit Neumaschinen": {
+                  "de": "NNM - Nacharbeit Neumaschinen",
+                  "en": "NNM - Rework New Machines"
+                },
+                "NAC - Nacharbeit": {
+                  "de": "NAC - Nacharbeit",
+                  "en": "NAC - Rework"
+                },
+                "NVO - Nacharbeit Vorproduktion": {
+                  "de": "NVO - Nacharbeit Vorproduktion",
+                  "en": "NVO - Pre-Production Rework"
+                },
+                "SCU - Schulung Kunden": {
+                  "de": "SCU - Schulung Kunden",
+                  "en": "SCU - Training Customers"
+                },
+                "SCS - Schulung Stützpunkte": {
+                  "de": "SCS - Schulung Stützpunkte",
+                  "en": "SCS - Training Bases"
+                },
+                "SVK - Service Vertriebs Kulanz": {
+                  "de": "SVK - Service Vertriebs Kulanz",
+                  "en": "SVK - Service Sales Goodwill"
+                },
+                "GAV - Vertriebs Kulanz": {
+                  "de": "GAV - Vertriebs Kulanz",
+                  "en": "GAV - Sales Goodwill"
+                },
+                "MIE - Vermietung Maschinen": {
+                  "de": "MIE - Vermietung Maschinen",
+                  "en": "MIE - Rental Machines"
+                },
+                "GA+ - Garantieverlängerung": {
+                  "de": "GA+ - Garantieverlängerung",
+                  "en": "GA+ - Extended Warranty"
+                },
+                "SP+ - Servicepakete": {
+                  "de": "SP+ - Servicepakete",
+                  "en": "SP+ - Service Packs"
+                },
+                "HSC - Service-Check": {
+                  "de": "HSC - Service-Check",
+                  "en": "HSC - Service Check"
+                },
+                "ERS - Ersatzteilauftrag": {
+                  "de": "ERS - Ersatzteilauftrag",
+                  "en": "ERS - Spare Parts Order"
+                }
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    [
+                      "workOrderToCustomPropertyValue",
+                      10
+                    ],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": true,
+            "label": {
+              "text": {
+                "de": "Maschine",
+                "en": "Machine"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "production_year"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  [
+                    "assetToCustomPropertyValue",
+                    16
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "production_year",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Baujahr",
+                "en": "Year of production"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    [
+                      "assetToCustomPropertyValue",
+                      16
+                    ],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "harvesting_area",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "ha / m3 / t",
+                "en": "ha / m3 / t"
+              }
+            }
+          }
+        },
+        {
+          "id": "operating_hours_motor",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Betriebsstunden Motor",
+                "en": "Operating Hours Motor"
+              }
+            }
+          }
+        },
+        {
+          "id": "operating_hours_machine",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Betriebsstunden Maschine",
+                "en": "Operating Hours Machine"
+              }
+            }
+          }
+        },
+        {
+          "id": "space_02_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_02_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_activity_tracking",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Anreise- und Arbeitszeiten",
+            "en": "Outward Travel and Working Times"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "travelAndWorkingTimes_03",
+          "type": "timeTrackingListInput",
+          "config": {
+            "label": {
+              "pdfHide": true,
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "outward_headline",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Anreise: Start- & Zielort",
+              "en": "Outward Journey: Departure & Destination"
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "type": "H3"
+          }
+        },
+        {
+          "id": "outward_depature",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Startort",
+                "en": "Depature"
+              }
+            }
+          }
+        },
+        {
+          "id": "outward_destination",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Zielort",
+                "en": "Destination"
+              }
+            }
+          }
+        },
+        {
+          "id": "space_03_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_03_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "04-performedTasks",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Durchgeführte Arbeiten",
+            "en": "Performed Tasks"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "tasks",
+          "type": "taskListInput",
+          "config": {
+            "label": {
+              "pdfHide": true,
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": false,
+                "pdfHide": false
+              },
+              "titleSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "highPrioBooleanInput": {
+                "disabled": true,
+                "pdfHide": true
+              },
+              "notNecessaryBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
+              }
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToTasks"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "space_04_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_04_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_signature_Holmer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Holmer",
+          "en": "Signature Holmer"
+        },
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": true
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "06_signature_Customer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Kunde",
+          "en": "Signature Customer"
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "07_signature_general",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": true,
+          "text": {
+            "de": "Kunde abwesend",
+            "en": "Customer Absent"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "customer_available",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kein Ansprechpartner vor Ort",
+                "en": "No Contact Person available"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "06_signature_Customer",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  [
+                    "setValue",
+                    "Kein Ansprechpartner vor Ort"
+                  ]
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "08_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Formular als E-Mail versenden",
+          "en": "Send form as E-Mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": [
+              "service@holmer-maschinenbau.com"
+            ]
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen BSP-Bericht als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed BSP report as PDF.\n\nBest regards"
+          },
+          "subject": {
+            "de": "Montagebericht",
+            "en": "Assembly Report"
+          }
+        }
+      }
+    },
+    {
+      "id": "09_activity_tracking",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Rückreisezeiten",
+            "en": "Return Travel Times"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "travelAndWorkingTimes_09",
+          "type": "timeTrackingListInput",
+          "config": {
+            "label": {
+              "pdfHide": true,
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "return_headline",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Rückreise: Start- & Zielort",
+              "en": "Return Journey: Departure & Destination"
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "type": "H3"
+          }
+        },
+        {
+          "id": "return_depature",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Startort",
+                "en": "Depature"
+              }
+            }
+          }
+        },
+        {
+          "id": "return_destination",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Zielort",
+                "en": "Destination"
+              }
+            }
+          }
+        },
+        {
+          "id": "space_09_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_09_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "10_PSI_general",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "PSI Export: Allgemeine Informationen",
+            "en": "PSI Export: General Information"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "case_IDsubject",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Ticketnummer & Betreff",
+                "en": "Case ID & Subject"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToCaseTicketAndSubjectString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "wo_incoterm",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": true,
+            "pdfHide": true,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Incoterms",
+                "en": "Incoterms"
+              }
+            },
+            "value": {
+              "options": {
+                "CFR: Kosten und Fracht": {
+                  "de": "CFR: Kosten und Fracht",
+                  "en": "CFR: Cost and Freight"
+                },
+                "CIF: Kosten Versicherung u. Fracht": {
+                  "de": "CIF: Kosten Versicherung u. Fracht",
+                  "en": "CIF: cost of insurance and freight"
+                },
+                "CIP: Frachtfrei versichert": {
+                  "de": "CIP: Frachtfrei versichert",
+                  "en": "CIP: Carriage paid insured"
+                },
+                "CPT: Frachtfrei": {
+                  "de": "CPT: Frachtfrei",
+                  "en": "CPT: Carriage paid"
+                },
+                "DAP: Geliefert benannter Ort": {
+                  "de": "DAP: Geliefert benannter Ort",
+                  "en": "DAP: Delivered named location"
+                },
+                "DAT: Geliefert Terminal": {
+                  "de": "DAT: Geliefert Terminal",
+                  "en": "DAT: Delivered terminal"
+                },
+                "DDP: Geliefert Verzollt": {
+                  "de": "DDP: Geliefert Verzollt",
+                  "en": "DDP: Delivered Duty Paid"
+                },
+                "EXW: Ab Werk": {
+                  "de": "EXW: Ab Werk",
+                  "en": "EXW: Ex works"
+                },
+                "FAS: Frei Längsseite Seeschiff": {
+                  "de": "FAS: Frei Längsseite Seeschiff",
+                  "en": "FAS: Free alongside seagoing vessel"
+                },
+                "FCA: Frei Frachtführer": {
+                  "de": "FCA: Frei Frachtführer",
+                  "en": "FCA: Free Carrier"
+                },
+                "FOB: Frei an Bord": {
+                  "de": "FOB: Frei an Bord",
+                  "en": "FOB: Free On Board"
+                }
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "none",
+                  "steps": [
+                    [
+                      "staticString",
+                      "EXW: Ab Werk"
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "wo_shipment_identifier",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": true,
+            "pdfHide": true,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Versandkenner",
+                "en": "Shipment Identificator"
+              }
+            },
+            "value": {
+              "options": {
+                "01: NET-Nacht": {
+                  "de": "01: NET-Nacht",
+                  "en": "01: NET night"
+                },
+                "05: Sped. Reder": {
+                  "de": "05: Sped. Reder",
+                  "en": "05: Sped"
+                },
+                "06: Schenker": {
+                  "de": "06: Schenker",
+                  "en": "06: donor"
+                },
+                "08: Abholung": {
+                  "de": "08: Abholung",
+                  "en": "08: pickup"
+                },
+                "10: Holmer LKW": {
+                  "de": "10: Holmer LKW",
+                  "en": "10: Holmer truck"
+                },
+                "11: Holmer PKW": {
+                  "de": "11: Holmer PKW",
+                  "en": "11: Holmer car"
+                },
+                "12: Flug": {
+                  "de": "12: Flug",
+                  "en": "12: flight"
+                },
+                "14: NET-Tag": {
+                  "de": "14: NET-Tag",
+                  "en": "14: NET tag"
+                },
+                "15: offen": {
+                  "de": "15: offen",
+                  "en": "15: open"
+                },
+                "16: Sped. Sonstiges": {
+                  "de": "16: Sped. Sonstiges",
+                  "en": "16: Sp. Miscellaneous"
+                },
+                "19: Seefracht": {
+                  "de": "19: Seefracht",
+                  "en": "19: sea freight"
+                },
+                "22: DHL": {
+                  "de": "22: DHL",
+                  "en": "22: DHL"
+                },
+                "23: Kühne & Nagel": {
+                  "de": "23: Kühne & Nagel",
+                  "en": "23: Kuehne & Nagel"
+                },
+                "28: Post Nachnahme": {
+                  "de": "28: Post Nachnahme",
+                  "en": "28: Post cash on delivery"
+                },
+                "30: TNT-Global": {
+                  "de": "30: TNT-Global",
+                  "en": "30: TNT Global"
+                },
+                "32: UPS": {
+                  "de": "32: UPS",
+                  "en": "32: UPS"
+                },
+                "33: TNT-Econom.": {
+                  "de": "33: TNT-Econom.",
+                  "en": "33: TNT Econom."
+                },
+                "35: Sonderfahrt": {
+                  "de": "35: Sonderfahrt",
+                  "en": "35: special trip"
+                },
+                "36: UPS Luftfracht": {
+                  "de": "36: UPS Luftfracht",
+                  "en": "36: UPS Air Freight"
+                }
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "none",
+                  "steps": [
+                    [
+                      "staticString",
+                      "15: offen"
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "space_10_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_10_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "11_PSI_activity_breakdown",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "PSI Export: Aufschlüsselung Arbeitszeiten",
+            "en": "PSI Export: Breakdown Working Times"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "repeater_activity_tracking",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "fields": [
+              {
+                "id": "repeater_activity",
+                "type": "singleLineTextInput",
+                "config": {
+                  "required": true,
+                  "label": {
+                    "text": {
+                      "de": "Tätigkeit",
+                      "en": "Activity"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_technician",
+                "type": "userSingleSelect",
+                "config": {
+                  "required": true,
+                  "label": {
+                    "text": {
+                      "de": "Monteur",
+                      "en": "Technician"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_component",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "de": "Nr. ursächliches Bauteil",
+                      "en": "No. Causal Component"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_error_code",
+                "type": "staticSingleSelect",
+                "config": {
+                  "label": {
+                    "text": {
+                      "de": "Fehlercode",
+                      "en": "Error Code"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "1001_mechanics_damaged": {
+                        "de": "1001 Mechanik: beschädigt",
+                        "en": "1001 Mechanics: damaged"
+                      },
+                      "1002_mechanics_incorrectly_mounted": {
+                        "de": "1002 Mechanik: falsch montiert",
+                        "en": "1002 Mechanics: incorrectly mounted"
+                      },
+                      "1003_mechanics_incorrect_execution": {
+                        "de": "1003 Mechanik: falsche Ausführung",
+                        "en": "1003 Mechanics: incorrect execution"
+                      },
+                      "1004_mechanics_missing": {
+                        "de": "1004 Mechanik: fehlt",
+                        "en": "1004 Mechanics: missing"
+                      },
+                      "1005_mechanics_broken_torn": {
+                        "de": "1005 Mechanik: gebrochen/gerissen",
+                        "en": "1005 Mechanics: broken/torn"
+                      },
+                      "1006_mechanics_worn_out": {
+                        "de": "1006 Mechanik: gefressen",
+                        "en": "1006 Mechanics: worn out"
+                      },
+                      "1007_mechanics_loose": {
+                        "de": "1007 Mechanik: lose",
+                        "en": "1007 Mechanics: loose"
+                      },
+                      "1008_mechanics_deformed": {
+                        "de": "1008 Mechanik: verformt",
+                        "en": "1008 Mechanics: deformed"
+                      },
+                      "1009_mechanics_worn": {
+                        "de": "1009 Mechanik: verschlissen",
+                        "en": "1009 Mechanics: worn"
+                      },
+                      "1010_mechanics_leaking": {
+                        "de": "1010 Mechanik: undicht",
+                        "en": "1010 Mechanics: leaking"
+                      },
+                      "1011_mechanics_functional_failure": {
+                        "de": "1011 Mechanik: Funktionsstörung",
+                        "en": "1011 Mechanics: functional failure"
+                      },
+                      "1012_mechanics_noise": {
+                        "de": "1012 Mechanik: Geräusche",
+                        "en": "1012 Mechanics: noise"
+                      },
+                      "1013_mechanics_missing_fit": {
+                        "de": "1013 Mechanik: fehlende Passgenauigkeit",
+                        "en": "1013 Mechanics: missing fit"
+                      },
+                      "1014_mechanics_faulty_weld_seam": {
+                        "de": "1014 Mechanik: Schweißnaht fehlerhaft",
+                        "en": "1014 Mechanics: faulty weld seam"
+                      },
+                      "1015_mechanics_corrosion": {
+                        "de": "1015 Mechanik: Korrosion",
+                        "en": "1015 Mechanics: corrosion"
+                      },
+                      "1016_mechanics_inadequate_painting": {
+                        "de": "1016 Mechanik: Lackierung ungenügend",
+                        "en": "1016 Mechanics: inadequate painting"
+                      },
+                      "2001_hydraulics_damaged": {
+                        "de": "2001 Hydraulik: beschädigt",
+                        "en": "2001 Hydraulics: damaged"
+                      },
+                      "2002_hydraulics_incorrectly_mounted": {
+                        "de": "2002 Hydraulik: falsch montiert",
+                        "en": "2002 Hydraulics: incorrectly mounted"
+                      },
+                      "2003_hydraulics_incorrect_execution": {
+                        "de": "2003 Hydraulik: falsche Ausführung",
+                        "en": "2003 Hydraulics: incorrect execution"
+                      },
+                      "2004_hydraulics_missing": {
+                        "de": "2004 Hydraulik: fehlt",
+                        "en": "2004 Hydraulics: missing"
+                      },
+                      "2005_hydraulics_broken_torn": {
+                        "de": "2005 Hydraulik: gebrochen/gerissen",
+                        "en": "2005 Hydraulics: broken/torn"
+                      },
+                      "2006_hydraulics_worn_out": {
+                        "de": "2006 Hydraulik: gefressen",
+                        "en": "2006 Hydraulics: worn out"
+                      },
+                      "2007_hydraulics_loose": {
+                        "de": "2007 Hydraulik: lose",
+                        "en": "2007 Hydraulics: loose"
+                      },
+                      "2008_hydraulics_deformed": {
+                        "de": "2008 Hydraulik: verformt",
+                        "en": "2008 Hydraulics: deformed"
+                      },
+                      "2009_hydraulics_worn": {
+                        "de": "2009 Hydraulik: verschlissen",
+                        "en": "2009 Hydraulics: worn"
+                      },
+                      "2010_hydraulics_leaking": {
+                        "de": "2010 Hydraulik: undicht",
+                        "en": "2010 Hydraulics: leaking"
+                      },
+                      "2011_hydraulics_functional_failure": {
+                        "de": "2011 Hydraulik: Funktionsstörung",
+                        "en": "2011 Hydraulics: functional failure"
+                      },
+                      "2012_hydraulics_noise": {
+                        "de": "2012 Hydraulik: Geräusche",
+                        "en": "2012 Hydraulics: noise"
+                      },
+                      "2013_hydraulics_missing_fit": {
+                        "de": "2013 Hydraulik: fehlende Passgenauigkeit",
+                        "en": "2013 Hydraulics: missing fit"
+                      },
+                      "2015_hydraulics_corrosion": {
+                        "de": "2015 Hydraulik: Korrosion",
+                        "en": "2015 Hydraulics: corrosion"
+                      },
+                      "2017_hydraulics_foreign_object_in_the_system": {
+                        "de": "2017 Hydraulik: Fremdkörper im System",
+                        "en": "2017 Hydraulics: foreign object in the system"
+                      },
+                      "2018_hydraulics_clogged_filter": {
+                        "de": "2018 Hydraulik: Filter verstopft",
+                        "en": "2018 Hydraulics: clogged filter"
+                      },
+                      "2019_hydraulics_overpressure": {
+                        "de": "2019 Hydraulik: Überdruck",
+                        "en": "2019 Hydraulics: overpressure"
+                      },
+                      "2020_hydraulics_lubricant_oil_shortage": {
+                        "de": "2020 Hydraulik: Schmierstoff-/Ölmangel",
+                        "en": "2020 Hydraulics: lubricant/oil shortage"
+                      },
+                      "2021_hydraulics_component_failure": {
+                        "de": "2021 Hydraulik: Bauteil-Fehler",
+                        "en": "2021 Hydraulics: component failure"
+                      },
+                      "2039_hydraulics_discolored_oil": {
+                        "de": "2039 Hydraulik: Ölverfärbung",
+                        "en": "2039 Hydraulics: discolored oil"
+                      },
+                      "2041_hydraulics_abnormal_wear": {
+                        "de": "2041 Hydraulik: abnormaler Abrieb",
+                        "en": "2041 Hydraulics: abnormal wear"
+                      },
+                      "2044_hydraulics_oil_pressure_too_high": {
+                        "de": "2044 Hydraulik: Öldruck zu hoch",
+                        "en": "2044 Hydraulics: oil pressure too high"
+                      },
+                      "2045_hydraulics_oil_pressure_too_low": {
+                        "de": "2045 Hydraulik: Öldruck zu gering",
+                        "en": "2045 Hydraulics: oil pressure too low"
+                      },
+                      "3001_electrics_damaged": {
+                        "de": "3001 Elektrik: beschädigt",
+                        "en": "3001 Electrics: damaged"
+                      },
+                      "3002_electrics_incorrectly_mounted": {
+                        "de": "3002 Elektrik: falsch montiert",
+                        "en": "3002 Electrics: incorrectly mounted"
+                      },
+                      "3003_electrics_incorrect_execution": {
+                        "de": "3003 Elektrik: falsche Ausführung",
+                        "en": "3003 Electrics: incorrect execution"
+                      },
+                      "3004_electrics_missing": {
+                        "de": "3004 Elektrik: fehlt",
+                        "en": "3004 Electrics: missing"
+                      },
+                      "3007_electrics_loose": {
+                        "de": "3007 Elektrik: lose",
+                        "en": "3007 Electrics: loose"
+                      },
+                      "3010_electrics_leaking_water_ingress": {
+                        "de": "3010 Elektrik: Undicht / Wassereintritt",
+                        "en": "3010 Electrics: leaking/water ingress"
+                      },
+                      "3011_electrics_functional_failure": {
+                        "de": "3011 Elektrik: Funktionsstörung",
+                        "en": "3011 Electrics: functional failure"
+                      },
+                      "3015_electrics_corrosion": {
+                        "de": "3015 Elektrik: Korrosion",
+                        "en": "3015 Electrics: corrosion"
+                      },
+                      "3021_electrics_component_failure": {
+                        "de": "3021 Elektrik: Bauteil-Fehler",
+                        "en": "3021 Electrics: component failure"
+                      },
+                      "3025_electrics_faulty_wiring": {
+                        "de": "3025 Elektrik: fehlerhafte Verkabelung",
+                        "en": "3025 Electrics: faulty wiring"
+                      },
+                      "3026_electrics_interruption": {
+                        "de": "3026 Elektrik: Unterbrechung",
+                        "en": "3026 Electrics: interruption"
+                      },
+                      "3027_electrics_broken_wire": {
+                        "de": "3027 Elektrik: Kabelbruch",
+                        "en": "3027 Electrics: broken wire"
+                      },
+                      "3028_electrics_contact_failure": {
+                        "de": "3028 Elektrik: Kontaktfehler",
+                        "en": "3028 Electrics: contact failure"
+                      },
+                      "3029_electrics_short_circuit": {
+                        "de": "3029 Elektrik: Kurzschluß",
+                        "en": "3029 Electrics: short circuit"
+                      },
+                      "3030_electrics_burned": {
+                        "de": "3030 Elektrik: verbrannt",
+                        "en": "3030 Electrics: burned"
+                      },
+                      "3031_electrics_soiled": {
+                        "de": "3031 Elektrik: verschmutzt",
+                        "en": "3031 Electrics: soiled"
+                      },
+                      "3032_electrics_intermittent_failure": {
+                        "de": "3032 Elektrik: sporadischer Fehler",
+                        "en": "3032 Electrics: intermittent failure"
+                      },
+                      "4001_electronics_damaged": {
+                        "de": "4001 Elektronik: beschädigt",
+                        "en": "4001 Electronics: damaged"
+                      },
+                      "4002_electronics_incorrectly_mounted": {
+                        "de": "4002 Elektronik: falsch montiert",
+                        "en": "4002 Electronics: incorrectly mounted"
+                      },
+                      "4003_electronics_incorrect_execution": {
+                        "de": "4003 Elektronik: falsche Ausführung",
+                        "en": "4003 Electronics: incorrect execution"
+                      },
+                      "4004_electronics_missing": {
+                        "de": "4004 Elektronik: fehlt",
+                        "en": "4004 Electronics: missing"
+                      },
+                      "4007_electronics_loose": {
+                        "de": "4007 Elektronik: lose",
+                        "en": "4007 Electronics: loose"
+                      },
+                      "4010_electronics_leaking_water_ingress": {
+                        "de": "4010 Elektronik: Undicht / Wassereintritt",
+                        "en": "4010 Electronics: leaking/water ingress"
+                      },
+                      "4011_electronics_functional_failure": {
+                        "de": "4011 Elektronik: Funktionsstörung",
+                        "en": "4011 Electronics: functional failure"
+                      },
+                      "4015_electronics_corrosion": {
+                        "de": "4015 Elektronik: Korrosion",
+                        "en": "4015 Electronics: corrosion"
+                      },
+                      "4021_electronics_component_failure": {
+                        "de": "4021 Elektronik: Bauteil-Fehler",
+                        "en": "4021 Electronics: component failure"
+                      },
+                      "4025_electronics_faulty_wiring": {
+                        "de": "4025 Elektronik: fehlerhafte Verkabelung",
+                        "en": "4025 Electronics: faulty wiring"
+                      },
+                      "4026_electronics_interruption": {
+                        "de": "4026 Elektronik: Unterbrechung",
+                        "en": "4026 Electronics: interruption"
+                      },
+                      "4027_electronics_broken_wire": {
+                        "de": "4027 Elektronik: Kabelbruch",
+                        "en": "4027 Electronics: broken wire"
+                      },
+                      "4028_electronics_contact_failure": {
+                        "de": "4028 Elektronik: Kontaktfehler",
+                        "en": "4028 Electronics: contact failure"
+                      },
+                      "4029_electronics_short_circuit": {
+                        "de": "4029 Elektronik: Kurzschluß",
+                        "en": "4029 Electronics: short circuit"
+                      },
+                      "4030_electronics_burned": {
+                        "de": "4030 Elektronik: verbrannt",
+                        "en": "4030 Electronics: burned"
+                      },
+                      "4031_electronics_soiled": {
+                        "de": "4031 Elektronik: verschmutzt",
+                        "en": "4031 Electronics: soiled"
+                      },
+                      "4032_electronics_intermittent_failure": {
+                        "de": "4032 Elektronik: sporadischer Fehler",
+                        "en": "4032 Electronics: intermittent failure"
+                      },
+                      "4033_electronics_incorrect_software_version": {
+                        "de": "4033 Elektronik: falscher Softwarestand",
+                        "en": "4033 Electronics: incorrect software version"
+                      },
+                      "4034_electronics_parametrization_calibration_not_possible": {
+                        "de": "4034 Elektronik: Parametrierung/Kalibrierung nicht möglich",
+                        "en": "4034 Electronics: parametrization/calibration not possible"
+                      },
+                      "4035_electronics_incorrect_indication": {
+                        "de": "4035 Elektronik: zeigt nicht richtig an",
+                        "en": "4035 Electronics: incorrect indication"
+                      },
+                      "4036_electronics_no_display": {
+                        "de": "4036 Elektronik: keine Anzeige",
+                        "en": "4036 Electronics: no display"
+                      },
+                      "5001_pneumatics_damaged": {
+                        "de": "5001 Pneumatik: beschädigt",
+                        "en": "5001 Pneumatics: damaged"
+                      },
+                      "5002_pneumatics_incorrectly_mounted": {
+                        "de": "5002 Pneumatik: falsch montiert",
+                        "en": "5002 Pneumatics: incorrectly mounted"
+                      },
+                      "5003_pneumatics_incorrect_execution": {
+                        "de": "5003 Pneumatik: falsche Ausführung",
+                        "en": "5003 Pneumatics: incorrect execution"
+                      },
+                      "5004_pneumatics_missing": {
+                        "de": "5004 Pneumatik: fehlt",
+                        "en": "5004 Pneumatics: missing"
+                      },
+                      "5005_pneumatics_broken_torn": {
+                        "de": "5005 Pneumatik: gebrochen/gerissen",
+                        "en": "5005 Pneumatics: broken/torn"
+                      },
+                      "5006_pneumatics_worn_out": {
+                        "de": "5006 Pneumatik: gefressen",
+                        "en": "5006 Pneumatics: worn out"
+                      },
+                      "5007_pneumatics_loose": {
+                        "de": "5007 Pneumatik: lose",
+                        "en": "5007 Pneumatics: loose"
+                      },
+                      "5008_pneumatics_deformed": {
+                        "de": "5008 Pneumatik: verformt",
+                        "en": "5008 Pneumatics: deformed"
+                      },
+                      "5009_pneumatics_worn": {
+                        "de": "5009 Pneumatik: verschlissen",
+                        "en": "5009 Pneumatics: worn"
+                      },
+                      "5010_pneumatics_leaking": {
+                        "de": "5010 Pneumatik: undicht",
+                        "en": "5010 Pneumatics: leaking"
+                      },
+                      "5011_pneumatics_functional_failure": {
+                        "de": "5011 Pneumatik: Funktionsstörung",
+                        "en": "5011 Pneumatics: functional failure"
+                      },
+                      "5012_pneumatics_noise": {
+                        "de": "5012 Pneumatik: Geräusche",
+                        "en": "5012 Pneumatics: noise"
+                      },
+                      "5013_pneumatics_missing_fit": {
+                        "de": "5013 Pneumatik: fehlende Passgenauigkeit",
+                        "en": "5013 Pneumatics: missing fit"
+                      },
+                      "5015_pneumatics_corrosion": {
+                        "de": "5015 Pneumatik: Korrosion",
+                        "en": "5015 Pneumatics: corrosion"
+                      },
+                      "5017_pneumatics_foreign_object_in_the_system": {
+                        "de": "5017 Pneumatik: Fremdkörper im System",
+                        "en": "5017 Pneumatics: foreign object in the system"
+                      },
+                      "5018_pneumatics_clogged_filter": {
+                        "de": "5018 Pneumatik: Filter verstopft",
+                        "en": "5018 Pneumatics: clogged filter"
+                      },
+                      "5019_pneumatics_overpressure": {
+                        "de": "5019 Pneumatik: Überdruck",
+                        "en": "5019 Pneumatics: overpressure"
+                      },
+                      "5021_pneumatics_component_failure": {
+                        "de": "5021 Pneumatik: Bauteil-Fehler",
+                        "en": "5021 Pneumatics: component failure"
+                      },
+                      "6001_engine_damaged": {
+                        "de": "6001 Motor: beschädigt",
+                        "en": "6001 Engine: damaged"
+                      },
+                      "6002_engine_incorrectly_mounted": {
+                        "de": "6002 Motor: falsch montiert",
+                        "en": "6002 Engine: incorrectly mounted"
+                      },
+                      "6003_engine_incorrect_execution": {
+                        "de": "6003 Motor: falsche Ausführung",
+                        "en": "6003 Engine: incorrect execution"
+                      },
+                      "6005_engine_broken_torn": {
+                        "de": "6005 Motor: gebrochen/gerissen",
+                        "en": "6005 Engine: broken/torn"
+                      },
+                      "6006_engine_worn_out": {
+                        "de": "6006 Motor: gefressen",
+                        "en": "6006 Engine: worn out"
+                      },
+                      "6007_engine_loose": {
+                        "de": "6007 Motor: lose",
+                        "en": "6007 Engine: loose"
+                      },
+                      "6011_engine_functional_failure": {
+                        "de": "6011 Motor: Funktionsstörung",
+                        "en": "6011 Engine: functional failure"
+                      },
+                      "6012_engine_noise": {
+                        "de": "6012 Motor: Geräusche",
+                        "en": "6012 Engine: noise"
+                      },
+                      "6017_engine_foreign_object_in_the_system": {
+                        "de": "6017 Motor: Fremdkörper im System",
+                        "en": "6017 Engine: foreign object in the system"
+                      },
+                      "6018_engine_clogged_filter": {
+                        "de": "6018 Motor: Filter verstopft",
+                        "en": "6018 Engine: clogged filter"
+                      },
+                      "6020_engine_lubricant_oil_shortage": {
+                        "de": "6020 Motor: Schmierstoff-/Ölmangel",
+                        "en": "6020 Engine: lubricant/oil shortage"
+                      },
+                      "6023_engine_pressure": {
+                        "de": "6023 Motor: Druck im Kühlmittelkreislauf",
+                        "en": "6023 Engine: pressure"
+                      },
+                      "6024_engine_coolant_circuit_leaking": {
+                        "de": "6024 Motor: Kühlkreislauf undicht",
+                        "en": "6024 Engine: coolant circuit leaking"
+                      },
+                      "6037_engine_overheating": {
+                        "de": "6037 Motor: wird zu heiß",
+                        "en": "6037 Engine: overheating"
+                      },
+                      "6038_engine_vibrations_imbalance": {
+                        "de": "6038 Motor: Vibrationen/Unwucht",
+                        "en": "6038 Engine: vibrations/imbalance"
+                      },
+                      "6039_engine_oil_discoloration": {
+                        "de": "6039 Motor: Ölverfärbung",
+                        "en": "6039 Engine: oil discoloration"
+                      },
+                      "6040_engine_excessive_pressure_in_engine_housing_ventilation": {
+                        "de": "6040 Motor: Überdruck Motorgehäuseentlüftung",
+                        "en": "6040 Engine: excessive pressure in engine housing ventilation"
+                      },
+                      "6041_engine_abnormal_wear_on_magnetic_drain_plug": {
+                        "de": "6041 Motor: abnormaler Abrieb Magnet Ablaßschraube",
+                        "en": "6041 Engine: abnormal wear on magnetic drain plug"
+                      },
+                      "6042_engine_excessive_fuel_consumption": {
+                        "de": "6042 Motor: Kraftstoffverbrauch zu hoch",
+                        "en": "6042 Engine: excessive fuel consumption"
+                      },
+                      "6043_engine_fuel_system_leaking": {
+                        "de": "6043 Motor: Kraftstoffanlage undicht",
+                        "en": "6043 Engine: fuel system leaking"
+                      },
+                      "6044_engine_high_oil_pressure": {
+                        "de": "6044 Motor: Öldruck zu hoch",
+                        "en": "6044 Engine: high oil pressure"
+                      },
+                      "6045_engine_low_oil_pressure": {
+                        "de": "6045 Motor: Öldruck zu gering",
+                        "en": "6045 Engine: low oil pressure"
+                      },
+                      "6046_engine_excessive_oil_consumption": {
+                        "de": "6046 Motor: Ölverbrauch zu hoch",
+                        "en": "6046 Engine: excessive oil consumption"
+                      },
+                      "6047_engine_oil_circuit_leaking": {
+                        "de": "6047 Motor: Ölkreislauf undicht",
+                        "en": "6047 Engine: oil circuit leaking"
+                      },
+                      "6048_engine_oil_sludge": {
+                        "de": "6048 Motor: Ölverschlammung",
+                        "en": "6048 Engine: oil sludge"
+                      },
+                      "6049_engine_engine_does_not_start": {
+                        "de": "6049 Motor: Motor startet nicht",
+                        "en": "6049 Engine: engine does not start"
+                      },
+                      "6050_engine_engine_stalls": {
+                        "de": "6050 Motor: Motor geht aus",
+                        "en": "6050 Engine: engine stalls"
+                      },
+                      "6051_engine_poor_idling": {
+                        "de": "6051 Motor: schlechter Leerlauf",
+                        "en": "6051 Engine: poor idling"
+                      },
+                      "6052_engine_shaking_jerking": {
+                        "de": "6052 Motor: Schütteln/Sägen",
+                        "en": "6052 Engine: shaking/jerking"
+                      },
+                      "6053_engine_black_smoke": {
+                        "de": "6053 Motor: Schwarzrauch",
+                        "en": "6053 Engine: black smoke"
+                      },
+                      "6054_engine_water_hammer": {
+                        "de": "6054 Motor: Wasserschlag",
+                        "en": "6054 Engine: water hammer"
+                      },
+                      "6055_engine_white_smoke": {
+                        "de": "6055 Motor: Weißrauch",
+                        "en": "6055 Engine: white smoke"
+                      },
+                      "6056_engine_lack_of_power": {
+                        "de": "6056 Motor: Leistungsmangel",
+                        "en": "6056 Engine: lack of power"
+                      },
+                      "6057_engine_excessive_power": {
+                        "de": "6057 Motor: Überleistung",
+                        "en": "6057 Engine: excessive power"
+                      },
+                      "6058_engine_faulty_speed_control": {
+                        "de": "6058 Motor: Drehzahlregelung fehlerhaft",
+                        "en": "6058 Engine: faulty speed control"
+                      },
+                      "7001_axles_transmission_damaged": {
+                        "de": "7001 Achsen/Getriebe: beschädigt",
+                        "en": "7001 Axles/transmission: damaged"
+                      },
+                      "7002_axles_transmission_incorrectly_installed": {
+                        "de": "7002 Achsen/Getriebe: falsch montiert",
+                        "en": "7002 Axles/transmission: incorrectly installed"
+                      },
+                      "7003_axles_transmission_incorrect_design": {
+                        "de": "7003 Achsen/Getriebe: falsche Ausführung",
+                        "en": "7003 Axles/transmission: incorrect design"
+                      },
+                      "7004_axles_transmission_missing": {
+                        "de": "7004 Achsen/Getriebe: fehlt",
+                        "en": "7004 Axles/transmission: missing"
+                      },
+                      "7005_axles_transmission_broken_cracked": {
+                        "de": "7005 Achsen/Getriebe: gebrochen/gerissen",
+                        "en": "7005 Axles/transmission: broken/cracked"
+                      },
+                      "7006_axles_transmission_seized": {
+                        "de": "7006 Achsen/Getriebe: gefressen",
+                        "en": "7006 Axles/transmission: seized"
+                      },
+                      "7007_axles_transmission_loose": {
+                        "de": "7007 Achsen/Getriebe: lose",
+                        "en": "7007 Axles/transmission: loose"
+                      },
+                      "7008_axles_transmission_deformed": {
+                        "de": "7008 Achsen/Getriebe: verformt",
+                        "en": "7008 Axles/transmission: deformed"
+                      },
+                      "7009_axles_transmission_worn": {
+                        "de": "7009 Achsen/Getriebe: verschlissen",
+                        "en": "7009 Axles/transmission: worn"
+                      },
+                      "7010_axles_transmission_leaking": {
+                        "de": "7010 Achsen/Getriebe: undicht",
+                        "en": "7010 Axles/transmission: leaking"
+                      },
+                      "7011_axles_transmission_malfunction": {
+                        "de": "7011 Achsen/Getriebe: Funktionsstörung",
+                        "en": "7011 Axles/transmission: malfunction"
+                      },
+                      "7012_axles_transmission_noise": {
+                        "de": "7012 Achsen/Getriebe: Geräusche",
+                        "en": "7012 Axles/transmission: noise"
+                      },
+                      "7013_axles_transmission_missing_fit": {
+                        "de": "7013 Achsen/Getriebe: fehlende Passgenauigkeit",
+                        "en": "7013 Axles/transmission: missing fit"
+                      },
+                      "7014_axles_transmission_faulty_weld_seam": {
+                        "de": "7014 Achsen/Getriebe: Schweißnaht fehlerhaft",
+                        "en": "7014 Axles/transmission: faulty weld seam"
+                      },
+                      "7017_axles_transmission_foreign_objects_in_the_system": {
+                        "de": "7017 Achsen/Getriebe: Fremdkörper im System",
+                        "en": "7017 Axles/transmission: foreign objects in the system"
+                      },
+                      "7018_axles_transmission_clogged_filter": {
+                        "de": "7018 Achsen/Getriebe: Filter verstopft",
+                        "en": "7018 Axles/transmission: clogged filter"
+                      },
+                      "7020_axles_transmission_insufficient_lubricant_oil": {
+                        "de": "7020 Achsen/Getriebe: Schmierstoff-/Ölmangel",
+                        "en": "7020 Axles/transmission: insufficient lubricant/oil"
+                      },
+                      "7037_axles_transmission_overheating": {
+                        "de": "7037 Achsen/Getriebe: wird zu heiß",
+                        "en": "7037 Axles/transmission: overheating"
+                      },
+                      "7038_axles_transmission_vibrations_imbalance": {
+                        "de": "7038 Achsen/Getriebe: Vibrationen/Unwucht",
+                        "en": "7038 Axles/transmission: vibrations/imbalance"
+                      },
+                      "7039_axles_transmission_oil_discoloration": {
+                        "de": "7039 Achsen/Getriebe: Ölverfärbung",
+                        "en": "7039 Axles/transmission: oil discoloration"
+                      },
+                      "7040_axles_transmission_excessive_pressure_in_transmission_ventilation": {
+                        "de": "7040 Achsen/Getriebe: Überdruck Getriebeentlüftung",
+                        "en": "7040 Axles/transmission: excessive pressure in transmission ventilation"
+                      },
+                      "7041_axles_transmission_abnormal_wear_on_magnetic_drain_plug": {
+                        "de": "7041 Achsen/Getriebe: abnormaler Abrieb Magnet Ablaßschraube",
+                        "en": "7041 Axles/transmission: abnormal wear on magnetic drain plug"
+                      },
+                      "7044_axles_transmission_high_oil_pressure": {
+                        "de": "7044 Achsen/Getriebe: Öldruck zu hoch",
+                        "en": "7044 Axles/transmission: high oil pressure"
+                      },
+                      "7045_axles_transmission_low_oil_pressure": {
+                        "de": "7045 Achsen/Getriebe: Öldruck zu gering",
+                        "en": "7045 Axles/transmission: low oil pressure"
+                      },
+                      "9999_undefined_—_unknown_—": {
+                        "de": "9999 Undefiniert: — nicht bekannt —",
+                        "en": "9999 Undefined: — unknown —"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_start_time",
+                "type": "dateTimeInput",
+                "config": {
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "de": "Startzeit",
+                      "en": "Start Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_end_time",
+                "type": "dateTimeInput",
+                "config": {
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "de": "Endzeit",
+                      "en": "End Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_working_time",
+                "type": "timeInput",
+                "config": {
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "de": "Arbeitszeit",
+                      "en": "Work Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_travel_time",
+                "type": "timeInput",
+                "config": {
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "de": "Reiseszeit",
+                      "en": "Travel Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_break_time",
+                "type": "dateTimeInput",
+                "config": {
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "de": "Pausenzeit",
+                      "en": "Break Time"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_distance",
+                "type": "singleLineTextInput",
+                "config": {
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "de": "km",
+                      "en": "km"
+                    }
+                  }
+                }
+              },{
+                "id": "repeater_wo_type",
+                "type": "staticSingleSelect",
+                "config": {
+                  "label": {
+                    "text": {
+                      "de": "Auftragsart",
+                      "en": "Work Order Type"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "GAR - Garantie": {
+                        "de": "GAR - Garantie",
+                        "en": "GAR - Guarantee"
+                      },
+                      "TKD - Kundendienst": {
+                        "de": "TKD - Kundendienst",
+                        "en": "TKD - Customer Service"
+                      },
+                      "KUG - Gebrauchtmaschinen": {
+                        "de": "KUG - Gebrauchtmaschinen",
+                        "en": "KUG - Used Machines"
+                      },
+                      "INM - Inbetriebnahme Neumaschinen": {
+                        "de": "INM - Inbetriebnahme Neumaschinen",
+                        "en": "INM - Commissioning Of New Machines"
+                      },
+                      "VOR - Vorführungen u. Vertrieb": {
+                        "de": "VOR - Vorführungen u. Vertrieb",
+                        "en": "VOR - Demonstrations And Distribution"
+                      },
+                      "SHL - Service Hotline": {
+                        "de": "SHL - Service Hotline",
+                        "en": "SHL - Service Hotline"
+                      },
+                      "NNM - Nacharbeit Neumaschinen": {
+                        "de": "NNM - Nacharbeit Neumaschinen",
+                        "en": "NNM - Rework New Machines"
+                      },
+                      "NAC - Nacharbeit": {
+                        "de": "NAC - Nacharbeit",
+                        "en": "NAC - Rework"
+                      },
+                      "NVO - Nacharbeit Vorproduktion": {
+                        "de": "NVO - Nacharbeit Vorproduktion",
+                        "en": "NVO - Pre-Production Rework"
+                      },
+                      "SCU - Schulung Kunden": {
+                        "de": "SCU - Schulung Kunden",
+                        "en": "SCU - Training Customers"
+                      },
+                      "SCS - Schulung Stützpunkte": {
+                        "de": "SCS - Schulung Stützpunkte",
+                        "en": "SCS - Training Bases"
+                      },
+                      "SVK - Service Vertriebs Kulanz": {
+                        "de": "SVK - Service Vertriebs Kulanz",
+                        "en": "SVK - Service Sales Goodwill"
+                      },
+                      "GAV - Vertriebs Kulanz": {
+                        "de": "GAV - Vertriebs Kulanz",
+                        "en": "GAV - Sales Goodwill"
+                      },
+                      "MIE - Vermietung Maschinen": {
+                        "de": "MIE - Vermietung Maschinen",
+                        "en": "MIE - Rental Machines"
+                      },
+                      "GA+ - Garantieverlängerung": {
+                        "de": "GA+ - Garantieverlängerung",
+                        "en": "GA+ - Extended Warranty"
+                      },
+                      "SP+ - Servicepakete": {
+                        "de": "SP+ - Servicepakete",
+                        "en": "SP+ - Service Packs"
+                      },
+                      "HSC - Service-Check": {
+                        "de": "HSC - Service-Check",
+                        "en": "HSC - Service Check"
+                      },
+                      "ERS - Ersatzteilauftrag": {
+                        "de": "ERS - Ersatzteilauftrag",
+                        "en": "ERS - Spare Parts Order"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_cost_center",
+                "type": "singleLineTextInput",
+                "config": {
+                  "required": true,
+                  "label": {
+                    "text": {
+                      "de": "Kostenstelle",
+                      "en": "Cost Center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_charge_type",
+                "type": "staticSingleSelect",
+                "config": {
+                  "label": {
+                    "text": {
+                      "de": "Berechnungsart",
+                      "en": "Charge Type"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "value1": {
+                        "de": "Berechnet",
+                        "en": "Charged"
+                      },
+                      "value2": {
+                        "de": "Entwicklung",
+                        "en": "Research & Development"
+                      },
+                      "value3": {
+                        "de": "Kostenlos",
+                        "en": "Free of Charge"
+                      },
+                      "value4": {
+                        "de": "Vertrieb",
+                        "en": "Sales"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "id": "repeater_comment",
+                "type": "multiLineTextInput",
+                "config": {
+                  "disabled": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": false,
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "en": "Comment",
+                      "de": "Bemerkung",
+                      "tr": "",
+                      "fr": "",
+                      "es": "",
+                      "it": ""
+                    },
+                    "uiHide": false,
+                    "pdfHide": false
+                  },
+                  "uiHideInRepeaterCardDisplay": false,
+                  "pdfFieldRepeaterCellAlignment": "left"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "space_11_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_11_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "12_comments",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Ergänzende Bemerkungen",
+            "en": "Complementary Comments"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "commentsGeneral",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            },
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen...",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "fileUpload",
+          "type": "fileUpload",
+          "config": {
+            "disabled": false,
+            "pdfHide": true,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "requiredAmountOfFiles": 0,
+            "label": {
+              "text": {
+                "en": "File(s)",
+                "de": "Datei(en)",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            }
+          }
+        },
+        {
+          "id": "space_12_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_12_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "13_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Formular als E-Mail senden",
+          "en": "Send form as E-Mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "whitelistedDomains": [
+          "holmer-maschinenbau.com"
+        ],
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": [
+              "service@holmer-maschinenbau.com"
+            ]
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen BSP-Bericht als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed BSP report as PDF.\n\nBest regards"
+          },
+          "subject": {
+            "de": "Montagebericht",
+            "en": "Assembly Report"
+          }
+        }
+      }
+    }
+  ]
+}
