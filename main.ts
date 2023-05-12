@@ -45,11 +45,11 @@ function updateConfig(jsonData: any): void {
   for (const section of jsonData.sections ?? []) {
     // delete pdfHide and pdfHideIfValueIsEmpty props in EmailSectionConfig
     if (section.type === 'emailSection') {
-      if (Object.prototype.hasOwnProperty.call(section, 'pdfHide')) {
+      if (Object.prototype.hasOwnProperty.call(section.config, 'pdfHide')) {
         delete section.config.pdfHide;
       }
 
-      if (Object.prototype.hasOwnProperty.call(section, 'pdfHideIfValueIsEmpty')) {
+      if (Object.prototype.hasOwnProperty.call(section.config, 'pdfHideIfValueIsEmpty')) {
         delete section.config.pdfHideIfValueIsEmpty;
       }
     }
