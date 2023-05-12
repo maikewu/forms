@@ -12,8 +12,6 @@ The EmailSection contains fields to send the finshed form.
 | [headlineText](./24-general-properties/#mulitlanguagetext) (Required!)                 | Configurate the displayed field lable |
 | [helpTextHtmlAbove](./02-signature-section/#helpTextHtmlabove)                         | HTML help text above the section|
 | [helpTextHtmlBelow](./02-signature-section/#helpTextHtmlbelow)                         | HTML help text below the section|
-| [pdfHide](./24-general-properties/#pdfhide) (Required!)                                | Setting this to `true` hides the whole field in the PDF. |
-| [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)                | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
 | [requiredAmountOfOutgoingMails](#requiredamountofoutgoingmails)                        | Setting the requried amount of outgoing emails that has to be sent or marked for sending. |
 | [hidePreviewPdfButton](./02-signature-section/#hidepreviewpdfbutton)                                          | Setting this to `true` hides the preview PDF button in the UI. |
 | [hideDownloadPdfButton](./02-signature-section/#hidedownloadpdfbutton)                                        |  Setting this to `true` hides the download PDF button in the UI.|
@@ -25,7 +23,6 @@ The EmailSection contains fields to send the finshed form.
     "id": "exampleEmailSection",
     "type": "emailSection",
     "config": {
-        "pdfHide": false,
         "whitelistedDomains": [],
         "headlineText": {
             "en": "Example Email Section",
@@ -54,7 +51,6 @@ The EmailSection contains fields to send the finshed form.
         "requiredAmountOfOutgoingMails": 2,
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
-        "pdfHideIfValueIsEmpty": false,
         "emailDialogPrefill": {
             "to": {
                 "assignee": false,
