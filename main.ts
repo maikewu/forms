@@ -67,6 +67,12 @@ function updateConfig(jsonData: any): void {
               partListInputFieldKey === 'warrantyBooleanInput') {
               const partListInputField = partListInputFields[partListInputFieldKey];
 
+              if (!partListInputField) {
+                partListInputFields[partListInputFieldKey] = {
+                  disabled: true,
+                };
+              }
+
               if (partListInputField && !Object.prototype.hasOwnProperty.call(partListInputField, 'enable')) {
                 partListInputField.disabled = true;
               }
