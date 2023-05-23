@@ -17,16 +17,21 @@
       },
       "fields": [
         {
-          "id": "header_text_1",
-          "type": "htmlDisplay",
+          "id": "orderNumber",
+          "type": "singleLineTextInput",
           "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Customer</b>",
-              "de": "<b style='font-size:11pt'>Kunde</b>"
-            },
+            "disabled": false,
+            "required": false,
             "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
-            "uiHide": true
+            "label": {
+              "text": {
+                "en": "Order Number",
+                "de": "Auftragsnummer"
+              },
+              "pdfHide": false
+            }
           }
         },
         {
@@ -35,7 +40,7 @@
           "config": {
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -48,13 +53,7 @@
               "disableCreation": true,
               "pdfHide": false
             },
-            "useAsFilterForFields": [
-              "asset",
-              "asset_2",
-              "asset_3",
-              "asset_4",
-              "asset_5"
-            ],
+            "useAsFilterForFields": ["asset", "customercontactperson"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -63,10 +62,7 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
@@ -109,11 +105,18 @@
             },
             "value": {
               "pdfHide": false,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
                 {
                   "input": "workOrderId",
                   "steps": [
@@ -123,35 +126,65 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToLocationAddress"
-                  ]
-                },
-                {
-                  "input": "organizationId",
-                  "steps": [
-                    "accountIdToAccount",
-                    "accountToBillingAddressAddress"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             }
           }
         },
         {
-          "id": "contactPersons",
-          "type": "singleLineTextInput",
+          "id": "customercontactperson",
+          "type": "userSingleSelect",
           "config": {
-            "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
                 "en": "Contact Person",
                 "de": "Ansprechpartner"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerPersonUserId"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "phone"
+                },
+                "steps": [
+                  "userInfoToUser",
+                  "userToPhoneNumberString",
+                  "phoneNumberStringToPhoneNumberObject"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "contactperson",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Contact Person (if not in the system)",
+                "de": "Ansprechpartner (falls nicht im System)"
               },
               "pdfHide": false
             }
@@ -169,12 +202,23 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "required": false,
             "value": {
               "pdfHide": false
             }
+          }
+        },
+        {
+          "id": "line0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -188,40 +232,10 @@
             "en": "Article",
             "de": "Artikel"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_3",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_3",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Article</b>",
-              "de": "<b style='font-size:11pt'>Artikel</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "artikelnummer",
           "type": "singleLineTextInput",
@@ -242,119 +256,38 @@
         },
         {
           "id": "asset",
-          "type": "assetSingleSelect",
+          "type": "assetMultiSelect",
           "config": {
-            "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
+            "requiredAmountOfEntries": 0,
             "label": {
               "text": {
-                "en": "Serial Number",
-                "de": "Seriennummer"
+                "en": "Serial number(s)",
+                "de": "Seriennummer(n)",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
               },
               "pdfHide": false
             },
             "value": {
+              "disableAssetFormInstanceRelationship": false,
               "disableCreation": false,
-              "pdfHide": false
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
-              "selectedAsset": [
+              "selectedAssets": [
                 {
-                  "input": "assetId",
-                  "steps": []
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToAssetIds"]
                 }
               ]
-            }
-          }
-        },
-        {
-          "id": "asset_2",
-          "type": "assetSingleSelect",
-          "config": {
-            "required": false,
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Serial Number",
-                "de": "Seriennummer"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "disableCreation": false,
-              "pdfHide": false
-            }
-          }
-        },
-        {
-          "id": "asset_3",
-          "type": "assetSingleSelect",
-          "config": {
-            "required": false,
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Serial Number",
-                "de": "Seriennummer"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "disableCreation": false,
-              "pdfHide": false
-            }
-          }
-        },
-        {
-          "id": "asset_4",
-          "type": "assetSingleSelect",
-          "config": {
-            "required": false,
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Serial Number",
-                "de": "Seriennummer"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "disableCreation": false,
-              "pdfHide": false
-            }
-          }
-        },
-        {
-          "id": "asset_5",
-          "type": "assetSingleSelect",
-          "config": {
-            "required": false,
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "en": "Serial Number",
-                "de": "Seriennummer"
-              },
-              "pdfHide": false
-            },
-            "value": {
-              "disableCreation": false,
-              "pdfHide": false
             }
           }
         },
@@ -375,6 +308,17 @@
               "pdfHide": false
             }
           }
+        },
+        {
+          "id": "line1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
         }
       ]
     },
@@ -387,40 +331,10 @@
             "en": "Error description",
             "de": "Fehlerbeschreibung"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_4",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
-        {
-          "id": "header_text_4",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:11pt'>Error description</b>",
-              "de": "<b style='font-size:11pt'>Fehlerbeschreibung</b>"
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "customerStatement",
           "type": "multiLineTextInput",
@@ -429,7 +343,7 @@
             "disabled": false,
             "pdfHide": false,
             "placeHolderText": {},
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -442,6 +356,14 @@
               "pdfHide": false,
               "uiMinRows": 1,
               "uiMaxRows": 10
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTitleString"]
+                }
+              ]
             }
           }
         },
@@ -453,7 +375,7 @@
             "disabled": false,
             "pdfHide": false,
             "placeHolderText": {},
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -485,7 +407,7 @@
             },
             "fields": {
               "checkboxBooleanInput": {
-                "checkedByDefault": false,
+                "checkedByDefault": true,
                 "pdfHide": false
               },
               "titleSingleLineTextInput": {
@@ -510,10 +432,7 @@
               "entries": [
                 {
                   "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToTasks"
-                  ]
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
                 }
               ]
             }
@@ -526,7 +445,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -544,7 +463,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -562,7 +481,7 @@
             "disabled": false,
             "required": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -571,6 +490,17 @@
               },
               "pdfHide": false
             }
+          }
+        },
+        {
+          "id": "line2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -581,30 +511,13 @@
       "config": {
         "headline": {
           "text": {
-            "en": " ",
-            "de": " "
+            "en": "Additional information",
+            "de": "Weitere Informationen"
           },
           "pdfHide": true
         }
       },
       "fields": [
-        {
-          "id": "header_spacer_5",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": " ",
-              "de": " ",
-              "es": " ",
-              "it": " ",
-              "fr": " ",
-              "tr": " "
-            },
-            "pdfHide": false,
-            "pdfWidth": 1,
-            "uiHide": true
-          }
-        },
         {
           "id": "user",
           "type": "userSingleSelect",
@@ -629,47 +542,16 @@
                 {
                   "input": "assignedUserId",
                   "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
                 }
               ]
             }
           }
         },
-        {
-          "id": "status",
-          "type": "singleLineTextInput",
-          "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
-            "label": {
-              "text": {
-                "en": "Status",
-                "de": "Status"
-              },
-              "pdfHide": false
-            }
-          }
-        },
-        {
-          "id": "categorie",
-          "type": "singleLineTextInput",
-          "config": {
-            "disabled": false,
-            "required": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
-            "label": {
-              "text": {
-                "en": "Category",
-                "de": "Kategorie"
-              },
-              "pdfHide": false
-            }
-          }
-        },
+
         {
           "id": "date_1",
           "type": "dateInput",
@@ -682,7 +564,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.3,
             "required": false,
             "value": {
@@ -702,7 +584,7 @@
               "pdfHide": false
             },
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.3,
             "required": false,
             "value": {
@@ -7843,8 +7725,8 @@
                   "pdfHideIfValueIsEmpty": false,
                   "label": {
                     "text": {
-                      "en": "Description",
-                      "de": "Beschreibung"
+                      "en": "Remark",
+                      "de": "Anmerkung"
                     },
                     "pdfHide": false
                   },
@@ -7882,8 +7764,8 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "en": "Send/sent report as E-mail",
-          "de": "Bericht als E-Mail senden/gesendet"
+          "en": "Send/sent workshop report as email",
+          "de": "Werkstattbericht als E-Mail senden/gesendet"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -7909,20 +7791,19 @@
         "emailDialogPrefill": {
           "to": {
             "assignee": false,
-            "staticEmails": []
+            "staticEmails": [],
+            "fieldIds": ["customercontactperson"]
           },
           "cc": {
             "assignee": false,
-            "staticEmails": [
-              "info@elried.de"
-            ]
+            "staticEmails": ["info@elried.de"]
           },
           "bcc": {
             "assignee": true,
             "staticEmails": []
           },
           "subject": {
-            "en": "Factory Report",
+            "en": "Workshop Report",
             "de": "Werkstattbericht",
             "fr": "",
             "it": "",
