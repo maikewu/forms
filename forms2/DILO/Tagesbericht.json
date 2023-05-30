@@ -1,0 +1,501 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Allgemeine Informationen",
+            "en": "General Information"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "commNo",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Komm.-Nr.",
+                "en": "Comm-No."
+              }
+            }
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "useAsFilterForFields": ["asset"],
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "value": {
+              "pdfPrintCompanyNumber": false
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "place",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Baustelle",
+                "en": "Place"
+              }
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Anlage",
+                "en": "Asset"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              },
+              {
+                "target": {
+                  "id": "signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  "assetToLocationAddress",
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  "assetToLocationAddress",
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "times",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Arbeits- und Reisezeiten",
+            "en": "Work And Travel Times"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "TimeTrackingListInput",
+          "type": "timeTrackingListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Working and Travel Times",
+                "de": "Arbeits- und Reisezeiten"
+              },
+              "pdfHide": false
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "htmlDisplay_0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "Kilometres: Babenhausen - Place of destination - Babenhausen",
+              "de": "Kilometer: Babenhausen - Bestimmungsort - Babenhausen",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "uiHide": false,
+            "pdfHide": true,
+            "pdfWidth": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "workingStepTypes",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Arbeitsbericht",
+            "en": "Working report"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "TaskListInput",
+          "type": "taskListInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "en": "Work performed",
+                "de": "Ausgeführte Arbeiten"
+              }
+            },
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": true
+              }
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "SparePartsList",
+          "type": "partListInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Verbrauchtes Material",
+                "en": "Material used"
+              }
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Artikelnummer",
+                  "en": "Part number"
+                }
+              },
+              "quantityNumericInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "enable": true,
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "de": "Beschreibung",
+                  "en": "Description"
+                }
+              },
+              "deliverToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "invoiceToStaticSingleSelect": {
+                "enable": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "warrantyBooleanInput": {
+                "enable": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "richText",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen...",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Working report",
+                "de": "Arbeitsbericht",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "signatureTechnician",
+      "type": "signatureSection",
+      "config": {
+        "required": false,
+        "headlineText": {
+          "de": "Unterschrift DILO-Monteur",
+          "en": "Signature DILO's fitter"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "required": false,
+        "headlineText": {
+          "de": "Unterschrift Kunde / Bevollmächtigter",
+          "en": "Signature customer / assignee"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send1",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Ausgefüllten Tagesbericht senden/gesendet",
+          "en": "Send/sent filled daily report"
+        },
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "currentUser": true,
+            "assignee": true
+          },
+          "subject": {
+            "de": "DILO: Tagesbericht",
+            "en": "DILO: Daily report"
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "en": "This email was generated automatically.\nPlease do not reply to this email."
+          }
+        }
+      }
+    }
+  ]
+}
