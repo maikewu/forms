@@ -57,31 +57,48 @@ function updateConfig(jsonData: any): void {
     if (section.type === 'fieldSection') {
       // replace enable flag with disabled flag for PartListInputFieldConfig
       for (const field of section.fields) {
-        if (field.type === 'partListInput' && field.config.fields) {
-          const partListInputFields = field.config.fields;
+        if (field.type === 'partListInput') {
+          if (field.config.fields) {
+            const partListInputFields = field.config.fields;
 
-          for (const partListInputFieldKey of Object.keys(partListInputFields)) {
-            if (partListInputFieldKey === 'descriptionMultiLineTextInput' ||
-              partListInputFieldKey === 'deliverToStaticSingleSelect' ||
-              partListInputFieldKey === 'invoiceToStaticSingleSelect' ||
-              partListInputFieldKey === 'warrantyBooleanInput') {
-              const partListInputField = partListInputFields[partListInputFieldKey];
+            for (const partListInputFieldKey of Object.keys(partListInputFields)) {
+              if (partListInputFieldKey === 'descriptionMultiLineTextInput' ||
+                partListInputFieldKey === 'deliverToStaticSingleSelect' ||
+                partListInputFieldKey === 'invoiceToStaticSingleSelect' ||
+                partListInputFieldKey === 'warrantyBooleanInput') {
+                const partListInputField = partListInputFields[partListInputFieldKey];
 
-              if (!partListInputField) {
-                partListInputFields[partListInputFieldKey] = {
-                  disabled: true,
-                };
-              }
+                if (!partListInputField) {
+                  partListInputFields[partListInputFieldKey] = {
+                    disabled: true,
+                  };
+                }
 
-              if (partListInputField && !Object.prototype.hasOwnProperty.call(partListInputField, 'enable')) {
-                partListInputField.disabled = true;
-              }
+                if (partListInputField && !Object.prototype.hasOwnProperty.call(partListInputField, 'enable')) {
+                  partListInputField.disabled = true;
+                }
 
-              if (partListInputField && Object.prototype.hasOwnProperty.call(partListInputField, 'enable')) {
-                partListInputField.disabled = !partListInputField.enable;
-                delete partListInputField.enable;
+                if (partListInputField && Object.prototype.hasOwnProperty.call(partListInputField, 'enable')) {
+                  partListInputField.disabled = !partListInputField.enable;
+                  delete partListInputField.enable;
+                }
               }
             }
+          } else {
+            field.config.fields = {
+              descriptionMultiLineTextInput: {
+                disabled: true,
+              },
+              deliverToStaticSingleSelect: {
+                disabled: true,
+              },
+              invoiceToStaticSingleSelect: {
+                disabled: true,
+              },
+              warrantyBooleanInput: {
+                disabled: true,
+              },
+            };
           }
         }
 
