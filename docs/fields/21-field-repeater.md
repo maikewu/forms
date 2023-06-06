@@ -9,18 +9,18 @@ parentDoc: 635ce486ae5fac003cef279e
 # Configuration Overview
 
 
-| Property                                                                     | Description                      |
-| :--------------------------------------------------------------------------- | :--------------------------------|
-| [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
-| [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)      | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
-| [pdfWidth](./24-general-properties/#pdfwidth)                                | Configuration of the width of the field. |
-| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries)  | Specify how many repeating entries are required to fill the form.                                                                                        |
-| [helptextBefore](#helptextbefore)                                            | Text that is displayed before the repeater |
-| [helptextAfter](#helptextafter)                                              | Text that is displayed after the repeater |
-| [uiHideInRepeaterCardDisplay](#uihideinrepeatercarddisplay)                  | Setting this to `true` hides the field in the UI. |
-| [pdfFieldRepeaterCellAlignment](#pdffieldrepeatercellalignment)              | Configuration of the cell alignment. |
-| [label](#label)                                                              | Configuration of the field label. |
-| [fields](#fields)                                                            | Components of the field |
+| Property                                                                    | Description                      |
+|:----------------------------------------------------------------------------| :--------------------------------|
+| [pdfHide](./24-general-properties/#pdfhide)                                 | Setting this to `true` hides the whole field in the PDF. |
+| [pdfHideIfValueIsEmpty](./24-general-properties/#pdfhideifvalueisempty)     | Setting this to `true` hides the whole field in the PDF in case the field value is empty. |
+| [pdfWidth](./24-general-properties/#pdfwidth)                               | Configuration of the width of the field. |
+| [requiredAmountOfEntries](./24-general-properties/#requiredamountofentries) | Specify how many repeating entries are required to fill the form.                                                                                        |
+| [helpTextBefore](#helpTextBefore)                                           | Text that is displayed before the repeater |
+| [helpTextAfter](#helpTextafter)                                             | Text that is displayed after the repeater |
+| [uiHideInRepeaterCardDisplay](#uihideinrepeatercarddisplay)                 | Setting this to `true` hides the field in the UI. |
+| [pdfFieldRepeaterCellAlignment](#pdffieldrepeatercellalignment)             | Configuration of the cell alignment. |
+| [label](#label)                                                             | Configuration of the field label. |
+| [fields](#fields)                                                           | Components of the field |
 
 
 ```json (General repeater config without fields)
@@ -46,7 +46,7 @@ parentDoc: 635ce486ae5fac003cef279e
             "pdfTextSize": 14,
             "uiHide": false
         },
-        "helptextBefore": {
+        "helpTextBefore": {
             "en": "Example helptext before",
             "de": "Beispiel Hilfstext davor",
             "tr": "Example helptext before [TR]",
@@ -54,7 +54,7 @@ parentDoc: 635ce486ae5fac003cef279e
             "es": "Example helptext before [ES]",
             "it": "Example helptext before [IT]"
         },
-        "helptextAfter": {
+        "helpTextAfter": {
             "en": "Example helptext after",
             "de": "Beispiel Hilfstext danach",
             "tr": "Example helptext after [TR]",
@@ -902,18 +902,18 @@ A list of all fields that can be used in the fieldRepeater. Code examples can be
 # Configuration Parameter
 
 
-## `helptextBefore`
+## `helpTextBefore`
 
-| `helptextBefore`     |                 |
+| `helpTextBefore`     |                 |
 | :-------------- | :-------------- |
 | Possible Values | [MultiLanguageText](./24-general-properties/#multilanguagetext)    |
 | Required        | no              |
 | Default Value   | -               |
 
-By setting `helptextBefore`, a text is displayed before the repeater.
+By setting `helpTextBefore`, a text is displayed before the repeater.
 
 ```json
-      "helptextBefore": {
+      "helpTextBefore": {
           "en": "Example helptext before",
           "de": "Beispiel Hilfstext davor",
           "tr": "Example helptext before [TR]",
@@ -924,18 +924,18 @@ By setting `helptextBefore`, a text is displayed before the repeater.
 ```
 
 ---
-## `helptextAfter`
+## `helpTextAfter`
 
-| `helptextAfter`     |                 |
+| `helpTextAfter`     |                 |
 | :-------------- | :-------------- |
 | Possible Values | [MultiLanguageText](./24-general-properties/#multilanguagetext)    |
 | Required        | no              |
 | Default Value   | -               |
 
-By setting `helptextAfter`, a text is displayed before the repeater.
+By setting `helpTextAfter`, a text is displayed before the repeater.
 
 ```json
-      "helptextAfter": {
+      "helpTextAfter": {
           "en": "Example helptext after",
           "de": "Beispiel Hilfstext danach",
           "tr": "Example helptext after [FR]",

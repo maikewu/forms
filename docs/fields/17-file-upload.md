@@ -30,8 +30,8 @@ The fieldUpload field allows to upload files.
         "pdfHideIfValueIsEmpty": false,
         "pdfWidth": 1,
         "requiredAmountOfFiles": 0,
-        "maximumSingleFileSize": 15000000, // ~15 MB
-        "maximumAccumulatedFileSize": 150000000, // ~150 MB
+        "maximumSingleFileSize": 15, // MB
+        "maximumAccumulatedFileSize": 150, // MB
         "acceptedFileTypes": [ "application/pdf", "image/png"],
         "label": {
             "text": {
@@ -109,12 +109,12 @@ The fieldUpload field allows to upload files.
 | :-------------- | :-------------- |
 | Possible Values | Integer     |
 | Required        | no              |
-| Default Value   | `15000000` (~15 MB)             |
+| Default Value   | `15` (~15 MB)             |
 
 By setting `maximumSingleFileSize`, the maximum file size that can be uploaded gets defined.  
 
 ```json
-"maximumSingleFileSize": 100000, // ~100 kb
+"maximumSingleFileSize": 100, // ~100 mb
 ```
 
 ---
@@ -124,12 +124,12 @@ By setting `maximumSingleFileSize`, the maximum file size that can be uploaded g
 | :-------------- | :-------------- |
 | Possible Values | Integer     |
 | Required        | no              |
-| Default Value   | `150000000` (~150 MB)              |
+| Default Value   | `150` (~150 MB)              |
 
 By setting `maximumAccumulatedFileSize`, the maximum accumulated file size that can be uploaded gets defined.
 
 ```json
-"maximumAccumulatedFileSize": 1000000, // ~1 MB
+"maximumAccumulatedFileSize": 100, // ~100 MB
 ```
 
 ---

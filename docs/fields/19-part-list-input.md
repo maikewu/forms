@@ -58,7 +58,7 @@ With the PartListInput, the user can add parts to an form.
 				"pdfHide": false
 			},
 			"descriptionMultiLineTextInput": {
-				"enable": true,
+				"disabled": false,
 				"required": true,
 				"pdfHide": false,
 				"placeHolderText": {
@@ -71,17 +71,17 @@ With the PartListInput, the user can add parts to an form.
 				}
 			},
 			"deliverToStaticSingleSelect": {
-				"enable": true,
+				"disabled": false,
 				"required": true,
 				"pdfHide": false
 			},
 			"invoiceToStaticSingleSelect": {
-				"enable": true,
+				"disabled": false,
 				"required": true,
 				"pdfHide": false
 			},
 			"warrantyBooleanInput": {
-				"enable": true,
+				"disabled": false,
 				"pdfHide": false
 			}
 		}
@@ -113,7 +113,7 @@ With the PartListInput, the user can add parts to an form.
 				"pdfHide": false
 			},
 			"descriptionMultiLineTextInput": {
-				"enable": true,
+				"disabled": false,
 				"required": false,
 				"pdfHide": false,
 				"placeHolderText": {
@@ -122,17 +122,17 @@ With the PartListInput, the user can add parts to an form.
 				}
 			},
 			"deliverToStaticSingleSelect": {
-				"enable": false,
+				"disabled": true,
 				"required": false,
 				"pdfHide": false
 			},
 			"invoiceToStaticSingleSelect": {
-				"enable": false,
+				"disabled": true,
 				"required": false,
 				"pdfHide": false
 			},
 			"warrantyBooleanInput": {
-				"enable": false,
+				"disabled": true,
 				"pdfHide": false
 			}
 		}
@@ -183,35 +183,35 @@ With the PartListInput, the user can add parts to an form.
 ---
 ### `descriptionMultiLineTextInput`
 
-| Property                                                      | Description                       |
-| :------------------------------------------------------------ | :-------------------------------- |
-| [pdfHide](./24-general-properties/#pdfhide)                                  | Setting this to `true` hides the whole field in the PDF. |
-| [required](./24-general-properties/#required)                                | If this is set to `true`, the field is considered invalid as long as no value is entered. |
-| [placeHolderText](./24-general-properties/#placeholdertext)                  | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
-| [enable](./24-general-properties/#enable)                  | Setting this to `true` enables the property in the UI |
+| Property                                                    | Description                                                                                             |
+|:------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------|
+| [pdfHide](./24-general-properties/#pdfhide)                 | Setting this to `true` hides the whole field in the PDF.                                                |
+| [required](./24-general-properties/#required)               | If this is set to `true`, the field is considered invalid as long as no value is entered.               |
+| [placeHolderText](./24-general-properties/#placeholdertext) | Localized placeholder text that is shown in the UI when the field is focused but does not have a value. |
+| [disabled](./24-general-properties/#disabled)                 | Setting this to `true` disables the property in the UI                                                  |
 
 ---
 ### `deliverToStaticSingleSelect`
 
-| Property                                                      | Description                       |
-| :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
-| [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |
-| [required](./24-general-properties/#required)                 | If this is set to `true`, the field is considered invalid as long as no value is entered. |
+| Property                                      | Description                                                                               |
+|:----------------------------------------------|:------------------------------------------------------------------------------------------|
+| [disabled](./24-general-properties/#disabled)   | Setting this to `true` disables the property in the UI                                    |
+| [pdfHide](./24-general-properties/#pdfhide)   | Setting this to `true` hides the whole field in the PDF.                                  |
+| [required](./24-general-properties/#required) | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 
 ---
 ### `invoiceToStaticSingleSelect`
 
-| Property                                                      | Description                       |
-| :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
-| [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |
-| [required](./24-general-properties/#required)                 | If this is set to `true`, the field is considered invalid as long as no value is entered. |
+| Property                                      | Description                                                                               |
+|:----------------------------------------------|:------------------------------------------------------------------------------------------|
+| [disabled](./24-general-properties/#disabled)   | Setting this to `true` disables the property in the UI                                    |
+| [pdfHide](./24-general-properties/#pdfhide)   | Setting this to `true` hides the whole field in the PDF.                                  |
+| [required](./24-general-properties/#required) | If this is set to `true`, the field is considered invalid as long as no value is entered. |
 
 ---
 ### `warrantyBooleanInput`
 
-| Property                                                      | Description                       |
-| :------------------------------------------------------------ | :-------------------------------- |
-| [enable](./24-general-properties/#enable)                     | Setting this to `true` enables the property in the UI |
+| Property                                                      | Description                                              |
+| :------------------------------------------------------------ |:---------------------------------------------------------|
+| [disabled](./24-general-properties/#disabled)                     | Setting this to `true` disables the property in the UI   |
 | [pdfHide](./24-general-properties/#pdfhide)                   | Setting this to `true` hides the whole field in the PDF. |
