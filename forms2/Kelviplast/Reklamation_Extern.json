@@ -1,0 +1,651 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "General Information",
+            "de": "Allgemeine Informationen"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              }
+            },
+            "useAsFilterForFields": ["asset","contactPerson"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                "input": "organizationId",
+                "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset","assetToCustomerAccountId"]
+                }
+              ]
+            },
+            "onChange": []
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Asset",
+                "de": "Gerätenummer & -typ"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "contactPerson",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Contact Person",
+                "de": "Ansprechperson"
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": [
+              {
+                "steps": ["userInfoToUser","userToPhoneNumberString","phoneNumberStringToPhoneNumberObject"],
+                "target": {
+                  "id": "phoneNumber",
+                  "propertyName": ""
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "phoneNumber",
+          "type": "phoneNumberInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Phone Number",
+                "de": "Tel. Nr."
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        },
+        {
+          "id": "processor",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Processor int.",
+                "de": "Bearbeiter int."
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "steps": ["userToFullNameString"],
+                "target": {
+                  "id": "04_signatureProcessor",
+                  "propertyName": "name"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "orderNo",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Best. Nr. Kunde",
+                "en": "Order No. Customer"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "ComplaintDate",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Rekl.-Datum (AE)",
+                "en": "Complaint Date (AE)"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "reclamtion",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Reklamation",
+                "en": "Complaint"
+              }
+            },
+            "pdfWidth": 0.5
+          }
+        },
+        {
+          "id": "comment",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Bemerkung",
+                "en": "Comment"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "whitespace",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            },
+            "uiHide": true,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_ComplaintInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Complaint Information",
+            "de": "Reklamationsinformation"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "what",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Can Kelviplast be identified as being at fault? Insert attachments such as pictures etc. below",
+              "de": "Ist ein Verschulden Kelviplast erkennbar? Anhänge wie Bilder etc. unten einfügen"
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "What is complained by the customer",
+                "de": "Was wird durch den Kunden reklamiert",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "measures",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Who does what and when? Who bears the costs for this?",
+              "de": "Wer macht wann was? Wer trägt hierfür die Kosten?"
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Measures to eliminate the error",
+                "de": "Maßnahmen zur Behebung des Fehlers",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "reasons",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Who did what wrong? Reasons for this?",
+              "de": "Wer hat was falsch gemacht? Gründe hierfür?"
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Reasons for occurrence of error",
+                "de": "Gründe für Auftreten des Fehlers",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "measures2",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "What was arranged by whom and until when?",
+              "de": "Was wurde durch wen bis wann veranlasst?"
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Measures to avoid the error in the future",
+                "de": "Maßnahmen zur zukünftigen Vermeidung des Fehlers",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "responsible",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Responsible / Date",
+                "de": "Verantwortlich / Termin"
+              }
+            }
+          }
+        },
+        {
+          "id": "costs",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "apx. costs",
+              "de": "ca. Kosten als VK"
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Troubleshooting costs for Kelviplast",
+                "de": "Kosten der Fehlerbeseitigung für Kelviplast",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "type",
+          "type": "staticMultiSelect",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "minAmountOfSelections": 0,
+            "maxAmountOfSelections": 0,
+            "label": {
+              "text": {
+                "en": "Main Product Groups",
+                "de": "Immer vor Auftragsanlage ankreuzen"
+              }
+            },
+            "value": {
+              "options": {
+                "1": {
+                  "en": "",
+                  "de": "QKU - Kulanz"
+                },
+                "2": {
+                  "en": "",
+                  "de": "QGW - Gewährleistung"
+                },
+                "3": {
+                  "en": "",
+                  "de": "QNO - Noch offen"
+                },
+                "4": {
+                  "en": "",
+                  "de": "Rücklieferung anfordern"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "disclaimer",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<b>Kosten bis 50.-€ werden nicht erfasst, es muss also keine Reklamation ausgefüllt werden.</b><br>Nach Erledigung (Kosten erfasst + Maßnahme durchgeführt) Unterschrift und Kopie an Beteiligt"
+            }
+          }
+        },
+        {
+          "id": "productGroups",
+          "type": "staticMultiSelect",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "minAmountOfSelections": 0,
+            "maxAmountOfSelections": 0,
+            "label": {
+              "text": {
+                "en": "Main Product Groups",
+                "de": "Hauptproduktgruppen"
+              }
+            },
+            "value": {
+              "options": {
+                "1": {
+                  "en": "ERSA - Customer error",
+                  "de": "ERSA - Kundenfehler"
+                },
+                "2": {
+                  "en": "QMKE - Electrical construction error",
+                  "de": "QMKE - Fehler Konstruktion elektrisch"
+                },
+                "3": {
+                  "en": "QMKK - No costs",
+                  "de": "QMKK - Keine Kosten entstanden"
+                },
+                "4": {
+                  "en": "QMKM - Mechanical construction error",
+                  "de": "QMKM - Fehler Konstruktion mechanisch"
+                },
+                "5": {
+                  "en": "QML - Supplier took over costs",
+                  "de": "QML - Lieferant Kosten übernommen"
+                },
+                "6": {
+                  "en": "QMMW - Error material",
+                  "de": "QMMW - Fehler Materialwirtschaft"
+                },
+                "7": {
+                  "en": "QMNF - Error not detectable",
+                  "de": "QMNF - Fehler nicht feststellbar"
+                },
+                "8": {
+                  "en": "QMPE - Electrical production error",
+                  "de": "QMPE - Fehler Produktion elektrisch"
+                },
+                "9": {
+                  "en": "QMPF - Error test field",
+                  "de": "QMPF - Fehler Prüffeld"
+                },
+                "10": {
+                  "en": "QMPM - Mechanical production error",
+                  "de": "QMPM - Fehler Produktion mechanisch"
+                },
+                "11": {
+                  "en": "QMPR - Error project planning",
+                  "de": "QMPR - Fehler Projektierung"
+                },
+                "12": {
+                  "en": "QMSV - Error service",
+                  "de": "QMSV - Fehler Service"
+                },
+                "13": {
+                  "en": "QMVT - Error sales",
+                  "de": "QMVT - Fehler Vertrieb"
+                },
+                "14": {
+                  "en": "QMWV - Error goods receipt / shipping",
+                  "de": "QMWV - Fehler Wareneingang / Versand"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_upload",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "File Upload",
+            "de": "Datei-Upload"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "fileUpload",
+          "type": "fileUpload",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "requiredAmountOfFiles": 0,
+            "label": {
+              "text": {
+                "en": "File Upload",
+                "de": "Datei-Upload"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_signatureProcessor",
+      "type": "signatureSection",
+      "config": {
+        "required": true,
+        "headlineText": {
+          "en": "Completed by",
+          "de": "Abgeschlossen durch"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "autofill": "always",
+            "onChange": []
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "onChange": []
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "onChange": []
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": [
+                "userIdToUser","userToFullNameString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "05_signatureGL",
+      "type": "signatureSection",
+      "config": {
+        "required": true,
+        "headlineText": {
+          "en": "Signature CEO",
+          "de": "Kenntnisnahme GL",
+          "tr": "",
+          "fr": "",
+          "es": "",
+          "it": ""
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "autofill": "always",
+            "onChange": []
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "onChange": []
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "onChange": []
+          }
+        }
+      }
+    },
+    {
+      "id": "06_emailSection",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Reklamation als E-Mail senden/gesendet",
+          "en": "Send/sent complaint as email"
+        },
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "emailDialogPrefill": {
+          "cc": {
+            "currentUser": true
+          },
+          "subject": {
+            "de": "Reklamation Extern",
+            "en": "Complaint external"
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie die Reklamation als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the complaint as PDF.\n\nBest regards"
+          }
+        }
+      }
+    }
+  ]
+}
