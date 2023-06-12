@@ -23,7 +23,7 @@
             "disabled": false,
             "required": true,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
@@ -67,6 +67,10 @@
               "value": [
                 {
                   "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
                   "steps": []
                 }
               ]
@@ -349,10 +353,7 @@
               "pdfHide": false,
               "pdfPrintCompanyNumber": true
             },
-            "useAsFilterForFields": [
-              "asset",
-              "customerContactPerson"
-            ],
+            "useAsFilterForFields": ["asset", "customerContactPerson"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -361,10 +362,7 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             },
@@ -420,7 +418,7 @@
           "type": "addressInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "required": {
               "street": false,
@@ -447,13 +445,6 @@
             "prefill": {
               "value": [
                 {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
-                {
                   "input": "organizationId",
                   "steps": [
                     "accountIdToAccount",
@@ -461,11 +452,15 @@
                   ]
                 },
                 {
-                  "input": "assetId",
+                  "input": "workOrderId",
                   "steps": [
-                    "assetIdToAsset",
-                    "assetToLocationAddress"
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
                   ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 }
               ]
             },
@@ -475,18 +470,14 @@
                   "id": "11-signature_technician",
                   "propertyName": "location"
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
+                "steps": ["addressToCityString"]
               },
               {
                 "target": {
                   "id": "12-signature_customer",
                   "propertyName": "location"
                 },
-                "steps": [
-                  "addressToCityString"
-                ]
+                "steps": ["addressToCityString"]
               }
             ]
           }
@@ -527,7 +518,16 @@
             "value": {
               "pdfPrintEmailAddress": true,
               "pdfHide": false
-            }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "12-signature_customer",
+                  "propertyName": "name"
+                },
+                "steps": ["userToFullNameString"]
+              }
+            ]
           }
         },
         {
@@ -538,7 +538,7 @@
             "pdfWidth": 1,
             "text": {
               "en": "If the contact person is not in the system, please add name and email here:",
-              "de": "Wenn die Kontaktperson noch nicht im System ist, bitte Namen und E-Mail Adresse hier eintragen:",
+              "de": "Wenn die Kontaktperson noch nicht im System ist, bitte Namen und E-Mail-Adresse hier eintragen:",
               "fr": "",
               "it": "",
               "tr": "",
@@ -561,7 +561,16 @@
                 "de": "Kontaktperson (manueller Eintrag)"
               },
               "pdfHide": false
-            }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "12-signature_customer",
+                  "propertyName": "name"
+                },
+                "steps": []
+              }
+            ]
           }
         }
       ]
@@ -594,6 +603,9 @@
               "pdfHide": false
             },
             "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": true
+              },
               "highPrioBooleanInput": {
                 "pdfHide": true,
                 "disabled": true
@@ -607,10 +619,7 @@
               "entries": [
                 {
                   "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToTasks"
-                  ]
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToTasks"]
                 }
               ]
             }
@@ -671,7 +680,7 @@
           "type": "timeTrackingListInput",
           "config": {
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
+            "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -886,7 +895,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": true
+            "required": true,
+            "autofill": "always"
           },
           "nameSingleLineTextInput": {
             "disable": false,
@@ -935,10 +945,7 @@
           "name": [
             {
               "input": "assignedUserId",
-              "steps": [
-                "userIdToUser",
-                "userToFullNameString"
-              ]
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
@@ -966,14 +973,6 @@
                 "addressToCityString"
               ]
             }
-          ],
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
-              ]
-            }
           ]
         }
       }
@@ -986,7 +985,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": true
+            "required": true,
+            "autofill": "always"
           },
           "nameSingleLineTextInput": {
             "disable": false,
@@ -1008,7 +1008,7 @@
         "pdfHide": false,
         "helpTextHtmlAbove": {
           "text": {
-            "en": "Please inform the customer that the e-mail may end up in the spam folder",
+            "en": "Please inform the customer that the e-mail may end up in the spam folder!",
             "de": "Weisen Sie bitte den Kunden darauf hin, dass die E-Mail im Spamordner landen kann!",
             "fr": "",
             "it": "",
@@ -1057,14 +1057,6 @@
                 "addressToCityString"
               ]
             }
-          ],
-          "date": [
-            {
-              "input": "creationDateTime",
-              "steps": [
-                "dateTimeToDate"
-              ]
-            }
           ]
         }
       }
@@ -1074,8 +1066,8 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "en": "Send filled form",
-          "de": "Ausgefülltes Formular absenden"
+          "en": "Send/sent filled service report",
+          "de": "Ausgefüllten Servicebericht senden/gesendet"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -1099,7 +1091,8 @@
         "emailDialogPrefill": {
           "to": {
             "assignee": false,
-            "staticEmails": []
+            "staticEmails": [],
+            "fieldIds": ["customerContactPerson"]
           },
           "cc": {
             "assignee": false,
@@ -1120,8 +1113,8 @@
             "es": ""
           },
           "body": {
-            "en": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma FPS Werkzeugmaschinen GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen | Best regards",
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma FPS Werkzeugmaschinen GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen | Best regards",
+            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\n\nThank you for your trust in the services of our company FPS Werkzeugmaschinen GmbH.\nWe hope that we have been able to meet your requirements and convince you of our competences.\n\nFor further questions or concerns, please do not hesitate to contact us.\n\nIn the attachment you will find your associated service report as a PDF.\n\nBest regards,\nFPS Werkzeugmaschinen GmbH",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n\nSehr geehrte Damen und Herren,\n\nvielen Dank für Ihr Vertrauen in die Serviceleistungen unserer Firma FPS Werkzeugmaschinen GmbH.\nWir hoffen, dass wir Ihren Ansprüchen gerecht wurden und Sie von unseren Kompetenzen überzeugen konnten.\n\nFür weitere Fragen oder Anliegen stehen wir Ihnen gerne zur Verfügung.\n\nIm Anhang finden Sie Ihren zugehörigen Servicebericht als PDF.\n\nMit freundlichen Grüßen,\nFPS Werkzeugmaschinen GmbH",
             "fr": "",
             "it": "",
             "tr": "",
@@ -1140,7 +1133,7 @@
             "en": "Addendum",
             "de": "Nachtrag"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
@@ -1578,7 +1571,7 @@
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "General Comments",
+                "en": "General Remarks & Notes",
                 "de": "Allgemeine Bemerkungen & Hinweise"
               },
               "pdfHide": false
@@ -1602,7 +1595,7 @@
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "Distribution possibility",
+                "en": "Sales possibility",
                 "de": "Service-Vertriebsmöglichkeit"
               },
               "pdfHide": false
@@ -1641,8 +1634,8 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "en": "Send filled form with addendum",
-          "de": "Ausgefülltes Formular mit Nachtrag absenden"
+          "en": "Send/sent filled service report with addendum",
+          "de": "Ausgefüllten Servicebericht mit Nachtrag senden/gesendet"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -1690,8 +1683,8 @@
             "es": ""
           },
           "body": {
-            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nHello FPS team,\nIn the attachment you will find the completed service report as PDF and if necessary further documents.\n\nGreetings to Warngau,\nyour service technician.",
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nHallo FPS-Team,\nIm Anhang findet ihr den abgeschlossenen Servicebericht als PDF und ggf. weitere Dokumente.\n\nSchöne Grüße nach Warngau,\neuer Servicetechniker.",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\n\nHello FPS team,\nIn the attachment you will find the completed service report as PDF and if applicable further documents.\n\nGreetings to Warngau,\nyour service technician",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n\nHallo FPS-Team,\n\nIm Anhang findet ihr den abgeschlossenen Servicebericht als PDF und ggf. weitere Dokumente.\n\nSchöne Grüße nach Warngau,\neuer Servicetechniker",
             "fr": "",
             "it": "",
             "tr": "",
