@@ -25,6 +25,22 @@
                 "de": "Einsatzart",
                 "en": "Deployment type"
               }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "prefill": {
+              "value": [
+                {
+                  "input": "none",
+                  "steps": [
+                    [
+                      "staticString",
+                      "ad fontes Ortstermin"
+                    ]
+                  ]
+                }
+              ]
             }
           }
         },
@@ -37,6 +53,12 @@
                 "de": "Geplant für",
                 "en": "Planned date"
               }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "value": {
+              "autofill": "onlyEmpty"
             }
           }
         },
@@ -49,6 +71,17 @@
                 "de": "Handwerker",
                 "en": "Technician"
               }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "required": true,
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
             }
           }
         },
@@ -61,19 +94,10 @@
                 "de": "Beschreibung",
                 "en": "Description"
               }
-            }
-          }
-        },
-        {
-          "id": "contact",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Kontakt",
-                "en": "Contact"
-              }
-            }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
           }
         },
         {
@@ -86,11 +110,25 @@
                 "en": "Customer"
               }
             },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "required": true,
+            "useAsFilterForFields": ["asset"],
+            "value": {
+              "pdfPrintCompanyNumber": true
+            },
             "prefill": {
               "selectedCompany": [
                 {
                   "input": "organizationId",
                   "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
                 }
               ]
             },
@@ -100,9 +138,56 @@
                   "id": "location"
                 },
                 "steps": [
-                  "accountInfoToAccount",
+                  "accountInfoToAccount", 
                   "accountToBillingAddressAddress"
                 ]
+              },
+              {
+                "target": {
+                  "id": "phone"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToPhoneNumberString",
+                  "phoneNumberStringToPhoneNumberObject"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Project",
+                "de": "Projekt",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "uiHide": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+						"onChange": [
+              {
+                "target": {"id": "baujahr"},
+                "steps": ["assetInfoToAsset",["assetToCustomPropertyValue",3]]
               }
             ]
           }
@@ -113,35 +198,41 @@
           "config": {
             "label": {
               "text": {
-                "de": "Einsatzort",
+                "de": "Adresse",
                 "en": "Location"
               }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "required": {
+              "city": true,
+              "street": true
             },
             "prefill": {
               "value": [
                 {
                   "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
+                  "steps": ["workOrderIdToWorkOrder", "workOrderToLocationAddress"]
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToLocationAddress"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
                 },
                 {
                   "input": "organizationId",
-                  "steps": [
-                    "accountIdToAccount",
-                    "accountToBillingAddressAddress"
-                  ]
+                  "steps": ["accountIdToAccount","accountToBillingAddressAddress"]
                 }
               ]
-            }
+            },
+						"onChange": [
+							{
+								"target": {
+									"id": "20_signature",
+									"propertyName": "location"
+								},
+								"steps": ["addressToCityString"]
+							}
+						]
           }
         },
         {
@@ -153,31 +244,28 @@
                 "de": "Telefon",
                 "en": "Phone"
               }
-            }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "required": true
           }
         },
         {
-          "id": "appointment",
-          "type": "staticSingleSelect",
+          "id": "space1",
+          "type": "headlineDisplay",
           "config": {
-            "label": {
-              "text": {
-                "de": "Hat der Termin stattgefunden?",
-                "en": "Did the appointment take place?"
-              }
+            "text": {
+              "en": " ",
+              "de": " ",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
             },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
+            "uiHide": false,
+            "type": "H3",
+            "pdfHide": false,
+            "pdfWidth": 1
           }
         },
         {
@@ -190,6 +278,9 @@
                 "en": "Type of roof"
               }
             },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
             "value": {
               "options": {
                 "1": {
@@ -223,13 +314,17 @@
                 "8": {
                   "de": "Tonnendach",
                   "en": "Barrel roof"
+                },
+                "9": {
+                  "de": "Sonstiges",
+                  "en": "Other"
                 }
               }
             }
           }
         },
         {
-          "id": "date2",
+          "id": "baujahr",
           "type": "singleLineTextInput",
           "config": {
             "label": {
@@ -237,6 +332,21 @@
                 "de": "Wann wurde das Haus gebaut bzw. das Dachzuletztsaniert?",
                 "en": "When was the house built or the roof last renovated?"
               }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    ["assetToCustomPropertyValue",3],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -249,34 +359,10 @@
                 "de": "Wann wurde der Zählerschrank bzw. zuletzt saniert?",
                 "en": "When was the meter cabinet built or last refurbished?"
               }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "01_Stromrechnung",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "de": "Stromrechnung",
-            "en": "Electricity bill available?"
-          },
-          "pdfHide": true
-        }
-      },
-      "fields": [
-        {
-          "id": "whitespace1",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
             },
-            "uiHide": true,
-            "type": "H2"
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
           }
         },
         {
@@ -289,39 +375,94 @@
             },
             "uiHide": true
           }
-        },
+        }
+      ]
+    },
+    {
+      "id": "01_Stromrechnung",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Stromrechnung",
+            "en": "Electricity bill"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
         {
-          "id": "electricityBillAvailable",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Hat der Termin stattgefunden?",
-                "en": "Did the appointment take place?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
+					"id": "electricityBillAvailable_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Electricity bill available?</b>",
+							"de": "<b>Stromrechnung vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "electricityBillAvailable_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.3,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "electricityBillAvailable_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.3,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
         {
           "id": "hintText1",
           "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "<h4>Es wird die vollständige Stromrechnung (Hauptstromzähler) des Kunden benötigt. Sie muss folgende Informationen enhalten: Postanschrift, Lieferstelle Zählernummer, MeLo und Austellungsdatum (nicht älter als 01.01 Vorjahr)</h4>",
-              "en": "<h4>The customer's complete electricity bill (main electricity meter) is required. It must contain the following information: Postal address, delivery point, meter number, MeLo and date of issue (not older than 01.01 previous year).</h4>"
-            }
+              "de": "<i>Es wird die vollständige Stromrechnung (Hauptstromzähler) des Kunden benötigt.<br>Sie muss folgende Informationen enhalten: Postanschrift, Lieferstelle Zählernummer, MeLo und Austellungsdatum (nicht älter als 01.01 Vorjahr)</i>",
+              "en": "<i>The customer's complete electricity bill (main electricity meter) is required.<br>It must contain the following information: Postal address, delivery point, meter number, MeLo and date of issue (not older than 01.01 previous year).</i>"
+            },
+						"pdfWidth": 1,
+						"pdfHide": false,
+						"uiHide": false
           }
         },
         {
@@ -334,10 +475,64 @@
                 "en": "Photo electricity bill"
               }
             },
-            "placeHolderText": {
+						"placeHolderText": {
               "de": "Bilder oder Text einfügen",
               "en": "Insert images or text"
-            }
+            },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false
+          }
+        },
+				{
+					"id": "strompreis",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Electricity price per kWh in €",
+								"de": "Strompreis pro kWh in €",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[-,0-9]+[.]([-,0-9]{1,2})?$",
+									"errorText": {
+										"en": "Entry only allows numbers and '.'",
+										"de": "Eingabe darf nur Zahlen und '.' enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+          "id": "line2",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -351,34 +546,181 @@
             "de": "Dachinnenseite",
             "en": "Roof interior"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace2",
-          "type": "headlineDisplay",
+          "id": "zustand_dachinnenseite",
+          "type": "staticSingleSelect",
           "config": {
-            "text": {
-              "de": "",
-              "en": ""
+            "label": {
+              "text": {
+                "de": "Zustand Dachkonstruktion?",
+                "en": "Condition of roof construction?"
+              }
             },
-            "uiHide": true,
-            "type": "H2"
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Einwandfrei, keine Defekte sichtbar",
+                  "en": "Flawless, no defects visible"
+                },
+                "2": {
+                  "de": "Kleinere Mängel",
+                  "en": "Minor defects"
+                },
+                "3": {
+                  "de": "Größere Mängel",
+                  "en": "Larger defects"
+                },
+                "4": {
+                  "de": "Erneuerungsbedürftig",
+                  "en": "Needs renewal"
+                }
+              }
+            }
           }
         },
-        {
-          "id": "line2",
+				{
+					"id": "ziegel_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Bricks mortared?</b>",
+							"de": "<b>Ziegel vermörtelt?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "ziegel_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "ziegel_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "pappdocken_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Cardboard docks laid?</b>",
+							"de": "<b>Pappdocken verlegt?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "pappdocken_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "pappdocken_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "hintText2",
           "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "<hr>",
-              "en": "<hr>"
+              "de": "<i>Bitte schieße jeweils ein Foto von beiden Enden des Dachbodens</i>",
+              "en": "<i>Please take a photo of each end of the attic</i>"
             },
-            "uiHide": true
+						"pdfWidth": 1,
+						"pdfHide": true,
+						"uiHide": false
           }
         },
-        {
+				{
           "id": "documentation2",
           "type": "richTextInput",
           "config": {
@@ -388,10 +730,33 @@
                 "en": "Documentation roof interior"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto Giebel 1:<br><br>Foto Giebel 2:"
+										]
+									]
+								}
+							]
+						}
+          }
+        },
+				{
+          "id": "line3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -405,24 +770,151 @@
             "de": "Sparren",
             "en": "Sparren"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace3",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
-            },
-            "uiHide": true,
-            "type": "H2"
-          }
-        },
-        {
-          "id": "line3",
+					"id": "sparren_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Rafters visible from inside?</b>",
+							"de": "<b>Sparren von innen sichtbar?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "sparren_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "sparren_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "sparrenbreite",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Rafter width in cm",
+								"de": "Sparrenbreite in cm",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": "sparrenabstand",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Rafter distance in cm",
+								"de": "Sparrenabstand in cm",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+          "id": "line4",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -430,22 +922,6 @@
               "en": "<hr>"
             },
             "uiHide": true
-          }
-        },
-        {
-          "id": "documentation3",
-          "type": "richTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Dokumentation Sparren",
-                "en": "Documentation sparren"
-              }
-            },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
           }
         }
       ]
@@ -459,34 +935,316 @@
             "de": "Dachaußenseite",
             "en": "Roof exterior"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace4",
-          "type": "headlineDisplay",
+					"id": "traufhoehe",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Eaves height in cm",
+								"de": "Traufhöhe in cm",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": "dachneigung",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Roof pitch in degrees (°)",
+								"de": "Dachneigung in Grad (°)",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": "ziegeldeckbreite",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Tile deck width in cm",
+								"de": "Ziegeldeckbreite in cm",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": "ziegeldecklaenge",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Tile deck length in cm",
+								"de": "Ziegeldecklänge in cm",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+          "id": "zustand_ziegel",
+          "type": "staticSingleSelect",
           "config": {
-            "text": {
-              "de": "",
-              "en": ""
+            "label": {
+              "text": {
+                "de": "Zustand Ziegel?",
+                "en": "Condition tiles?"
+              }
             },
-            "uiHide": true,
-            "type": "H2"
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Stabil, man kann auf ihnen laufen",
+                  "en": "Stable, you can walk on them"
+                },
+                "2": {
+                  "de": "Nicht stabil",
+                  "en": "Not stable"
+                }
+              }
+            }
           }
         },
-        {
-          "id": "line4",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<hr>",
-              "en": "<hr>"
-            },
-            "uiHide": true
-          }
-        },
-        {
+				{
+					"id": "aufsparrendaemmung_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Above rafter insulation installed?</b>",
+							"de": "<b>Aufsparrendämmung verbaut?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "aufsparrendaemmung_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "aufsparrendaemmung_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "ziegelhochschieben_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Can the tiles be slid up?</b>",
+							"de": "<b>Lassen sich die Ziegel hochschieben?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "ziegelhochschiebeng_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "ziegelhochschieben_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
           "id": "documentation4",
           "type": "richTextInput",
           "config": {
@@ -496,10 +1254,33 @@
                 "en": "Documentation roof exterior"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto drei hochgeschobene Ziegel am Sparren:<br><br>Nahaufnahme vom Zollstock an der Querlattung:"
+										]
+									]
+								}
+							]
+						}
+          }
+        },
+				{
+          "id": "line5",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -511,35 +1292,12 @@
         "headline": {
           "text": {
             "de": "Ziegel",
-            "en": "Brick"
+            "en": "Tiles"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "whitespace5",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
-            },
-            "uiHide": true,
-            "type": "H2"
-          }
-        },
-        {
-          "id": "line5",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<hr>",
-              "en": "<hr>"
-            },
-            "uiHide": true
-          }
-        },
         {
           "id": "documentation5",
           "type": "richTextInput",
@@ -547,13 +1305,66 @@
             "label": {
               "text": {
                 "de": "Dokumentation Ziegel",
-                "en": "Documentation bricks"
+                "en": "Documentation tiles"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto Ziegel Vorderseite:<br><br>Foto Ziegel Rückseite:<br><br>Foto Ziegel aufgestellt Kante 1 mit Zollstock:<br><br>Foto Ziegel aufgestellt Kante 2 mit Zollstock:<br><br>"
+										]
+									]
+								}
+							]
+						}
+          }
+        },
+				{
+          "id": "ziegel_hersteller",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ziegel Hersteller",
+                "en": "Tile manufacturer"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+				{
+          "id": "ziegel_bezeichnung",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ziegel Bezeichnung",
+                "en": "Tile description"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+				{
+          "id": "line6",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -567,24 +1378,116 @@
             "de": "Schrägdachbelegung",
             "en": "Pitched roof occupancy"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace6",
-          "type": "headlineDisplay",
+          "id": "anzahlDachseiten",
+          "type": "singleLineTextInput",
           "config": {
-            "text": {
-              "de": "",
-              "en": ""
+            "label": {
+              "text": {
+                "de": "Wie viele Dachseiten sollen belegt werden?",
+                "en": "How many sides of the roof should be covered?"
+              }
             },
-            "uiHide": true,
-            "type": "H2"
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
           }
         },
-        {
-          "id": "line6",
+				{
+          "id": "documentation6",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Dokumentation Schrägdachbelegung",
+                "en": "Documentation pitched roof occupancy"
+              }
+            },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto Dachseite 1, alle Ziegel sichtbar:<br><br>Zusätzliches Foto Dachseite 1, alle Ziegel sichtbar:<br><br>Foto + Zeichnung Kanten Dachseite 1:<br><br>Zusätzliches Foto + Zeichnung Kanten Dachseite 1:<br><br>Optionale Zeichnung Dachseite 1:<br><br>Optionale Notizen Dachseite 1:<br><br>Foto Dachseite 2, alle Ziegel sichtbar:<br><br>Zusätzliches Foto Dachseite 2, alle Ziegel sichtbar:<br><br>Foto + Zeichnung Kanten Dachseite 2:<br><br>Zusätzliches Foto + Zeichnung Kanten Dachseite 2:<br><br>Optionale Zeichnung Dachseite 2:<br><br>Optionale Notizen Dachseite 2:<br><br>"
+										]
+									]
+								}
+							]
+						}
+          }
+        },
+				{
+					"id": "blitzschutz_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>External lightning protection available?</b>",
+							"de": "<b>Äußerer Blitzschutz vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "blitzschutz_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "blitzschutz_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "line7",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -592,22 +1495,6 @@
               "en": "<hr>"
             },
             "uiHide": true
-          }
-        },
-        {
-          "id": "documentation6",
-          "type": "richTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Dokumentation Schrägdachbelegung",
-                "en": "Documentation Pitched roof occupancy"
-              }
-            },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
           }
         }
       ]
@@ -621,44 +1508,63 @@
             "de": "Dachzugang und Fallschutz",
             "en": "Roof access and fall protection"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace7",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
-            },
-            "uiHide": true,
-            "type": "H2"
-          }
-        },
-        {
-          "id": "line7",
+          "id": "hintText7",
           "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "<hr>",
-              "en": "<hr>"
+              "de": "<i>ACHTUNG: Unsere Leitern können bis maximal 7,5 m Höhe genutzt werden!</i>",
+              "en": "<i>ATTENTION: Our ladders can be used up to a maximum height of 7.5 m!.</i>"
             },
-            "uiHide": true
+						"pdfHide": true,
+						"uiHide": false,
+						"pdfWidth": 1
           }
         },
-        {
-          "id": "hintText2",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<h4>ACHTUNG: Unsere Leitern können bis maximal 7,5 m Höhe genutzt werden!</h4>",
-              "en": "<h4>ATTENTION: Our ladders can be used up to a maximum height of 7.5 m!.</h4>"
-            }
-          }
-        },
-        {
+				{
+					"id": "anzahlLeiterSeiten",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "On how many sides of the roof can be placed a ladder up to 7.5 m?",
+								"de": "An wie vielen Dachseiten kann eine Leiter bis 7,5 m angestellt werden?",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
           "id": "documentation7",
           "type": "richTextInput",
           "config": {
@@ -668,37 +1574,192 @@
                 "en": "Documentation roof access and fall protection"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto Dachzugang 1:<br><br>"
+										]
+									]
+								}
+							]
+						}
           }
-        }
-      ]
-    },
-    {
-      "id": "08_HAK",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "de": "HAK",
-            "en": "HAK"
-          },
-          "pdfHide": true
-        }
-      },
-      "fields": [
-        {
-          "id": "whitespace8",
-          "type": "headlineDisplay",
+        },
+				{
+					"id": "dachzugang_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Alternative roof access available?</b>",
+							"de": "<b>Alternativer Dachzugang vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "dachzugang_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "dachzugang_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "documentation7-1",
+          "type": "richTextInput",
           "config": {
-            "text": {
-              "de": "",
-              "en": ""
+            "label": {
+              "text": {
+                "de": "Alternativer Dachzugang",
+                "en": "Alternative roof access"
+              }
             },
-            "uiHide": true,
-            "type": "H2"
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"placeHolderText": {
+							"en": "Add images and/or text",
+							"de": "Bild und/oder Text hinzufügen",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						}
+          }
+        },
+				{
+          "id": "dachrinnenmaterial",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Dachrinnenmaterial?",
+                "en": "Gutter material?"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+				{
+					"id": "dachueberstand",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Roof overhang in cm",
+								"de": "Dachüberstand in cm",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+          "id": "rss_schutzwand",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "RSS Dachschutzwand nutzbar?",
+                "en": "RSS roof protection wall usable?"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Ja, uneingeschränkt",
+                  "en": "Yes, without restrictions"
+                },
+                "2": {
+                  "de": "Ja, eingeschränkt",
+                  "en": "Yes, with restrictions"
+                },
+                "3": {
+                  "de": "Nein",
+                  "en": "No"
+                }
+              }
+            }
           }
         },
         {
@@ -711,8 +1772,135 @@
             },
             "uiHide": true
           }
-        },
+				} 
+      ]
+    },
+    {
+      "id": "08_HAK",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "HAK",
+            "en": "HAK"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
         {
+          "id": "ort_hak",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Wo befindet sich der HAK?",
+                "en": "Where is the HAK located?"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Keller",
+                  "en": "Basement"
+                },
+                "2": {
+                  "de": "Erdgeschoss",
+                  "en": "Ground floor"
+                },
+                "3": {
+                  "de": "1. Stock",
+                  "en": "1st floor"
+                },
+                "4": {
+                  "de": "2. Stock",
+                  "en": "2nd floor"
+                }
+              }
+            }
+          }
+        },
+				{
+					"id": "verschlossen_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>HAK locked?</b>",
+							"de": "<b>HAK verschlossen?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "verschlossen_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "hak2_yes"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "verschlossen_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "hak2_no"
+								}
+							}
+						]
+					}
+				},
+				{
           "id": "documentation8",
           "type": "richTextInput",
           "config": {
@@ -722,10 +1910,33 @@
                 "en": "Documentation HAK"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto HAK, 5 m Abstand:<br><br>Foto Nahaufnahme HAK, Typenschild lesbar:<br><br>"
+										]
+									]
+								}
+							]
+						}
+          }
+        },
+        {
+          "id": "line9",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -739,34 +1950,123 @@
             "de": "Zählerschrank",
             "en": "Meter cabinet"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace9",
-          "type": "headlineDisplay",
+          "id": "ort_zaehlerschrank",
+          "type": "staticSingleSelect",
           "config": {
-            "text": {
-              "de": "",
-              "en": ""
+            "label": {
+              "text": {
+                "de": "Wo befindet sich der Zählerschrank?",
+                "en": "Where is the meter cabinet located?"
+              }
             },
-            "uiHide": true,
-            "type": "H2"
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Keller",
+                  "en": "Basement"
+                },
+                "2": {
+                  "de": "Erdgeschoss",
+                  "en": "Ground floor"
+                },
+                "3": {
+                  "de": "1. Stock",
+                  "en": "1st floor"
+                },
+                "4": {
+                  "de": "2. Stock",
+                  "en": "2nd floor"
+                }
+              }
+            }
           }
         },
-        {
-          "id": "line9",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<hr>",
-              "en": "<hr>"
-            },
-            "uiHide": true
-          }
-        },
-        {
+				{
+					"id": "abdeckungen_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>All meter cabinet covers in place?</b>",
+							"de": "<b>Alle Zählerschrankabdeckungen vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "abdeckungen_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "Zählerschrankabdeckungen_no"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "abdeckungen_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "Zählerschrankabdeckungen_yes"
+								}
+							}
+						]
+					}
+				},
+				{
           "id": "documentation9",
           "type": "richTextInput",
           "config": {
@@ -776,10 +2076,186 @@
                 "en": "Documentation meter cabinet"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto geöffneter Zählerschrank mit Abdeckungen:<br><br>Foto geöffneter Zählerschrank ohne Abdeckungen:<br><br>Foto Nahaufnahme Vorzählerbereich mit Abdeckung:<br><br>Foto Nahaufnahme Nachzählerbereich ohne Abdeckung:<br><br>Foto Nahaufnahme Verbraucherbereich ohne Abdeckung:<br><br>Foto Klemmbereich Nahaufnahme (PEN):<br><br>Foto Typenschild:<br><br>Foto Legende im Zählerschrank:<br><br>Foto 1/4 360° Umgebung Zählerschrank:<br><br>Foto 2/4 360° Umgebung Zählerschrank:<br><br>Foto 3/4 360° Umgebung Zählerschrank:<br><br>Foto 4/4 360° Umgebung Zählerschrank<br><br>"
+										]
+									]
+								}
+							]
+						}
+          }
+        },
+				{
+          "id": "sicherungsgroesse",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Sicherungsgröße Vorsicherung",
+                "en": "Fuse size pre-fuse"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+				{
+					"id": "typenschild_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Type plate available?</b>",
+							"de": "<b>Typenschild vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "typenschild_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "typenschild_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "newSchrank_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>New meter cabinet covers needed?</b>",
+							"de": "<b>Neuer Zählerschrank erforderlich?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "newSchrank_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "NeuerZählerschrankabdeckungen_yes"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "newSchrank_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "NeuerZählerschrankabdeckungen_no"
+								}
+							}
+						]
+					}
+				},
+        {
+          "id": "line10",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -793,104 +2269,97 @@
             "de": "Unterverteilungen",
             "en": "Subdistributions"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace10",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
-            },
-            "uiHide": true,
-            "type": "H2"
-          }
-        },
-        {
-          "id": "line10",
+          "id": "hintText10-1",
           "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "<hr>",
-              "en": "<hr>"
+              "de": "<i>ACHTUNG: Es darf keine zusätzliche Unterverteilung übersehen werden!Bitte den Kunden explizit folgende Frage stellen: 'Gibt es noch mehr Sicherungskästen Haus?'</i><br>",
+              "en": "<i>ATTENTION: Do not overlook any additional sub-distribution! Please ask the customer explicitly the following question: 'Are there more fuse boxes house?'</i><br>"
             },
-            "uiHide": true
+						"pdfHide": true,
+						"uiHide": false,
+						"pdfWidth": 1
           }
         },
         {
-          "id": "hintText3",
+          "id": "hintText10-2",
           "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "<h4>ACHTUNG: Es darf keine zusätzliche Unterverteilung übersehen werden!Bitte den Kunden explizit folgende Frage stellen: 'Gibt es noch mehr Sicherungskästen Haus?'</h4>",
-              "en": "<h4>ATTENTION: Do not overlook any additional sub-distribution! Please ask the customer explicitly the following question: 'Are there more fuse boxes house?'</h4>"
-            }
-          }
-        },
-        {
-          "id": "hintText4",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<h4>Weitere mögliche Bezeichnungen zu 'Sicherungskasten' sind 'Sicherungsschrank','Schaltkasten','Schaltschrank', 'Verteilerkasten' oder 'Verteilerschrank'</h4>",
-              "en": "<h4>Other possible names for 'fuse box' are 'fuse cabinet', 'switch box', 'switch cabinet', 'distribution box' or 'distribution cabinet'.</h4>"
-            }
-          }
-        },
-        {
-          "id": "subdistributions",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Zusätzliche Unterverteilungen vorhanden?",
-                "en": "Additional subdistributions present?"
-              }
+              "de": "<i>Weitere mögliche Bezeichnungen zu 'Sicherungskasten' sind 'Sicherungsschrank','Schaltkasten','Schaltschrank', 'Verteilerkasten' oder 'Verteilerschrank'</i>",
+              "en": "<i>Other possible names for 'fuse box' are 'fuse cabinet', 'switch box', 'switch cabinet', 'distribution box' or 'distribution cabinet'.</i>"
             },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "11_locations",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "de": "Aufstellorte",
-            "en": "Places of installation"
-          },
-          "pdfHide": true
-        }
-      },
-      "fields": [
-        {
-          "id": "whitespace11",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
-            },
-            "uiHide": true,
-            "type": "H2"
+						"pdfHide": true,
+						"uiHide": false,
+						"pdfWidth": 1
           }
         },
+				{
+					"id": "subdistributions_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Additional subdistributions present??</b>",
+							"de": "<b>Zusätzliche Unterverteilungen vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "subdistributions_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "subdistributions_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
         {
           "id": "line11",
           "type": "htmlDisplay",
@@ -901,21 +2370,548 @@
             },
             "uiHide": true
           }
-        },
+        }
+      ]
+    },
+    {
+      "id": "11_locations",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Aufstellorte Geräte",
+            "en": "Installation locations of devices"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
         {
-          "id": "documentation11",
-          "type": "richTextInput",
+          "id": "ueberspannungsschutz",
+          "type": "staticSingleSelect",
           "config": {
             "label": {
               "text": {
-                "de": "Dokumentation Aufstellorte",
-                "en": "Documentation places of installation"
+                "de": "Wo soll der Überspannungsschutz installiert werden?",
+                "en": "Where should the surge protector be installed?"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+						"value": {
+              "options": {
+                "1": {
+                  "de": "Keller",
+                  "en": "Basement"
+                },
+                "2": {
+                  "de": "Erdgeschoss",
+                  "en": "Ground floor"
+                },
+                "3": {
+                  "de": "1. Stock",
+                  "en": "1st floor"
+                },
+                "4": {
+                  "de": "2. Stock",
+                  "en": "2nd floor"
+                }
+              }
             }
+          }
+        },
+				{
+					"id": "ueberspannungsschutz-zaehlerschrank",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Cable path surge protector ↔ meter cabinet in m",
+								"de": "Kabelweg Überspannungsschutz ↔ Zählerschrank in m",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+          "id": "Wechselrichter",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Wo soll der Wechselrichter installiert werden?",
+                "en": "Where should the inverter be installed?"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+						"value": {
+              "options": {
+                "1": {
+                  "de": "Keller",
+                  "en": "Basement"
+                },
+                "2": {
+                  "de": "Erdgeschoss",
+                  "en": "Ground floor"
+                },
+                "3": {
+                  "de": "1. Stock",
+                  "en": "1st floor"
+                },
+                "4": {
+                  "de": "2. Stock",
+                  "en": "2nd floor"
+                }
+              }
+            }
+          }
+        },
+				{
+					"id": "ueberspannungsschutz-Wechselrichter",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Cable path surge protector ↔ inverter in m",
+								"de": "Kabelweg Überspannungsschutz ↔ Wechselrichter in m",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+          "id": "speicher",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Wo soll der Speicher installiert werden?",
+                "en": "Where should the storage be installed?"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+						"value": {
+              "options": {
+                "1": {
+                  "de": "Keller",
+                  "en": "Basement"
+                },
+                "2": {
+                  "de": "Erdgeschoss",
+                  "en": "Ground floor"
+                },
+                "3": {
+                  "de": "1. Stock",
+                  "en": "1st floor"
+                },
+                "4": {
+                  "de": "2. Stock",
+                  "en": "2nd floor"
+                }
+              }
+            }
+          }
+        },
+				{
+					"id": "frostsicher_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Is the installation site frost-proof?</b>",
+							"de": "<b>Ist der Aufstellort frostsicher?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.8
+					}
+				},
+				{
+					"id": "frostsicher_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "frostsicher_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},{
+					"id": "sameRoom_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Is the installation location of the storage tank and WRs in the same room?</b>",
+							"de": "<b>Befindet sich der Aufstellort des Speichers und WRs im gleichen Raum?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.8
+					}
+				},
+				{
+					"id": "sameRoom_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "sameRoom_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},{
+					"id": "below10m_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Is the cable distance between the inverter and the storage tank less than 10m?</b>",
+							"de": "<b>Beträgt der Kabelweg zwischen WR und Speicher weniger als 10m?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.8
+					}
+				},
+				{
+					"id": "below10m_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "below10m_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "moveelectro_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Does anything need to be moved away for the electrical components?</b>",
+							"de": "<b>Muss etwas für die Elektrokomponenten weggeräumt werden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.8
+					}
+				},
+				{
+					"id": "moveelectro_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "clearing_yes"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "moveelectro_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "clearing_no"
+								}
+							}
+						]
+					}
+				},
+				{
+          "id": "moveThings",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Was muss weggeräumt werden?",
+                "en": "What needs to be moved?"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+				{
+					"id": "moveInfo_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Has the customer been informed that they need to put something away?</b>",
+							"de": "<b>Wurde der Kunde darüber informiert, dass er etwas wegräumen muss?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.8
+					}
+				},
+				{
+					"id": "moveInfo_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "moveInfo_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+        {
+          "id": "line12",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -929,24 +2925,154 @@
             "de": "Zähler",
             "en": "Meter"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace12",
-          "type": "headlineDisplay",
+          "id": "documentation12",
+          "type": "richTextInput",
           "config": {
-            "text": {
-              "de": "",
-              "en": ""
+            "label": {
+              "text": {
+                "de": "Foto Hauptzähler",
+                "en": "Photo primary meter"
+              }
             },
-            "uiHide": true,
-            "type": "H2"
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false
           }
         },
+				{
+          "id": "zeahlernummer",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Zählernummer Hauptzähler",
+                "en": "Primary meter number"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+				{
+          "id": "evu",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "EVU",
+                "en": "EVU"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": true,
+            "value": {
+              "options": {
+                "1": {
+                  "de": "Stadtwerke Kiel",
+                  "en": "Stadtwerke Kiel"
+                },
+                "2": {
+                  "de": "SH Netz AG",
+                  "en": "SH Netz AG"
+                },
+                "3": {
+                  "de": "VB Kronshagen",
+                  "en": "VB Kronshagen"
+                },
+								"4": {
+                  "de": "Stadtwerke Schwentinental",
+                  "en": "Stadtwerke Schwentinental"
+                }
+              }
+            }
+          }
+        },
+				{
+          "id": "tarif",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Tarif Hauptzähler",
+                "en": "Rate primary meter"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+				{
+					"id": "addMeter_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Additional meters?</b>",
+							"de": "<b>Zusätzliche Zähler vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "addMeter_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "addMeter_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
         {
-          "id": "line12",
+          "id": "line14",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -955,21 +3081,539 @@
             },
             "uiHide": true
           }
-        },
+        }
+      ]
+    },
+		{
+      "id": "13_verbraucher",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Verbraucher",
+            "en": "Consumer"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+				{
+					"id": "waermepumpe_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Heat pump installed?</b>",
+							"de": "<b>Wärmpepumpe vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "waermepumpe_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "waermepumpe_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "nachtspeicherofen_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Night storage heater installed?</b>",
+							"de": "<b>Nachtspeicherofen vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "nachtspeicherofen_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "nachtspeicherofen_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "durchlauferhitzer_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Instantaneous water heater installed?</b>",
+							"de": "<b>Durchlauferhitzer vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "durchlauferhitzer_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "durchlauferhitzer_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "elektroheizung_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Electric heating installed?</b>",
+							"de": "<b>Elektroheizung vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "elektroheizung_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "elektroheizung_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "sauna_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Sauna installed?</b>",
+							"de": "<b>Sauna vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "sauna_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "sauna_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "ac_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Air conditioning installed?</b>",
+							"de": "<b>Klimaanlage vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "ac_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "ac_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "elektroherd_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Electric stove available?</b>",
+							"de": "<b>Elektroherd vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "elektroherd_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "elektroherd_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "blockheizkraftwerk_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Combined heat and power plant installed?</b>",
+							"de": "<b>Blockheizkraftwerk vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.3
+					}
+				},
+				{
+					"id": "blockheizkraftwerk_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "blockheizkraftwerk_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.7,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
         {
-          "id": "documentation12",
+          "id": "documentation13",
           "type": "richTextInput",
           "config": {
             "label": {
               "text": {
-                "de": "Dokumentation Zähler",
-                "en": "Documentation meter"
+                "de": "Notizen",
+                "en": "Notes"
               }
             },
             "placeHolderText": {
               "de": "Bilder oder Text einfügen",
               "en": "Insert images or text"
-            }
+            },
+						"required": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"pdfHide": false
+          }
+        },
+        {
+          "id": "line13",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
           }
         }
       ]
@@ -983,44 +3627,143 @@
             "de": "Kabelweg",
             "en": "Cable path"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
-        {
-          "id": "whitespace14",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
-            },
-            "uiHide": true,
-            "type": "H2"
-          }
-        },
-        {
-          "id": "line14",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<hr>",
-              "en": "<hr>"
-            },
-            "uiHide": true
-          }
-        },
         {
           "id": "hintText5",
           "type": "htmlDisplay",
           "config": {
             "text": {
-              "de": "<h4>Sämtliche Kabel werden mithilfe eines Kabelkanals (Außen Kabelrohr) verlegt. Ausnahme: Vorhandene Kabelschächte, sowie stillgelegte Schornsteine. Eignung der vorhandenen Kabelschächte wird durch BBK-Analysten entschieden. Für Schornsteine benötigen wir eine Unbedenklichkeitsbescheinigung des Schornsteinfegers. Deshalb: Immer Aufputz Kabelweg mit Kunden besprechen und protokollieren.</h4>",
-              "en": "<h4>All cables are laid with the help of a cable duct (external cable conduit). Exception: Existing cable ducts, as well as disused chimneys. Suitability of existing cable shafts is decided by BBK analysts. For chimneys we need a clearance certificate from the chimney sweep. Therefore: Always discuss and record surface-mounted cable route with customer.</h4>"
+              "de": "<i>Sämtliche Kabel werden mithilfe eines Kabelkanals (Außen Kabelrohr) verlegt. Ausnahme: Vorhandene Kabelschächte, sowie stillgelegte Schornsteine. Eignung der vorhandenen Kabelschächte wird durch den Planer entschieden. Für Schornsteine benötigen wir eine Unbedenklichkeitsbescheinigung des Schornsteinfegers. Deshalb: Immer Aufputz Kabelweg mit Kunden besprechen und protokollieren.</i>",
+              "en": "<i>All cables are laid with the help of a cable duct (external cable conduit). Exception: Existing cable ducts, as well as disused chimneys. Suitability of existing cable shafts is decided by the planner. For chimneys we need a clearance certificate from the chimney sweep. Therefore: Always discuss and record surface-mounted cable route with customer.</i>"
             }
           }
         },
-        {
+				{
+					"id": "aufputz_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Has the customer been informed that the cables will be surface mounted?</b>",
+							"de": "<b>Wurde der Kunde darüber informiert, dass die Kabel Aufputz verlegt werden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "aufputz_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "aufputz_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "sameBuilding_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Meter cabinet in the same building on which the PV system is to be mounted?</b>",
+							"de": "<b>Zählerschrank im selben Gebäude, auf dem auch die PV-Anlage montiert werden soll?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "sameBuilding_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "sameBuilding_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
           "id": "documentation14",
           "type": "richTextInput",
           "config": {
@@ -1030,39 +3773,124 @@
                 "en": "Documentation cable path"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "15_grounding",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "de": "Erdungsanlage",
-            "en": "Grounding system"
-          },
-          "pdfHide": true
-        }
-      },
-      "fields": [
-        {
-          "id": "whitespace15",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
-            },
-            "uiHide": true,
-            "type": "H2"
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto Kabelweg 1:<br><br>Foto Kabelweg 2:<br><br>"
+										]
+									]
+								}
+							]
+						}
           }
         },
+				{
+					"id": "kabelweg_meter",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "How long is the cable path in meters?",
+								"de": "Wie lang ist der Kabelweg in Metern?",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": "durchbrueche",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "How many openings are needed?",
+								"de": "Wie viele Durchbrüche werden benötigt?",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": "description_cableWays",
+					"type": "multiLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"en": "Description cable route and openings",
+								"de": "Beschreibung Kabelweg und Durchbrüche",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						}
+					}
+				},
         {
           "id": "line15",
           "type": "htmlDisplay",
@@ -1073,51 +3901,342 @@
             },
             "uiHide": true
           }
-        },
+        }
+      ]
+    },
+		{
+      "id": "15_baufreiheit",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Baufreiheit",
+            "en": "Construction clearance"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
         {
+					"id": "freileitung_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Overhead power line dangerously close to roof surface?</b>",
+							"de": "<b>Freileitung in gefährlicher Nähe der Dachfläche?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "freileitung_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "Overhead_yes"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "freileitung_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "Overhead_no"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "strassensperrung_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Road closure required?</b>",
+							"de": "<b>Straßensperrung notwendig?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "strassensperrung_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "roadClosure_yes"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "strassensperrung_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "roadClosure_no"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "wlan_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Internet connection (LAN) available?</b>",
+							"de": "<b>Internetanschluss (LAN) vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "wlan_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "wlan_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "dlan_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>DLAN available?</b>",
+							"de": "<b>DLAN vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "dlan_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "dlan_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "dlanMarke",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Marke DLAN",
+                "en": "DLAN brand"
+              }
+            },
+            "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
+            "required": false
+          }
+        },
+				{
           "id": "documentation15",
           "type": "richTextInput",
           "config": {
             "label": {
               "text": {
-                "de": "Dokumentation Erdungsanlage",
-                "en": "Documentation grounding system"
+                "de": "Dokumentation Internetanschluss",
+                "en": "Documentation internet connection"
               }
             },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "16_wallbox",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "de": "Wallbox",
-            "en": "Wallbox"
-          },
-          "pdfHide": true
-        }
-      },
-      "fields": [
-        {
-          "id": "whitespace16",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
-            },
-            "uiHide": true,
-            "type": "H2"
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto DLAN Adapter:<br><br>Foto WLAN Test:<br><br>"
+										]
+									]
+								}
+							]
+						}
           }
         },
-        {
+				{
           "id": "line16",
           "type": "htmlDisplay",
           "config": {
@@ -1127,227 +4246,185 @@
             },
             "uiHide": true
           }
-        },
-        {
-          "id": "car",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Besitzt der Kunde bereits ein Elektroauto?",
-                "en": "Does the customer already own an electric car?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "wallbox",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Besitzt der Kunde bereits eine Wallbox?",
-                "en": "Does the customer already own a wallbox?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "parking",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Wo parkt der Kunde sein Auto?",
-                "en": "Where does the customer park his car?"
-              }
-            }
-          }
-        },
-        {
-          "id": "erdarbeiten",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Sind Erdarbeiten für die Wallbox notwendig?",
-                "en": "Is earthwork necessary for the wallbox?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "photos",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Wie viele Fotos brauchst du, um den Kabelweg zu fotografieren?",
-                "en": "How many photos do you need to photograph the cable path?"
-              }
-            }
-          }
-        },
-        {
-          "id": "documentation16",
-          "type": "richTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Foto Kabelweg zur Wallbox",
-                "en": "Photo of cable leading to the wallbox"
-              }
-            },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
-          }
-        },
-        {
-          "id": "lenght",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Wie lang ist der Kabelweg vom Parkplatz zum Zählerschrank in m?",
-                "en": "How long is the cable path from the parking lot to the meter cabinet in m?"
-              }
-            }
-          }
-        },
-        {
-          "id": "penetrations",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Wie viele Durchbrüche sind vom Parkplatz zum Zählerschrank notwendig?",
-                "en": "How many penetrations are required from the parking lot to the meter cabinet?"
-              }
-            }
-          }
-        },
-        {
-          "id": "documentation17",
-          "type": "richTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Dokumentation Aufstellort Wallbox",
-                "en": "Documentation wallbox installation site"
-              }
-            },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
-          }
-        },
-        {
-          "id": "documentation18",
-          "type": "richTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Dokumentation 360° Parkplatz",
-                "en": "Documentation 360° parking area"
-              }
-            },
-            "placeHolderText": {
-              "de": "Bilder oder Text einfügen",
-              "en": "Insert images or text"
-            }
-          }
-        },
-        {
-          "id": "approval",
-          "type": "staticSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Der Kunde hat dem Dokumentieren des Aufhängorts und Kabelwesg aktiv zugestimmt",
-                "en": "The customer has actively agreed to the documentation of the wallbox location and cable way"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
         }
       ]
     },
     {
-      "id": "17_summary",
+      "id": "16_grounding",
       "type": "fieldSection",
       "config": {
         "headline": {
           "text": {
-            "de": "Zusammenfassung",
-            "en": "Summary"
+            "de": "Erdungsanlage",
+            "en": "Grounding system"
           },
-          "pdfHide": true
+          "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "whitespace17",
-          "type": "headlineDisplay",
+					"id": "potentialausgleichsscheine_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Equipotential bonding shims available?</b>",
+							"de": "<b>Potentialausgleichsschiene vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "potentialausgleichsscheine_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "potentialausgleichsscheine_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "documentation16-1",
+          "type": "richTextInput",
           "config": {
-            "text": {
-              "de": "",
-              "en": ""
+            "label": {
+              "text": {
+                "de": "Foto Potentialausgleichsscheine",
+                "en": "Photo equipotential bonding shims"
+              }
             },
-            "uiHide": true,
-            "type": "H2"
+            "placeHolderText": {
+              "de": "Bilder oder Text einfügen",
+              "en": "Insert images or text"
+            },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false
           }
         },
-        {
+				{
+					"id": "Fundamenterder_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Foundation earth electrode available?</b>",
+							"de": "<b>Fundamenterder vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "Fundamenterder_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "Fundamenterder_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "documentation16-2",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Foto Fundamenterder",
+                "en": "Photo foundation earth electrode"
+              }
+            },
+            "placeHolderText": {
+              "de": "Bilder oder Text einfügen",
+              "en": "Insert images or text"
+            },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false
+          }
+        },
+				{
           "id": "line17",
           "type": "htmlDisplay",
           "config": {
@@ -1357,439 +4434,613 @@
             },
             "uiHide": true
           }
-        },
+        }
+      ]
+    },
+    {
+      "id": "17_wallbox",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Wallbox",
+            "en": "Wallbox"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
         {
-          "id": "storno",
-          "type": "staticSingleSelect",
+          "id": "hintText17",
+          "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Technikstorno?",
-                "en": "Technology cancellation?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment01",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "Sparrenbreite",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Sparrenbreite < 5 cm?",
-                "en": "Rafter width < 5 cm?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment02",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "Sparrenabstand",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Sparrenabstand zu weit?",
-                "en": "Rafter spacing too far?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment03",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "HAK2",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "HAK verschlossen?",
-                "en": "HAK closed?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment04",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "Zählerschrankabdeckungen",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Fehlen Zählerschrankabdeckungen?",
-                "en": "Are meter cabinet covers missing?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment05",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "NeuerZählerschrankabdeckungen",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Neuer Zählerschrank notwendig?",
-                "en": "New meter cabinet necessary?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment06",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "clearing",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Wegräumen notwendig?",
-                "en": "Clearing away necessary?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment07",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "EEA",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Andere EEA vorhanden?",
-                "en": "Other EEA available?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment08",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "Overhead",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Freileitung im Weg?",
-                "en": "Overhead line in the way?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment09",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "roadClosure",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Straßensperrung notwendig?",
-                "en": "Road closure necessary?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment10",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "customerWork",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kundenarbeiten notwendig?",
-                "en": "Customer work necessary?"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "de": "Ja",
-                  "en": "Yes"
-                },
-                "2": {
-                  "de": "Nein",
-                  "en": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "comment11",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.5,
-            "label": {
-              "text": {
-                "de": "Kommentar",
-                "en": "Comment"
-              }
-            }
-          }
-        },
-        {
-          "id": "whitespace18",
-          "type": "headlineDisplay",
-          "config": {
-            "pdfWidth": 0.5,
             "text": {
-              "de": "",
-              "en": ""
+              "de": "<i>ACHTUNG: Bitte überprüfe im MVT Briefing, ob eine Wallbox bei diesem Kunden eingeplant ist. Falls nicht, benutze folgende Formulierung:<br>'Sie haben sich zwar momentan noch nicht für eine Ladestationen entschieden, ich würde trotzdem gerne kurz einen möglichen Aufstellort dafür besprechen, damit wir sie in Zukunft direkt beraten können.'</i><br>",
+              "en": "<i>ATTENTION: Please check in the MVT briefing whether a wallbox is planned for this customer. If not, use the following wording:<br>'Although you have not yet decided on a charging station, I would still like to briefly discuss a possible installation location for it so that we can advise you directly in the future'.</i><br>"
             },
-            "uiHide": true,
-            "type": "H2"
+						"pdfHide": true,
+						"uiHide": false,
+						"pdfWidth": 1
           }
         },
-        {
+				{
+					"id": "car_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Does the customer already own an electric car?</b>",
+							"de": "<b>Besitzt der Kunde bereits ein Elektroauto?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "car_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "car_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "wallbox_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Does the customer already own a wallbox?</b>",
+							"de": "<b>Besitzt der Kunde bereits eine Wallbox?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "wallbox_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "wallbox_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "parking_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Does the customer have a parking spot?</b>",
+							"de": "<b>Hat der Kunde einen Stellplatz?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "parking_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "parking_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "erdarbeiten_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Is earthwork necessary for the wallbox?</b>",
+							"de": "<b>Sind Erdarbeiten für die Wallbox notwendig?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "erdarbeiten_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "erdarbeiten_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "documentation_kabelweg",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Dokumentation Kabelweg",
+                "en": "Documentation cable path"
+              }
+            },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto Kabelweg 1:<br><br>"
+										]
+									]
+								}
+							]
+						}
+          }
+        },
+				{
+					"id": "kabelweg_parkplatz_zaehlerschrank",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"de": "Wie lang ist der Kabelweg vom Parkplatz zum Zählerschrank in m?",
+                "en": "How long is the cable path from the parking lot to the meter cabinet in m?",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": "durchbrueche_parkplatz_zaehlerschrank",
+					"type": "singleLineTextInput",
+					"config": {
+						"required": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 1,
+						"label": {
+							"text": {
+								"de": "Wie viele Durchbrüche sind vom Parkplatz zum Zählerschrank notwendig?",
+                "en": "How many penetrations are required from the parking lot to the meter cabinet?",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"uiHide": false,
+							"pdfHide": false
+						},
+						"value": {
+							"pdfHide": false,
+							"pdfStartInNewLine": false,
+							"validators": {
+								"regex": {
+									"pattern": "^[0-9]+$",
+									"errorText": {
+										"en": "Entry only allows numbers",
+										"de": "Eingabe darf nur Zahlen enthalten",
+										"tr": "",
+										"fr": "",
+										"es": "",
+										"it": ""
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+          "id": "documentation_wallbox",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Dokumentation Wallbox",
+                "en": "Documentation wallbox"
+              }
+            },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"prefill": {
+							"value": [
+								{
+									"input": "none",
+									"steps": [
+										["staticString",
+										"Foto + Zeichnung Aufstellort Wallbox:<br><br>Foto 1/4 360° Umgebung Parkplatz:<br><br>Foto 2/4 360° Umgebung Parkplatz:<br><br>Foto 3/4 360° Umgebung Parkplatz:<br><br>Foto 4/4 360° Umgebung Parkplatz<br><br>"
+										]
+									]
+								}
+							]
+						}
+          }
+        },
+				{
+					"id": "docu_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>The customer has actively agreed to documented suspension location and cable route</b>",
+							"de": "<b>Der Kunde hat dokumentierten Aufhängort und Kabelweg aktiv zugestimmt</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "docu_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "docu_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "fragen_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Are there any open queries from the customer?</b>",
+							"de": "<b>Gibt es offene Rückfragen vom Kunden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "fragen_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "fragen_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "todo_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Does the customer have to do anything before the start of construction?</b>",
+							"de": "<b>Muss der Kunde noch etwas vor Baubeginn erledigen?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.5
+					}
+				},
+				{
+					"id": "todo_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "customerWork_yes"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "todo_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.5,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						},
+						"onChange": [
+							{
+								"steps": [],
+								"target": {
+									"id": "customerWork_no"
+								}
+							}
+						]
+					}
+				},
+				{
           "id": "line18",
           "type": "htmlDisplay",
           "config": {
@@ -1802,8 +5053,948 @@
         }
       ]
     },
+		{
+			"id": "18_other",
+			"type": "fieldSection",
+			"config": {
+				"headline": {
+					"text": {
+						"en": "Other",
+						"de": "Sonstiges",
+						"tr": "",
+						"fr": "",
+						"es": "",
+						"it": ""
+					},
+					"pdfHide": true
+				}
+			},
+			"fields": [
+				{
+          "id": "documentation_other_kunde",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Rückfragen des Kunden",
+                "en": "Customer questions"
+              }
+            },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"placeHolderText": {
+							"en": "Type here...",
+							"de": "Hier tippen...",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						}
+          }
+        },
+				{
+          "id": "documentation_other",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Optionale Fotos und Notizen",
+                "en": "Optional photos and notes"
+              }
+            },
+						"pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+						"pdfHide": false,
+						"placeHolderText": {
+							"en": "Type here...",
+							"de": "Hier tippen...",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						}
+          }
+        },
+				{
+          "id": "line19",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        }
+			]
+		},
     {
-      "id": "18_signature",
+      "id": "19_summary",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Zusammenfassung",
+            "en": "Summary"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+					"id": "storno_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Technology cancellation?</b>",
+							"de": "<b>Technikstorno?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "storno_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "storno_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_storno",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "Sparrenbreite_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: Rafter width < 5 cm?</b>",
+							"de": "<b>Check: Sparrenbreite < 5 cm?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "Sparrenbreite_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "Sparrenbreite_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_Sparrenbreite",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "Sparrenabstand_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: Rafter spacing too far?</b>",
+							"de": "<b>Check: Sparrenabstand zu weit?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "Sparrenabstand_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "Sparrenabstand_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_Sparrenabstand",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "hak2_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: HAK locked?</b>",
+							"de": "<b>Check: HAK verschlossen?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "hak2_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "hak2_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_hak2",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "Zählerschrankabdeckungen_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: Are meter cabinet covers missing?</b>",
+							"de": "<b>Check: Fehlen Zählerschrankabdeckungen?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "Zählerschrankabdeckungen_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "Zählerschrankabdeckungen_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_Zählerschrankabdeckungen",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "NeuerZählerschrankabdeckungen_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: New meter cabinet necessary?</b>",
+							"de": "<b>Check: Neuer Zählerschrank notwendig?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "NeuerZählerschrankabdeckungen_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "NeuerZählerschrankabdeckungen_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_NeuerZählerschrankabdeckungen",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "clearing_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: Clearing away necessary?</b>",
+							"de": "<b>Check: Wegräumen notwendig?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "clearing_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "clearing_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_clearing",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "EEA_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: Other EEA available?</b>",
+							"de": "<b>Check: Andere EEA vorhanden?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "EEA_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "EEA_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_EEA",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "Overhead_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: Overhead line in the way?</b>",
+							"de": "<b>Check: Freileitung im Weg?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "Overhead_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "Overhead_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_Overhead",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "roadClosure_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: Road closure necessary?</b>",
+							"de": "<b>Check: Straßensperrung notwendig?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "roadClosure_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "roadClosure_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_roadClosure",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        },
+				{
+					"id": "customerWork_text",
+					"type": "htmlDisplay",
+					"config": {
+						"text": {
+							"en": "<b>Check: Customer work necessary?</b>",
+							"de": "<b>Check: Kundenarbeiten notwendig?</b>",
+							"tr": "",
+							"fr": "",
+							"es": "",
+							"it": ""
+						},
+						"uiHide": false,
+						"pdfHide": false,
+						"pdfWidth": 0.7
+					}
+				},
+				{
+					"id": "customerWork_yes",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "Yes",
+								"de": "Ja",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+					"id": "customerWork_no",
+					"type": "booleanInput",
+					"config": {
+						"required": false,
+						"disabled": false,
+						"pdfHide": false,
+						"pdfHideIfValueIsEmpty": true,
+						"pdfWidth": 0.2,
+						"label": {
+							"text": {
+								"en": "No",
+								"de": "Nein",
+								"tr": "",
+								"fr": "",
+								"es": "",
+								"it": ""
+							},
+							"pdfHide": false
+						}
+					}
+				},
+				{
+          "id": "comment_customerWork",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 1,
+						"pdfHideIfValueIsEmpty": true,
+						"required": false,
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              },
+							"uiHide": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "20_signature",
       "type": "signatureSection",
       "config": {
         "headlineText": {
@@ -1815,7 +6006,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": false
+            "required": false,
+						"autofill": "always"
           },
           "locationSingleLineTextInput": {
             "disable": false,
@@ -1836,9 +6028,10 @@
         "prefill": {
           "name": [
             {
-              "input": "currentUser",
+              "input": "assignedUserId",
               "steps": [
-                "userToFullNameString"
+                "userIdToUser", 
+								"userToFullNameString"
               ]
             }
           ],
