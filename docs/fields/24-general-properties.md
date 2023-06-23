@@ -341,9 +341,10 @@ By setting `validators.regex`, the field will be marked as invalid if the value 
 | Regex patterns    |                                    |
 | :---------------- | :--------------------------------- |
 | `^[A-Z]*$ `         | Only upper case letters            |
-| `^[0-9]*)$`         | Only numbers incl. 0          |
+| `^[0-9]+$`         | Only numbers incl. 0          |
 | `^[A-Za-z]*$`       | Only upper and lower case letters  |
 | `^[-,0-9]+$`     | Only numbers and comma |
+| `^[-,0-9]+[.]([-,0-9]{1,2})?$` | Only numbers and dot, limit to 2 digit after dot - Use for e.g. currency entries |
 
 [Cheat Sheet](https://cheatography.com/davechild/cheat-sheets/regular-expressions/)
 
