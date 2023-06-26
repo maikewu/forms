@@ -93,13 +93,48 @@
           }
         },
         {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Auftraggeber"
+              }
+            },
+            "useAsFilterForFields": ["asset","contactPersonCustomer"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder","workOrderToOrganizationAccountId"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "steps": ["accountInfoToAccount","accountToBillingAddressAddress"],
+                "target": {
+                  "id": "customerAddress",
+                  "propertyName": ""
+                }
+              }
+            ]
+          }
+        },
+        {
           "id": "customerAddress",
           "type": "addressInput",
           "config": {
             "label": {
               "text": {
-                "de": "Auftraggeber",
-                "en": "Customer"
+                "de": "Auftraggeberadresse",
+                "en": "Customer Address"
               }
             },
             "pdfWidth": 0.5,
@@ -166,6 +201,40 @@
         },
         {
           "id": "contactPersonCustomer",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ansprechpartner AG",
+                "en": "Contact Person Customer"
+              }
+            },
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
+            "onChange": [
+              {
+                "steps": ["userInfoToUser","userToPhoneNumberString"],
+                "target": {
+                  "id": "contactPhoneCustomer",
+                  "propertyName": ""
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "note3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "If contact not available above, please specify here:",
+              "de": "Wenn Kontakt oben nicht auswählbar, bitte hier eintragen:"
+            },
+            "pdfHide": true
+          }
+        },
+        {
+          "id": "contactPersonCustomerFree",
           "type": "singleLineTextInput",
           "config": {
             "label": {
@@ -174,7 +243,8 @@
                 "en": "Contact Person Customer"
               }
             },
-            "pdfWidth": 0.5
+            "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true
           }
         },
         {
@@ -382,6 +452,29 @@
               }
             }
           }
+        },
+        {
+          "id": "password",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": true,
+            "label": {
+              "text": {
+                "en": "PW",
+                "de": "PW"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset",["assetToCustomPropertyValue",14],"customPropertyValueToString"]
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -574,7 +667,8 @@
                 }
               }
             },
-            "pdfWidth": 0.5
+            "pdfWidth": 0.5,
+            "required": true
           }
         }
       ]
