@@ -29,6 +29,27 @@
           }
         },
         {
+          "id": "woNo",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftrags-Nr.",
+                "en": "Job No."
+              }
+            },
+            "pdfWidth": 0.5,
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder","workOrderToERPReferenceString"]
+                }
+              ]
+            }
+          }
+        },
+        {
           "id": "customer",
           "type": "companySingleSelect",
           "config": {
@@ -79,10 +100,10 @@
             "prefill": {
               "value": [
                 {
-                  "input": "workOrderId",
+                  "input": "assetId",
                   "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
                   ]
                 }
               ]
@@ -250,13 +271,6 @@
               "selectedAsset": [
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToParentAssetId"
-                  ]
-                },
-                {
-                  "input": "assetId",
                   "steps": []
                 }
               ]
@@ -264,18 +278,26 @@
           }
         },
         {
-          "id": "WONo",
+          "id": "project",
           "type": "assetSingleSelect",
           "config": {
             "label": {
               "text": {
-                "de": "Auftrags-Nr.",
-                "en": "Job No."
+                "de": "Projekt",
+                "en": "Project"
               }
             },
             "pdfWidth": 0.5,
+            "required": true,
             "prefill": {
               "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToParentAssetId"
+                  ]
+                },
                 {
                   "input": "assetId",
                   "steps": []
@@ -360,19 +382,40 @@
           }
         },
         {
-          "id": "technicians",
-          "type": "fieldRepeater",
+          "id": "technician",
+          "type": "userSingleSelect",
           "config": {
             "label": {
               "text": {
                 "de": "Monteur",
                 "en": "Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": ["workOrderIdToWorkOrder","workOrderToPerformByUserId"]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "companion",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Begleiter",
+                "en": "Companion"
               },
               "pdfHide": true
             },
+            "pdfHideIfValueIsEmpty": true,
             "fields": [
               {
-                "id": "technician",
+                "id": "technicians",
                 "type": "userSingleSelect",
                 "config": {
                   "label": {
@@ -387,19 +430,73 @@
           }
         },
         {
-          "id": "workTimes",
+          "id": "preperationOperations",
+          "type": "timeTrackingListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "requiredAmountOfEntries": 0,
+            "maximumDuration": 0,
+            "label": {
+              "text": {
+                "en": "Preparation operations BETH",
+                "de": "Vorbereitungsarbeiten BETH"
+              }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": true
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": true,
+                "required": false,
+                "pdfHide": true
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "TravelTimes",
           "type": "timeTrackingListInput",
           "config": {
             "requiredAmountOfEntries": 1,
             "label": {
               "text": {
-                "en": "Travel and Work Times",
-                "de": "Reise- und Arbeitszeiten"
-              }
+                "en": "Travel Times",
+                "de": "Anreisezeit"
+              },
+              "pdfTextSize": 9
             },
             "fields": {
               "timeTrackingTypeStaticSingleSelect": {
-                "pdfHide": false
+                "pdfHide": true
               },
               "startDateTimeInput": {
                 "pdfHide": false
@@ -436,48 +533,85 @@
           }
         },
         {
-          "id": "performedInstallations",
-          "type": "taskListInput",
+          "id": "workTimes",
+          "type": "timeTrackingListInput",
           "config": {
+            "requiredAmountOfEntries": 1,
             "label": {
               "text": {
-                "en": "Performed installations",
-                "de": "Ausgeführte Arbeiten"
-              }
+                "en": "Work Times",
+                "de": "Arbeitszeit"
+              },
+              "pdfTextSize": 9
             },
             "fields": {
-              "checkboxBooleanInput": {
-                "checkedByDefault": true,
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": true
+              },
+              "startDateTimeInput": {
                 "pdfHide": false
               },
-              "titleSingleLineTextInput": {
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
                 "required": false,
                 "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": false
               },
               "commentMultiLineTextInput": {
                 "disabled": false,
                 "required": false,
                 "pdfHide": false
-              },
-              "highPrioBooleanInput": {
-                "disabled": false,
-                "pdfHide": false
-              },
-              "notNecessaryBooleanInput": {
-                "disabled": false,
-                "pdfHide": false
               }
+            }
+          }
+        },
+        {
+          "id": "whitespace200",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
             },
-            "prefill": {
-              "entries": [
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToTasks"
-                  ]
-                }
-              ]
+            "uiHide": true,
+            "type": "H2"
+          }
+        },
+        {
+          "id": "completedTasks",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Completed Tasks",
+                "de": "Ausgeführte Tätigkeiten"
+              }
             }
           }
         },
@@ -490,7 +624,8 @@
               "text": {
                 "en": "Raw materials",
                 "de": "Materialaufwand"
-              }
+              },
+              "pdfTextSize": 9
             },
             "fields": {
               "partNumberSingleLineTextInput": {
@@ -535,59 +670,6 @@
               "warrantyBooleanInput": {
                 "pdfHide": false,
                 "disabled": true
-              }
-            }
-          }
-        },
-        {
-          "id": "preperationOperations",
-          "type": "timeTrackingListInput",
-          "config": {
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
-            "requiredAmountOfEntries": 0,
-            "maximumDuration": 0,
-            "label": {
-              "text": {
-                "en": "Preparation operations BETH",
-                "de": "Vorbereitungsarbeiten BETH"
-              }
-            },
-            "fields": {
-              "timeTrackingTypeStaticSingleSelect": {
-                "pdfHide": false
-              },
-              "startDateTimeInput": {
-                "pdfHide": false
-              },
-              "endDateTimeInput": {
-                "pdfHide": false
-              },
-              "breakNumericInput": {
-                "disabled": false,
-                "required": false,
-                "pdfHide": false
-              },
-              "durationDisplay": {
-                "disabled": false,
-                "pdfHide": false
-              },
-              "distanceNumericInput": {
-                "disabled": true,
-                "required": false,
-                "pdfHide": true
-              },
-              "technicianUserSingleSelect": {
-                "disabled": false,
-                "required": false,
-                "pdfHide": false,
-                "pdfPrintEmailAddress": false
-              },
-              "commentMultiLineTextInput": {
-                "disabled": false,
-                "required": false,
-                "pdfHide": false
               }
             }
           }
@@ -872,7 +954,7 @@
             },
             "fields": {
               "timeTrackingTypeStaticSingleSelect": {
-                "pdfHide": false
+                "pdfHide": true
               },
               "startDateTimeInput": {
                 "pdfHide": false
