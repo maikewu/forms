@@ -1,0 +1,684 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "General Information",
+            "de": "Allgemeine Informationen"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "programmer",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Programmer",
+                "de": "Ansprechpartner"
+              }
+            },
+            "value": {
+              "pdfPrintEmailAddress": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "05_signatureProgrammer",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Asset",
+                "de": "Anlage"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_customerInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Customer Information",
+            "de": "Kundeninformationen"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              }
+            },
+            "useAsFilterForFields": [
+              "asset",
+              "contactPerson"
+            ],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerAddress",
+                  "propertyName": ""
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customerAddress",
+          "type": "addressInput",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer address",
+                "de": "Kundenanschrift"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "05_signatureProgrammer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "06_signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "contactPerson",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "value": {
+              "pdfPrintEmailAddress": true
+            },
+            "label": {
+              "text": {
+                "en": "Contact person",
+                "de": "Ansprechpartner"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "06_signatureCustomer",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "telephoneCustomer",
+                  "propertyName": ""
+                },
+                "steps": [
+                  "userInfoToUser",
+                  "userToPhoneNumberString",
+                  "phoneNumberStringToPhoneNumberObject"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "telephoneCustomer",
+          "type": "phoneNumberInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Telephone",
+                "de": "Telefon Kunde"
+              }
+            },
+            "value": {
+              "validators": {
+                "supportedNonNumericCharacters": "-/()"
+              }
+            },
+            "prefill": {
+              "value": []
+            }
+          }
+        },
+        {
+          "id": "whitespace2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "",
+              "de": ""
+            },
+            "uiHide": true,
+            "type": "H1",
+            "pdfTextSize": 14,
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_workOrderInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Assignment for remote maintenance",
+            "de": "Beauftragung zur Fernwartung"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "description",
+          "type": "multiLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Short description why remote maintenance is necessary",
+                "de": "Kurze Beschreibung warum Fernwartung notwendig ist"
+              }
+            }
+          }
+        },{
+          "id": "Boolean1.0",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+              "de": "Hiermit wird bestätigt, dass folgende Maschine zur Fernwartung bereit ist",
+              "en": "This is to confirm that the following machine is ready for remote maintenance"
+              }
+            }
+          }
+        },
+        {
+          "id": "AssetNr",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Seriennummer",
+                "en": "Serialnumber"
+              }
+            }
+          }
+        },
+        {
+          "id": "Boolean1.1",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Anlage steht, Netzspannung EIN",
+                "en": "Plant is at standstill, mains voltage ON"
+              }
+            }
+          }
+        },
+        {
+          "id": "Boolean1.2",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "keine Person im Gefahrenbereich der Maschine",
+                "en": "No person in the danger zone of the machine"
+              }
+            }
+          }
+        },
+        {
+          "id": "Boolean1.3",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "sämtliche Schutzvorrichtungen vorhanden und geschlossen",
+                "en": "all protective devices present and closed"
+              }
+            }
+          }
+        },
+        {
+          "id": "Html2.1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "und nach Abschluss der Fernwartung eine Überprüfung der Funktionsfähigkeit stattfindet und diese innerhalb 2h bestätigt wird.",
+              "en": "and after completion of the remote maintenance, a check of the functionality takes place and it is confirmed within 2h."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "06_signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "required": false,
+        "headlineText": {
+          "en": "Confirmed by",
+          "de": "Bestätigt durch"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "autofill": "onlyEmpty",
+            "onChange": []
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "onChange": []
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "onChange": []
+          }
+        },
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "04_workOrderInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Function test after remote maintenance",
+            "de": "Funktionsprüfung nach Fernwartung"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "Boolean2.0",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+              "de": "Hiermit wird bestätigt, dass folgende Maschine nach durchgeführter Fernwartung auf Funktionsfähigkeit, im Besonderen auf Funktion der Qualitätsmerkmale zur Bestimmung von iO und NiO - Teilen überprüft wurde",
+              "en": "It is hereby confirmed that the following machine has been checked for functionality, in particular for the function of the quality features for the determination of iO and NiO parts, after remote maintenance has been carried out."
+              }
+            }
+          }
+        },
+        {
+          "id": "description1",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Serialnumber",
+                "de": "Seriennummer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "07_signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "required": false,
+        "headlineText": {
+          "en": "Confirmed by",
+          "de": "Bestätigt durch"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "autofill": "onlyEmpty",
+            "onChange": []
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "onChange": []
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "onChange": []
+          }
+        },
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "05_signatureProgrammer",
+      "type": "signatureSection",
+      "config": {
+        "required": false,
+        "headlineText": {
+          "en": "Signature Contexo",
+          "de": "Unterschrift Contexo"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "autofill": "onlyEmpty",
+            "onChange": []
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "onChange": []
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "required": true,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "onChange": []
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": [
+                "userIdToUser",
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "08_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent report as email",
+          "de": "Bericht als E-Mail senden/gesendet",
+          "tr": "",
+          "fr": "",
+          "es": "",
+          "it": ""
+        },
+        "requiredAmountOfOutgoingMails": 0,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "to": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "fieldIds": [],
+            "staticEmails": []
+          },
+          "cc": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "fieldIds": [],
+            "staticEmails": []
+          },
+          "bcc": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "fieldIds": [],
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "Remote Maintenance approval",
+            "de": "Fernwartungsfreigabe",
+            "tr": "",
+            "fr": "",
+            "es": "",
+            "it": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed report as PDF.\n\nBest regards\nContexo GmbH",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Fernwartungsbericht als PDF.\n\nMit freundlichen Grüßen\nContexo GmbH",
+            "tr": "",
+            "fr": "",
+            "es": "",
+            "it": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    }
+  ]
+}
