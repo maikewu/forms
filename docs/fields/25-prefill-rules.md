@@ -723,6 +723,37 @@ These examples further illustrate the use of prefilling for all available fields
 	]
 }
 
+//Prefill responsible user
+"prefill": {
+	"name": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToResponsibleUserId",
+				"userIdToUser",
+				"userToFullNameString"
+			]
+		}
+	]
+}
+
+//Prefill performing user
+"prefill": {
+	"name": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToPerformByUserId",
+				"userIdToUser",
+				"userToFullNameString"
+			]
+		}
+	]
+}
+
+
 //Prefill static location
 "prefill": {
 	"location": [
