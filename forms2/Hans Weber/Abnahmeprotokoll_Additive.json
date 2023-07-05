@@ -1,0 +1,1086 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true
+  },
+  "sections": [
+    {
+      "id": "1-allgmeineInformationen",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "General Information",
+            "de": "Allgemeine Informationen"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "useAsFilterForFields": ["asset"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customeraddress"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customeraddress",
+          "type": "addressInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
+            "label": {
+              "text": {
+                "en": "Address",
+                "de": "Adresse"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "5-signature_technician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "6-signature_customer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Machine / Line",
+                "de": "Maschine / Anlage"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": false,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "text_1",
+          "type": "singleLineTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Order No.",
+                "de": "Auftr. Nr."
+              },
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "whitespace41",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "2-report",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Acceptance Test",
+            "de": "Abnahmeprotokoll"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "headline_1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "Acceptance",
+              "de": "Abnahme",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "at Customer",
+                "de": "beim Kunden"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "at Weber",
+                "de": "bei Fa. Weber"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_4",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "The test run of the machine / line was carried out successfully",
+              "de": "Der Probelauf der Maschine/ Anlage wurde erfolgreich durchgeführt",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_7",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_8",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_3",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "Printing result is fine",
+              "de": "Druckergebnis in Ordnung",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_5",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_6",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "The intended use according to the contract was pointed out",
+              "de": "Auf die bestimmungsgemäße Verwendung laut Vertrag wurde hingewiesen",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_3",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_4",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_5",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "All permitted machine settings were explained to the customer",
+              "de": "Alle zulässigen Maschineneinstellungen wurden dem Kunden erklärt",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_9",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_10",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+
+        {
+          "id": "headline_7",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "The control system and all controls were explained to the customer",
+              "de": "Die Steuerung und alle Bedienelemente wurden dem Kunden erklärt",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_13",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_14",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_8",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "The care and maintenance of the machine was explained and shown",
+              "de": "Die Pflege und Wartung der Maschine wurde erläutert und gezeigt",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_15",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_16",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_9",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "Safety regulations and protective devices were explained",
+              "de": "Sicherheitsvorschriften und Schutzeinrichtungen wurden erklärt",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_17",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_18",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_91",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "Crash hazard during nozzle and plate change was pointed out",
+              "de": "Auf Crashgefahr bei Düsen- und Plattenwechsel wurde hingewiesen",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_171",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_181",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_10",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "The operating manual / CD was handed over and the obligation to read was pointed out",
+              "de": "Betriebsanleitung / CD wurde ausgehändigt u. auf die Lesepflicht hingewiesen",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_19",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_20",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "headline_11",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "Tools and accessories (according to the work order) were handed over",
+              "de": "Werkzeug und Zubehör (laut Auftrag) wurde übergeben",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "checkbox_21",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Yes",
+                "de": "Ja"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "checkbox_22",
+          "type": "booleanInput",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "No",
+                "de": "Nein"
+              },
+              "pdfHide": false
+            },
+            "disabled": false,
+            "pdfWidth": 0.3,
+            "pdfHideIfValueIsEmpty": false,
+            "required": false
+          }
+        },
+        {
+          "id": "whitespace4",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "headline_13",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "uiHide": true,
+            "pdfWidth": 1,
+            "text": {
+              "en": "HANS WEBER Maschinenfabrik accepts no liability in the event of improper use, see chapter 2 of the operating instructions.<br><br>For information on care and maintenance of the machine, see chapter 12 of the operating instructions.",
+              "de": "Die Firma HANS WEBER Maschinenfabrik übernimmt keine Haftung bei unsachgemäßer Verwendung, siehe Kapitel 2 der Betriebsanleitung.<br><br>Angaben zur Pflege und Wartung der Maschine, siehe Kapitel 12 der Betriebsanleitung.",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "whitespace3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "richtext",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Remarks",
+                "de": "Bemerkungen"
+              },
+              "pdfHide": false
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "placeHolderText": {
+              "de": "Hier tippen...",
+              "en": "Type here..."
+            },
+            "value": {
+              "pdfHide": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "5-signature_technician",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          }
+        },
+        "required": false,
+        "pdfHide": false,
+        "headlineText": {
+          "en": "Signature Hans Weber",
+          "de": "Unterschrift Hans Weber"
+        },
+        "helpTextHtmlAbove": {
+          "text": {
+            "en": "",
+            "de": "",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "pdfHide": true
+        },
+        "helpTextHtmlBelow": {
+          "text": {
+            "en": "",
+            "de": "",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "pdfHide": true
+        },
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUser",
+              "steps": ["userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "6-signature_customer",
+      "type": "signatureSection",
+      "config": {
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "capitalizeFirstLetterOfEveryWord": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          }
+        },
+        "required": false,
+        "pdfHide": false,
+        "headlineText": {
+          "en": "Signature Customer",
+          "de": "Unterschrift Kunde"
+        },
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "7-send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent filled Acceptance Test",
+          "de": "Ausgefülltes Abnahmeprotokoll senden/gesendet"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "requiredAmountOfOutgoingMails": 0,
+        "helpTextHtmlAbove": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "helpTextHtmlBelow": {
+          "en": "",
+          "de": "",
+          "fr": "",
+          "it": "",
+          "tr": "",
+          "es": ""
+        },
+        "emailDialogPrefill": {
+          "to": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "staticEmails": []
+          },
+          "bcc": {
+            "assignee": true,
+            "currentUser": true,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "Acceptance Test – Additives",
+            "de": "Abnahmeprotokoll – Additive",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\n",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n",
+            "fr": "",
+            "it": "",
+            "tr": "",
+            "es": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    }
+  ]
+}
