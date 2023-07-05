@@ -4,7 +4,187 @@
   },
   "sections": [
     {
-      "id": "03_workOrderInformation",
+      "id": "01_customerInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Customer Information",
+            "de": "Kundeninformationen"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              }
+            },
+            "useAsFilterForFields": [
+              "asset",
+              "contactPerson"
+            ],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerAddress",
+                  "propertyName": ""
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customerAddress",
+          "type": "addressInput",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer address",
+                "de": "Kundenanschrift"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "03_signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "contactPerson",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Contact person",
+                "de": "Ansprechpartner"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "03_signatureCustomer",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "telephoneCustomer",
+                  "propertyName": ""
+                },
+                "steps": [
+                  "userInfoToUser",
+                  "userToPhoneNumberString",
+                  "phoneNumberStringToPhoneNumberObject"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "telephoneCustomer",
+          "type": "phoneNumberInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Telephone",
+                "de": "Telefon Kunde"
+              }
+            },
+            "value": {
+              "validators": {
+                "supportedNonNumericCharacters": "-/()"
+              }
+            },
+            "prefill": {
+              "value": []
+            }
+          }
+        },
+        {
+          "id": "whitespace2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "",
+              "de": ""
+            },
+            "uiHide": true,
+            "type": "H1",
+            "pdfTextSize": 14,
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_workOrderInformation",
       "type": "fieldSection",
       "config": {
         "headline": {
@@ -74,16 +254,7 @@
                   "steps": []
                 }
               ]
-            },
-            "onChange": [
-              {
-                "steps": [],
-                "target": {
-                  "id": "asset2",
-                  "propertyName": ""
-                }
-              }
-            ]
+            }
           }
         },
         {
@@ -153,7 +324,7 @@
       ]
     },
     {
-      "id": "06_signatureCustomer",
+      "id": "03_signatureCustomer",
       "type": "signatureSection",
       "config": {
         "required": false,
@@ -218,142 +389,7 @@
       }
     },
     {
-      "id": "04_workOrderInformation",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "en": "Function test after remote maintenance",
-            "de": "Funktionsprüfung nach Fernwartung"
-          },
-          "pdfHide": false
-        }
-      },
-      "fields": [
-        {
-          "id": "Html4",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 0.4,
-            "text": {
-              "de": "Hiermit wird bestätigt, dass die Maschine Nr.:",
-              "en": "It is hereby confirmed that the machine no.:"
-            }
-          }
-        },
-        {
-          "id": "asset2",
-          "type": "assetSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Anlage",
-                "en": "Asset"
-              },
-              "pdfHide": true
-            },
-            "prefill": {
-              "selectedAsset": [
-                {
-                  "input": "assetId",
-                  "steps": []
-                }
-              ]
-            },
-            "pdfWidth": 0.6
-          }
-        },
-        {
-          "id": "Html5",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 1,
-            "text": {
-              "de": "nach durchgeführter Fernwartung auf folgendes überprüft wurde:",
-              "en": "has been checked for the following after remote maintenance has been performed:"
-            }
-          }
-        },
-        {
-          "id": "Html3",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 1,
-            "text": {
-              "de": "<b>Funktionsfähigkeit, im Besonderen die Funktion der Qualitätsmerkmale zur Bestimmung von iO und NiO – Teilen</b>",
-              "en": "<b>Functionality, in particular the function of the quality characteristics for the determination of iO and NiO parts</b>"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "07_signatureCustomer",
-      "type": "signatureSection",
-      "config": {
-        "required": false,
-        "headlineText": {
-          "en": "Confirmed by",
-          "de": "Bestätigt durch"
-        },
-        "pdfHide": false,
-        "pdfHideIfValueIsEmpty": false,
-        "hidePreviewPdfButton": false,
-        "hideDownloadPdfButton": false,
-        "fields": {
-          "dateInput": {
-            "disable": false,
-            "required": false,
-            "pdfHide": false,
-            "autofill": "onlyEmpty",
-            "onChange": []
-          },
-          "locationSingleLineTextInput": {
-            "disable": false,
-            "required": false,
-            "pdfHide": false,
-            "onChange": []
-          },
-          "nameSingleLineTextInput": {
-            "disable": false,
-            "required": false,
-            "pdfHide": false,
-            "capitalizeFirstLetterOfEveryWord": false,
-            "onChange": []
-          }
-        },
-        "prefill": {
-          "location": [
-            {
-              "input": "workOrderId",
-              "steps": [
-                "workOrderIdToWorkOrder",
-                "workOrderToLocationAddress",
-                "addressToCityString"
-              ]
-            },
-            {
-              "input": "assetId",
-              "steps": [
-                "assetIdToAsset",
-                "assetToLocationAddress",
-                "addressToCityString"
-              ]
-            },
-            {
-              "input": "organizationId",
-              "steps": [
-                "accountIdToAccount",
-                "accountToBillingAddressAddress",
-                "addressToCityString"
-              ]
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "08_send",
+      "id": "04_send",
       "type": "emailSection",
       "config": {
         "headlineText": {
