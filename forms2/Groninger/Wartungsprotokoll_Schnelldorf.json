@@ -1,0 +1,1088 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true,
+    "pdfTitle": {
+      "en": "Maintenance Protocol",
+      "de": "Wartungsprotokoll"
+    }
+  },
+  "sections": [
+    {
+      "id": "generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Allgemeine Informationen",
+            "en": "General information"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "_helptext",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "uiHide": true,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "groninger GmbH & Co. KG",
+              "de": "groninger GmbH & Co. KG",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "0_helptext",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": false,
+            "uiHide": true,
+            "pdfWidth": 0.5,
+            "text": {
+              "en": "Birkenbergstr. 1, 91625 Schnelldorf, Germany",
+              "de": "Birkenbergstr. 1, 91625 Schnelldorf, Deutschland",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "line0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "useAsFilterForFields": ["asset", "contactPerson_0"],
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "value": {
+              "pdfPrintCompanyNumber": true
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerAddress"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customerAddress",
+          "type": "addressInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer address"
+              }
+            },
+            "value": {
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "signatureCustomer",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              },
+              {
+                "target": {
+                  "id": "signatureTechnician",
+                  "propertyName": "location"
+                },
+                "steps": ["addressToCityString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Machine No. & Type",
+                "de": "Maschinen-Nr. & -typ",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "uiHide": false,
+              "pdfHide": false
+            },
+            "value": {
+              "disableAssetFormInstanceRelationship": false,
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "manufacturingYear",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Baujahr",
+                "en": "Year of manufacture"
+              }
+            }
+          }
+        },
+        {
+          "id": "workOrderNumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Betriebsstunden",
+                "en": "Operating hours"
+              }
+            }
+          }
+        },
+        {
+          "id": "customerTransaction",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kundenvorgang",
+                "en": "Customer transaction"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "inspectionDate",
+          "type": "dateInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Date",
+                "de": "Datum",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "uiHide": false,
+              "pdfHide": false
+            },
+            "value": {
+              "autofill": "always"
+            }
+          }
+        },
+        {
+          "id": "technician",
+          "type": "userSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Monteur",
+                "en": "Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "signatureTechnician",
+                  "propertyName": "name"
+                },
+                "steps": ["userToFullNameString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "contactPerson_0",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer contact",
+                "de": "Kundenkontakt"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfPrintEmailAddress": false,
+              "pdfHide": false
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "signatureCustomer",
+                  "propertyName": "name"
+                },
+                "steps": ["userToFullNameString"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "contact_manual_helptext",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfHide": true,
+            "pdfWidth": 1,
+            "text": {
+              "en": "If the customer contact is not in the system, please add the name here:",
+              "de": "Wenn der Kundenkontakt nicht im System ist, bitte den Namen hier eintragen:",
+              "fr": "",
+              "it": "",
+              "tr": "",
+              "es": ""
+            }
+          }
+        },
+        {
+          "id": "contactPerson_1",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kundenkontakt",
+                "en": "Customer contact"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "signatureCustomer",
+                  "propertyName": "name"
+                },
+                "steps": []
+              }
+            ]
+          }
+        },
+        {
+          "id": "additionalPersons",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Further persons involved",
+                "de": "Weitere beteiligte Personen"
+              }
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "pdfEnableListView": false,
+            "requiredAmountOfEntries": 0,
+            "fields": [
+              {
+                "id": "SingleLineInput_1",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Name",
+                      "de": "Name"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "SingleLineInput_2",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Company",
+                      "de": "Firma"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "SingleLineInput_3",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Abbreviation",
+                      "de": "Kurzzeichen"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "line0011",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "contents",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Inhaltsverzeichnis",
+            "en": "List of contents"
+          },
+          "pdfHide": false,
+          "pdfTextSize": 14,
+          "pdfTextColor": "#00847d"
+        }
+      },
+      "fields": [
+        {
+          "id": "helpTextContents",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<h2>1. Grundlegende Informationen</h2><ul><h3>1.1 Voraussetzungen für eine Wartung</h3><h3>1.2 Durchführung einer Wartung</h3></ul><h2>2. Wartungsliste (Festgestellte Mängel bei Inspektion)</h2><h2>3. Bestätigung der Wartung</h2><ul><h3>3.1 Bemerkungen</h3></ul>",
+              "en": "<h2>1. Basic information</h2><ul><h3>1.1 Requirements for maintenance</h3><h3>1.2 Performing maintenance</h3></ul><h2>2. Maintenance list (Recorded faults during inspection)</h2><h2>3. Confirmation of maintenance</h2><ul><h3>3.1 Remarks</h3></ul>"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "generalInformaion_2",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "1. Grundlegende Informationen",
+            "en": "1. Basic information"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "line00",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "exampleHeadlineDisplay_1",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "1. Basic information",
+              "de": "1. Grundlegende Informationen"
+            },
+            "uiHide": true,
+            "type": "H2",
+            "pdfHide": false,
+            "pdfWidth": 1,
+            "pdfTextColor": "#00847d"
+          }
+        },
+        {
+          "id": "exampleHeadlineDisplay_2",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "1.1 Requirements for maintenance",
+              "de": "1.1 Voraussetzungen für eine Wartung"
+            },
+            "uiHide": false,
+            "type": "H3",
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "helpText_11",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "Die Durchführung einer Wartung an einer Anlage/Maschine ist nur möglich, wenn bestimmte Grundvoraussetzungen erfüllt sind.<ul><li>Im Auftragsfall muss sichergestellt sein, dass die Anlage/Maschine für eine Wartung zugänglich, vorbereitet sowie betriebsbereit ist (Strom-, Druckluft-, gegebenenfalls Kalt-, WFI-Wasser Versorgung).</li></br><li>Um eine Gesundheitsgefährdung von groninger-Monteuren auszuschließen, muss durch eine vorherige Reinigung der Anlage/Maschine gewährleitstet sein, dass diese frei von jeglichen gesundheitsgefährdenden Stoffen (z.B. Rückstände toxischer Füllprodukte) für die Wartung zur Verfügung steht.</li></br><li>Groninger empfiehlt, dass bei einer Wartung mindestens eine technisch interessierte und erfahrene Person des Betreibers dem Wartungspersonal beigestellt wird, die die Maschine bedienen und das Wartungspersonal unterstützen kann.</li></ul>",
+              "en": "Maintenance can only be carried out on an line/machine if specific conditions are fulfilled.<ul><li>If the case of the order it must be ensured that the line or machine is accessible for maintenance, prepared and ready for operation (power, compressed air, if applicable cold water and WFI supply).</li></br><li>The line or machine must be cleaned to ensure that it is free from any substances hazardous to health (e.g. residues of toxic filling products) before maintenance to prevent any health hazards to groninger technicians.</li></br><li>Groninger recommends having at least one technically interested and experienced representative of the owner present during the maintenance who can operate the machine and assist the maintenance technicians.</li></ul>"
+            }
+          }
+        },
+        {
+          "id": "exampleHeadlineDisplay_3",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "1.2 Performing maintenance",
+              "de": "1.2 Durchführung einer Wartung"
+            },
+            "uiHide": false,
+            "type": "H3",
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "helpText_12_1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "Bei einer Wartung werden in erster Linie die bei der Inspektion festgestellten Abweichungen abgearbeitet und abschließend mit einem Testlauf die Funktion der Anlage mit einem Format getestet.</br></br>Die durchgeführte Wartung muss durch einen Verantwortlichen des Kunden (Kontaktperson) sowie dem durchführenden groninger Service Techniker unter dem Kapitel <b>Bestätigung der Wartung</b> (letzte Seite) bestätigt / unterschrieben werden.<br>",
+              "en": "During maintenance, the faults found during the inspection are primarily worked through and, finally, the function of the asset is tested with a test run using a format.</br></br>The performed maintenance must be confirmed / signed by a responsible person of the customer (contact person) as well as the performing groninger service technician in chapter <b>Confirmation of maintenance</b> (last page).<br>"
+            }
+          }
+        },
+        {
+          "id": "line3",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "report",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "2. Wartungsliste (Festgestelle Mängel bei Inspektion)",
+            "en": "2. Maintenance list (Recorded faults during inspection)"
+          },
+          "pdfHide": false,
+          "pdfTextColor": "#00847d"
+        }
+      },
+      "fields": [
+        {
+          "id": "defectsFound",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Maintenance list",
+                "de": "Wartungsliste"
+              },
+              "pdfHide": true
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "pdfEnableListView": false,
+            "requiredAmountOfEntries": 0,
+            "fields": [
+              {
+                "id": "assemblyGroup",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Assembly number",
+                      "de": "Baugruppennummer"
+                    },
+                    "uiHide": false,
+                    "pdfHide": false
+                  }
+                }
+              },
+              {
+                "id": "naming",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Designation",
+                      "de": "Benennung"
+                    },
+                    "uiHide": false,
+                    "pdfHide": false
+                  }
+                }
+              },
+              {
+                "id": "quantity",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Quantity",
+                      "de": "Menge"
+                    },
+                    "uiHide": false,
+                    "pdfHide": false
+                  }
+                }
+              },
+              {
+                "id": "partNumber",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Part number",
+                      "de": "Teilenummer"
+                    },
+                    "uiHide": false,
+                    "pdfHide": false
+                  }
+                }
+              },
+              {
+                "id": "comment",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Notes",
+                      "de": "Bemerkung"
+                    },
+                    "uiHide": false,
+                    "pdfHide": false
+                  }
+                }
+              },
+              {
+                "id": "singleSelect",
+                "type": "staticSingleSelect",
+                "config": {
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "en": "Done",
+                      "de": "Erledigt"
+                    }
+                  },
+                  "value": {
+                    "options": {
+                      "yes": {
+                        "en": "Yes",
+                        "de": "Ja"
+                      },
+                      "no": {
+                        "en": "No",
+                        "de": "Nein"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "fullReport_0",
+          "type": "richTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Comments"
+              }
+            },
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            }
+          }
+        },
+        {
+          "id": "line22",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "InspectionConfirmation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "3. Bestätigung der Wartung",
+            "en": "3. Confirmation of maintenance"
+          },
+          "pdfHide": false,
+          "pdfTextColor": "#00847d"
+        }
+      },
+      "fields": [
+        {
+          "id": "selectField_1",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "All defects listed in the maintenance list have been corrected",
+                "de": "Alle in der Wartungsliste aufgeführten Mängel wurden behoben"
+              },
+              "uiHide": false,
+              "pdfHide": false
+            },
+            "value": {
+              "options": {
+                "optionName1": {
+                  "en": "Yes",
+                  "de": "Ja"
+                },
+                "optionName2": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "selectField_2",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "The machine is currently ready for operation",
+                "de": "Die Maschine ist nach aktuellem Stand betriebsbereit"
+              },
+              "uiHide": false,
+              "pdfHide": false
+            },
+            "value": {
+              "options": {
+                "optionName1": {
+                  "en": "Yes",
+                  "de": "Ja"
+                },
+                "optionName2": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "line33",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        },
+        {
+          "id": "exampleHeadlineDisplay_6",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "3.1 Remarks",
+              "de": "3.1 Bemerkungen"
+            },
+            "uiHide": false,
+            "type": "H3",
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "fullReport_1",
+          "type": "richTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": false,
+            "label": {
+              "text": {
+                "de": "Bemerkungen",
+                "en": "Remarks"
+              },
+              "pdfHide": true
+            },
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "signatureTechnician",
+      "type": "signatureSection",
+      "config": {
+        "required": false,
+        "headlineText": {
+          "de": "Unterschrift Groninger",
+          "en": "Signature Groninger"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "signatureCustomer",
+      "type": "signatureSection",
+      "config": {
+        "required": false,
+        "headlineText": {
+          "de": "Unterschrift Kunde",
+          "en": "Signature Customer"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send1",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Ausgefülltes Wartungsprotokoll senden/gesendet",
+          "en": "Send/sent completed maintenance protocol"
+        },
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "emailDialogPrefill": {
+          "to": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "fieldIds": ["contactPerson_0"],
+            "staticEmails": []
+          },
+          "bcc": {
+            "currentUser": true,
+            "assignee": true
+          },
+          "subject": {
+            "de": "Groninger: Wartungsprotokoll",
+            "en": "Groninger: Maintenance protocol"
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\n\nSehr geehrte Damen und Herren,\n\nanbei finden Sie das ausgefüllte Wartungsprotokoll.\n\nBei Rückfragen, melden Sie sich gerne bei unserem Service-Team.\n\nBeste Grüße,\ngroninger GmbH & Co. KG",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nPlease find enclosed the completed maintenance protocol.\n\nIf you have any questions, please contact our service team.\n\nBest regards,\ngroninger GmbH & Co. KG"
+          }
+        }
+      }
+    },
+    {
+      "id": "addendum",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Interner Nachtrag",
+            "en": "Addendum"
+          },
+          "pdfHide": false,
+          "pdfTextColor": "#00847d"
+        }
+      },
+      "fields": [
+        {
+          "id": "commentAddendum",
+          "type": "richTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": false,
+            "label": {
+              "text": {
+                "de": "Interne Bemerkungen, Hinweise und To-Dos",
+                "en": "Internal comments, notes and to-dos"
+              }
+            },
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "send2",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Ausgefülltes Wartungsprotokoll mit internem Nachtrag absenden",
+          "en": "Send filled maintenance protocol with internal addendum"
+        },
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "currentUser": true,
+            "assignee": true
+          },
+          "subject": {
+            "de": "Wartungsprotokoll - Interner Nachtrag",
+            "en": "Maintenance protocol - Internal addendum"
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "en": "This email was generated automatically.\nPlease do not reply to this email."
+          }
+        }
+      }
+    }
+  ]
+}
