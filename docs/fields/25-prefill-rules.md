@@ -1397,7 +1397,7 @@ These examples further illustrate the use of prefilling for all available fields
 }
 
 //prefill work order type
-//adapt value options to space's work order types -> keep option ids starting with 0
+//adapt value options to space's work order types -> keep option ids starting with 0 -> order of work order types and options will be matched
 "value": {
 	"options": {
 		"0": {
