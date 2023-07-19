@@ -984,7 +984,7 @@ These examples further illustrate the use of prefilling for all available fields
 	]
 }
 
-// Prefills the name of the asset as a STRING 
+// Prefills the name of the asset type as a STRING 
 "prefill": {
 	"value": [
 		{
