@@ -5,6 +5,7 @@ parentDoc: 635ce486ae5fac003cef279e
 ---
 
 The HtmlDisplay allows the user to enter html text. You can find basic html examples [here](https://www.w3schools.com/html/html_basic.asp).
+Font-Size needs to be defined as e.g. `<p style=\"font-size:8pt\">`
 # Configuration Overview
 
 | Property                                                                     | Description                      |
