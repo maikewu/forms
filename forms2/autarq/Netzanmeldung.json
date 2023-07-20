@@ -1,0 +1,316 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "general",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Bauvorhaben",
+            "en": "Construction Project"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "project",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": true,
+            "label": {
+              "text": {
+                "de": "Projekt",
+                "en": "Project"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ],
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "generalInformation",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Allgemeine Informationen",
+            "en": "General Information"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "issuedBy",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ausgestellt durch",
+                "en": "Issued by"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "issueDate",
+          "type": "dateInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Ausstellungsdatum",
+                "en": "Date of Issue"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "creationDateTime",
+                  "steps": [
+                    "dateTimeToDate"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": true,
+            "label": {
+              "text": {
+                "de": "Kundenauswahl (Firma)",
+                "en": "Select Customer (Company)"
+              }
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "project_location",
+          "type": "addressInput",
+          "config": {
+            "required": {
+              "company": false,
+              "supplement": false,
+              "street": true,
+              "streetNumber": false,
+              "city": true,
+              "zipPostCode": true,
+              "state": false,
+              "country": true
+            },
+            "label": {
+              "text": {
+                "de": "Projektadresse",
+                "en": "Project location"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "signature_registration",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "checklist",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Netzanmeldung",
+            "en": "Grid registration"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "checkbox1",
+          "type": "booleanInput",
+          "config": {
+            "prefill": {
+              "value": [
+                {
+                  "input": "none",
+                  "steps": [
+                    [
+                      "staticBoolean",
+                      false
+                    ]
+                  ]
+                }
+              ]
+            },
+            "label": {
+              "text": {
+                "de": "Netzanmeldung",
+                "en": "Grid registration"
+              }
+            }
+          }
+        },
+        {
+          "id": "comment",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            },
+            "placeHolderText": {
+              "en": "Comment",
+              "de": "Kommentar"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "signature_registration",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Netzanmeldung",
+          "en": "Signature grid registration"
+        },
+        "required": true,
+        "pdfHideIfValueIsEmpty": false,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "pdfHide": false,
+        "fields": {
+          "dateInput": {
+            "required": false,
+            "disable": false,
+            "pdfHide": false
+          },
+          "locationSingleLineTextInput": {
+            "required": false,
+            "disable": false,
+            "pdfHide": false
+          },
+          "nameSingleLineTextInput": {
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false,
+            "disable": false,
+            "pdfHide": false
+          }
+        },
+        "prefill": {
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ],
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
