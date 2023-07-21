@@ -1,15 +1,23 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
+    "pdfTitle": {
+      "en": "Acceptance protocol initial test: Turbomat T1800, T1900, T2500, T3000, IK3000",
+      "de": "Abnahmeprotokoll Erstprüfung: Turbomat T1800, T1900, T2500, T3000, IK3000",
+      "tr": "",
+      "fr": "",
+      "es": "",
+      "it": ""
+    }
   },
   "sections": [
     {
-      "id": "01_customerInformation",
+      "id": "orderData",
       "type": "fieldSection",
       "config": {
         "headline": {
           "text": {
-            "en": "order- and plant data",
+            "en": "Order- and plant data",
             "de": "Auftrags- und Anlagendaten"
           },
           "pdfHide": false
@@ -35,9 +43,7 @@
               "disableCreation": true,
               "pdfHide": false
             },
-            "useAsFilterForFields": [
-              "asset1"
-            ],
+            "useAsFilterForFields": ["asset1"],
             "prefill": {
               "selectedCompany": [
                 {
@@ -46,10 +52,7 @@
                 },
                 {
                   "input": "assetId",
-                  "steps": [
-                    "assetIdToAsset",
-                    "assetToCustomerAccountId"
-                  ]
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
                 }
               ]
             }
@@ -59,12 +62,24 @@
           "id": "ordernumber",
           "type": "singleLineTextInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Auftragsnummer",
-                "en": "ordernumber"
+                "en": "Order number"
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -75,11 +90,11 @@
             "required": false,
             "disabled": false,
             "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "plant type",
+                "en": "Plant type",
                 "de": "Anlagentyp"
               },
               "pdfHide": false
@@ -95,18 +110,32 @@
                   "steps": []
                 }
               ]
-            }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "A1-signatureTechnican",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  "assetToLocationAddress",
+                  "addressToCityString"
+                ]
+              }
+            ]
           }
         },
         {
           "id": "voltage",
           "type": "singleLineTextInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Netzspannung [V]",
-                "en": "supply voltage [V]"
+                "en": "Supply voltage [V]"
               }
             }
           }
@@ -115,12 +144,21 @@
           "id": "diagram",
           "type": "singleLineTextInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.5,
             "label": {
               "text": {
                 "de": "Schaltbild",
-                "en": "circuit diagram Nr."
+                "en": "Circuit diagram no."
               }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "none",
+                  "steps": [["staticString", "50."]]
+                }
+              ]
             }
           }
         },
@@ -129,10 +167,11 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfWidth": 0.5,
+            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
-                "de": "Frequenz",
-                "en": "frequency"
+                "de": "Frequenz [Hz]",
+                "en": "Frequency [Hz]"
               }
             }
           }
@@ -149,13 +188,13 @@
           }
         },
         {
-          "id": "appointment",
+          "id": "design",
           "type": "headlineDisplay",
           "config": {
             "pdfWidth": 0.2,
             "text": {
               "de": "Elektr. Ausführung",
-              "en": "electrical design"
+              "en": "Electrical design"
             },
             "type": "H3"
           }
@@ -204,7 +243,7 @@
             "pdfWidth": 0.15,
             "text": {
               "de": "Beheizungsart",
-              "en": "heating type"
+              "en": "Heating type"
             },
             "type": "H3"
           }
@@ -217,7 +256,7 @@
             "label": {
               "text": {
                 "de": "HD",
-                "en": "hs"
+                "en": "Hs"
               }
             }
           }
@@ -226,11 +265,12 @@
           "id": "layer",
           "type": "singleLineTextInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.15,
             "label": {
               "text": {
                 "de": "Lagen",
-                "en": "layer"
+                "en": "Layer"
               }
             }
           }
@@ -242,7 +282,7 @@
             "pdfWidth": 0.1,
             "label": {
               "text": {
-                "de": "El",
+                "de": "EL",
                 "en": "EL"
               }
             }
@@ -252,11 +292,12 @@
           "id": "kw",
           "type": "singleLineTextInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 0.1,
             "label": {
               "text": {
-                "de": "Kw",
-                "en": "kw"
+                "de": "KW",
+                "en": "KW"
               }
             }
           }
@@ -269,7 +310,7 @@
             "label": {
               "text": {
                 "de": "Erdgas",
-                "en": "natural gas"
+                "en": "Natural gas"
               }
             }
           }
@@ -282,7 +323,7 @@
             "label": {
               "text": {
                 "de": "Flüssiggas",
-                "en": "liquid gas"
+                "en": "Liquid gas"
               }
             }
           }
@@ -295,7 +336,7 @@
             "label": {
               "text": {
                 "de": "Öl",
-                "en": "oil"
+                "en": "Oil"
               }
             }
           }
@@ -312,13 +353,13 @@
           }
         },
         {
-          "id": "control system",
+          "id": "controlsystem",
           "type": "headlineDisplay",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.25,
             "text": {
               "de": "Steuerung",
-              "en": "control system"
+              "en": "Control system"
             },
             "type": "H3"
           }
@@ -327,7 +368,7 @@
           "id": "CON2",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Food.CON 2",
@@ -340,11 +381,11 @@
           "id": "CON",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Food.CON",
-                "en": "UL/CSA"
+                "en": "Food.CON"
               }
             }
           }
@@ -353,7 +394,7 @@
           "id": "FPC",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "FPC100",
@@ -366,15 +407,39 @@
           "id": "other",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Andere",
-                "en": "other"
+                "en": "Other"
               }
             }
           }
-        }, 
+        },
+        {
+          "id": "otherControlSystem",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.25,
+            "label": {
+              "text": {
+                "en": "Other control system",
+                "de": "Andere Steuerung",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "uiHide": false,
+              "pdfHide": false
+            }
+          }
+        },
         {
           "id": "line4",
           "type": "htmlDisplay",
@@ -385,27 +450,28 @@
             },
             "uiHide": true
           }
-        }
-      ]
-    },
-    {
-      "id": "circulateblower",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "de": "Info FU-Umluftventilator",
-            "en": "Information FC-circulate blower"
-          },
-          "pdfHide": false
-        }
-      },
-      "fields": [
+        },
+        {
+          "id": "informationFCcirculate",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Information FC-circulate blower",
+              "de": "Info FU-Umluftventilator",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "pdfTextSize": 12
+          }
+        },
         {
           "id": "IP1",
           "type": "singleLineTextInput",
           "config": {
             "pdfWidth": 1,
+            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
                 "de": "IP-Adresse",
@@ -445,8 +511,8 @@
           "config": {
             "pdfWidth": 0.25,
             "text": {
-              "de": "<h4>Passwort: Atv630!!</h4>",
-              "en": "<h4>password: Atv630!!</h4>"
+              "de": "<i>Passwort: Atv630!!</i>",
+              "en": "<i>Password: Atv630!!</i>"
             }
           }
         },
@@ -458,28 +524,29 @@
               "de": "<hr>",
               "en": "<hr>"
             },
-            "uiHide": true
+            "uiHide": false
           }
-        }
-      ]
-    },
-    {
-      "id": "exhausteblower",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "de": "Info FU-Abluftventilator",
-            "en": "Information FC-exhaust blower"
-          },
-          "pdfHide": false
-        }
-      },
-      "fields": [
+        },
+        {
+          "id": "informationFCexhaust",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Information FC-exhaust blower",
+              "de": "Info FU-Abluftventilator",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "pdfTextSize": 12
+          }
+        },
         {
           "id": "IP2",
           "type": "singleLineTextInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "pdfWidth": 1,
             "label": {
               "text": {
@@ -520,8 +587,8 @@
           "config": {
             "pdfWidth": 0.25,
             "text": {
-              "de": "<h4>Passwort: Atv630!!</h4>",
-              "en": "<h4>password: Atv630!!</h4>"
+              "de": "<i>Passwort: Atv630!!</i>",
+              "en": "<i>Password: Atv630!!</i>"
             }
           }
         },
@@ -533,24 +600,24 @@
               "de": "<hr>",
               "en": "<hr>"
             },
-            "uiHide": true
+            "uiHide": false
           }
-        }
-      ]
-    },
-    {
-      "id": "liquid smoke",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "text": {
-            "de": "Info FU-Flüssigraucherzeuger",
-            "en": "Information FC-liquid smoke"
-          },
-          "pdfHide": false
-        }
-      },
-      "fields": [
+        },
+        {
+          "id": "liquidSmoke",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "Information FC-liquid smoke",
+              "de": "Info FU-Flüssigraucherzeuger",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "pdfTextSize": 12
+          }
+        },
         {
           "id": "IP3",
           "type": "singleLineTextInput",
@@ -563,17 +630,6 @@
               }
             }
           }
-        },
-        {
-          "id": "line7",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "de": "<hr>",
-              "en": "<hr>"
-            },
-            "uiHide": true
-          }
         }
       ]
     },
@@ -584,26 +640,25 @@
         "headline": {
           "text": {
             "de": "Abnahmepunkte im spannungsfreien Zustand",
-            "en": "acceptance points in de-energized condition"
+            "en": "Acceptance points in de-energized condition"
           },
-          "pdfTextColor": "#32CD32",
           "pdfHide": false
         }
       },
       "fields": [
         {
-          "id": "pressureregulator",
+          "id": "html_1",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "Druckregler auf 6 bar eingestellt",
-              "en": "pressure regulator set to 6 bar"
+              "de": "Druckregler auf <b>6 bar</b> eingestellt",
+              "en": "Pressure regulator set to 6 bar"
             }
           }
         },
         {
-          "id": "OK3",
+          "id": "OK_1",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -616,18 +671,18 @@
           }
         },
         {
-          "id": "Info1",
+          "id": "Info_1",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "<i>bei pneumatischen Türöffner 7 bar<i>",
-              "en": "<i>7 bar in case of pneum. Door opener<i>"
+              "de": "<i>Bei pneumatischem Türöffner: 7 bar<i>",
+              "en": "<i>7 bar in case of pneum. door opener<i>"
             }
           }
         },
         {
-          "id": "line8",
+          "id": "line_1",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -638,10 +693,10 @@
           }
         },
         {
-          "id": "ventingcap",
+          "id": "html_12",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
               "de": "Belüftungsdeckel FU entfernt",
               "en": "FC venting cap removed"
@@ -649,7 +704,7 @@
           }
         },
         {
-          "id": "OK4",
+          "id": "OK_2",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -662,18 +717,18 @@
           }
         },
         {
-          "id": "Info2",
+          "id": "Info_2",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "<i>an FU-Oberseite<i>",
-              "en": "<i>on top of FC<i>"
+              "de": "<i>An FU-Oberseite<i>",
+              "en": "<i>On top of FC<i>"
             }
           }
         },
         {
-          "id": "line9",
+          "id": "line_2",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -684,18 +739,18 @@
           }
         },
         {
-          "id": "resistor",
+          "id": "html_3",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
               "de": "Widerstand an FU angeschlossen",
-              "en": "resistor connected to FC"
+              "en": "Resistor connected to FC"
             }
           }
         },
         {
-          "id": "OK5",
+          "id": "OK_3",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -708,18 +763,18 @@
           }
         },
         {
-          "id": "Info3",
+          "id": "Info_3",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "<i>zur Simulation PTC Lüftermotor<i>",
-              "en": "<i>for simulation of PTC ventilator<i>"
+              "de": "<i>Zur Simulation PTC Lüftermotor<i>",
+              "en": "<i>For simulation of PTC ventilator<i>"
             }
           }
         },
         {
-          "id": "line10",
+          "id": "line_3",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -730,18 +785,18 @@
           }
         },
         {
-          "id": "grounding",
+          "id": "html_4",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
               "de": "Erdungskabel an Steuerung angebracht",
-              "en": "grounding connected to control unit"
+              "en": "Grounding connected to control unit"
             }
           }
         },
         {
-          "id": "OK6",
+          "id": "OK_4",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -754,18 +809,18 @@
           }
         },
         {
-          "id": "Info4",
+          "id": "Info_4",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "<i>bei Food.CON<i>",
-              "en": "<i>only Food.CON<i>"
+              "de": "<i>Bei Food.CON<i>",
+              "en": "<i>Only Food.CON<i>"
             }
           }
         },
         {
-          "id": "line11",
+          "id": "line_4",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -776,18 +831,18 @@
           }
         },
         {
-          "id": "equipmentid",
+          "id": "html_5",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
               "de": "Betriebsmittelkennzeichen vorhanden",
-              "en": "existing equipment identification"
+              "en": "Existing equipment identification"
             }
           }
         },
         {
-          "id": "OK7",
+          "id": "OK_5",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -800,18 +855,18 @@
           }
         },
         {
-          "id": "Info5",
+          "id": "Info_5",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "<i>an allen elektrischen Bauteilen<i>",
-              "en": "<i>all electric equipment<i>"
+              "de": "<i>An allen elektrischen Bauteilen<i>",
+              "en": "<i>All electric equipment<i>"
             }
           }
         },
         {
-          "id": "line12",
+          "id": "line_5",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -822,18 +877,18 @@
           }
         },
         {
-          "id": "thermostatcooling",
+          "id": "html_6",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
               "de": "Thermostat Kühllüfter eingestellt",
-              "en": "thermostat cooling fan adjusted"
+              "en": "Thermostat cooling fan adjusted"
             }
           }
         },
         {
-          "id": "OK8",
+          "id": "OK_6",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -846,18 +901,18 @@
           }
         },
         {
-          "id": "Info6",
+          "id": "Info_6",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "<i>Einstellwert nach Schaltplan<i>",
-              "en": "<i>Setpoint: 40°C<i>"
+              "de": "<i>Einstellwert nach Schaltplan / Setpoint: 40°<i>",
+              "en": "<i>Setting value according to circuit diagram / Setpoint: 40°<i>"
             }
           }
         },
         {
-          "id": "line13",
+          "id": "line_6",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -868,18 +923,18 @@
           }
         },
         {
-          "id": "cableglands",
+          "id": "html_7",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "Alle (Kabel)Verschraubungen angezogen",
-              "en": "all cable glands tightened"
+              "de": "Alle (Kabel-) Verschraubungen angezogen",
+              "en": "All cable glands tightened"
             }
           }
         },
         {
-          "id": "OK9",
+          "id": "OK_7",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -892,10 +947,10 @@
           }
         },
         {
-          "id": "Info7",
+          "id": "Info_7",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
               "de": "",
               "en": ""
@@ -903,7 +958,7 @@
           }
         },
         {
-          "id": "line14",
+          "id": "line_7",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -914,18 +969,18 @@
           }
         },
         {
-          "id": "checkprotection",
+          "id": "html_8",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
               "de": "Sichtkontrolle am Schütz- & Klemmen- und Ventilkasten",
-              "en": "visual check protection, terminal and distribution cabinet"
+              "en": "Visual check protection, terminal and distribution cabinet"
             }
           }
         },
         {
-          "id": "OK10",
+          "id": "OK_8",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -938,18 +993,18 @@
           }
         },
         {
-          "id": "Info8",
+          "id": "Info_8",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
               "de": "<i>Bauteile auf festen Sitz geprüft, Leitungen fachgerecht verlegt, Klemmen richtig angezogen<i>",
-              "en": "<i>all parts fit firmly, wires run professional, terminals are tightened well<i>"
+              "en": "<i>All parts fit firmly, wires run professional, terminals are tightened well<i>"
             }
           }
         },
         {
-          "id": "line15",
+          "id": "line_8",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -960,18 +1015,18 @@
           }
         },
         {
-          "id": "motorprotection",
+          "id": "html_9",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
               "de": "Motorschutzschalter anhand von Schaltbild eingestellt",
-              "en": "motor protection adjusted corresponding to circuit diagram"
+              "en": "Motor protection adjusted corresponding to circuit diagram"
             }
           }
         },
         {
-          "id": "OK11",
+          "id": "OK_9",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -984,18 +1039,18 @@
           }
         },
         {
-          "id": "Info9",
+          "id": "Info_9",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "<i>bei Dahlander-Lüfter, RZ, NV, ggf. Heizung<i>",
-              "en": "<i>dahlander blower, RZ, NV and heating if existing<i>"
+              "de": "<i>Bei Dahlander-Lüfter, RZ, NV, ggf. Heizung<i>",
+              "en": "<i>Dahlander blower, RZ, NV and heating if existing<i>"
             }
           }
         },
         {
-          "id": "line16",
+          "id": "line_9",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -1006,10 +1061,10 @@
           }
         },
         {
-          "id": "capleclamps",
+          "id": "html_10",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
               "de": "EMV-Kabelverschraubung an Lüfter montiert",
               "en": "EMC cable clamps mounted to blower"
@@ -1017,7 +1072,7 @@
           }
         },
         {
-          "id": "OK12",
+          "id": "OK_10",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -1030,18 +1085,18 @@
           }
         },
         {
-          "id": "Info10",
+          "id": "Info_10",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "<i>bei FU-Betrieb<i>",
-              "en": "<i>in case of FC-driven<i>"
+              "de": "<i>Bei FU-Betrieb<i>",
+              "en": "<i>In case of FC-driven<i>"
             }
           }
         },
         {
-          "id": "line17",
+          "id": "line_10",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -1052,18 +1107,18 @@
           }
         },
         {
-          "id": "interconnectingwires",
+          "id": "html_11",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.3,
+            "pdfWidth": 0.4,
             "text": {
-              "de": "Verbindungsleitungen zwischen allen Elektrischen Komponenten angebracht",
-              "en": "all interconnecting wires mounted"
+              "de": "Verbindungsleitungen zwischen allen elektrischen Komponenten angebracht",
+              "en": "All interconnecting wires mounted"
             }
           }
         },
         {
-          "id": "OK13",
+          "id": "OK_11",
           "type": "booleanInput",
           "config": {
             "pdfWidth": 0.2,
@@ -1076,18 +1131,68 @@
           }
         },
         {
-          "id": "Info11",
+          "id": "Info_11",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.4,
             "text": {
               "de": "<i>Leitungen vorab auf Beschädigungen prüfen!<i>",
-              "en": "<i>at first check all wires for damages!<i>"
+              "en": "<i>At first check all wires for damages!<i>"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "energizedcondition",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Abnahmeschritte unter Spannung – Sicherheitsregeln beachten!",
+            "en": "Acceptance points in energized condition – follow safety rules!"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "html_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Funktion Hauptschalter",
+              "en": "Main switch function"
             }
           }
         },
         {
-          "id": "line18",
+          "id": "OK_12",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_12",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Schaltschrank wird spannungslos geschalten<i>",
+              "en": "<i>Switch cabinet will be de-energized<i>"
+            }
+          }
+        },
+        {
+          "id": "line_12",
           "type": "htmlDisplay",
           "config": {
             "text": {
@@ -1095,6 +1200,2212 @@
               "en": "<hr>"
             },
             "uiHide": false
+          }
+        },
+        {
+          "id": "html_13",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Steuerspannung gemessen (Soll ~26V)",
+              "en": "Measure control voltage (setpoint ~26V)"
+            }
+          }
+        },
+        {
+          "id": "OK_13",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "TextInput_13",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Measured value [V]",
+                "de": "Messwert [V]",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "uiHide": false,
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "line_13",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_14",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Frequenzumrichter bespielen + Autotuning",
+              "en": "Install frequency converter software + autotune"
+            }
+          }
+        },
+        {
+          "id": "OK_14",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_14_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "line_14",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_15",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Update Bediengerät durchgeführt",
+              "en": "Operating panel updated"
+            }
+          }
+        },
+        {
+          "id": "OK_15",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_15",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          }
+        },
+        {
+          "id": "line_15",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_16",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Update I/O-Modul durchgeführt",
+              "en": "I/O-modul updated"
+            }
+          }
+        },
+        {
+          "id": "OK_16",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_16",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          }
+        },
+        {
+          "id": "line_16",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_17",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "FESTO-Druckschalter eingestellt",
+              "en": "Pressure switch adjusted"
+            }
+          }
+        },
+        {
+          "id": "OK_17",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_17",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Solldruck: 3 bar<i>",
+              "en": "<i>Setpoint: 3 bar<i>"
+            }
+          }
+        },
+        {
+          "id": "line_17",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "TextInput_18",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "IP-adr. control unit",
+                "de": "IP-Adr. Steuerung",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "uiHide": false,
+              "pdfHide": false
+            }
+          }
+        },
+        {
+          "id": "line_18",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_19",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Drehrichtung Lüftermotor (+Pfeil aufgeklebt)",
+              "en": "Direction of rotation blower motor (+ arrow glued on)"
+            }
+          }
+        },
+        {
+          "id": "OK_19",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_19",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Drehrichtung im Uhrzeigersinn<i>",
+              "en": "<i>Direction of rotation clockwise<i>"
+            }
+          }
+        },
+        {
+          "id": "line_19",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_20",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Lüfterrad läuft frei (ohne Streifen)",
+              "en": "Impeller runs free (no scratching)"
+            }
+          }
+        },
+        {
+          "id": "OK_20",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_20",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          }
+        },
+        {
+          "id": "line_20",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_21",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Funktion Sicherheitsthermostat",
+              "en": "Function safety thermostat"
+            }
+          }
+        },
+        {
+          "id": "OK_21",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "nOK_21",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_21",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Mit Heißluft + Vorrichtung, bis Fehlermeldung ext. Übertemp. (Abschalttemperatur 170°C); nach Abkühlung mit Kupferring montieren<i>",
+              "en": "<i>Hot air gun + mounting rack until error message ext. overtemperature (shut off temperature 170°C); mount with copper ring after cooling down<i>"
+            }
+          }
+        },
+        {
+          "id": "line_21",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_22",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Funktion Hupe",
+              "en": "Function horn"
+            }
+          }
+        },
+        {
+          "id": "OK_22",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_22",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          }
+        },
+        {
+          "id": "line_22",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "html_23",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Fehlermeldungen abgearbeitet",
+              "en": "Error messages checked"
+            }
+          }
+        },
+        {
+          "id": "OK_23",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_23",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Fehler: Lüfter, Heizung, RZ, NV usw. manuell generiert<i>",
+              "en": "<i>Generate manual errors: blower, heating, RZ, NV e.g.<i>"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "IOCheck",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "I/O - check",
+            "en": "I/O - check"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "htmlDisplay_24",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "text": {
+              "de": "<b>Abluftklappen bei Mehrwagenanlagen müssen in der Abnahme auch angeschlossen und getestet werden.</b>",
+              "en": "<b>Exhaust air flaps of multiple trolley plants must be connected and tested.</b>"
+            }
+          }
+        },
+        {
+          "id": "line_24",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_25",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "text": {
+              "de": "Abluftklappe in Grundstellung offen",
+              "en": "Exhaust air flap normally open"
+            }
+          }
+        },
+        {
+          "id": "htmlDisplay_25_1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "- Großer Zylinder <b>-K200.4</b>",
+              "en": "- Big cylinder <b>-K200.4</b>"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_25_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "htmlDisplay_25_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "- Kleiner Zylinder <b>K200.2</b>",
+              "en": "- Small cylinder <b>K200.2</b>"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_25_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+
+        {
+          "id": "line_25",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_26",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Frischluftklappe in Grundstellung offen",
+              "en": "Fresh air flap normally open"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_26",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "info_26",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          }
+        },
+        {
+          "id": "line_26",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_27",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Belüftungsklappe in Grundstellung offen",
+              "en": "Venting flap normally open"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_27",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "booleanInput_27_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "info_27",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Nur bei IK3000<i>",
+              "en": "<i>Only IK3000<i>"
+            }
+          }
+        },
+        {
+          "id": "line_27",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_28",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ratioklappe",
+              "en": "Drive ratio-flap"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_28",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "htmlDisplay_28_1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "- Großer Zylinder <b>-K146.2</b>",
+              "en": "- Big cylinder <b>-K146.2</b>"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_28_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "htmlDisplay_28_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "- Kleiner Zylinder <b>-K145.8</b>",
+              "en": "- Small cylinder <b>-K145.8</b>"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_28_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_28",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_29",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Rauchklappe <b>-K145.4</b>",
+              "en": "Drive smoke flap <b>-K145.4</b>"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_29_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "booleanInput_29_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "line_29",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_30",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ratio light <b>-K144.4</b>",
+              "en": "Drive ratio light <b>-K144.4</b>"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_30_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "booleanInput_30_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "line_30",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_31",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ratio mittel <b>-K145.6</b>",
+              "en": "Drive ratio middle <b>-K145.6</b"
+            }
+          }
+        },
+        {
+          "id": "booleanInput_31_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "booleanInput_31_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "line_31",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_32",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ventile Reinigung <b>-K171.2 / -K170.6 / -K170.8</b>",
+              "en": "Drive cleaning valve <b>-K171.2 / -K170.6 / -K170.8</b>"
+            }
+          }
+        },
+        {
+          "id": "OK_32_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_32_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "CIP",
+                "en": "CIP"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_32",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Bei RG21: Durchflussrichtung kontrollieren, Umschaltung Reinigen Anlage, Reinigen RZ mit Ausgang Q.37 testen<i>",
+              "en": "<i>In case of RG21: check flowdirection, switch between cleaning plant, cleaning RZ with output Q.37<i>"
+            }
+          }
+        },
+        {
+          "id": "line_32",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_33",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ventile Dusche <b>-K203.6 / -K203.8</b>",
+              "en": "Drive shower valve <b>-K203.6 / -K203.8</b>"
+            }
+          }
+        },
+        {
+          "id": "OK_33_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_33_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_33",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Durchflussrichtung kontrollieren, Dusche bei 1W-Anlagen auf Dichtheit kontrollieren und anschließend ausblasen</i>",
+              "en": "<i>Check flowdirection, in case of 1 trolley plants check for leakage and blow pipe out</i>"
+            }
+          }
+        },
+        {
+          "id": "line_33",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_34",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ventile FD Kochen/Befeuchten <b>-K203.2 / -K203.4</b>",
+              "en": "Drive fresh steam cooking and moistening valve <b>-K203.2 / -K203.4</b>"
+            }
+          }
+        },
+        {
+          "id": "OK_34_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_34_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_34",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Bei FD mit Zweistoffdüse Luftdruck auf 1-1,5 bar einstellen<i>",
+              "en": "<i>Set air pressure to 1-1,5 bar in case of fresh steam with two substance nozzle<i>"
+            }
+          }
+        },
+        {
+          "id": "line_34",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_35",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ventil ND-Kochen <b>-K200.8</b>",
+              "en": "Drive valve lp steam cooking <b>-K200.8</b>"
+            }
+          }
+        },
+        {
+          "id": "OK_35_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_35_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "line_35",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_36",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ventil ND-Befeuchten <b>-K201.6</b>",
+              "en": "Drive lp steam valve moistening <b>-K201.6</b>"
+            }
+          }
+        },
+        {
+          "id": "OK_36_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_36_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "line_36",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_37",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Ventil HD-Heizung <b>-K202.6</b>",
+              "en": "Drive hp steam valve heating <b>-K202.6</b>"
+            }
+          }
+        },
+        {
+          "id": "OK_37_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_37_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "line_37",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_38",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Kühlung (Relais <b>-K17.2)</b>",
+              "en": "Activation cooling (Relais <b>-K17.2)</b>"
+            }
+          }
+        },
+        {
+          "id": "OK_38_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_38",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Spannung messen gemäß Schaltbild an Klemmen (235,236,237,238) im Schützkasten<i>",
+              "en": "<i>Measure voltage according circuit diagram at terminals (235,236,237,238)<i>"
+            }
+          }
+        },
+        {
+          "id": "line_38",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_39",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Funktion pneumatischer Türöffner",
+              "en": "Function pneu. door opener"
+            }
+          }
+        },
+        {
+          "id": "OK_39_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_39_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "line_39",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_40",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Verriegelung Heizung (Freigabe Hzg.>10Hz)",
+              "en": "Lock heating (release heating > 10 Hz)"
+            }
+          }
+        },
+        {
+          "id": "OK_40_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_40",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Analoger Ausgang 1 (~4mA = 10Hz)<i>",
+              "en": "<i>Analog output 1 (~4mA = 10Hz)<i>"
+            }
+          }
+        },
+        {
+          "id": "line_40",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_41",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Gebläse (Schütz <b>-Q140.6</b>)",
+              "en": "Drive blower (Protection <b>-Q140.6</b>)"
+            }
+          }
+        },
+        {
+          "id": "OK_41_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_41_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_41",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Spannung messen an Klemmen im Schützkasten (U26, V26, W26)<i>",
+              "en": "<i>Measure voltage at protection box terminals (U26, V26, W26)<i>"
+            }
+          }
+        },
+        {
+          "id": "line_41",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_42",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Rührwerk (Schütz <b>-Q140.4</b>)",
+              "en": "Drive agitator (Protection <b>-Q140.4</b>)"
+            }
+          }
+        },
+        {
+          "id": "OK_42_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_42_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_42",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Spannung messen an Klemmen im Schützkasten (U31, V31, W31)<i>",
+              "en": "<i>Measure voltage at protection box terminals (U31, V31, W31)<i>"
+            }
+          }
+        },
+        {
+          "id": "line_42",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_43",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Ansteuerung Glühstab (Schütz <b>-Q140.2)</b>",
+              "en": "Drive glow bar (Protection <b>-Q140.2)</b>"
+            }
+          }
+        },
+        {
+          "id": "OK_43_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "OK_43_2",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.1,
+            "label": {
+              "text": {
+                "de": "n.v.",
+                "en": "n.v."
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_43",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Spannung messen an Klemmen im Schützkasten (U20, V20)<i>",
+              "en": "<i>Measure voltage at protection box terminals (U20, V20)<i>"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "testPrograms",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Testprogramme (Auftragsindividuell)",
+            "en": "Test programs (depending on order)"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "htmlDisplay_44",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Funktionstestprogramm durchgeführt",
+              "en": "Function test program absolved"
+            }
+          }
+        },
+        {
+          "id": "OK_44",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_44",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_45",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Performancetestprogramm durchgeführt",
+              "en": "Performance test program absolved"
+            }
+          }
+        },
+        {
+          "id": "OK_45",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_45",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_46",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Reinigungstestprogramm durchgeführt",
+              "en": "Cleaning test program absolved"
+            }
+          }
+        },
+        {
+          "id": "OK_46",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "finalInspection",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "de": "Optische + allgemeine Endkontrolle",
+            "en": "Visual + general final inspection"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "htmlDisplay_47",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Typenschild kontrolliert und angebracht",
+              "en": "Type plate checked and mounted"
+            }
+          }
+        },
+        {
+          "id": "OK_47",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_47",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_48",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Wasserschläuche an Anlagendecke fixiert",
+              "en": "Water hoses fixed to plant ceiling"
+            }
+          }
+        },
+        {
+          "id": "OK_48",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_48",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>ggf. mit Kabelbinder<i>",
+              "en": "<i>if necessary with cable ties<i>"
+            }
+          }
+        },
+        {
+          "id": "line_48",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_49",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "100% Kontrolle Schutzleiter",
+              "en": "100% control PE conductor"
+            }
+          }
+        },
+        {
+          "id": "OK_49",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_49",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Klemmen richtig angezogen<i>",
+              "en": "<i>Teminals fastened correct<i>"
+            }
+          }
+        },
+        {
+          "id": "line_49",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_50",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Schweißnähte Anlageninnenseite gereinigt",
+              "en": "Weld seams cleaned inside plant"
+            }
+          }
+        },
+        {
+          "id": "OK_50",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_50",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_51",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Keine Kratzer, Dellen, etc. vorhanden",
+              "en": "No scratches, bumpers e.g."
+            }
+          }
+        },
+        {
+          "id": "OK_51",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_51",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_52",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Schaltplan in Schützkasten hinterlegt",
+              "en": "Circuit diagram placed in protection box"
+            }
+          }
+        },
+        {
+          "id": "OK_52",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_52",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>In blauem Schnellhefter, sauber und knickfrei<i>",
+              "en": "<i>Blue folder, clean and without bends<i>"
+            }
+          }
+        },
+        {
+          "id": "line_52",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_53",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Pneumatikleitungen fest und unbeschädigt",
+              "en": "Pneum. lines fastened and unharmed"
+            }
+          }
+        },
+        {
+          "id": "OK_53",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_53",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_54",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Schriftzug u. Aufkleber sauber angebracht „Vorsicht Spannung“ auf allen Kästen vorhanden",
+              "en": "Lock and stickers placed correct, “Warning Voltage” at all boxes"
+            }
+          }
+        },
+        {
+          "id": "OK_54",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_54",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_55",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Frontblende für Transport gesichert",
+              "en": "Front panel locked for transportation"
+            }
+          }
+        },
+        {
+          "id": "OK_55",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_55",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Jeweils links und rechts an den Einhängeösen einen Kabelbinder zur Fixierung anbringen<i>",
+              "en": "<i>Fixed on left and right hand side with cable ties at the eyelets<i>"
+            }
+          }
+        },
+        {
+          "id": "line_55",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_56",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Endreinigung durchgeführt",
+              "en": "Final cleaning done"
+            }
+          }
+        },
+        {
+          "id": "OK_56",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.2,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "Info_56",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "<i>Edding-Markierungen mit Aceton entfernen, Anlagenfront, –heck, -boden mit Pflegeöl einölen<i>",
+              "en": "<i>Remove Edding markers with acetone, oil front/rear and bottom of the plant<i>"
+            }
+          }
+        },
+        {
+          "id": "line_56",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_57",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Einhängeösen auf Anlage zurück an EDM",
+              "en": "Remove eyelets and bring them back to EDM"
+            }
+          }
+        },
+        {
+          "id": "OK_57",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_57",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "htmlDisplay_58",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.4,
+            "text": {
+              "de": "Fertigungsauftrag zurückgemeldet",
+              "en": "Report production order back"
+            }
+          }
+        },
+        {
+          "id": "OK_58",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.6,
+            "label": {
+              "text": {
+                "de": "OK",
+                "en": "OK"
+              }
+            }
+          }
+        },
+        {
+          "id": "line_58",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "richText",
+          "type": "richTextInput",
+          "config": {
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen...",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Special notings",
+                "de": "Sonderbemerkungen",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "pdfHide": false
+            }
           }
         }
       ]
@@ -1130,14 +3441,14 @@
         "pdfHide": false,
         "helpTextHtmlAbove": {
           "text": {
-            "en": "",
-            "de": "",
+            "en": "Confirmation of complete acceptance",
+            "de": "Bestätigung der vollständigen Abnahme",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
-          "pdfHide": true
+          "pdfHide": false
         },
         "helpTextHtmlBelow": {
           "text": {
@@ -1157,17 +3468,11 @@
           "name": [
             {
               "input": "assignedUserId",
-              "steps": [
-                "userIdToUser",
-                "userToFullNameString"
-              ]
+              "steps": ["userIdToUser", "userToFullNameString"]
             },
             {
               "input": "currentUserId",
-              "steps": [
-                "userIdToUser",
-                "userToFullNameString"
-              ]
+              "steps": ["userIdToUser", "userToFullNameString"]
             }
           ],
           "location": [
@@ -1230,14 +3535,14 @@
         "pdfHide": false,
         "helpTextHtmlAbove": {
           "text": {
-            "en": "",
-            "de": "",
+            "en": "Confirmation of complete acceptance",
+            "de": "Bestätigung der vollständigen Abnahme",
             "fr": "",
             "it": "",
             "tr": "",
             "es": ""
           },
-          "pdfHide": true
+          "pdfHide": false
         },
         "helpTextHtmlBelow": {
           "text": {
@@ -1325,12 +3630,12 @@
             "staticEmails": []
           },
           "subject": {
-            "en": "acceptance protocol",
-            "de": "Abnahmeprotokoll"
+            "en": "Acceptance protocol: Initial test",
+            "de": "Abnahmeprotokoll: Erstprüfung"
           },
           "body": {
             "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie das abgeschlossene Abnahmeprotokoll als PDF.\n\nMit freundlichen Grüßen",
-            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed acceptance protocol as PDF.\n\nBest regards."
+            "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed acceptance protocol as PDF.\n\nBest regards"
           }
         },
         "whitelistedDomains": []
