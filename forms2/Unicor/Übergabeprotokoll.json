@@ -1,0 +1,609 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_general_information",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": true,
+          "text": {
+            "de": "Allgemeine Informationen",
+            "en": "General Informationen"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "ordernumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Order number",
+                "de": "Auftragsnummer"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              },
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer_location"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer_location",
+          "type": "addressInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "label": {
+              "text": {
+                "en": "Customer Location",
+                "de": "Kunde / Standort"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "05_signature_Unicor",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "06_signature_Customer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "parts",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": true,
+          "text": {
+            "de": "Teile",
+            "en": "Parts"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "text01",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "The following components of the production line have been checked in appearance by the buyer and underwent a mechanical and electrical function test as well as a process-technical demonstratioin. They therefore are considered to be accepted and handed over.",
+              "de": "Folgende Bestandteile der Produktionslinie wurden durch den Käufer äußerlich überprüft, mechanisch und elektrisch einer Funktionsprüfung sowie einer verarbeitungstechnischen Vorführung unterzogen und gelten als übergeben."
+            }
+          }
+        },
+        {
+          "id": "extrusion",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Extrusion line, type",
+                "de": "Extrusionsanlage, Typ"
+              }
+            },
+            "fields": [
+              {
+                "id": "amount",
+                "type": "singleLineTextInput",
+                "config": {
+                  "pdfHideIfValueIsEmpty": false,
+                  "pdfWidth": 0.2,
+                  "required": false,
+                  "label": {
+                    "text": {
+                      "en": "Amount",
+                      "de": "Anzahl"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "type",
+                "type": "multiLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Description type",
+                      "de": "Beschreibung Typ"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "training",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": true,
+          "text": {
+            "en": "Participators training",
+            "de": "Teilnehmer*innen Schulung"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "text02",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "The customer's staff has been trained for the operation of the production line by our technician/s and has been safety instructed. Training was done according to the operating manual.",
+              "de": "Das Kundenpersonal wurde für das Betreiben der Anlage durch unsere/n Techniker geschult und sicherheitstechnisch unterwiesen. Schulung wurde anhand der Bedienungsanleitung durchgeführt."
+            }
+          }
+        },
+        {
+          "id": "participators",
+          "type": "fieldRepeater",
+          "config": {
+            "pdfHide": false,
+            "label": {
+              "text": {
+                "en": "Participators",
+                "de": "Teilnehmer*innen"
+              }
+            },
+            "fields": [
+              {
+                "id": "user",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Name employee",
+                      "de": "Name Mitarbeiter*in"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "productionline",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Production line",
+            "de": "Produktionslinie"
+          }
+        },
+        "pdfWidth": 1
+      },
+      "fields": [
+        {
+          "id": "text03",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "Customers personnel is in the position to operate the production line on it's own.",
+              "de": "Das Kundenpersonal ist selbständig in der Lage die Produktionslinie zu bedienen."
+            }
+          }
+        },
+        {
+          "id": "text03.1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "The passwords for operating the control unit have been handed over to the supervisor:",
+              "de": "Die Passwörter zur Bedienung der Steuerung wurden an den Vorgesetzten übergeben."
+            }
+          }
+        },
+        {
+          "id": "password1",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Password level 1",
+                "de": "Passwort Level 1"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "supervisor1",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Name supervisor",
+                "de": "Name Vorgesetzte*r"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "password2",
+          "type": "singleLineTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Password level 2",
+                "de": "Passwort Level 2"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        },
+        {
+          "id": "supervisor2",
+          "type": "userSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Name supervisor",
+                "de": "Name Vorgesetzte*r"
+              }
+            },
+            "pdfHideIfValueIsEmpty": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "defects",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Defects",
+            "de": "Mängel"
+          }
+        },
+        "pdfWidth": 1
+      },
+      "fields": [
+        {
+          "id": "text04",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "The following defects, detected by the customer, must be repaired after commissioning.",
+              "de": "Folgende, durch den Kunden festgestellte Mängel müssen nach der Inbetriebnahme behoben werden."
+            }
+          }
+        },
+        {
+          "id": "defects.1",
+          "type": "fieldRepeater",
+          "config": {
+            "pdfHideIfValueIsEmpty": false,
+            "label": {
+              "text": {
+                "en": "",
+                "de": ""
+              }
+            },
+            "fields": [
+              {
+                "id": "defectstype",
+                "type": "singleLineTextInput",
+                "config": {
+                  "label": {
+                    "text": {
+                      "en": "Defect Type",
+                      "de": "Mangel Typ"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "text04.1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "This hand-over and acceptance is valid under condition that the defects are eliminated.",
+              "de": "Die Übergabe und Übernahme gilt vorbehaltlich der Beseitigung der oben aufgeführten Mängel."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "Signature",
+      "type": "fieldSection",
+      "config": {},
+      "fields": [
+        {
+          "id": "Text05",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "The customer herewith declares that the components of the production line, that are listed above, are in appearance and in mechanically, electrically and process- technically proper shape. The object of purchase herewith is considered to be accepted and handed over.",
+              "de": "Der Kunde erklärt hiermit, dass sich die oben aufgelisteten Bestandteile der Produktionslinie äußerlich, mechanisch, elektrisch sowie verarbeitungstechnisch in einwandfreiem Zustand befinden. Der Kaufgegenstand gilt somit als übergeben."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "06_signature_Customer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Kunde",
+          "en": "Signature Customer"
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "05_signature_Unicor",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "en": "Signature Unicor",
+          "de": "Unterschrift Unicor"
+        },
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": true
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "08_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Formular als E-Mail versenden",
+          "en": "Send form as E-Mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Kundenservicebericht als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed customer service report as PDF.\n\nBest regards"
+          },
+          "subject": {
+            "de": "Kundenservicebericht",
+            "en": "Customer service report"
+          }
+        }
+      }
+    }
+  ]
+}
