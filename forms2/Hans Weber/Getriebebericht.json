@@ -1,0 +1,1721 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin",
+    "hideInstanceCounterInPdf": true,
+    "pdfTitle": {
+      "de": "Vorabbericht Getriebereparaturen",
+      "en": "Preliminary report gearbox repairs"
+    }
+  },
+  "sections": [
+    {
+      "id": "01_allgemeineInformationen",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "General Information",
+            "de": "Allgemeine Informationen"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              }
+            },
+            "useAsFilterForFields": ["asset"],
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToCustomerAccountId"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ],
+                "target": {
+                  "id": "customerAddress"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "customerAddress",
+          "type": "addressInput",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer Address",
+                "de": "Kundenadresse"
+              }
+            },
+            "value": {
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "steps": ["addressToCityString"],
+                "target": {
+                  "id": "03_signatureTechnician",
+                  "propertyName": "location"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "orderNo",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Order No.",
+                "de": "Auftr. Nr."
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToERPReferenceString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Serial No. & Type",
+                "de": "WK Nr. & Typ"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer"
+                },
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "user",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Present Hans Weber Engineer",
+                "de": "Anwesender Hans Weber Monteur"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "date",
+          "type": "dateInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfHide": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Date",
+                "de": "Datum"
+              }
+            },
+            "value": {
+              "autofill": "always"
+            }
+          }
+        },
+        {
+          "id": "line0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_overallCondition",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Overall condition",
+            "de": "Gesamtzustand"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "richTextInput_1",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Description overall condition",
+                "de": "Beschreibung Gesamtzustand"
+              }
+            }
+          }
+        },
+        {
+          "id": "richTextInput_2",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Image overall condition",
+                "de": "Bild Gesamtzustand"
+              }
+            }
+          }
+        },
+        {
+          "id": "line1",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "de": "<hr>",
+              "en": "<hr>"
+            },
+            "uiHide": false
+          }
+        },
+        {
+          "id": "singleSelect_1",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Oil",
+                "de": "Öl"
+              }
+            },
+            "value": {
+              "options": {
+                "yes": {
+                  "en": "Yes",
+                  "de": "Ja"
+                },
+                "no": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "singleLineText_1",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "singleSelect_2",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Tightness",
+                "de": "Dichtigkeit"
+              }
+            },
+            "value": {
+              "options": {
+                "yes": {
+                  "en": "Yes",
+                  "de": "Ja"
+                },
+                "no": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "singleLineText_2",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "singleSelect_3",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "To be defined",
+                "de": "Noch zu definieren"
+              }
+            },
+            "value": {
+              "options": {
+                "yes": {
+                  "en": "Yes",
+                  "de": "Ja"
+                },
+                "no": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "singleLineText_3",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "singleSelect_4",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "To be defined",
+                "de": "Noch zu definieren"
+              }
+            },
+            "value": {
+              "options": {
+                "yes": {
+                  "en": "Yes",
+                  "de": "Ja"
+                },
+                "no": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "singleLineText_4",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "singleSelect_5",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "To be defined",
+                "de": "Noch zu definieren"
+              }
+            },
+            "value": {
+              "options": {
+                "yes": {
+                  "en": "Yes",
+                  "de": "Ja"
+                },
+                "no": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "singleLineText_5",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_gearTransmission",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Gear transmission",
+            "de": "Zahnradgetriebe"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "image_1",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 1",
+                "de": "Bild 1"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_1",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 1",
+                "de": "Drop Down 1"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_1",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_2",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 2",
+                "de": "Bild 2"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_2",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 2",
+                "de": "Drop Down 2"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_2",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_3",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 3",
+                "de": "Bild 3"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_3",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 3",
+                "de": "Drop Down 3"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_3",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_4",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 4",
+                "de": "Bild 4"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_4",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 4",
+                "de": "Drop Down 4"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_4",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_5",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 5",
+                "de": "Bild 5"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_5",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 5",
+                "de": "Drop Down 5"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_5",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_distributionGearbox",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Distribution gearbox",
+            "de": "Verteilgetriebe"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "image_6",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 1",
+                "de": "Bild 1"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_6",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 1",
+                "de": "Drop Down 1"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_6",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_7",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 2",
+                "de": "Bild 2"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_7",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 2",
+                "de": "Drop Down 2"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_7",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_8",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 3",
+                "de": "Bild 3"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_8",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 3",
+                "de": "Drop Down 3"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_8",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_9",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 4",
+                "de": "Bild 4"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_9",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 4",
+                "de": "Drop Down 4"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_9",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_10",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 5",
+                "de": "Bild 5"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_10",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 5",
+                "de": "Drop Down 5"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_10",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_backPressureBearing",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Back pressure bearing",
+            "de": "Rückdrucklagerung"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "image_11",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 1",
+                "de": "Bild 1"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_11",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 1",
+                "de": "Drop Down 1"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_11",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_12",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 2",
+                "de": "Bild 2"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_12",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 2",
+                "de": "Drop Down 2"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_12",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_13",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 3",
+                "de": "Bild 3"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_13",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 3",
+                "de": "Drop Down 3"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_13",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_14",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 4",
+                "de": "Bild 4"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_14",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 4",
+                "de": "Drop Down 4"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_14",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        },
+        {
+          "id": "image_15",
+          "type": "richTextInput",
+          "config": {
+            "disabled": false,
+            "required": false,
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen..."
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Image 5",
+                "de": "Bild 5"
+              }
+            }
+          }
+        },
+        {
+          "id": "dropdown_15",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Drow Down 5",
+                "de": "Drop Down 5"
+              }
+            },
+            "value": {
+              "options": {
+                "option1": {
+                  "en": "Option 1",
+                  "de": "Option 1"
+                },
+                "option2": {
+                  "en": "Option 2",
+                  "de": "Option 2"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "comment_15",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Comment",
+                "de": "Kommentar"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_signatureTechnician",
+      "type": "signatureSection",
+      "config": {
+        "required": false,
+        "headlineText": {
+          "en": "Signature Hans Weber",
+          "de": "Unterschrift Hans Weber"
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "autofill": "always",
+            "onChange": []
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "onChange": []
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "required": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "onChange": []
+          }
+        },
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUser",
+              "steps": ["userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "05_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send filled gearbox report",
+          "de": "Ausgefüllten Getriebebericht senden/gesendet"
+        },
+        "requiredAmountOfOutgoingMails": 0,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "to": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "staticEmails": []
+          },
+          "cc": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "staticEmails": []
+          },
+          "bcc": {
+            "currentUser": true,
+            "assignee": true,
+            "creator": false,
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "Preliminary report gearbox repairs",
+            "de": "Vorabbericht Getriebereparaturen",
+            "tr": "",
+            "fr": "",
+            "es": "",
+            "it": ""
+          },
+          "body": {
+            "en": "This e-mail was created automatically.\nPlease do not answer to this e-mail.",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.",
+            "tr": "",
+            "fr": "",
+            "es": "",
+            "it": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    }
+  ]
+}
