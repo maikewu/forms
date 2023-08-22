@@ -43,7 +43,26 @@
             "onChange": [
               {
                 "target": {
-                  "id": "5-signature",
+                  "id": "02_signature_Assembler",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ],
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "01_signature_Assembler",
                   "propertyName": "name"
                 },
                 "steps": [
@@ -62,60 +81,86 @@
           }
         },
         {
-          "id": "location",
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Customer",
+                "de": "Kunde"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerAccountId"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customerLocation",
           "type": "addressInput",
           "config": {
             "label": {
               "text": {
                 "de": "Montageort",
-                "en": "Assembly place"
-              }
-            },
-            "prefill": {
-              "value": [
-                {
-                  "input": "organizationId",
-                  "steps": [
-                    "accountIdToAccount",
-                    "accountToBillingAddressAddress"
-                  ]
-                }
-              ]
-            }
-          }
-        },
-        {
-          "id": "date",
-          "type": "dateInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Datum",
-                "en": "Date"
+                "en": "Assembly location"
               }
             }
           }
         },
         {
-          "id": "customerContactPerson",
+          "id": "Car",
           "type": "singleLineTextInput",
           "config": {
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Kontaktperson Kunde",
-                "en": "Contact Person Customer"
+                "de": "Fahrzeug",
+                "en": "Car"
               }
             }
           }
         },
         {
-          "id": "internalContactPerson",
-          "type": "personListInput",
+          "id": "km",
+          "type": "singleLineTextInput",
           "config": {
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Interne Kontaktperson",
-                "en": "Internal Contanct Person"
+                "de": "Km gesamt",
+                "en": "Km total"
               }
             }
           }
@@ -139,9 +184,10 @@
           "id": "note",
           "type": "htmlDisplay",
           "config": {
+            "pdfHide": true,
             "text": {
-              "de": "<h1>*ausgeführte Arbeiten bitte im Kommentarfeld Beschreiben</h1>",
-              "en": "<h1>*Please describe the work performed in the comment field</h1>"
+              "de": "<h7>*Ausgeführte Arbeiten bitte im Kommentarfeld beschreiben</h7>",
+              "en": "<h7>*Please describe the work performed in the comment field</h7>"
             }
           }
         },
@@ -160,6 +206,140 @@
       ]
     },
     {
+      "id": "01_signature_Customer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Kundenbestätigung",
+          "en": "Customer confirmation"
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "01_signature_Assembler",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "en": "Signature Assembler",
+          "de": "Unterschrift Monteur"
+        },
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUser",
+              "steps": ["userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
       "id": "Field2",
       "type": "fieldSection",
       "config": {
@@ -173,11 +353,28 @@
       },
       "fields": [
         {
-          "id": "Partliststandard",
-          "type": "partListInput",
+          "id": "Verbrauchsmaterial_01",
+          "type": "singleLineTextInput",
           "config": {
+            "pdfWidth": 0.5,
             "label": {
-              "text": {}
+              "text": {
+                "de": "Verbrauchsmaterial",
+                "en": "Expandable material"
+              }
+            }
+          }
+        },
+        {
+          "id": "Comission_01",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Kommission",
+                "en": "Comission"
+              }
             }
           }
         },
@@ -187,8 +384,8 @@
           "config": {
             "label": {
               "text": {
-                "de": "Verbrauchsmaterial",
-                "en": "Expendable material"
+                "de": "",
+                "en": ""
               }
             },
             "fields": [
@@ -246,19 +443,20 @@
       ]
     },
     {
-      "id": "5-signature",
+      "id": "02_signature_Customer",
       "type": "signatureSection",
       "config": {
         "headlineText": {
-          "de": "Unterschrift Techniker",
-          "en": "Signature Technician"
+          "de": "Kundenbestätigung",
+          "en": "Customer confirmation"
         },
-        "required": true,
+        "required": false,
         "fields": {
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": false
+            "required": false,
+            "autofill": "always"
           },
           "locationSingleLineTextInput": {
             "disable": false,
@@ -268,24 +466,32 @@
           "nameSingleLineTextInput": {
             "disable": false,
             "pdfHide": false,
-            "capitalizeFirstLetterOfEveryWord": false,
+            "capitalizeFirstLetterOfEveryWord": true,
             "required": false
           }
         },
         "pdfHide": false,
-        "pdfHideIfValueIsEmpty": false,
+        "pdfHideIfValueIsEmpty": true,
         "hideDownloadPdfButton": false,
         "hidePreviewPdfButton": false,
         "prefill": {
-          "name": [
-            {
-              "input": "currentUser",
-              "steps": [
-                "userToFullNameString"
-              ]
-            }
-          ],
           "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
             {
               "input": "organizationId",
               "steps": [
@@ -299,12 +505,84 @@
       }
     },
     {
-      "id": "6-send",
+      "id": "02_signature_Assembler",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "en": "Signature Assembler",
+          "de": "Unterschrift Monteur"
+        },
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false,
+            "autofill": "always"
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": true,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": true,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "assignedUserId",
+              "steps": ["userIdToUser", "userToFullNameString"]
+            },
+            {
+              "input": "currentUser",
+              "steps": ["userToFullNameString"]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "08_send",
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "de": "Formular als E-Mail senden",
-          "en": "Send form as E-Mail"
+          "de": "Montagenachweis als E-Mail senden",
+          "en": "Send assembly report as email"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -316,9 +594,9 @@
             "staticEmails": []
           },
           "cc": {
-            "assignee": false,
+            "assignee": true,
             "creator": false,
-            "currentUser": false,
+            "currentUser": true,
             "staticEmails": []
           },
           "to": {
@@ -327,8 +605,14 @@
             "currentUser": false,
             "staticEmails": []
           },
-          "body": {},
-          "subject": {}
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Montagenachweis als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed assembly report as PDF.\n\nBest regards"
+          },
+          "subject": {
+            "de": "Kumera: Montagenachweis",
+            "en": "Kumera: Assembly report"
+          }
         }
       }
     }
