@@ -4,7 +4,7 @@
   },
   "sections": [
     {
-      "id": "1-allgmeineInformationen",
+      "id": "1-allgemeineInformationen",
       "type": "fieldSection",
       "config": {
         "headline": {
@@ -20,15 +20,31 @@
           "id": "customer",
           "type": "companySingleSelect",
           "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "Kunde",
-                "en": "Customer"
-              }
+                "en": "Customer",
+                "de": "Kunde"
+              },
+              "pdfHide": false
             },
-            "required": true,
+            "value": {
+              "disableCreation": true,
+              "pdfHide": false
+            },
+            "useAsFilterForFields": [
+              "asset",
+              "customercontactperson"
+            ],
             "prefill": {
               "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                },
                 {
                   "input": "assetId",
                   "steps": [
@@ -37,17 +53,74 @@
                   ]
                 }
               ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "customerLocation"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customercontactperson",
+          "type": "userSingleSelect",
+          "config": {
+            "required": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Contact Person",
+                "de": "Ansprechpartner"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToCustomerPersonUserId"
+                  ]
+                }
+              ]
             }
           }
         },
         {
-          "id": "customerContactPerson",
+          "id": "html_0",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "If the contact person is not available in the selection, please use the following text field:",
+              "de": "Wenn der Ansprechpartner nicht in der Auswahl vorhanden ist, verwenden Sie bitte das folgende Textfeld:"
+    
+            },
+            "pdfHide": true,
+            "pdfWidth": 1,
+            "uiHide": false
+          }
+        },
+        {
+          "id": "contact1",
           "type": "singleLineTextInput",
           "config": {
+            "pdfHideIfValueIsEmpty": true,
             "label": {
               "text": {
-                "de": "Kontaktperson Kunde",
-                "en": "Contact Person Customer"
+                "de": "Ansprechpartner",
+                "en": "Contact"
               }
             }
           }
@@ -59,10 +132,10 @@
             "label": {
               "text": {
                 "de": "Anlage",
-                "en": "Plant"
+                "en": "Asset"
               }
             },
-            "required": true,
+            "required": false,
             "prefill": {
               "selectedAsset": [
                 {
@@ -70,64 +143,37 @@
                   "steps": []
                 }
               ]
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "location"
-                },
-                "steps": [
-                  "assetInfoToAsset",
-                  "assetToLocationAddress"
-                ]
-              },
-              {
-                "target": {
-                  "id": "5-signature",
-                  "propertyName": "location"
-                },
-                "steps": [
-                  "assetInfoToAsset",
-                  "assetToLocationAddress",
-                  "addressToCityString"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "id": "serialNumber",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Seriennummer",
-                "en": "Serial Number"
-              }
             }
           }
         },
         {
-          "id": "Gearboxmodel",
-          "type": "singleLineTextInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Getriebemodell",
-                "en": "Gearbox Model"
-              }
-            }
-          }
-        },
-        {
-          "id": "location",
+          "id": "customerLocation",
           "type": "addressInput",
           "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "required": {
+              "street": false,
+              "streetNumber": false,
+              "supplement": false,
+              "company": false,
+              "zipPostCode": false,
+              "city": false,
+              "state": false,
+              "country": false
+            },
             "label": {
               "text": {
-                "de": "Standort",
-                "en": "Location"
-              }
+                "en": "Customer Address",
+                "de": "Kundenadresse"
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
             },
             "prefill": {
               "value": [
@@ -137,9 +183,34 @@
                     "accountIdToAccount",
                     "accountToBillingAddressAddress"
                   ]
+                },
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
+                  ]
                 }
               ]
-            }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "A1-signatureTechnican",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
           }
         },
         {
@@ -162,49 +233,6 @@
               "text": {
                 "de": "Enddatum",
                 "en": "End Date"
-              }
-            }
-          }
-        },
-        {
-          "id": "technician",
-          "type": "userSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Inspiziert durch",
-                "en": "Inspection conducted by"
-              }
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "5-signature",
-                  "propertyName": "name"
-                },
-                "steps": [
-                  "userToFullNameString"
-                ]
-              }
-            ],
-            "prefill": {
-              "value": [
-                {
-                  "input": "assignedUserId",
-                  "steps": []
-                }
-              ]
-            }
-          }
-        },
-        {
-          "id": "internalContactPerson",
-          "type": "personListInput",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Interne Kontaktperson",
-                "en": "Internal Contanct Person"
               }
             }
           }
@@ -403,7 +431,7 @@
       ]
     },
     {
-      "id": "5-signature",
+      "id": "A1-signatureTechnican",
       "type": "signatureSection",
       "config": {
         "headlineText": {
@@ -415,7 +443,8 @@
           "dateInput": {
             "disable": false,
             "pdfHide": false,
-            "required": false
+            "required": false,
+            "autofill": "always"
           },
           "locationSingleLineTextInput": {
             "disable": false,
@@ -456,7 +485,7 @@
       }
     },
     {
-      "id": "6-send",
+      "id": "send",
       "type": "emailSection",
       "config": {
         "headlineText": {
