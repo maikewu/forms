@@ -1,6 +1,10 @@
 {
   "general": {
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
+    "pdfTitle": {
+      "en": "Technician mission report",
+      "de": "Techniker Einsatzbericht"
+    }
   },
   "sections": [
     {
@@ -599,8 +603,8 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "de": "Kundenservicebericht als E-Mail senden/gesendet",
-          "en": "Send/sent customer service report as email"
+          "de": "Einsatzbericht als E-Mail senden/gesendet",
+          "en": "Send/sent mission report as email"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -624,12 +628,12 @@
             "staticEmails": []
           },
           "body": {
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Kundenservicebericht als PDF.\n\nMit freundlichen Grüßen",
-            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed customer service report as PDF.\n\nBest regards"
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Einsatzbericht als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed mission report as PDF.\n\nBest regards"
           },
           "subject": {
-            "de": "Unicor: Kundenservicebericht",
-            "en": "Unicor: Customer service report"
+            "de": "Unicor: Techniker Einsatzbericht",
+            "en": "Unicor: Technician mission report"
           }
         }
       }
@@ -712,10 +716,13 @@
       },
       "fields": [
         {
-          "id": "SpareParts",
-          "type": "fieldRepeater",
+          "id": "spareParts",
+          "type": "partListInput",
           "config": {
-            "pdfHideIfValueIsEmpty": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "requiredAmountOfEntries": 0,
             "label": {
               "text": {
                 "en": "Spare Parts",
@@ -723,91 +730,51 @@
               },
               "pdfHide": false
             },
-            "fields": [
-              {
-                "id": "Parttype",
-                "type": "singleLineTextInput",
-                "config": {
-                  "pdfHideIfValueIsEmpty": false,
-                  "label": {
-                    "text": {
-                      "en": "Type",
-                      "de": "Art"
-                    }
-                  }
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Number",
+                  "de": "Nummer",
+                  "tr": "",
+                  "fr": "",
+                  "es": "",
+                  "it": ""
                 }
               },
-              {
-                "id": "List",
-                "type": "singleLineTextInput",
-                "config": {
-                  "pdfHideIfValueIsEmpty": false,
-                  "label": {
-                    "text": {
-                      "en": "List of necessary parts",
-                      "de": "Auflistung der notwendigen Teile"
-                    }
-                  }
+              "quantityNumericInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Comment",
+                  "de": "Kommentar",
+                  "tr": "",
+                  "fr": "",
+                  "es": "",
+                  "it": ""
                 }
               },
-              {
-                "id": "Department",
-                "type": "singleLineTextInput",
-                "config": {
-                  "pdfHideIfValueIsEmpty": false,
-                  "label": {
-                    "text": {
-                      "en": "Department",
-                      "de": "Abteilung"
-                    }
-                  }
-                }
+              "deliverToStaticSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
               },
-              {
-                "id": "Status",
-                "type": "staticSingleSelect",
-                "config": {
-                  "pdfHideIfValueIsEmpty": false,
-                  "label": {
-                    "text": {
-                      "en": "Status",
-                      "de": "Status"
-                    }
-                  },
-                  "value": {
-                    "options": {
-                      "1": {
-                        "en": "1",
-                        "de": "1"
-                      },
-                      "2": {
-                        "en": "2",
-                        "de": "2"
-                      },
-                      "3": {
-                        "en": "3",
-                        "de": "3"
-                      },
-                      "4": {
-                        "en": "4",
-                        "de": "4"
-                      }
-                    }
-                  }
-                }
+              "invoiceToStaticSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "warrantyBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
               }
-            ]
-          }
-        },
-        {
-          "id": "uniqueId",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b style='font-size:7pt'The status is determined by the LS,LT if required! <br>Status 1: Immediate action necessary; information to the customer; production is not possible <br>Status 2: Action within 5 days; information to the customer; production is conditionally possible <br>Status 3: Action within 4 weeks; information to customer; production is possible <br>Status 4: Consideration with the next internal orders; No information to the customer</b>",
-              "de": "<b style='font-size:7pt'Der Status wird bei Bedarf vom LS,LT festgelegt! <br>Status 1: Sofortmaßnahme notwendig; Information an den Kunden; Produktion ist nicht möglich <br>Status 2: Maßnahme innerhalb von 5 Tagen; Information an den Kunden; Produktion ist bedingt möglich <br>Status 3: Maßnahme innerhalb von 4 Wochen; Information an den Kunden; Produktion ist möglich <br>Status 4: Berücksichtigung bei den nächsten internen Aufträgen; Keine Information an den Kunden</b>"
-            },
-            "pdfHide": true
+            }
           }
         },
         {
@@ -822,18 +789,6 @@
               }
             },
             "fields": [
-              {
-                "id": "LessonsLearnedType",
-                "type": "singleLineTextInput",
-                "config": {
-                  "label": {
-                    "text": {
-                      "en": "Type",
-                      "de": "Typ"
-                    }
-                  }
-                }
-              },
               {
                 "id": "Shortdescription",
                 "type": "multiLineTextInput",
@@ -884,34 +839,6 @@
               }
             ]
           }
-        },
-        {
-          "id": "Participator",
-          "type": "personListInput",
-          "config": {
-            "pdfHideIfValueIsEmpty": true,
-            "label": {
-              "text": {
-                "en": "Participator debriefing",
-                "de": "Teilnehmende Nachbesprechung"
-              },
-              "pdfHide": false,
-              "pdfTextSize": 12
-            },
-            "value": {
-              "pdfHide": false,
-              "pdfTextSize": 10,
-              "pdfStartInNewLine": true,
-              "pdfAddLineBreaks": true,
-              "firstNameRequired": false,
-              "lastNameRequired": false,
-              "email": {
-                "required": false,
-                "pdfHide": false,
-                "hide": false
-              }
-            }
-          }
         }
       ]
     },
@@ -920,8 +847,8 @@
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "de": "Kundenservicebericht als E-Mail senden/gesendet",
-          "en": "Send/sent customer service report as email"
+          "de": "Einsatzbericht als E-Mail senden/gesendet",
+          "en": "Send/sent mission report as email"
         },
         "hidePreviewPdfButton": false,
         "hideDownloadPdfButton": false,
@@ -950,8 +877,8 @@
             "en": "This email was generated automatically.\nPlease do not reply to this email."
           },
           "subject": {
-            "de": "Unicor: Kundenservicebericht",
-            "en": "Unicor: Customer service report"
+            "de": "Unicor: Techniker Einsatzbericht",
+            "en": "Unicor: Technician mission report"
           }
         }
       }
