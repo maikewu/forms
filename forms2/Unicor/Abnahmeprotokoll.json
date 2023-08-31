@@ -11,20 +11,125 @@
           "pdfHide": true,
           "text": {
             "de": "Allgemeine Informationen",
-            "en": "General Informationen"
+            "en": "Allgemeine Informationen"
           }
         }
       },
       "fields": [
         {
+          "id": "ersteller",
+          "type": "userSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Ersteller"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                },
+                {
+                  "input": "currentUserId",
+                  "steps": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "assetType",
+          "type": "staticSingleSelect",
+          "config": {
+            "required": false,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Maschinentyp",
+                "de": "Maschinentyp"
+              },
+              "uiHide": false,
+              "pdfHide": false
+            },
+            "value": {
+              "options": {
+                "1": {
+                  "en": "UC 15",
+                  "de": "UC 15"
+                },
+                "2": {
+                  "en": "UC 28",
+                  "de": "UC 28"
+                },
+                "3": {
+                  "en": "UC 36",
+                  "de": "UC 36"
+                },
+                "4": {
+                  "en": "UC 58",
+                  "de": "UC 58"
+                },
+                "5": {
+                  "en": "UC 90",
+                  "de": "UC 90"
+                },
+                "6": {
+                  "en": "UC 135",
+                  "de": "UC 135"
+                },
+                "7": {
+                  "en": "UC 175",
+                  "de": "UC 175"
+                },
+                "8": {
+                  "en": "UC 210",
+                  "de": "UC 210"
+                },
+                "9": {
+                  "en": "UC 280",
+                  "de": "UC 280"
+                },
+                "10": {
+                  "en": "UC 3xx",
+                  "de": "UC 3xx"
+                },
+                "11": {
+                  "en": "UC 5xx",
+                  "de": "UC 5xx"
+                },
+                "12": {
+                  "en": "UC 800",
+                  "de": "UC 800"
+                },
+                "13": {
+                  "en": "UC 1200",
+                  "de": "UC 1200"
+                },
+                "14": {
+                  "en": "UC 1800",
+                  "de": "UC 1800"
+                }
+              },
+              "pdfHide": false
+            }
+          }
+        },
+        {
           "id": "ordernumber",
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 1,
+            "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Order number",
+                "en": "Auftragsnummer",
                 "de": "Auftragsnummer"
               }
             },
@@ -42,15 +147,72 @@
           }
         },
         {
+          "id": "circuitDiagramNumber",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "en": "Schaltplannummer",
+                "de": "Schaltplannummer"
+              }
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "value": {
+              "disableCreation": true
+            },
+            "label": {
+              "text": {
+                "de": "Maschine",
+                "en": "Maschine"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "steps": [
+                  "assetInfoToCustomerId",
+                  "accountIdToAccount",
+                  "accountToAccountInfo"
+                ],
+                "target": {
+                  "id": "customer"
+                }
+              }
+            ]
+          }
+        },
+        {
           "id": "customer",
           "type": "companySingleSelect",
           "config": {
             "required": false,
             "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 0.5,
+            "value": {
+              "disableCreation": true,
+              "pdfPrintCompanyNumber": true
+            },
+            "useAsFilterForFields": ["asset"],
             "label": {
               "text": {
                 "de": "Kunde",
-                "en": "Customer"
+                "en": "Kunde"
               },
               "pdfHide": false
             },
@@ -61,99 +223,23 @@
                   "steps": []
                 }
               ]
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "customer_location"
-                },
-                "steps": [
-                  "accountInfoToAccount",
-                  "accountToBillingAddressAddress"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "id": "Asetselect1",
-          "type": "assetSingleSelect",
-          "config": {
-            "label": {
-              "text": {
-                "de": "Maschine",
-                "en": "Machine"
-              }
             }
           }
         },
         {
-          "id": "Circuitdiagrammnumber",
-          "type": "singleLineTextInput",
+          "id": "uniqueId1",
+          "type": "htmlDisplay",
           "config": {
-            "label": {
-              "text": {
-                "de": "Schaltplannummer",
-                "en": "circuit diagram number"
-              }
+            "uiHide": true,
+            "text": {
+              "de": "<hr>"
             }
-          }
-        },
-        {
-          "id": "customer_location",
-          "type": "addressInput",
-          "config": {
-            "pdfHideIfValueIsEmpty": true,
-            "label": {
-              "text": {
-                "en": "Location",
-                "de": "Standort"
-              }
-            },
-            "prefill": {
-              "value": [
-                {
-                  "input": "workOrderId",
-                  "steps": [
-                    "workOrderIdToWorkOrder",
-                    "workOrderToLocationAddress"
-                  ]
-                },
-                {
-                  "input": "assetId",
-                  "steps": ["assetIdToAsset", "assetToLocationAddress"]
-                },
-                {
-                  "input": "organizationId",
-                  "steps": [
-                    "accountIdToAccount",
-                    "accountToBillingAddressAddress"
-                  ]
-                }
-              ]
-            },
-            "onChange": [
-              {
-                "target": {
-                  "id": "05_signature_Unicor",
-                  "propertyName": "location"
-                },
-                "steps": ["addressToCityString"]
-              },
-              {
-                "target": {
-                  "id": "06_signature_Customer",
-                  "propertyName": "location"
-                },
-                "steps": ["addressToCityString"]
-              }
-            ]
           }
         }
       ]
     },
     {
-      "id": "Fields",
+      "id": "fields",
       "type": "fieldSection",
       "config": {
         "headline": {
@@ -162,42 +248,30 @@
       },
       "fields": [
         {
-          "id": "Netzspannungheadline",
+          "id": "netzspannungHeadline",
           "type": "htmlDisplay",
           "config": {
             "pdfWidth": 0.3,
             "text": {
-              "de": "Netzspannung:",
-              "en": "Mains Volatage:"
+              "de": "Netzspannung",
+              "en": "Netzspannung"
             }
           }
         },
         {
-          "id": "Netzspannung",
+          "id": "netzspannung1",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "V(AC)",
-                "en": "V(AC)"
+                "de": "V(AC) / +N / +PE"
               }
             }
           }
         },
         {
-          "id": "Netzspannungheadline2",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 0.2,
-            "text": {
-              "de": "/ + N / + PE ",
-              "en": "/ + N / + PE "
-            }
-          }
-        },
-        {
-          "id": "Netzspannung2",
+          "id": "netzspannung2",
           "type": "singleLineTextInput",
           "config": {
             "pdfWidth": 0.3,
@@ -210,21 +284,21 @@
           }
         },
         {
-          "id": "Leistung",
+          "id": "leistung",
           "type": "htmlDisplay",
           "config": {
             "pdfWidth": 0.3,
             "text": {
-              "de": "Leistung:",
-              "en": "Power:"
+              "de": "Leistung",
+              "en": "Leistung"
             }
           }
         },
         {
-          "id": "Kw",
+          "id": "kw",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.7,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "kW",
@@ -232,47 +306,46 @@
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "id": "Steuerspanung",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "pdfHide": false
-        }
-      },
-      "fields": [
+        },
         {
-          "id": "Steuerspannungheadline1",
+          "id": "spacer",
           "type": "htmlDisplay",
           "config": {
             "pdfWidth": 0.3,
             "text": {
-              "de": "Steuerspannung:",
-              "en": "control Volatage:"
+              "de": " ",
+              "en": " "
             }
           }
         },
         {
-          "id": "Steuerspannung1",
+          "id": "steuerspannungHeadline1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.3,
+            "text": {
+              "de": "Steuerspannung",
+              "en": "Steuerspannung"
+            }
+          }
+        },
+        {
+          "id": "steuerspannung1",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "V(DC)",
-                "en": "V(DC)"
+                "de": "V(DC)"
               }
             }
           }
         },
         {
-          "id": "Steuerspannung1.1",
+          "id": "steuerspannung1_1",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "A",
@@ -282,34 +355,33 @@
           }
         },
         {
-          "id": "Steuerspannungheadline2",
+          "id": "spacer1",
           "type": "htmlDisplay",
           "config": {
             "pdfWidth": 0.3,
             "text": {
-              "de": "Steuerspannung:",
-              "en": "control Volatage:"
+              "de": " ",
+              "en": " "
             }
           }
         },
         {
-          "id": "Steuerspannung2",
+          "id": "steuerspannung2",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "V(DC)",
-                "en": "V(DC)"
+                "de": "V(DC)"
               }
             }
           }
         },
         {
-          "id": "Steuerspannung2.1",
+          "id": "steuerspannung2_1",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "A",
@@ -319,39 +391,99 @@
           }
         },
         {
-          "id": "Steuerspannungheadline3",
+          "id": "spacer2",
           "type": "htmlDisplay",
           "config": {
             "pdfWidth": 0.3,
             "text": {
-              "de": "Steuerspannung:",
-              "en": "control Volatage:"
+              "de": " ",
+              "en": " "
             }
           }
         },
         {
-          "id": "Steuerspannung3",
+          "id": "steuerspannung3",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "V(AC)",
-                "en": "V(AC)"
+                "de": "V(DC)"
               }
             }
           }
         },
         {
-          "id": "Steuerspannung3.1",
+          "id": "steuerspannung3_1",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "A",
                 "en": "A"
               }
+            }
+          }
+        },
+        {
+          "id": "ulHeadline1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.3,
+            "uiHide": true,
+            "text": {
+              "de": "UL - Ausführung",
+              "en": "UL - Ausführung"
+            }
+          }
+        },
+        {
+          "id": "Ul",
+          "type": "staticSingleSelect",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "de": "UL - Ausführung",
+                "en": "UL - Ausführung"
+              },
+              "pdfHide": true
+            },
+            "value": {
+              "options": {
+                "1": {
+                  "en": "Ja",
+                  "de": "Ja"
+                },
+                "2": {
+                  "en": "Nein",
+                  "de": "Nein"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "spacer3",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.3,
+            "text": {
+              "de": " ",
+              "en": " "
+            }
+          }
+        },
+        {
+          "id": "line1",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "uiHide": true,
+            "text": {
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         }
@@ -367,117 +499,108 @@
       },
       "fields": [
         {
-          "id": "ULHTML",
+          "id": "bedienseiteHeadline1",
           "type": "htmlDisplay",
           "config": {
-            "pdfHide": true,
+            "pdfWidth": 0.3,
+            "uiHide": true,
             "text": {
-              "de": "UL - Ausführung",
-              "en": "UL - execution"
+              "de": "Bedienseite",
+              "en": "Bedienseite"
             }
           }
         },
         {
-          "id": "Ul",
+          "id": "bedienseite",
           "type": "staticSingleSelect",
           "config": {
             "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "UL - Ausführung",
-                "en": "UL - execution"
-              }
-            },
-            "value": {
-              "options": {
-                "1": {
-                  "en": "Ja",
-                  "de": "Yes"
-                },
-                "2": {
-                  "en": "Nein",
-                  "de": "No"
-                }
-              }
-            }
-          }
-        },
-        {
-          "id": "Bedienseite",
-          "type": "staticSingleSelect",
-          "config": {
-            "pdfHideIfValueIsEmpty": false,
-            "label": {
-              "text": {
-                "de": "Bedienseite:",
-                "en": "Operating side"
-              }
+                "de": "Bedienseite",
+                "en": "Bedienseite"
+              },
+              "pdfHide": true
             },
             "value": {
               "options": {
                 "1": {
                   "en": "links",
-                  "de": "left"
+                  "de": "links"
                 },
                 "2": {
                   "en": "rechts",
-                  "de": "right"
+                  "de": "rechts"
                 }
               }
             }
           }
         },
         {
-          "id": "Spitzenkopfhöhe",
+          "id": "spacer4",
           "type": "htmlDisplay",
           "config": {
             "pdfWidth": 0.3,
             "text": {
-              "de": "Spritzenkopfhöhe (mm):",
-              "en": "Spray head height (mm):"
+              "de": " ",
+              "en": " "
             }
           }
         },
         {
-          "id": "Spritzenkopfhöhe1",
+          "id": "spitzenkopfhöhe",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.3,
+            "text": {
+              "de": "Spritzkopfhöhe (mm)",
+              "en": "Spritzkopfhöhe (mm)"
+            }
+          }
+        },
+        {
+          "id": "spritzenkopfhöhe1",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Soll",
-                "en": "target value"
+                "en": "Soll"
               }
             }
           }
         },
         {
-          "id": "Spritzenkopfhöhe1,1",
+          "id": "spritzenkopfhöhe1_1",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Ist",
-                "en": "reading"
+                "en": "Ist"
               }
             }
           }
         },
         {
-          "id": "Lackierung",
+          "id": "lackierung",
           "type": "htmlDisplay",
-          "config": {"pdfWidth": 0.3,
+          "config": {
+            "pdfWidth": 0.3,
             "text": {
-              "de": "Lackierung:",
-              "en": "Painting:"
+              "de": "Lackierung",
+              "en": "Lackierung"
             }
           }
         },
         {
-          "id": "Lackierunginput",
+          "id": "lackierunginput",
           "type": "singleLineTextInput",
-          "config": {"pdfWidth": 0.7,
+          "config": {
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "RAL",
@@ -487,24 +610,51 @@
           }
         },
         {
-          "id": "Beschriftung",
+          "id": "spacer5",
           "type": "htmlDisplay",
-          "config": {"pdfWidth": 0.3,
+          "config": {
+            "pdfWidth": 0.3,
             "text": {
-              "de": "Beschriftung:",
-              "en": "Labeling:"
+              "de": " ",
+              "en": " "
             }
+          }
+        },
+        {
+          "id": "beschriftung",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.3,
+            "text": {
+              "de": "Beschriftung",
+              "en": "Beschriftung"
+            },
+            "uiHide": true
           }
         },
         {
           "id": "Beschriftunginput",
           "type": "singleLineTextInput",
-          "config": {"pdfWidth": 0.7,
+          "config": {
+            "pdfWidth": 0.7,
             "label": {
               "text": {
-                "de": "",
-                "en": ""
-              }
+                "de": "Beschriftung",
+                "en": "Beschriftung"
+              },
+              "pdfHide": true
+            }
+          }
+        },
+        {
+          "id": "line2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "uiHide": true,
+            "text": {
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         }
@@ -522,22 +672,23 @@
         {
           "id": "speed",
           "type": "htmlDisplay",
-          "config": {"pdfWidth": 0.3,
+          "config": {
+            "pdfWidth": 0.3,
             "text": {
-              "de": "Produktionsgeschwindigkeit (m/min):",
-              "en": "Production speed (m/min):"
+              "de": "Produktionsgeschwindigkeit (m/min)",
+              "en": "Produktionsgeschwindigkeit (m/min)"
             }
           }
         },
         {
-          "id": "Sollmin",
+          "id": "sollmin",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Soll (min)",
-                "en": "target value (min)"
+                "en": "Soll (min)"
               }
             }
           }
@@ -546,34 +697,35 @@
           "id": "istmin",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Ist (min)",
-                "en": "reading (min)"
+                "en": "Ist (min)"
               }
             }
           }
         },
         {
-          "id": "speed1",
+          "id": "spacer6",
           "type": "htmlDisplay",
-          "config": {"pdfWidth": 0.3,
+          "config": {
+            "pdfWidth": 0.3,
             "text": {
-              "de": "Produktionsgeschwindigkeit (m/min):",
-              "en": "Production speed (m/min):"
+              "de": " ",
+              "en": " "
             }
           }
         },
         {
-          "id": "Sollmax",
+          "id": "sollmax",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Soll (max)",
-                "en": "target value (max)"
+                "en": "Soll (max)"
               }
             }
           }
@@ -582,12 +734,24 @@
           "id": "istmax",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Ist (max)",
-                "en": "reading (max)"
+                "en": "Ist (max)"
               }
+            }
+          }
+        },
+        {
+          "id": "line3",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "uiHide": true,
+            "text": {
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         }
@@ -596,94 +760,35 @@
     {
       "id": "field4",
       "type": "fieldSection",
-      "config": {
-        "headline": {
-          "pdfHide": false,
-          "text": {
-            "de": "Belastung:",
-            "en": "Load"
-          }
-        }
-      },
+      "config": {},
       "fields": [
         {
-          "id": "Belastung",
+          "id": "belastung_1",
           "type": "htmlDisplay",
-          "config": {"pdfWidth": 0.3,
+          "config": {
+            "pdfWidth": 1,
+            "text": {
+              "de": "Belastung",
+              "en": "Belastung"
+            }
+          }
+        },
+        {
+          "id": "belastung_2",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.3,
             "text": {
               "de": "Mit Formbackenträger, ohne Formbacken: bei 100 % Geschwindigkeit",
-              "en": "With mold jaw carrier, without mold jaws: at 100 % speed"
-            }
-          }
-        },
-        {
-          "id": "NW",
-          "type": "singleLineTextInput",
-          "config": {
-            "placeHolderText": {
-              "de": "-",
-              "en": "-"
-            },
-            "disabled": true,
-            "pdfWidth": 0.2,
-            "label": {
-              "text": {
-                "de": "NW",
-                "en": "NW"
-              }
-            }
-          }
-        },
-        {
-          "id": "downright",
-          "type": "singleLineTextInput",
-          "config": {"pdfWidth": 0.2,
-            "label": {
-              "text": {
-                "de": "rechts / unten in %",
-                "en": "right / bottom in %"
-              }
-            }
-          }
-        },
-        {
-          "id": "upleft",
-          "type": "singleLineTextInput",
-          "config": {"pdfWidth": 0.2,
-            "label": {
-              "text": {
-                "de": "links / oben in %",
-                "en": "left / top in %"
-              }
-            }
-          }
-        },
-        {
-          "id": "Belastung1",
-          "type": "htmlDisplay",
-          "config": {"pdfWidth": 0.3,
-            "text": {
-              "de": "bei 100 % Geschwindigkeit. <br>mit folgenden Formbacken:",
-              "en": "at 100 % speed. <br>With following forming jaws: "
-            }
-          }
-        },
-        {
-          "id": "NW1",
-          "type": "singleLineTextInput",
-          "config": {"pdfWidth": 0.2,
-            "label": {
-              "text": {
-                "de": "NW",
-                "en": "NW"
-              }
+              "en": "Mit Formbackenträger, ohne Formbacken: bei 100 % Geschwindigkeit"
             }
           }
         },
         {
           "id": "downright1",
           "type": "singleLineTextInput",
-          "config": {"pdfWidth": 0.2,
+          "config": {
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "rechts / unten in %",
@@ -695,11 +800,62 @@
         {
           "id": "upleft1",
           "type": "singleLineTextInput",
-          "config": {"pdfWidth": 0.2,
+          "config": {
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "links / oben in %",
                 "en": "left / top in %"
+              }
+            }
+          }
+        },
+        {
+          "id": "belastung_3",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 0.3,
+            "text": {
+              "de": "Mit Formbacken: bei 100 % Geschwindigkeit",
+              "en": "Mit Formbacken: bei 100 % Geschwindigkeit"
+            }
+          }
+        },
+        {
+          "id": "downright",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "de": "rechts / unten in %",
+                "en": "right / bottom in %"
+              }
+            }
+          }
+        },
+        {
+          "id": "upleft",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "de": "links / oben in %",
+                "en": "left / top in %"
+              }
+            }
+          }
+        },
+        {
+          "id": "NW",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "de": "NW",
+                "en": "NW"
               }
             }
           }
@@ -713,29 +869,20 @@
         "headline": {
           "pdfHide": false,
           "text": {
-            "de": "Prüfung von Anlagen:",
-            "en": "Testing of plants:"
+            "de": "Prüfung von Anlagen",
+            "en": "Prüfung von Anlagen"
           }
         }
       },
       "fields": [
         {
-          "id": "Testingplants",
+          "id": "testingPlants",
           "type": "htmlDisplay",
-          "config": {"pdfWidth": 1,
+          "config": {
+            "pdfWidth": 1,
             "text": {
               "de": "Prüfungen sind vor der ersten Inbetriebnahme, vor der Wiederinbetriebnahme, nach Änderungen oder Instandsetzung notwendig. Aufgedeckt werden sollen Mängel, die beim Errichten oder beim Betrieb entstanden sind. Die Prüfung umfasst die Punkte Besichtigen, Erproben und Messen. Es ist ein Prüfbericht auszufüllen.",
-              "en": "Inspections are necessary before initial start-up, before recommissioning, after modifications or maintenance. The purpose is to detect defects that have arisen during installation or operation. during operation. The test includes the points of inspection, testing and measuring. A test report must be completed."
-            }
-          }
-        },
-        {
-          "id": "whitespace1.1",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
+              "en": "Prüfungen sind vor der ersten Inbetriebnahme, vor der Wiederinbetriebnahme, nach Änderungen oder Instandsetzung notwendig. Aufgedeckt werden sollen Mängel, die beim Errichten oder beim Betrieb entstanden sind. Die Prüfung umfasst die Punkte Besichtigen, Erproben und Messen. Es ist ein Prüfbericht auszufüllen."
             }
           }
         },
@@ -744,29 +891,30 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Prüfbericht für die Erstprüfung (erste Inbetriebnahme):",
-              "en": "Test report for the initial test (first commissioning):"
-            }
+              "de": "Prüfbericht für die Erstprüfung (erste Inbetriebnahme)",
+              "en": "Prüfbericht für die Erstprüfung (erste Inbetriebnahme)"
+            },
+            "type": "H2"
           }
         },
         {
-          "id": "Besichtigenelektrisch",
+          "id": "besichtigungElektrisch",
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Besichtigen (elektrisch):",
-              "en": "Inspection (electric):"
-            }
+              "de": "Besichtigen (elektrisch)",
+              "en": "Besichtigen (elektrisch)"
+            },
+            "type": "H3"
           }
         },
         {
           "id": "Booxleantitle1",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Schutz gegen direktes Berühren gegeben? (z.B. offene Drahtenden oder fehlende Abdeckungen)",
-              "en": "Protection against direct contact given? (e.g. open wire ends or missing covers)"
+              "de": "Schutz gegen direktes Berühren gegeben? <small>(z.B. offene Drahtenden oder fehlende Abdeckungen)</small>"
             }
           }
         },
@@ -774,7 +922,7 @@
           "id": "boxoleanyes1",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -787,7 +935,7 @@
           "id": "boxoleanno1",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -800,10 +948,9 @@
           "id": "Booleantitle2",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "UL-Beschriftung? Adern beschriftet?",
-              "en": "UL labeling? Cores labeled?"
+              "de": "UL-Beschriftung? Adern beschriftet?"
             }
           }
         },
@@ -811,7 +958,7 @@
           "id": "booleanyes2",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -824,7 +971,7 @@
           "id": "booleanno2",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -837,10 +984,9 @@
           "id": "Booleantitle3",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Leitungen richtig und eindeutig beschriftet? (Besonderes Augenmerk bei UL-Anlagen!)",
-              "en": "Cables correctly and clearly labeled? (Special attention with UL systems!)"
+              "de": "Leitungen richtig und eindeutig beschriftet? <small>(Besonderes Augenmerk bei UL-Anlagen!)</small>"
             }
           }
         },
@@ -848,7 +994,7 @@
           "id": "booleanyes3",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -861,7 +1007,7 @@
           "id": "booleanno3",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -874,10 +1020,9 @@
           "id": "Booleantitle4",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Leitungen/Adern richtig ausgewählt? (z.B. Querschnitt + Farbgebung)",
-              "en": "Cables/wires selected correctly? (e.g. cross-section + color scheme)"
+              "de": "Leitungen/Adern richtig ausgewählt? <small>(z.B. Querschnitt + Farbgebung)</small>"
             }
           }
         },
@@ -885,7 +1030,7 @@
           "id": "booleanyes4",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -898,7 +1043,7 @@
           "id": "booleanno4",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -911,10 +1056,9 @@
           "id": "Booleantitle5",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Alle Bauteile ordnungsgemäß beschriftet? (Im Schaltschrank gelb + außen und Maschine silber)",
-              "en": "All components properly labeled? (In the control cabinet yellow + outside and machine silver)"
+              "de": "Alle Bauteile ordnungsgemäß beschriftet? <small>(Im Schaltschrank gelb + außen und Maschine silber)</small>"
             }
           }
         },
@@ -922,7 +1066,7 @@
           "id": "booleanyes5",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -935,7 +1079,7 @@
           "id": "booleanno5",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -948,10 +1092,9 @@
           "id": "Booleantitle6",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Schutzleiter und Potenzialausgleichsleiter vorhanden, fachgerecht montiert und beschriftet? (Schaltschrank + Maschine)",
-              "en": "Protective conductor and equipotential bonding conductor present, properly mounted and labeled? (Switch cabinet + machine)"
+              "de": "Schutzleiter und Potenzialausgleichsleiter vorhanden, fachgerecht montiert und beschriftet? <small>(Schaltschrank + Maschine)</small>"
             }
           }
         },
@@ -959,7 +1102,7 @@
           "id": "booleanyes6",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -972,7 +1115,7 @@
           "id": "booleanno6",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -985,10 +1128,9 @@
           "id": "Booleantitle7",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Erdung der Steuerspannung 24 V(DC) kontrollieren",
-              "en": "Check grounding of control voltage 24 V(DC)"
+              "de": "Erdung der Steuerspannung 24 V(DC) kontrollieren"
             }
           }
         },
@@ -996,7 +1138,7 @@
           "id": "booleanyes7",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1009,7 +1151,7 @@
           "id": "booleanno7",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1022,10 +1164,9 @@
           "id": "Booleantitle8",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Erdung der Steuerspannung 230 V(AC) kontrollieren",
-              "en": "Check grounding of control voltage 230 V(AC)"
+              "de": "Erdung der Steuerspannung 230 V(AC) kontrollieren"
             }
           }
         },
@@ -1033,7 +1174,7 @@
           "id": "booleanyes8",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1046,7 +1187,7 @@
           "id": "booleanno8",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1059,10 +1200,9 @@
           "id": "Booleantitle9",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Sicherheitseinrichtungen vorhanden und fachgerecht montiert? (Not-Aus + Pilz-Sicherheitschalter)",
-              "en": "Safety devices present and properly installed? (Emergency stop + mushroom safety switch)"
+              "de": "Sicherheitseinrichtungen vorhanden und fachgerecht montiert? <small>(Not-Aus + Pilz-Sicherheitschalter)</small>"
             }
           }
         },
@@ -1070,7 +1210,7 @@
           "id": "booleanyes9",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1083,7 +1223,7 @@
           "id": "booleanno9",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1096,10 +1236,9 @@
           "id": "Booleantitle10",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Sicherheitsaufkleber angebracht?",
-              "en": "Safety sticker applied?"
+              "de": "Sicherheitsaufkleber angebracht?"
             }
           }
         },
@@ -1107,7 +1246,7 @@
           "id": "booleanyes10",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1120,7 +1259,7 @@
           "id": "booleanno10",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1133,10 +1272,9 @@
           "id": "Booleantitle11",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Typenschild im Schaltschrank angebracht?",
-              "en": "Nameplate attached in the control cabinet?"
+              "de": "Typenschild im Schaltschrank angebracht?"
             }
           }
         },
@@ -1144,7 +1282,7 @@
           "id": "booleanyes11",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1157,7 +1295,7 @@
           "id": "booleanno11",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1170,10 +1308,9 @@
           "id": "Booleantitle12",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Dokumentation ausgefüllt bzw. vorhanden? (Checkliste Arbeitsschritte + Schaltplan + Prüfprotokoll SK-Extern)",
-              "en": "Documentation completed or available? (Checklist work steps + circuit diagram + test protocol SK-Extern)"
+              "de": "Dokumentation ausgefüllt bzw. vorhanden? <small>(Checkliste Arbeitsschritte + Schaltplan + Prüfprotokoll SK-Extern)</small>"
             }
           }
         },
@@ -1181,7 +1318,7 @@
           "id": "booleanyes12",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1194,7 +1331,7 @@
           "id": "booleanno12",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1207,7 +1344,7 @@
           "id": "Booleantitle13",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Verbindungskabel in der Checkliste eingetragen?",
               "en": "Connection cable entered in the checklist?"
@@ -1218,7 +1355,7 @@
           "id": "booleanyes13",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1231,7 +1368,7 @@
           "id": "booleanno13",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1244,7 +1381,7 @@
           "id": "Booleantitle14",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Sonderausstattungen in der Checkliste eingetragen?",
               "en": "Special equipment entered in the checklist?"
@@ -1255,7 +1392,7 @@
           "id": "booleanyes14",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1268,7 +1405,7 @@
           "id": "booleanno14",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1278,33 +1415,35 @@
           }
         },
         {
-          "id": "whitespace1.2",
-          "type": "headlineDisplay",
+          "id": "line_elektrisch",
+          "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 1,
+            "uiHide": true,
             "text": {
-              "de": "",
-              "en": ""
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         },
         {
-          "id": "Besichtigenelmechanisch",
+          "id": "besichtigungMechanisch",
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Besichtigen (mechanisch):",
-              "en": "Inspection (mechanical):"
-            }
+              "de": "Besichtigen (mechanisch)",
+              "en": "Besichtigen (mechanisch)"
+            },
+            "type": "H3"
           }
         },
         {
           "id": "Booleantitle15",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Lackierung: Richtige Corrugatorfarbe?",
-              "en": "Painting: Right corrugator color?"
+              "de": "Lackierung: Richtige Corrugatorfarbe?"
             }
           }
         },
@@ -1312,7 +1451,7 @@
           "id": "booleanyes15",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1325,7 +1464,7 @@
           "id": "booleanno15",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1338,10 +1477,9 @@
           "id": "Booleantitle16",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Richtige Bedienseite? (z.B. Rechts- o. Linksbedienung)",
-              "en": "Correct operating side? (e.g. right or left operation)"
+              "de": "Richtige Bedienseite? <small>(z.B. Rechts- o. Linksbedienung)</small>"
             }
           }
         },
@@ -1349,7 +1487,7 @@
           "id": "booleanyes16",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1362,7 +1500,7 @@
           "id": "booleanno16",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1375,10 +1513,9 @@
           "id": "Booleantitle17",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
-              "de": "Richtige Spritzkopfhöhe? (Wert auf der 1. Seite eintragen.)",
-              "en": "Correct spray head height? (Enter value on 1st page.)"
+              "de": "Richtige Spritzkopfhöhe? <small>(Wert auf der 1. Seite eintragen.)</small>"
             }
           }
         },
@@ -1386,7 +1523,7 @@
           "id": "booleanyes17",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1399,7 +1536,7 @@
           "id": "booleanno17",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1412,7 +1549,7 @@
           "id": "Booleantitle18",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Messuhr für Höhenverstellung angebracht?",
               "en": "Dial gauge for height adjustment attached?"
@@ -1423,7 +1560,7 @@
           "id": "booleanyes18",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1436,7 +1573,7 @@
           "id": "booleanno18",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1449,7 +1586,7 @@
           "id": "Booleantitle19",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Messuhr für Seitenverstellung angebracht?",
               "en": "Dial gauge for lateral adjustment attached?"
@@ -1460,7 +1597,7 @@
           "id": "booleanyes19",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1473,7 +1610,7 @@
           "id": "booleanno19",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1486,7 +1623,7 @@
           "id": "Booleantitle20",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Alle Verstelleinheiten zugänglich?",
               "en": "All adjustment units accessible?"
@@ -1497,7 +1634,7 @@
           "id": "booleanyes20",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1510,7 +1647,7 @@
           "id": "booleanno20",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1523,7 +1660,7 @@
           "id": "Booleantitle21",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Mittelkanal eingeschliffen?",
               "en": "Center channel grinded in?"
@@ -1534,7 +1671,7 @@
           "id": "booleanyes21",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1547,7 +1684,7 @@
           "id": "booleanno21",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1560,7 +1697,7 @@
           "id": "Booleantitle22",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Maschine mit Vakuum?",
               "en": "Machine with vacuum?"
@@ -1571,7 +1708,7 @@
           "id": "booleanyes22",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1584,7 +1721,7 @@
           "id": "booleanno22",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1597,7 +1734,7 @@
           "id": "Booleantitle23",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Wasseranschluss für Schaltschrankklimagerät fachgerecht montiert?",
               "en": "Water connection for control cabinet air conditioner professionally mounted?"
@@ -1608,7 +1745,7 @@
           "id": "booleanyes23",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1621,7 +1758,7 @@
           "id": "booleanno23",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1634,7 +1771,7 @@
           "id": "Booleantitle24",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Funktions- und Sicherheitsaufkleber angebracht?",
               "en": "Function and safety stickers attached?"
@@ -1645,7 +1782,7 @@
           "id": "booleanyes24",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1658,7 +1795,7 @@
           "id": "booleanno24",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1671,7 +1808,7 @@
           "id": "Booleantitle25",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Typenschild am Corrugator angebracht?",
               "en": "Nameplate attached to the corrugator?"
@@ -1682,7 +1819,7 @@
           "id": "booleanyes25",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1695,7 +1832,7 @@
           "id": "booleanno25",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1708,7 +1845,7 @@
           "id": "Booleantitle26",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "CE-Kennzeichnung angebracht?",
               "en": "CE marking attached?"
@@ -1719,7 +1856,7 @@
           "id": "booleanyes26",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1732,7 +1869,7 @@
           "id": "booleanno26",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1745,7 +1882,7 @@
           "id": "Booleantitle27",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Scharfe, grathaltige Bauteile nachgearbeitet?",
               "en": "Sharp, burr-containing components reworked?"
@@ -1756,7 +1893,7 @@
           "id": "booleanyes27",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1769,7 +1906,7 @@
           "id": "booleanno27",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
@@ -1782,7 +1919,7 @@
           "id": "Booleantitle28",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.8,
             "text": {
               "de": "Alle Bauteile fachgerecht montiert?",
               "en": "All components properly mounted?"
@@ -1793,7 +1930,7 @@
           "id": "booleanyes28",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Ja",
@@ -1806,12 +1943,24 @@
           "id": "booleanno28",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.25,
+            "pdfWidth": 0.1,
             "label": {
               "text": {
                 "de": "Nein",
                 "en": "No"
               }
+            }
+          }
+        },
+        {
+          "id": "line_mechanisch",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "uiHide": true,
+            "text": {
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         }
@@ -1824,8 +1973,7 @@
         "headline": {
           "pdfHide": false,
           "text": {
-            "de": "Fotodokumentation (elektrisch):",
-            "en": "Photo documentation (electric):"
+            "de": "Fotodokumentation (elektrisch)"
           }
         }
       },
@@ -1833,33 +1981,10 @@
         {
           "id": "archivepics1",
           "type": "htmlDisplay",
-          "config": {"pdfWidth": 1,
-            "text": {
-              "de": "Bitte von JEDEM genannten Bauteil das Typenschild fotografieren und hier hochladen. Wenn Bauteil nicht vorhanden, bitte ankreuzen!",
-              "en": "Please take a picture of the nameplate of EACH component and upload it here. If component is not available, please mark with a cross!"
-            }
-          }
-        },
-        {
-          "id": "fileupload1",
-          "type": "fileUpload",
           "config": {
-            "maximumAccumulatedFileSize": 100,
-            "label": {
-              "text": {
-                "de": "Upload",
-                "en": "Upload"
-              }
-            }
-          }
-        },
-        {
-          "id": "whitespace1.3",
-          "type": "headlineDisplay",
-          "config": {
+            "pdfWidth": 1,
             "text": {
-              "de": "",
-              "en": ""
+              "de": "Bitte von jedem genannten Bauteil das Typenschild fotografieren und hochladen. Den jeweiligen Hersteller im entsprechenden Textfeld eintragen. Wenn Bauteil nicht vorhanden, bitte ankreuzen!"
             }
           }
         },
@@ -1870,7 +1995,8 @@
             "text": {
               "de": "Allgemein",
               "en": "Genaral"
-            }
+            },
+            "type": "H2"
           }
         },
         {
@@ -2069,12 +2195,14 @@
           }
         },
         {
-          "id": "whitespace1.4",
-          "type": "headlineDisplay",
+          "id": "line_1",
+          "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 1,
+            "uiHide": false,
             "text": {
-              "de": "",
-              "en": ""
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         },
@@ -2083,9 +2211,10 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Steuerung/Kommunikation:",
-              "en": "Control/Communication:"
-            }
+              "de": "Steuerung/Kommunikation",
+              "en": "Control/Communication"
+            },
+            "type": "H2"
           }
         },
         {
@@ -2206,12 +2335,14 @@
           }
         },
         {
-          "id": "whitespace1.5",
-          "type": "headlineDisplay",
+          "id": "line_2",
+          "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 1,
+            "uiHide": false,
             "text": {
-              "de": "",
-              "en": ""
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         },
@@ -2222,7 +2353,8 @@
             "text": {
               "de": "Ausstattung",
               "en": "Features"
-            }
+            },
+            "type": "H2"
           }
         },
         {
@@ -2499,12 +2631,14 @@
           }
         },
         {
-          "id": "whitespace1.6",
-          "type": "headlineDisplay",
+          "id": "line_3",
+          "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 1,
+            "uiHide": false,
             "text": {
-              "de": "",
-              "en": ""
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         },
@@ -2513,9 +2647,10 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Zubehör:",
-              "en": "Accessories:"
-            }
+              "de": "Zubehör",
+              "en": "Accessories"
+            },
+            "type": "H2"
           }
         },
         {
@@ -2563,8 +2698,7 @@
           "config": {
             "pdfWidth": 0.3,
             "text": {
-              "de": "Versorgungseinheit (Kühldorntemperierung)",
-              "en": "Supply unit (cooling mandrel temperature control)"
+              "de": "Versorgungseinheit <small>(Kühldorntemperierung)</small>"
             }
           }
         },
@@ -2636,12 +2770,14 @@
           }
         },
         {
-          "id": "whitespace1.7",
-          "type": "headlineDisplay",
+          "id": "line_4",
+          "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 1,
+            "uiHide": false,
             "text": {
-              "de": "",
-              "en": ""
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         },
@@ -2652,7 +2788,8 @@
             "text": {
               "de": "ab UC 210",
               "en": "from UC 210"
-            }
+            },
+            "type": "H2"
           }
         },
         {
@@ -2895,7 +3032,7 @@
           "config": {
             "pdfWidth": 0.3,
             "text": {
-              "de": "Versorgungseinheit (Kühldornvakuum)",
+              "de": "Versorgungseinheit <small>(Kühldornvakuum)</small>",
               "en": "Supply unit (cooling mandrel vacuum)"
             }
           }
@@ -2929,12 +3066,14 @@
           }
         },
         {
-          "id": "whitespace1.8",
-          "type": "headlineDisplay",
+          "id": "line_5",
+          "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 1,
+            "uiHide": false,
             "text": {
-              "de": "",
-              "en": ""
+              "de": "<hr>",
+              "en": "<hr> "
             }
           }
         },
@@ -2945,7 +3084,8 @@
             "text": {
               "de": "ab UC 800",
               "en": "from UC 800"
-            }
+            },
+            "type": "H2"
           }
         },
         {
@@ -2988,16 +3128,36 @@
           }
         },
         {
-          "id": "fileupload2",
+          "id": "fileUpload",
           "type": "fileUpload",
           "config": {
-            "maximumAccumulatedFileSize": 100,
+            "disabled": false,
+            "pdfHide": true,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
             "label": {
               "text": {
-                "de": "Upload",
-                "en": "Upload"
-              }
+                "de": "Bildupload"
+              },
+              "pdfHide": true
             }
+          }
+        },
+        {
+          "id": "uniqueId",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "",
+              "de": "<hr>",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "pdfWidth": 1
           }
         }
       ]
@@ -3009,8 +3169,8 @@
         "headline": {
           "pdfHide": false,
           "text": {
-            "de": "Messen (elektrisch):",
-            "en": "Measure (electrical):"
+            "de": "Messen (elektrisch)",
+            "en": "Measure (electrical)"
           }
         }
       },
@@ -3019,23 +3179,9 @@
           "id": "html2.0",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.6,
+            "pdfWidth": 1,
             "text": {
-              "de": "Isolationswiderstandsprüfung durchführen (max. 500 V<sub>DC</sub>)",
-              "en": "Perform insulation resistance test (max. 500 V<sub>DC</sub>)"
-            }
-          }
-        },
-        {
-          "id": "html2.0.1",
-          "type": "htmlDisplay",
-          "config": {
-            "uiHide": true,
-            "pdfWidth": 0.1,
-            "pdfHide": false,
-            "text": {
-              "de": "R<sub>ISO</sub>>",
-              "en": "R<sub>ISO</sub>>"
+              "de": "Isolationswiderstandsprüfung durchführen <small>(max. 500 V<sub>DC</sub>)</small>"
             }
           }
         },
@@ -3043,6 +3189,7 @@
           "id": "html2.0.2",
           "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 0.3,
             "pdfHide": true,
             "text": {
               "de": "R<sub>ISO</sub>> ____ MΩ",
@@ -3054,28 +3201,11 @@
           "id": "measure2.0",
           "type": "singleLineTextInput",
           "config": {
-            "placeHolderText": {
-              "de": "Messwert in MΩ",
-              "en": "Value in MΩ"
-            },
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "",
-                "en": ""
+                "de": "Messwert in MΩ"
               }
-            }
-          }
-        },
-        {
-          "id": "html2.0.3",
-          "type": "htmlDisplay",
-          "config": {
-            "uiHide": true,
-            "pdfWidth": 0.1,
-            "text": {
-              "de": "MΩ",
-              "en": "MΩ"
             }
           }
         },
@@ -3083,7 +3213,7 @@
           "id": "Checkbox2.0",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {}
             }
@@ -3093,23 +3223,9 @@
           "id": "html2.1",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.6,
+            "pdfWidth": 1,
             "text": {
-              "de": "Schutzleiterwiderstände messen (größten Messwert eintragen)",
-              "en": "Measure protective conductor resistances (enter largest measured value)"
-            }
-          }
-        },
-        {
-          "id": "html2.1.1",
-          "type": "htmlDisplay",
-          "config": {
-            "uiHide": true,
-            "pdfWidth": 0.1,
-            "pdfHide": false,
-            "text": {
-              "de": "R<sub>LO</sub>=",
-              "en": "R<sub>LO</sub>="
+              "de": "Schutzleiterwiderstände messen <small>(größten Messwert eintragen)</small>"
             }
           }
         },
@@ -3117,6 +3233,7 @@
           "id": "html2.1.2",
           "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 0.3,
             "pdfHide": true,
             "text": {
               "de": "R<sub>LO</sub>> ____ Ω",
@@ -3128,28 +3245,12 @@
           "id": "measure2.1",
           "type": "singleLineTextInput",
           "config": {
-            "placeHolderText": {
-              "de": "Messwert in Ω",
-              "en": "Value in Ω"
-            },
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "",
-                "en": ""
+                "de": "Messwert in Ω",
+                "en": "Value in Ω"
               }
-            }
-          }
-        },
-        {
-          "id": "html2.1.3",
-          "type": "htmlDisplay",
-          "config": {
-            "uiHide": true,
-            "pdfWidth": 0.1,
-            "text": {
-              "de": "Ω",
-              "en": "Ω"
             }
           }
         },
@@ -3157,7 +3258,7 @@
           "id": "Checkbox2.1",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {}
             }
@@ -3167,7 +3268,7 @@
           "id": "drehfeld1",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.3,
             "text": {
               "de": "Netzanschluss auf „Rechtsdrehfeld“ prüfen",
               "en": "Check mains connection for clockwise rotating field"
@@ -3178,7 +3279,7 @@
           "id": "clockwise",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "↻",
@@ -3188,13 +3289,23 @@
           }
         },
         {
+          "id": "Checkbox3_11",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {}
+            }
+          }
+        },
+        {
           "id": "html2.2",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.4,
+            "pdfWidth": 0.3,
             "text": {
-              "de": "Fehlerschleifenimpedanz messen L1",
-              "en": "Measure fault loop impedance L1"
+              "de": "Fehlerschleifenimpedanz messen",
+              "en": "Measure fault loop impedance"
             }
           }
         },
@@ -3202,23 +3313,10 @@
           "id": "html2.2.0",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "text": {
               "de": "Z<sub>SCHL</sub> in Ω",
               "en": "Z<sub>SCHL</sub> in Ω"
-            }
-          }
-        },
-        {
-          "id": "2.2.1",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.2,
-            "label": {
-              "text": {
-                "de": "",
-                "en": ""
-              }
             }
           }
         },
@@ -3226,7 +3324,7 @@
           "id": "html2.2.3",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "text": {
               "de": "I<sub>K</sub> in A",
               "en": "I<sub>K</sub> in A"
@@ -3234,131 +3332,39 @@
           }
         },
         {
-          "id": "2.2.2",
+          "id": "l1",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "",
+                "de": "L1",
                 "en": ""
               }
             }
           }
         },
         {
-          "id": "html2.3",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 0.4,
-            "text": {
-              "de": "Fehlerschleifenimpedanz messen L2",
-              "en": "Measure fault loop impedance L2"
-            }
-          }
-        },
-        {
-          "id": "html2.3.0",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 0.2,
-            "text": {
-              "de": "Z<sub>SCHL</sub> in Ω",
-              "en": "Z<sub>SCHL</sub> in Ω"
-            }
-          }
-        },
-        {
-          "id": "2.3.1",
+          "id": "l2",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.2,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "",
+                "de": "L1",
                 "en": ""
               }
             }
           }
         },
         {
-          "id": "html2.3.3",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 0.1,
-            "text": {
-              "de": "I<sub>K</sub> in A",
-              "en": "I<sub>K</sub> in A"
-            }
-          }
-        },
-        {
-          "id": "2.3.2",
+          "id": "l3",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "",
-                "en": ""
-              }
-            }
-          }
-        },
-        {
-          "id": "html2.4",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 0.4,
-            "text": {
-              "de": "Fehlerschleifenimpedanz messen L3",
-              "en": "Measure fault loop impedance L3"
-            }
-          }
-        },
-        {
-          "id": "html2.4.0",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 0.2,
-            "text": {
-              "de": "Z<sub>SCHL</sub> in Ω",
-              "en": "Z<sub>SCHL</sub> in Ω"
-            }
-          }
-        },
-        {
-          "id": "2.4.1",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.2,
-            "label": {
-              "text": {
-                "de": "",
-                "en": ""
-              }
-            }
-          }
-        },
-        {
-          "id": "html2.4.3",
-          "type": "htmlDisplay",
-          "config": {
-            "pdfWidth": 0.1,
-            "text": {
-              "de": "I<sub>K</sub> in A",
-              "en": "I<sub>K</sub> in A"
-            }
-          }
-        },
-        {
-          "id": "2.4.2",
-          "type": "singleLineTextInput",
-          "config": {
-            "pdfWidth": 0.1,
-            "label": {
-              "text": {
-                "de": "",
+                "de": "L1",
                 "en": ""
               }
             }
@@ -3368,7 +3374,7 @@
           "id": "drehfeld2",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.3,
             "text": {
               "de": "Nachfolgesteckdose auf „Rechtsdrehfeld“ prüfen",
               "en": "Check successor socket for clockwise rotating field"
@@ -3379,7 +3385,7 @@
           "id": "clockwise2",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "↻",
@@ -3389,10 +3395,20 @@
           }
         },
         {
+          "id": "Checkbox3_1",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {}
+            }
+          }
+        },
+        {
           "id": "html4.0",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
               "de": "230 V<sub>AC</sub> zuschalten, Spannung kontrollieren",
               "en": "Switch on 230 V<sub>AC</sub>, check voltage"
@@ -3403,7 +3419,7 @@
           "id": "boolean29",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {}
             }
@@ -3413,7 +3429,7 @@
           "id": "html4.1",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
               "de": "24 V<sub>DC</sub> zuschalten, Spannung kontrollieren",
               "en": "Switch on 24 V<sub>DC</sub>, check voltage"
@@ -3424,7 +3440,7 @@
           "id": "boolean30",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {}
             }
@@ -3434,9 +3450,9 @@
           "id": "html4.2",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
-              "de": "Zuordnung Potenziale kontrollieren (1L+, 2L+, 3L+)",
+              "de": "Zuordnung Potenziale kontrollieren <small>(1L+, 2L+, 3L+)</small>",
               "en": "Control assignment potentials (1L+, 2L+, 3L+)"
             }
           }
@@ -3445,7 +3461,7 @@
           "id": "boolean31",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {}
             }
@@ -3460,8 +3476,8 @@
         "headline": {
           "pdfHide": false,
           "text": {
-            "de": "Einstellungen (elektrisch):",
-            "en": "Settings (electrical):"
+            "de": "Einstellungen (elektrisch)",
+            "en": "Settings (electrical)"
           }
         }
       },
@@ -3470,7 +3486,7 @@
           "id": "Booleantitle32",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
               "de": "Motorschutzschalter laut Schaltplan auf Nennstrom einstellen",
               "en": "Set motor protection switch to rated current according to circuit diagram"
@@ -3481,7 +3497,7 @@
           "id": "booleanyes32",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -3494,7 +3510,7 @@
           "id": "Booleantitle33",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
               "de": "Netzüberwachungsrelais zuschalten und nach Schaltplan einstellen",
               "en": "Switch on mains monitoring relay and set according to circuit diagram"
@@ -3505,7 +3521,7 @@
           "id": "booleanyes33",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -3518,9 +3534,9 @@
           "id": "Booleantitle34",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
-              "de": "USV-Modul einstellen t(MAX) = 5 min",
+              "de": "USV-Modul einstellen | t(MAX) = 5 min",
               "en": "Set UPS module t(MAX) = 5 min"
             }
           }
@@ -3529,7 +3545,7 @@
           "id": "booleanyes34",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -3542,9 +3558,9 @@
           "id": "Booleantitle35",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
-              "de": "24 V-Netzteil nach Schaltplan einstellen U = 24,8 V",
+              "de": "24 V-Netzteil nach Schaltplan einstellen | U = 24,8 V",
               "en": "Set 24 V power supply unit according to circuit diagram U = 24.8 V"
             }
           }
@@ -3553,7 +3569,7 @@
           "id": "booleanyes35",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -3566,9 +3582,9 @@
           "id": "Booleantitle36",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
-              "de": "48 V-Netzteil nach Schaltplan einstellen U = 54,2 V",
+              "de": "48 V-Netzteil nach Schaltplan einstellen | U = 54,2 V",
               "en": "Set 48 V power supply according to circuit diagram U = 54.2 V"
             }
           }
@@ -3577,22 +3593,12 @@
           "id": "booleanyes36",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
                 "en": ""
               }
-            }
-          }
-        },
-        {
-          "id": "whitespace1.8.1",
-          "type": "headlineDisplay",
-          "config": {
-            "text": {
-              "de": "",
-              "en": ""
             }
           }
         },
@@ -3610,10 +3616,10 @@
           "id": "Booleantitle37",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
-              "de": "Anlaufspannung: 80 % (ab UC 800)",
-              "en": "starting voltage: 80 % (from UC 800)"
+              "de": "Anlaufspannung: 80 %",
+              "en": "starting voltage: 80 %"
             }
           }
         },
@@ -3621,7 +3627,7 @@
           "id": "booleanyes37",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -3634,10 +3640,10 @@
           "id": "Booleantitle38",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
-              "de": "Anlaufzeit: 5 s (ab UC 800)",
-              "en": "start-up time: 5 s (from UC 800)"
+              "de": "Anlaufzeit: 5 s",
+              "en": "start-up time: 5 s"
             }
           }
         },
@@ -3645,7 +3651,7 @@
           "id": "booleanyes38",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -3658,10 +3664,10 @@
           "id": "Booleantitle39",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
-              "de": "Anzahl der Pumpen: 1 (ab UC 800)",
-              "en": "number of pumps: 1 (from UC 800)"
+              "de": "Anzahl der Pumpen: 1",
+              "en": "number of pumps: 1"
             }
           }
         },
@@ -3669,7 +3675,7 @@
           "id": "booleanyes39",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -3693,7 +3699,7 @@
           "type": "headlineDisplay",
           "config": {
             "text": {
-              "de": "Sanftstarter für Hydraulikeinheit einstellen",
+              "de": "Sanftstarter für Hydraulikeinheit einstellen <small>(ab UC 800)</small>",
               "en": "Set soft starter for hydraulic unit"
             }
           }
@@ -3702,7 +3708,7 @@
           "id": "anlaufspannung",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 1,
+            "pdfWidth": 0.7,
             "label": {
               "text": {
                 "de": "Anlaufspannung in %",
@@ -3712,10 +3718,23 @@
           }
         },
         {
+          "id": "booleanyes391",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            }
+          }
+        },
+        {
           "id": "anlaufzeit",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 1,
+            "pdfWidth": 0.7,
             "label": {
               "text": {
                 "de": "Anlaufzeit: in Sekunden",
@@ -3725,14 +3744,40 @@
           }
         },
         {
+          "id": "booleanyes392",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            }
+          }
+        },
+        {
           "id": "Pumpen",
           "type": "singleLineTextInput",
           "config": {
-            "pdfWidth": 1,
+            "pdfWidth": 0.7,
             "label": {
               "text": {
                 "de": "Anzahl der Pumpen",
                 "en": "Number of pumps"
+              }
+            }
+          }
+        },
+        {
+          "id": "booleanyes393",
+          "type": "booleanInput",
+          "config": {
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "de": "",
+                "en": ""
               }
             }
           }
@@ -3748,10 +3793,10 @@
           }
         },
         {
-          "id": "Booleantitle40",
+          "id": "Booleantitle401",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
               "de": "Not-Aus Relais, SIM-Karte einsetzen und Parameter laden",
               "en": "Emergency stop relay, insert SIM card and load parameters"
@@ -3762,7 +3807,7 @@
           "id": "booleanyes40",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -3770,26 +3815,32 @@
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "id": "field9",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "pdfHide": false,
-          "text": {
-            "de": "Adressen der Busteilnehmer einstellen",
-            "en": "Setting the addresses of the bus devices"
+        },
+        {
+          "id": "whitespace11",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "",
+              "en": ""
+            }
           }
-        }
-      },
-      "fields": [
+        },
+        {
+          "id": "Booleantitle403",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "text": {
+              "de": "Adressen der Busteilnehmer einstellen"
+            }
+          }
+        },
         {
           "id": "tabletest",
           "type": "htmlDisplay",
           "config": {
+            "pdfWidth": 0.7,
             "text": {
               "de": "<table><tr><th></th><th>Dezimal</th><th>Hex 1er</th><th>Hex 16er</th></tr><tr><td>Panel</td><td>1</td><td>1</td><td>0</td></tr><tr><td>Servoregler Master</td><td>10</td><td>A</td><td>0</td></tr><tr><td>Servoregler Slave</td><td>11</td><td>B</td><td>0</td></tr><tr><td>Busmodul Schaltschrank</td><td>20</td><td>4</td><td>1</td></tr><tr><td>Busmodul extern. Wassertank</td><td>21</td><td>5</td><td>1</td></tr><tr><td>Busmodul Klemmkasten</td><td>22</td><td>6</td><td>1</td></tr></table>",
               "en": "<table><tr><th></th><th>Decimal</th><th>Hex 1</th><th>Hex 16</th></tr><tr><td>Panel</td><td>1</td><td>1</td><td>0</td></tr><tr><td>servo controller master</td><td>10</td><td>A</td><td>0</td></tr><tr><td>servo controller Slave</td><td>11</td><td>B</td><td>0</td></tr><tr><td>Bus module control cabinet</td><td>20</td><td>4</td><td>1</td></tr><tr><td>Bus module external water tank</td><td>21</td><td>5</td><td>1</td></tr><tr><td>Bus module terminal box</td><td>22</td><td>6</td><td>1</td></tr></table>"
@@ -3797,32 +3848,28 @@
           }
         },
         {
-          "id": "Buseinstellen",
+          "id": "booleanyes401",
           "type": "booleanInput",
           "config": {
+            "pdfWidth": 0.3,
             "label": {
               "text": {
-                "de": "Adressen der Busteilnehmer einstellen",
-                "en": "Setting the addresses of the bus devices"
+                "de": "",
+                "en": ""
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "id": "field10",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "pdfHide": false,
-          "text": {
-            "de": "Speichermedium einsetzen + Parameter laden",
-            "en": "Insert storage medium + load parameters"
+        },
+        {
+          "id": "Booleantitle40",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "text": {
+              "de": "Speichermedium einsetzen + Parameter laden"
+            }
           }
-        }
-      },
-      "fields": [
+        },
         {
           "id": "boolean5.0",
           "type": "booleanInput",
@@ -3843,8 +3890,7 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "de": "MB",
-                "en": "mb"
+                "de": "MB"
               }
             }
           }
@@ -3867,10 +3913,6 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfWidth": 0.5,
-            "placeHolderText": {
-              "de": "2GB",
-              "en": "2GB"
-            },
             "label": {
               "text": {
                 "de": "GB",
@@ -3893,41 +3935,30 @@
           }
         },
         {
-          "id": "input5.1",
-          "type": "singleLineTextInput",
+          "id": "Booleantitle402",
+          "type": "htmlDisplay",
           "config": {
             "pdfWidth": 0.5,
-            "placeHolderText": {
-              "de": "2GB",
-              "en": "2GB"
-            },
-            "label": {
-              "text": {
-                "de": "GB",
-                "en": "GB"
-              }
+            "text": {
+              "de": " "
             }
           }
-        }
-      ]
-    },
-    {
-      "id": "field11",
-      "type": "fieldSection",
-      "config": {
-        "headline": {
-          "pdfHide": false,
-          "text": {
-            "de": "Passwörter eintragen",
-            "en": "Enter passwords"
+        },
+        {
+          "id": "Booleantitle41",
+          "type": "htmlDisplay",
+          "config": {
+            "pdfWidth": 1,
+            "text": {
+              "de": "Passwörter eintragen"
+            }
           }
-        }
-      },
-      "fields": [
+        },
         {
           "id": "pwlevel1",
           "type": "singleLineTextInput",
           "config": {
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Level 1",
@@ -3940,6 +3971,7 @@
           "id": "pwlevel2",
           "type": "singleLineTextInput",
           "config": {
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Level 2",
@@ -3952,6 +3984,7 @@
           "id": "pwlevel3",
           "type": "singleLineTextInput",
           "config": {
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "Level 3",
@@ -3961,21 +3994,10 @@
           }
         },
         {
-          "id": "Whitespace1",
-          "type": "headlineDisplay",
-          "config": {
-            "pdfTextSize": 1,
-            "text": {
-              "de": "",
-              "en": ""
-            }
-          }
-        },
-        {
           "id": "Booleantitle6.0",
           "type": "htmlDisplay",
           "config": {
-            "pdfWidth": 0.9,
+            "pdfWidth": 0.7,
             "text": {
               "de": "Maschinenparameter in den Serviceseiten kontrollieren/eingeben",
               "en": "Check/enter machine parameters in the service pages"
@@ -3986,7 +4008,7 @@
           "id": "booleanyesX",
           "type": "booleanInput",
           "config": {
-            "pdfWidth": 0.1,
+            "pdfWidth": 0.3,
             "label": {
               "text": {
                 "de": "",
@@ -4015,7 +4037,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 1",
@@ -4029,7 +4051,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 2",
@@ -4043,7 +4065,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 3",
@@ -4057,7 +4079,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 4",
@@ -4071,7 +4093,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 5",
@@ -4085,7 +4107,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 6",
@@ -4099,7 +4121,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 7",
@@ -4113,7 +4135,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 8",
@@ -4127,7 +4149,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 9",
@@ -4141,7 +4163,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 10",
@@ -4155,7 +4177,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 11",
@@ -4169,7 +4191,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 12",
@@ -4183,7 +4205,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 13",
@@ -4197,7 +4219,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 14",
@@ -4211,7 +4233,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 15",
@@ -4225,7 +4247,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 16",
@@ -4239,7 +4261,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 17",
@@ -4253,7 +4275,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 18",
@@ -4267,7 +4289,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 19",
@@ -4281,7 +4303,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 20",
@@ -4295,7 +4317,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 21",
@@ -4309,7 +4331,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 22",
@@ -4323,7 +4345,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 23",
@@ -4337,7 +4359,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 24",
@@ -4351,7 +4373,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 25",
@@ -4365,7 +4387,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 26",
@@ -4379,7 +4401,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 27",
@@ -4393,7 +4415,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 28",
@@ -4407,7 +4429,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 29",
@@ -4421,7 +4443,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 30",
@@ -4435,7 +4457,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 31",
@@ -4449,7 +4471,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 32",
@@ -4463,7 +4485,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 33",
@@ -4477,7 +4499,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 34",
@@ -4491,7 +4513,7 @@
           "type": "singleLineTextInput",
           "config": {
             "pdfHideIfValueIsEmpty": true,
-            "pdfWidth": 0.5,
+            "pdfWidth": 0.25,
             "label": {
               "text": {
                 "de": "Option 35",
