@@ -1,0 +1,1188 @@
+{
+  "general": {
+    "timezone": "Europe/Berlin"
+  },
+  "sections": [
+    {
+      "id": "01_general_information",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Allgemeine Informationen",
+            "en": "General Informationen"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "instructed_by",
+          "type": "userSingleSelect",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Beauftragt von",
+                "en": "Instructed by"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToResponsibleUserId"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "responsible_technician",
+          "type": "userSingleSelect",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Verantwortlicher Monteur",
+                "en": "Responsible Technician"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToPerformByUserId"
+                  ]
+                },
+                {
+                  "input": "assignedUserId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "05_signature_Holmer",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  "userToFullNameString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer",
+          "type": "companySingleSelect",
+          "config": {
+            "required": true,
+            "label": {
+              "text": {
+                "de": "Kunde",
+                "en": "Customer"
+              }
+            },
+            "prefill": {
+              "selectedCompany": [
+                {
+                  "input": "organizationId",
+                  "steps": []
+                }
+              ]
+            },
+            "useAsFilterForFields": [
+              "asset"
+            ],
+            "onChange": [
+              {
+                "target": {
+                  "id": "customer_location"
+                },
+                "steps": [
+                  "accountInfoToAccount",
+                  "accountToBillingAddressAddress"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer_location",
+          "type": "addressInput",
+          "config": {
+            "required": {
+              "company": false,
+              "supplement": false,
+              "street": true,
+              "streetNumber": false,
+              "city": true,
+              "zipPostCode": true,
+              "state": false,
+              "country": true
+            },
+            "label": {
+              "text": {
+                "de": "Kundenadresse",
+                "en": "Customer Location"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    "assetToLocationAddress"
+                  ]
+                },
+                {
+                  "input": "organizationId",
+                  "steps": [
+                    "accountIdToAccount",
+                    "accountToBillingAddressAddress"
+                  ]
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "05_signature_Holmer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              },
+              {
+                "target": {
+                  "id": "06_signature_Customer",
+                  "propertyName": "location"
+                },
+                "steps": [
+                  "addressToCityString"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "customer_phone",
+          "type": "phoneNumberInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Telefon",
+                "en": "Phone"
+              }
+            }
+          }
+        },
+        {
+          "id": "space_01_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_01_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02_workorder_information",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Auftrag",
+            "en": "Work Order"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "wo_type",
+          "type": "staticSingleSelect",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Auftragsart",
+                "en": "Work Order Type"
+              }
+            },
+            "value": {
+              "options": {
+                "GAR - Garantie": {
+                  "de": "GAR - Garantie",
+                  "en": "GAR - Guarantee"
+                },
+                "TKD - Kundendienst": {
+                  "de": "TKD - Kundendienst",
+                  "en": "TKD - Customer Service"
+                },
+                "KUG - Gebrauchtmaschinen": {
+                  "de": "KUG - Gebrauchtmaschinen",
+                  "en": "KUG - Used Machines"
+                },
+                "INM - Inbetriebnahme Neumaschinen": {
+                  "de": "INM - Inbetriebnahme Neumaschinen",
+                  "en": "INM - Commissioning Of New Machines"
+                },
+                "VOR - Vorführungen u. Vertrieb": {
+                  "de": "VOR - Vorführungen u. Vertrieb",
+                  "en": "VOR - Demonstrations And Distribution"
+                },
+                "SHL - Service Hotline": {
+                  "de": "SHL - Service Hotline",
+                  "en": "SHL - Service Hotline"
+                },
+                "NNM - Nacharbeit Neumaschinen": {
+                  "de": "NNM - Nacharbeit Neumaschinen",
+                  "en": "NNM - Rework New Machines"
+                },
+                "NAC - Nacharbeit": {
+                  "de": "NAC - Nacharbeit",
+                  "en": "NAC - Rework"
+                },
+                "NVO - Nacharbeit Vorproduktion": {
+                  "de": "NVO - Nacharbeit Vorproduktion",
+                  "en": "NVO - Pre-Production Rework"
+                },
+                "SCU - Schulung Kunden": {
+                  "de": "SCU - Schulung Kunden",
+                  "en": "SCU - Training Customers"
+                },
+                "SCS - Schulung Stützpunkte": {
+                  "de": "SCS - Schulung Stützpunkte",
+                  "en": "SCS - Training Bases"
+                },
+                "SVK - Service Vertriebs Kulanz": {
+                  "de": "SVK - Service Vertriebs Kulanz",
+                  "en": "SVK - Service Sales Goodwill"
+                },
+                "GAV - Vertriebs Kulanz": {
+                  "de": "GAV - Vertriebs Kulanz",
+                  "en": "GAV - Sales Goodwill"
+                },
+                "MIE - Vermietung Maschinen": {
+                  "de": "MIE - Vermietung Maschinen",
+                  "en": "MIE - Rental Machines"
+                },
+                "GA+ - Garantieverlängerung": {
+                  "de": "GA+ - Garantieverlängerung",
+                  "en": "GA+ - Extended Warranty"
+                },
+                "SP+ - Servicepakete": {
+                  "de": "SP+ - Servicepakete",
+                  "en": "SP+ - Service Packs"
+                },
+                "HSC - Service-Check": {
+                  "de": "HSC - Service-Check",
+                  "en": "HSC - Service Check"
+                },
+                "ERS - Ersatzteilauftrag": {
+                  "de": "ERS - Ersatzteilauftrag",
+                  "en": "ERS - Spare Parts Order"
+                }
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    [
+                      "workOrderToCustomPropertyValue",
+                      10
+                    ],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "asset",
+          "type": "assetSingleSelect",
+          "config": {
+            "required": true,
+            "label": {
+              "text": {
+                "de": "Maschine",
+                "en": "Machine"
+              }
+            },
+            "prefill": {
+              "selectedAsset": [
+                {
+                  "input": "assetId",
+                  "steps": []
+                }
+              ]
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "production_year"
+                },
+                "steps": [
+                  "assetInfoToAsset",
+                  [
+                    "assetToCustomPropertyValue",
+                    16
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "production_year",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Baujahr",
+                "en": "Year of production"
+              }
+            },
+            "prefill": {
+              "value": [
+                {
+                  "input": "assetId",
+                  "steps": [
+                    "assetIdToAsset",
+                    [
+                      "assetToCustomPropertyValue",
+                      16
+                    ],
+                    "customPropertyValueToString"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "harvesting_area",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "ha / m3 / t",
+                "en": "ha / m3 / t"
+              }
+            }
+          }
+        },
+        {
+          "id": "operating_hours_motor",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Betriebsstunden Motor",
+                "en": "Operating Hours Motor"
+              }
+            }
+          }
+        },
+        {
+          "id": "operating_hours_machine",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": false,
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Betriebsstunden Maschine",
+                "en": "Operating Hours Machine"
+              }
+            }
+          }
+        },
+        {
+          "id": "space_02_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_02_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "03_activity_tracking",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Anreise- und Arbeitszeiten",
+            "en": "Outward Travel and Working Times"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "travelAndWorkingTimes_03",
+          "type": "timeTrackingListInput",
+          "config": {
+            "label": {
+              "pdfHide": true,
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "outward_headline",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Anreise: Start- & Zielort",
+              "en": "Outward Journey: Departure & Destination"
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "type": "H3"
+          }
+        },
+        {
+          "id": "outward_depature",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Startort",
+                "en": "Depature"
+              }
+            }
+          }
+        },
+        {
+          "id": "outward_destination",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Zielort",
+                "en": "Destination"
+              }
+            }
+          }
+        },
+        {
+          "id": "space_03_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_03_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "04-performedTasks",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Durchgeführte Arbeiten",
+            "en": "Performed Tasks"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "tasks",
+          "type": "taskListInput",
+          "config": {
+            "label": {
+              "pdfHide": true,
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "fields": {
+              "checkboxBooleanInput": {
+                "checkedByDefault": false,
+                "pdfHide": false
+              },
+              "titleSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "highPrioBooleanInput": {
+                "disabled": true,
+                "pdfHide": true
+              },
+              "notNecessaryBooleanInput": {
+                "disabled": false,
+                "pdfHide": false
+              }
+            },
+            "prefill": {
+              "entries": [
+                {
+                  "input": "workOrderId",
+                  "steps": [
+                    "workOrderIdToWorkOrder",
+                    "workOrderToTasks"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "space_04_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_04_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "05_signature_Holmer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Holmer",
+          "en": "Signature Holmer"
+        },
+        "required": true,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": true
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": true
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "name": [
+            {
+              "input": "currentUser",
+              "steps": [
+                "userToFullNameString"
+              ]
+            }
+          ],
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "06_signature_Customer",
+      "type": "signatureSection",
+      "config": {
+        "headlineText": {
+          "de": "Unterschrift Kunde",
+          "en": "Signature Customer"
+        },
+        "required": false,
+        "fields": {
+          "dateInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "locationSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "required": false
+          },
+          "nameSingleLineTextInput": {
+            "disable": false,
+            "pdfHide": false,
+            "capitalizeFirstLetterOfEveryWord": false,
+            "required": false
+          }
+        },
+        "pdfHide": false,
+        "pdfHideIfValueIsEmpty": false,
+        "hideDownloadPdfButton": false,
+        "hidePreviewPdfButton": false,
+        "prefill": {
+          "location": [
+            {
+              "input": "workOrderId",
+              "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "assetId",
+              "steps": [
+                "assetIdToAsset",
+                "assetToLocationAddress",
+                "addressToCityString"
+              ]
+            },
+            {
+              "input": "organizationId",
+              "steps": [
+                "accountIdToAccount",
+                "accountToBillingAddressAddress",
+                "addressToCityString"
+              ]
+            }
+          ],
+          "date": [
+            {
+              "input": "creationDateTime",
+              "steps": [
+                "dateTimeToDate"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "07_signature_general",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": true,
+          "text": {
+            "de": "Kunde abwesend",
+            "en": "Customer Absent"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "customer_available",
+          "type": "booleanInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kein Ansprechpartner vor Ort",
+                "en": "No Contact Person available"
+              }
+            },
+            "onChange": [
+              {
+                "target": {
+                  "id": "06_signature_Customer",
+                  "propertyName": "name"
+                },
+                "steps": [
+                  [
+                    "setValue",
+                    "Kein Ansprechpartner vor Ort"
+                  ]
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "08_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Formular als E-Mail versenden",
+          "en": "Send form as E-Mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": [
+              "service@holmer-maschinenbau.com"
+            ]
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen BSP-Bericht als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed BSP report as PDF.\n\nBest regards"
+          },
+          "subject": {
+            "de": "Montagebericht",
+            "en": "Assembly Report"
+          }
+        }
+      }
+    },
+    {
+      "id": "09_activity_tracking",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Rückreisezeiten",
+            "en": "Return Travel Times"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "travelAndWorkingTimes_09",
+          "type": "timeTrackingListInput",
+          "config": {
+            "label": {
+              "pdfHide": true,
+              "text": {
+                "de": "",
+                "en": ""
+              }
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": false
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": true,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": true
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "return_headline",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": "Rückreise: Start- & Zielort",
+              "en": "Return Journey: Departure & Destination"
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "type": "H3"
+          }
+        },
+        {
+          "id": "return_depature",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Startort",
+                "en": "Depature"
+              }
+            }
+          }
+        },
+        {
+          "id": "return_destination",
+          "type": "singleLineTextInput",
+          "config": {
+            "pdfWidth": 0.5,
+            "label": {
+              "text": {
+                "de": "Zielort",
+                "en": "Destination"
+              }
+            }
+          }
+        },
+        {
+          "id": "space_09_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_09_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "10_comments",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "pdfHide": false,
+          "text": {
+            "de": "Ergänzende Bemerkungen",
+            "en": "Complementary Comments"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "commentsGeneral",
+          "type": "richTextInput",
+          "config": {
+            "label": {
+              "text": {
+                "de": "Kommentar",
+                "en": "Comment"
+              }
+            },
+            "placeHolderText": {
+              "en": "Type here...",
+              "de": "Hier tippen...",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "pdfHideIfValueIsEmpty": true,
+            "required": false,
+            "pdfWidth": 1
+          }
+        },
+        {
+          "id": "fileUpload",
+          "type": "fileUpload",
+          "config": {
+            "disabled": false,
+            "pdfHide": true,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "requiredAmountOfFiles": 0,
+            "label": {
+              "text": {
+                "en": "File(s)",
+                "de": "Datei(en)",
+                "tr": "",
+                "fr": "",
+                "es": "",
+                "it": ""
+              },
+              "pdfHide": false
+            },
+            "value": {
+              "pdfHide": false,
+              "pdfStartInNewLine": false,
+              "pdfAddLineBreaks": false
+            }
+          }
+        },
+        {
+          "id": "space_10_01",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        },
+        {
+          "id": "space_10_02",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "de": " ",
+              "en": " "
+            },
+            "uiHide": true,
+            "pdfHide": false,
+            "type": "H1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "11_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "de": "Formular als E-Mail senden",
+          "en": "Send form as E-Mail"
+        },
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "whitelistedDomains": [
+          "holmer-maschinenbau.com"
+        ],
+        "emailDialogPrefill": {
+          "bcc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": [
+              "service@holmer-maschinenbau.com"
+            ]
+          },
+          "cc": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "to": {
+            "assignee": false,
+            "creator": false,
+            "currentUser": false,
+            "staticEmails": []
+          },
+          "body": {
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen BSP-Bericht als PDF.\n\nMit freundlichen Grüßen",
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed BSP report as PDF.\n\nBest regards"
+          },
+          "subject": {
+            "de": "Montagebericht",
+            "en": "Assembly Report"
+          }
+        }
+      }
+    }
+  ]
+}
