@@ -2,7 +2,7 @@ import openpyxl
 import json 
 
 # Load the Excel workbook
-workbook = openpyxl.load_workbook('/Users/beateplendl/Downloads/2023-09-06_Forms_Python-Input.xlsx')
+workbook = openpyxl.load_workbook('/Users/beateplendl/Documents/2023-09-06_Forms_Python-Input.xlsx')
 sheet = workbook.active
 
 # Initialize a list to store the data
