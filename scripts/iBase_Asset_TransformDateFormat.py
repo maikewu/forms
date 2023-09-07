@@ -1,5 +1,7 @@
 import csv
+from dateutil.parser import parse
 from datetime import datetime
+
 
 # Input and output file paths
 input_csv_file = '/Users/beateplendl/Downloads/2023-09-06_00-00_Asset_TestRows.csv'
@@ -9,7 +11,7 @@ output_csv_file = '/Users/beateplendl/Downloads/2023-09-06_00-00_Asset_TestRows2
 def transform_date(date_str):
   if date_str is not None and date_str != '':  
     try:
-        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        date_obj = parse(date_str)
         formatted_date = date_obj.strftime('%Y-%m-%dT00:00:00.000Z')
         return formatted_date
     except ValueError:
