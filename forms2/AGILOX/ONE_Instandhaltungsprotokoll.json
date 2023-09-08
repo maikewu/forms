@@ -1,0 +1,3172 @@
+{
+    "general": {
+        "timezone": "Europe/Berlin"
+    },
+    "sections": [
+        {
+            "id": "01_workReport",
+            "type": "fieldSection",
+            "config": {
+                "headline": {
+                    "text": {
+                        "en": "Work Report",
+                        "de": "Arbeitsbericht"
+                    }
+                },
+                "pdfWidth": 1
+            },
+            "fields": [
+                {
+                    "id": "assets",
+                    "type": "assetMultiSelect",
+                    "config": {
+                        "disabled": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "requiredAmountOfEntries": 0,
+                        "label": {
+                            "text": {
+                                "en": "Serial Number(s)",
+                                "de": "Seriennnummer(n)"
+                            }
+                        },
+                        "value": {
+                            "disableAssetFormInstanceRelationship": false,
+                            "disableCreation": false,
+                            "pdfHide": false,
+                            "pdfStartInNewLine": false,
+                            "pdfAddLineBreaks": false
+                        },
+                        "prefill": {
+                            "selectedAssets": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder","workOrderToAssetIds"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": "leistungszeitraum",
+                    "type": "dateInput",
+                    "config": {
+                        "disabled": false,
+                        "required": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Service Period",
+                                "de": "Leistungszeitraum"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "customer",
+                    "type": "companySingleSelect",
+                    "config": {
+                        "disabled": false,
+                        "required": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Customer",
+                                "de": "Kunde"
+                            }
+                        },
+                        "useAsFilterForFields": ["assets","contactPerson"],
+                        "prefill": {
+                            "selectedCompany": [
+                                {
+                                    "input": "organizationId",
+                                    "steps": []
+                                }
+                            ]
+                        },
+                        "onChange": []
+                    }
+                },
+                {
+                    "id": "contactPerson",
+                    "type": "userSingleSelect",
+                    "config": {
+                        "required": false,
+                        "disabled": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": true,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Contact Person",
+                                "de": "Ansprechperson"
+                            }
+                        },
+                        "prefill": {
+                            "value": []
+                        },
+                        "onChange": [
+                            {
+                                "steps": ["userToFullNameString"],
+                                "target": {
+                                    "id": "05_signatureCustomer",
+                                    "propertyName": "name"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "note100",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "If contact isn't available in dropdown, please fill out field below:",
+                            "de": "Ist der Kontakt nicht in der Auswahl verfügbar, bitte unten eintragen:",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "pdfHide": true
+                    }
+                },
+                {
+                    "id": "contactPersonAdd",
+                    "type": "singleLineTextInput",
+                    "config": {
+                        "pdfHideIfValueIsEmpty": true,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Contact Person",
+                                "de": "Ansprechperson",
+                                "tr": "",
+                                "fr": "",
+                                "es": "",
+                                "it": ""
+                            }
+                        },
+                        "onChange": [
+                            {
+                                "steps": [],
+                                "target": {
+                                    "id": "05_signatureCustomer",
+                                    "propertyName": "name"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "address",
+                    "type": "addressInput",
+                    "config": {
+                        "disabled": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Address Work Place",
+                                "de": "Anschrift Arbeitsort"
+                            }
+                        },
+                        "value": {
+                            "pdfHide": false,
+                            "pdfStartInNewLine": true,
+                            "pdfAddLineBreaks": true
+                        },
+                        "prefill": {
+                            "value": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder","workOrderToLocationAddress"
+                                    ]
+                                }
+                            ]
+                        },
+                        "onChange": [
+                            {
+                                "steps": [
+                                    "addressToCityString"
+                                ],
+                                "target": {
+                                    "id": "05_signatureCustomer",
+                                    "propertyName": "location"
+                                }
+                            },
+                            {
+                                "steps": [
+                                    "addressToCityString"
+                                ],
+                                "target": {
+                                    "id": "06_signatureTechnician",
+                                    "propertyName": "location"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "02_tasks",
+            "type": "fieldSection",
+            "config": {
+                "headline": {
+                    "text": {
+                        "en": "Tasks performed",
+                        "de": "Durchgeführte Tätigkeiten"
+                    }
+                },
+                "pdfWidth": 1
+            },
+            "fields": [
+                {
+                    "id": "nr0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Nr</b></h4>",
+                        "en": "<h4><b>No</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Wiederkehrende Tätigkeit</b></h4>",
+                        "en": "<h4><b>Recurring tasks</b></h4>"
+                      },
+                      "pdfWidth": 0.45,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "iO0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>in Ordnung</b></h4>",
+                        "en": "<h4><b>OK</b></h4>"
+                      },
+                      "pdfWidth": 0.15,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "defect0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel</b></h4>",
+                        "en": "<h4><b>Defect</b></h4>"
+                      },
+                      "pdfWidth": 0.15,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "rating0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben</b></h4>",
+                        "en": "<h4><b>Defect fixed</b></h4>"
+                      },
+                      "pdfWidth": 0.2,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "line0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>01</b></h4>",
+                        "en": "<h4><b>01</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Fahreinheiten ausbauen, reinigen (auch die Abstützringe innen) und prüfen auf:</b></h4>",
+                        "en": "<h4><b>Remove drive units, clean them (also the support ring on the inside) and check for:</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist1.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Usage and damage of cable<br>- Position of cable on strain relief, tight fit of strain relief<br>- Tightness of gearbox (e.g.: loss of oil)<br>- Visual check of support-bearings-sliding-surface (fingernail test)<br>- Functional check of radial-support-bearing<br>- Check that screws are properly tightened<br>- Usage of wheels, play of wheels on drive shaft => If the wheel diameter is 74.5 mm, the wheels must be replaced.<br>- Concentricity",
+                            "de": "- Verschleiß oder Beschädigungen am Kabel<br>- Position der Kabel an Zugentlastung, fester Sitz der Zugentlastung<br>- Dichtheit des Getriebes (z. B. Ölaustritt)<br>- Sichtkontrolle der Abstützlager-Laufflächen (Fingernagelprobe)- Funktionskontrolle der Radialabstützlager (ggf. austauschen)<br>- festen Sitz der Schrauben<br>- Verschleiß der Räder, Spiel der Räder auf Antriebswelle => Beträgt der Raddurchmesser 74,5 mm, müssen die Räder getauscht werden.<br>- Rundlauf",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io1",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect1",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes1",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no1",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace1",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist1",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Usage and damage of cable<br>- Position of cable on strain relief, tight fit of strain relief<br>- Tightness of gearbox (e.g.: loss of oil)<br>- Visual check of support-bearings-sliding-surface (fingernail test)<br>- Functional check of radial-support-bearing<br>- Check that screws are properly tightened<br>- Usage of wheels, play of wheels on drive shaft => If the wheel diameter is 74.5 mm, the wheels must be replaced.<br>- Concentricity",
+                            "de": "- Verschleiß oder Beschädigungen am Kabel<br>- Position der Kabel an Zugentlastung, fester Sitz der Zugentlastung<br>- Dichtheit des Getriebes (z. B. Ölaustritt)<br>- Sichtkontrolle der Abstützlager-Laufflächen (Fingernagelprobe)- Funktionskontrolle der Radialabstützlager (ggf. austauschen)<br>- festen Sitz der Schrauben<br>- Verschleiß der Räder, Spiel der Räder auf Antriebswelle => Beträgt der Raddurchmesser 74,5 mm, müssen die Räder getauscht werden.<br>- Rundlauf",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>02</b></h4>",
+                        "en": "<h4><b>02</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mechanische Funktionsprüfung und Sichtkontrolle der Ladekontakte fahrzeugseitig:</b></h4>",
+                        "en": "<h4><b>Mechanical test and visual check of charging contacts on vehicle:</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist2.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Usage of copper contacts<brY- Break of guidance unit",
+                            "de": "- Verschleiß der Kupferkontakte<br>- Bruch der Führungsbuchse",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io2",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect2",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes2",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no2",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": " ",
+                            "de": " ",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Usage of copper contacts<brY- Break of guidance unit",
+                            "de": "- Verschleiß der Kupferkontakte<br>- Bruch der Führungsbuchse"
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>03</b></h4>",
+                        "en": "<h4><b>03</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Funktionsprüfung der Fahreinheiten durch Einzelansteuerung der Motoren im Wartungsbetrieb (inkl. Akustik-Kontrolle)</b></h4>",
+                        "en": "<h4><b>Functionality test of driving units by individual control of each motor in maintenance mode (incl. acoustic check)</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "io3",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect3",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes3",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no3",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>04</b></h4>",
+                        "en": "<h4><b>04</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Hubschereneinheit:</b></h4>",
+                        "en": "<h4><b>Scissor-lift-units:</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist4.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Visual check (loose screws, welding seams lifting scissors, safety rings in place, dull areas on lifting spindle)<br>- Visual check of lift guide-rods for dirt (clean if necessary) and their sliding film for wear (exchange if necessary)<br>- Lubricate lifting spindle (as of V05, 2 grease nipples axial bearing, 2 grease nipples lifting carriage, use AFB-LF grease from THK)<br>- Check of ball-bearing/track roller for functionality<br>- Check condition of sliding areas at bearing/track roller and counter surface (ground unit, backside of fork)<br>- Check fixation of scissor in lower part (ground unit)<br>- Check fixation of scissor in upper part (lifting device - back cover)<br>- Clean and relubricate gliding elements (Gliding element must not run dry! Use Nicro Thermocup 1200 assebly paste)",
+                            "de": "- Sichtkontrolle (lose Schrauben, Schweißnähte Hubschere, Sicherungsringe, matte Stellen an Hubspindel)<br>- Sichtkontrolle Hubführungsstangen auf Verschmutzung (ggf. reinigen) und deren Gleitfolie auf Verschleiß (ggf. tauschen)<br>- Hubspindel schmieren (ab V05, 2x Schmiernippel Axiallager, 2x Schmiernippel Hubschlitten, AFB-LF-Schmierfett von THK )<br>- Kontrolle der Kugellager/Laufrolle auf Funktion<br>- Zustand der Laufflächen am Lager/Laufrolle bzw. Gegenfläche (Bodengruppe, Gabelunterseiten)<br>- Prüfung der Lagerstelle unten (Bodengruppe)<br>- Prüfung der Lagerstelle oben (Hubgabeleinheit - Rückwand)<br>- Gleitelemente reinigen und nachschmieren (Gleitelement darf nicht trocken laufen! Nicro Thermocup 1200 Montagepaste verwenden)"
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io4",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect4",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes4",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no4",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace4",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist4",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Visual check (loose screws, welding seams lifting scissors, safety rings in place, dull areas on lifting spindle)<br>- Visual check of lift guide-rods for dirt (clean if necessary) and their sliding film for wear (exchange if necessary)<br>- Lubricate lifting spindle (as of V05, 2 grease nipples axial bearing, 2 grease nipples lifting carriage, use AFB-LF grease from THK)<br>- Check of ball-bearing/track roller for functionality<br>- Check condition of sliding areas at bearing/track roller and counter surface (ground unit, backside of fork)<br>- Check fixation of scissor in lower part (ground unit)<br>- Check fixation of scissor in upper part (lifting device - back cover)<br>- Clean and relubricate gliding elements (Gliding element must not run dry! Use Nicro Thermocup 1200 assebly paste)",
+                            "de": "- Sichtkontrolle (lose Schrauben, Schweißnähte Hubschere, Sicherungsringe, matte Stellen an Hubspindel)<br>- Sichtkontrolle Hubführungsstangen auf Verschmutzung (ggf. reinigen) und deren Gleitfolie auf Verschleiß (ggf. tauschen)<br>- Hubspindel schmieren (ab V05, 2x Schmiernippel Axiallager, 2x Schmiernippel Hubschlitten, AFB-LF-Schmierfett von THK )<br>- Kontrolle der Kugellager/Laufrolle auf Funktion<br>- Zustand der Laufflächen am Lager/Laufrolle bzw. Gegenfläche (Bodengruppe, Gabelunterseiten)<br>- Prüfung der Lagerstelle unten (Bodengruppe)<br>- Prüfung der Lagerstelle oben (Hubgabeleinheit - Rückwand)<br>- Gleitelemente reinigen und nachschmieren (Gleitelement darf nicht trocken laufen! Nicro Thermocup 1200 Montagepaste verwenden)"
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>05</b></h4>",
+                        "en": "<h4><b>05</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Gabel und Hubeinheit auf ordnungsgemäße Funktion prüfen</b></h4>",
+                        "en": "<h4><b>Check fork and lifting device on proper functionality</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist5.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Visual check<br>- Acoustic check<br>- Lifting and lowering lifting device to its highest and lowest point<br>- Lifting weight of empty Fork <=50kg before initializing",
+                            "de": "- Sichtkontrolle<br>- Akustik Kontrolle<br>- Abfahren gesamte Hubhöhe<br>- Hubgewicht der leeren Hubgabeln <= 50kg vor Initialisierung"
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io5",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect5",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes5",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no5",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace5",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist5",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Visual check<br>- Acoustic check<br>- Lifting and lowering lifting device to its highest and lowest point<br>- Lifting weight of empty Fork <=50kg before initializing",
+                            "de": "- Sichtkontrolle<br>- Akustik Kontrolle<br>- Abfahren gesamte Hubhöhe<br>- Hubgewicht der leeren Hubgabeln <= 50kg vor Initialisierung"
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>06</b></h4>",
+                        "en": "<h4><b>06</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Sichtkontrolle Fahrzeug</b></h4>",
+                        "en": "<h4><b>Visual check vehicle</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist6.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Condition of fork tips, especially ultrasound sensors<br>- Check the labels on the vehicle for completeness and legibility.<br>- Check whether loose screws can be found.",
+                            "de": "- Zustand Gabelspitzen, insbesondere Sensorik.<br>- Kontrolle der Beschriftungen am Fahrzeug auf Vollständigkeit und Lesbarkeit.<br>- Prüfung ob lose Schrauben ersichtlich sind."
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io6",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect6",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes6",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no6",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace6",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist6",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Condition of fork tips, especially ultrasound sensors<br>- Check the labels on the vehicle for completeness and legibility.<br>- Check whether loose screws can be found.",
+                            "de": "- Zustand Gabelspitzen, insbesondere Sensorik.<br>- Kontrolle der Beschriftungen am Fahrzeug auf Vollständigkeit und Lesbarkeit.<br>- Prüfung ob lose Schrauben ersichtlich sind."
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>07</b></h4>",
+                        "en": "<h4><b>07</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Reinigung optische Sensoren</b></h4>",
+                        "en": "<h4><b>Cleaning of optical sensors</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist7.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Laserscanner in the lower area left and right<br>- Laserscanner in upper area<br>- Distance sensor on back of forks<br>- Ultrasound sensors<br>- Obstacle Avoidance Sensors (if applicable)<br>- Barcode Camera glass (if applicable)",
+                            "de": "- Laserscanner im unteren Bereich Links und Rechts<br>- Laserscanner im oberen Bereich<br>- Entfernungsmessung Gabelrücken<br>- Ultraschallsensoren<br>- Sensor Obstacle Avoidance (falls Option vorhanden)<br>- Barcode Identifizierung (falls Option vorhanden)"
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io7",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect7",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes7",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no7",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace7",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist7",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Laserscanner in the lower area left and right<br>- Laserscanner in upper area<br>- Distance sensor on back of forks<br>- Ultrasound sensors<br>- Obstacle Avoidance Sensors (if applicable)<br>- Barcode Camera glass (if applicable)",
+                            "de": "- Laserscanner im unteren Bereich Links und Rechts<br>- Laserscanner im oberen Bereich<br>- Entfernungsmessung Gabelrücken<br>- Ultraschallsensoren<br>- Sensor Obstacle Avoidance (falls Option vorhanden)<br>- Barcode Identifizierung (falls Option vorhanden)"
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>08</b></h4>",
+                        "en": "<h4><b>08</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Sichtkontrolle und Funktionskontrolle Schaltschrank</b></h4>",
+                        "en": "<h4><b>Visual and functionality check control cabinet.</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist8.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Check if cables and clips are properly seated and fixed<br>- Activation and reactivation of the fuses.<br>- Check if all plugs, especially on battery are plugged correctly<br>- Cross check with pictures of last check (if available)",
+                            "de": "- Kabel auf ordnungsgemäßen Sitz bzw. Klemmung prüfen.<br>- Betätigung der Sicherung und wieder aktivieren.<br>- Kontrolle, ob alle Stecker, besonders am Akku korrekt eingesteckt sind.<br>- Vergleich mit Foto bei letzter Überprüfung (wenn Foto vorhanden)"
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io8",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect8",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes8",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no8",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace8",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist8",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Check if cables and clips are properly seated and fixed<br>- Activation and reactivation of the fuses.<br>- Check if all plugs, especially on battery are plugged correctly<br>- Cross check with pictures of last check (if available)",
+                            "de": "- Kabel auf ordnungsgemäßen Sitz bzw. Klemmung prüfen.<br>- Betätigung der Sicherung und wieder aktivieren.<br>- Kontrolle, ob alle Stecker, besonders am Akku korrekt eingesteckt sind.<br>- Vergleich mit Foto bei letzter Überprüfung (wenn Foto vorhanden)"
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr9",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>09</b></h4>",
+                        "en": "<h4><b>09</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step9",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Ladeeinheit Boden</b></h4>",
+                        "en": "<h4><b>Visual check of floor charging unit</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist9.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Visual Check<br>- Cleaning<br>- Check whether all screws are fixed properly, especially cable-screws",
+                            "de": "- Sichtkontrolle<br>- Reinigung<br>- Kontrolle, ob alle Schrauben fest angezogen sind, besonders die “Kabel-Schrauben”"
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io9",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect9",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed9",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes9",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no9",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace9",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist9",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Visual Check<br>- Cleaning<br>- Check whether all screws are fixed properly, especially cable-screws",
+                            "de": "- Sichtkontrolle<br>- Reinigung<br>- Kontrolle, ob alle Schrauben fest angezogen sind, besonders die “Kabel-Schrauben”"
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line9",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr10",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>10</b></h4>",
+                        "en": "<h4><b>10</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step10",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Lampentest durchführen</b></h4>",
+                        "en": "<h4><b>Perform lamp test</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "io10",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect10",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed10",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes10",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no10",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line10",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr11",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>11</b></h4>",
+                        "en": "<h4><b>11</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step11",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Audio Test durchführen</b></h4>",
+                        "en": "<h4><b>Perform audio test</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "io11",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect11",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed11",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes11",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no11",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line11",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr12",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>12</b></h4>",
+                        "en": "<h4><b>12</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step12",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Kontrolle der LTE-Verbindung des IPCs (WAN-IP muss zugewiesen sein)</b></h4>",
+                        "en": "<h4><b>Check LTE-connection of IPCs (WAN-IP has to be assigned)</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "io12",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect12",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed12",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes12",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no12",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line12",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr13",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>13</b></h4>",
+                        "en": "<h4><b>13</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step13",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Kontrolle der WLAN-Verbindung</b></h4>",
+                        "en": "<h4><b>Check WLAN-connection</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist13.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Reception strength realistic<br>- Antenna-cable OK (cable cover OK, no buckles)",
+                            "de": "- Empfangsstärke realistisch<br>- Antennen-Kabel OK (Kabelmantel OK, keine Knickung des Kabels)"
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io13",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect13",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed13",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes13",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no13",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace13",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist13",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "en": "- Reception strength realistic<br>- Antenna-cable OK (cable cover OK, no buckles)",
+                        "de": "- Empfangsstärke realistisch<br>- Antennen-Kabel OK (Kabelmantel OK, keine Knickung des Kabels)"
+                    },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line13",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr14",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>14</b></h4>",
+                        "en": "<h4><b>14</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step14",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Funktionstest AGILOX IO (falls vorhanden)</b></h4>",
+                        "en": "<h4><b>Functionality test AGILOX IO (if available)</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist14.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Connection available?<br>- Are signals being exchanged?",
+                            "de": "- Ist Verbindung vorhanden?<br>- Werden Signale ausgetauscht?"
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io14",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect14",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed14",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes14",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no14",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace14",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist14",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "en": "- Connection available?<br>- Are signals being exchanged?",
+                        "de": "- Ist Verbindung vorhanden?<br>- Werden Signale ausgetauscht?"
+                    },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line14",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr15",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>15</b></h4>",
+                        "en": "<h4><b>15</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step15",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Kontrolle der Position aller Ladestationen</b></h4>",
+                        "en": "<h4><b>Position check of all charging stations</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist15.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- The stationary charging plates must not stand out over the vehicle frame",
+                            "de": "- Die stationäre Ladeplatte darf nicht über den Fahrzeugrahmen herausragen"
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io15",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect15",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed15",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes15",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no15",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace15",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist15",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "en": "- The stationary charging plates must not stand out over the vehicle frame",
+                        "de": "- Die stationäre Ladeplatte darf nicht über den Fahrzeugrahmen herausragen"
+                    },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line15",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr16",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>16</b></h4>",
+                        "en": "<h4><b>16</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step16",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Nach 5 Jahren:</b></h4>",
+                        "en": "<h4><b>After 5 years:</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "step16.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4>Ersetzen der Gummiringe der Ultraschallsensoren lt. Herstellerangaben</h4>",
+                        "en": "<h4>Replace rubber rings of ultrasound sensors according to manufacturer specifications</h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io16",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect16",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed16",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes16",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no16",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace16",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "step16.3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4>Ersetzen der Gummiringe der Ultraschallsensoren lt. Herstellerangaben</h4>",
+                        "en": "<h4>Replace rubber rings of ultrasound sensors according to manufacturer specifications</h4>"
+                      },
+                      "uiHide": true,
+                      "pdfWidth": 0.95,
+                      "pdfHide": false
+                    }
+                  },
+                  {
+                    "id": "line16",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr17",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>17</b></h4>",
+                        "en": "<h4><b>17</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step17",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Nach 5 Jahren:</b></h4>",
+                        "en": "<h4><b>After 5 years:</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "step17.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4>Batteriewechsel bei allen Beckhoff CX9020 Steuerungen lt. Herstellerangaben</h4>",
+                        "en": "<h4>Replace batteries of all Beckhoff CX9020 according to manufacturer specifications</h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io17",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect17",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed17",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes17",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no17",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace17",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "step17.3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4>Batteriewechsel bei allen Beckhoff CX9020 Steuerungen lt. Herstellerangaben</h4>",
+                        "en": "<h4>Replace batteries of all Beckhoff CX9020 according to manufacturer specifications</h4>"
+                      },
+                      "uiHide": true,
+                      "pdfWidth": 0.95,
+                      "pdfHide": false
+                    }
+                  },
+                  {
+                    "id": "line17",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr18",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>18</b></h4>",
+                        "en": "<h4><b>18</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step18",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Funktionstest Fahrzeug nach Instandhaltungstätigkeiten durchführen</b></h4>",
+                        "en": "<h4><b>Function check of vehicle after maintenance activities.</b></h4>"
+                      },
+                      "pdfWidth": 0.45
+                    }
+                  },
+                  {
+                    "id": "checklist18.2",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "- Vehicle performs an order with automatic load handling without malfunctions.<br>- Vehicle stops in time before obstacles (also when driving backwards)<br>- Protective stop during load delivery with test body works properly.",
+                            "de": "- Fahrzeug führt einen Auftrag mit automatischen Lasthandling ohne Störungen aus.<br>- Fahrzeug stoppt rechtzeitig vor Hindernissen (auch bei Rückwärtsfahrt).<br>- Schutzhalt bei Lastabgabe mit Prüfkörper funktioniert."
+                        },
+                        "uiHide": false,
+                        "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "io18",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect18",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.15,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed18",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes18",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no18",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "whitespace18",
+                    "type": "headlineDisplay",
+                    "config": {
+                        "text": {
+                            "en": "",
+                            "de": "",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.05
+                    }
+                  },
+                  {
+                    "id": "checklist18",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "en": "- Vehicle performs an order with automatic load handling without malfunctions.<br>- Vehicle stops in time before obstacles (also when driving backwards)<br>- Protective stop during load delivery with test body works properly.",
+                        "de": "- Fahrzeug führt einen Auftrag mit automatischen Lasthandling ohne Störungen aus.<br>- Fahrzeug stoppt rechtzeitig vor Hindernissen (auch bei Rückwärtsfahrt).<br>- Schutzhalt bei Lastabgabe mit Prüfkörper funktioniert."
+                    },
+                        "uiHide": true,
+                        "pdfHide": false,
+                        "pdfWidth": 0.95
+                    }
+                  },
+                  {
+                    "id": "line18",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  }
+            ]
+        },
+        {
+            "id": "03_parts",
+            "type": "fieldSection",
+            "config": {
+                "headline": {
+                    "text": {
+                        "en": "Spare parts required for next maintenance",
+                        "de": "Für nächste Wartung benötigte Ersatzteile"
+                    }
+                },
+                "pdfWidth": 1
+            },
+            "fields": [
+                {
+                    "id": "parts",
+                    "type": "partListInput",
+                    "config": {
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "requiredAmountOfEntries": 0,
+                        "label": {
+                            "text": {
+                                "en": "Articles",
+                                "de": "Artikel"
+                            },
+                            "pdfHide": true
+                        },
+                        "fields": {
+                            "partNumberSingleLineTextInput": {
+                                "required": false,
+                                "pdfHide": false,
+                                "placeHolderText": {
+                                    "en": "Serial Number",
+                                    "de": "Seriennummer"
+                                }
+                            },
+                            "quantityNumericInput": {
+                                "required": false,
+                                "pdfHide": false
+                            },
+                            "descriptionMultiLineTextInput": {
+                                "disabled": false,
+                                "required": false,
+                                "pdfHide": false,
+                                "placeHolderText": {
+                                    "en": "Material / Article",
+                                    "de": "Material / Artikel"
+                                }
+                            },
+                            "deliverToStaticSingleSelect": {
+                                "disabled": true,
+                                "required": false,
+                                "pdfHide": true
+                            },
+                            "invoiceToStaticSingleSelect": {
+                                "disabled": true,
+                                "required": false,
+                                "pdfHide": true
+                            },
+                            "warrantyBooleanInput": {
+                                "disabled": false,
+                                "pdfHide": false
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "04_comments",
+            "type": "fieldSection",
+            "config": {
+                "headline": {
+                    "text": {
+                        "en": "Comments",
+                        "de": "Anmerkungen"
+                    }
+                },
+                "pdfWidth": 1
+            },
+            "fields": [
+                {
+                    "id": "remarks",
+                    "type": "richTextInput",
+                    "config": {
+                        "disabled": false,
+                        "required": false,
+                        "placeHolderText": {
+                            "en": "Type here...",
+                            "de": "Hier tippen..."
+                        },
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Comments",
+                                "de": "Anmerkungen"
+                            },
+                            "pdfHide": true
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "05_signatureCustomer",
+            "type": "signatureSection",
+            "config": {
+                "required": true,
+                "headlineText": {
+                    "en": "Signature Customer",
+                    "de": "Unterschrift AG"
+                },
+                "pdfHide": false,
+                "pdfHideIfValueIsEmpty": false,
+                "hidePreviewPdfButton": false,
+                "hideDownloadPdfButton": false,
+                "pdfWidth": 0.5,
+                "fields": {
+                    "dateInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "autofill": "always",
+                        "onChange": []
+                    },
+                    "locationSingleLineTextInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "onChange": []
+                    },
+                    "nameSingleLineTextInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "capitalizeFirstLetterOfEveryWord": false,
+                        "onChange": []
+                    }
+                },
+                "prefill": {
+                    "location": [
+                        {
+                            "input": "workOrderId",
+                            "steps": [
+                                "workOrderIdToWorkOrder","workOrderToLocationAddress","addressToCityString"
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "06_signatureTechnician",
+            "type": "signatureSection",
+            "config": {
+                "required": true,
+                "headlineText": {
+                    "en": "Signature Contractor",
+                    "de": "Unterschrift AN"
+                },
+                "pdfHide": false,
+                "pdfHideIfValueIsEmpty": false,
+                "hidePreviewPdfButton": false,
+                "hideDownloadPdfButton": false,
+                "pdfWidth": 0.5,
+                "fields": {
+                    "dateInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "autofill": "always",
+                        "onChange": []
+                    },
+                    "locationSingleLineTextInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "onChange": []
+                    },
+                    "nameSingleLineTextInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "capitalizeFirstLetterOfEveryWord": false,
+                        "onChange": []
+                    }
+                },
+                "prefill": {
+                    "name": [
+                        {
+                            "input": "assignedUserId",
+                            "steps": ["userIdToUser","userToFullNameString"]
+                        }
+                    ],
+                    "location": [
+                        {
+                            "input": "workOrderId",
+                            "steps": [
+                                "workOrderIdToWorkOrder","workOrderToLocationAddress","addressToCityString"
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "07_send",
+            "type": "emailSection",
+            "config": {
+              "headlineText": {
+                "en": "Send/sent report to customer as email",
+                "de": "Bericht als E-Mail an Kunden senden/gesendet"
+              },
+              "requiredAmountOfOutgoingMails": 0,
+              "hidePreviewPdfButton": false,
+              "hideDownloadPdfButton": false,
+              "emailDialogPrefill": {
+                "to": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "cc": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "bcc": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "subject": {
+                  "en": "ONE/NFK Maintenance Protocol",
+                  "de": "ONE/NFK Instandhaltungsprotokoll"
+                },
+                "body": {
+                    "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed protocol as PDF.\n\nBest regards",
+                    "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie das abgeschlossene Protokoll als PDF.\n\nMit freundlichen Grüßen"
+                  }
+              },
+              "whitelistedDomains": []
+            }
+          }
+    ]
+}
