@@ -83,58 +83,17 @@ With the SparePartListInput, the user can add parts to a form.
 
 ```json (minimal)
 {
-  "id": "exampleSparePartsList_1",
-	"type": "sparePartListInput",
-	"config": {
-		"label": {
-			"text": {
-				"de": "Ersatzteile",
-				"en": "Spare Parts"
-			}
-		},
-		"fields": {
-      "partInput": {
-        "serialNumberPdfHide": false,
-        "namePdfHide": false,
-      },
-			"partNumberSingleLineTextInput": {
-				"required": false,
-				"pdfHide": false,
-				"placeHolderText": {
-					"de": "Artikelnummer",
-					"en": "Part Number"
-				}
-			},
-			"quantityNumericInput": {
-				"required": false,
-				"pdfHide": false
-			},
-			"descriptionMultiLineTextInput": {
-				"disabled": false,
-				"required": false,
-				"pdfHide": false,
-				"placeHolderText": {
-					"de": "Beschreibung",
-					"en": "Description"
-				}
-			},
-			"deliverToStaticSingleSelect": {
-				"disabled": true,
-				"required": false,
-				"pdfHide": false
-			},
-			"invoiceToStaticSingleSelect": {
-				"disabled": true,
-				"required": false,
-				"pdfHide": false
-			},
-			"warrantyBooleanInput": {
-				"disabled": true,
-				"pdfHide": false
-			}
-		}
-	}
-},
+  "id": "sparePartListInput",
+  "type": "sparePartListInput",
+  "config": {
+    "label": {
+      "text": {
+        "de": "Ersatzteile",
+        "en": "Spare Parts"
+      }
+    }
+  }
+}
 ```
 
 # Configuration Parameters
