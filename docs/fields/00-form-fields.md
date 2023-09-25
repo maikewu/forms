@@ -34,3 +34,4 @@ You find all available fields in the list below.
 | [fieldRepeater](./21-field-repeater)                     | The FieldRepeater allows the user to add a table of certain fields. |
 | [richTextInput](./22-rich-text-input)                    | The RichTextInput is a text field that allows text formatting. |
 | [htmlDisplay](./23-html-display)                         | The HtmlDisplay allows the user to enter html text. |
+| [sparePartListInput](./28-spare-part-list-input.md)      | The SparePartListInput is a complex field input, that allows a user to add parts to a form. |
