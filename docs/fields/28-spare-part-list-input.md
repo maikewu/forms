@@ -4,7 +4,7 @@ category: 635ce1e7775bc60045570ffb
 parentDoc: 635ce486ae5fac003cef279e
 ---
 
-With the SparePartListInput, the user can add parts to a form.
+With the SparePartListInput, the user can add parts from the parts management to a form.
 
 # Configuration Overview
 
