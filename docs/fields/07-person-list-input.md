@@ -181,16 +181,16 @@ If `hide` is set to `true`, the field is not shown in the PDF and UI at all.
 This configuration follows the [general syntax for prefilling rules](./25-prefill-rules).
 ```json (workOrderId)
 "prefill": {
-  "entries": [
-    {
-      "input": "workOrderId",
-      "steps": [
-        "workOrderIdToWorkOrder",
-        "workOrderToContacts",
-        "contactsToPersonListEntries"
-      ]
-    }
-  ]
+    "entries": [
+        {
+            "input": "workOrderId",
+            "steps": [
+                "workOrderIdToWorkOrder",
+                "workOrderToContacts",
+                "contactsToPersonListEntries"
+            ]
+        }
+    ]
 }
 ---
 ## `onChange`
