@@ -539,6 +539,23 @@ The following examples illustrate the extraction of a custom property, the custo
 	]
 }
 ```
+```json (personListInput)
+// Do not copy comments!
+//prefill person list with contacts from work order
+"prefill": {
+	"entries": [
+		{
+			"input": "workOrderId",
+			"steps": [
+				"workOrderIdToWorkOrder",
+				"workOrderToContacts",
+				"contactsToPersonListEntries"
+			]
+		}
+	]
+}
+
+```
 ```json (customPropertyValueToNumberString)
 "prefill": {
 	"value": [
