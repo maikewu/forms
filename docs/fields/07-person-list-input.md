@@ -191,7 +191,8 @@ This configuration follows the [general syntax for prefilling rules](./25-prefil
             ]
         }
     ]
-}
+},
+```
 ---
 ## `onChange`
 
