@@ -17,7 +17,7 @@
       },
       "fields": [
         {
-          "id": "programmer",
+          "id": "serviceTechnician",
           "type": "userSingleSelect",
           "config": {
             "required": true,
@@ -27,8 +27,8 @@
             "pdfWidth": 0.5,
             "label": {
               "text": {
-                "en": "Programmer",
-                "de": "Programmierer"
+                "en": "Service Technician",
+                "de": "Servicetechniker"
               }
             },
             "value": {
@@ -45,12 +45,55 @@
             "onChange": [
               {
                 "target": {
-                  "id": "05_signatureProgrammer",
+                  "id": "07_signatureServiceTechnician",
                   "propertyName": "name"
                 },
                 "steps": [
                   "userToFullNameString"
                 ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "companion",
+          "type": "fieldRepeater",
+          "config": {
+            "label": {
+              "text": {
+                "en": "Companion(s)",
+                "de": "Begleiter"
+              },
+              "pdfHide": true
+            },
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "pdfEnableListView": false,
+            "fields": [
+              {
+                "id": "companions",
+                "type": "userSingleSelect",
+                "config": {
+                  "disabled": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": false,
+                  "pdfWidth": 1,
+                  "required": true,
+                  "label": {
+                    "text": {
+                      "en": "Companion",
+                      "de": "Begleiter"
+                    }
+                  },
+                  "value": {
+                    "pdfPrintEmailAddress": false,
+                    "pdfHide": false,
+                    "pdfStartInNewLine": false
+                  },
+                  "uiHideInRepeaterCardDisplay": false,
+                  "pdfFieldRepeaterCellAlignment": "left"
+                }
               }
             ]
           }
@@ -77,7 +120,8 @@
                   "steps": []
                 }
               ]
-            }
+            },
+            "onChange": []
           }
         },
         {
@@ -212,10 +256,10 @@
             "disabled": false,
             "required": {
               "city": true,
-              "street": true,
               "country": true,
-              "zipPostCode": true,
-              "streetNumber": false
+              "street": true,
+              "streetNumber": false,
+              "zipPostCode": true
             },
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
@@ -229,10 +273,10 @@
             "prefill": {
               "value": [
                 {
-                  "input": "organizationId",
+                  "input": "workOrderId",
                   "steps": [
-                    "accountIdToAccount",
-                    "accountToBillingAddressAddress"
+                    "workOrderIdToWorkOrder",
+                    "workOrderToLocationAddress"
                   ]
                 }
               ]
@@ -240,7 +284,7 @@
             "onChange": [
               {
                 "target": {
-                  "id": "05_signatureProgrammer",
+                  "id": "07_signatureServiceTechnician",
                   "propertyName": "location"
                 },
                 "steps": [
@@ -249,7 +293,7 @@
               },
               {
                 "target": {
-                  "id": "06_signatureCustomer",
+                  "id": "08_signatureCustomer",
                   "propertyName": "location"
                 },
                 "steps": [
@@ -268,9 +312,6 @@
             "pdfHide": false,
             "pdfHideIfValueIsEmpty": false,
             "pdfWidth": 0.5,
-            "value": {
-              "pdfPrintEmailAddress": true
-            },
             "label": {
               "text": {
                 "en": "Contact person",
@@ -280,7 +321,7 @@
             "onChange": [
               {
                 "target": {
-                  "id": "06_signatureCustomer",
+                  "id": "08_signatureCustomer",
                   "propertyName": "name"
                 },
                 "steps": [
@@ -344,13 +385,13 @@
       ]
     },
     {
-      "id": "03_workOrderInformation",
+      "id": "03_workOrderInformation1",
       "type": "fieldSection",
       "config": {
         "headline": {
           "text": {
-            "en": "Order Information",
-            "de": "Auftragsinformationen"
+            "en": "Order Information 1",
+            "de": "Auftragsinformationen 1"
           },
           "pdfHide": false
         }
@@ -399,11 +440,15 @@
             "value": {
               "options": {
                 "1": {
-                  "en": "Remote maintenance order",
-                  "de": "Fernwartungsauftrag"
+                  "en": "Start-up",
+                  "de": "Inbetriebnahme"
                 },
                 "2": {
-                  "en": "Complaint",
+                  "en": "Service order",
+                  "de": "Serviceauftrag"
+                },
+                "3": {
+                  "en": "Reclamation",
                   "de": "Reklamation"
                 }
               }
@@ -412,7 +457,7 @@
               "value": [
                 {
                   "input": "none",
-                  "steps": [["staticString","1"]]
+                  "steps": [["staticString","2"]]
                 }
               ]
             }
@@ -453,9 +498,9 @@
                 "pdfHide": false
               },
               "distanceNumericInput": {
-                "disabled": true,
+                "disabled": false,
                 "required": false,
-                "pdfHide": true
+                "pdfHide": false
               },
               "technicianUserSingleSelect": {
                 "disabled": false,
@@ -464,9 +509,9 @@
                 "pdfPrintEmailAddress": false
               },
               "commentMultiLineTextInput": {
-                "disabled": true,
+                "disabled": false,
                 "required": false,
-                "pdfHide": true
+                "pdfHide": false
               }
             }
           }
@@ -487,129 +532,7 @@
           }
         },
         {
-          "id": "preparation",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b>Preparation time</b>",
-              "de": "<b>Vorbereitungszeit</b>",
-              "tr": "",
-              "fr": "",
-              "es": "",
-              "it": ""
-            },
-            "uiHide": false,
-            "pdfHide": false,
-            "pdfWidth": 0.3
-          }
-        },
-        {
-          "id": "date1",
-          "type": "dateInput",
-          "config": {
-            "disabled": false,
-            "required": true,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.4,
-            "label": {
-              "text": {
-                "en": "Date",
-                "de": "Datum"
-              }
-            },
-            "prefill": {
-              "value": []
-            },
-            "onChange": []
-          }
-        },
-        {
-          "id": "duration1",
-          "type": "singleLineTextInput",
-          "config": {
-            "required": true,
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
-            "placeHolderText": {
-              "en": "at least: 30 Min.",
-              "de": "MIND.: 30 Min."
-            },
-            "label": {
-              "text": {
-                "en": "Duration in h",
-                "de": "Dauer in h"
-              }
-            },
-            "prefill": {
-              "value": []
-            },
-            "onChange": []
-          }
-        },
-        {
-          "id": "rework",
-          "type": "htmlDisplay",
-          "config": {
-            "text": {
-              "en": "<b>Rework time</b>",
-              "de": "<b>Nachbearbeitungszeit</b>"
-            },
-            "uiHide": false,
-            "pdfHide": false,
-            "pdfWidth": 0.3
-          }
-        },
-        {
-          "id": "date2",
-          "type": "dateInput",
-          "config": {
-            "disabled": false,
-            "required": true,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.4,
-            "label": {
-              "text": {
-                "en": "Date",
-                "de": "Datum"
-              }
-            },
-            "prefill": {
-              "value": []
-            },
-            "onChange": []
-          }
-        },
-        {
-          "id": "duration2",
-          "type": "singleLineTextInput",
-          "config": {
-            "required": true,
-            "disabled": false,
-            "pdfHide": false,
-            "pdfHideIfValueIsEmpty": false,
-            "pdfWidth": 0.3,
-            "placeHolderText": {
-              "en": "at least: 30 Min.",
-              "de": "MIND.: 30 Min."
-            },
-            "label": {
-              "text": {
-                "en": "Duration in h",
-                "de": "Dauer in h"
-              }
-            },
-            "prefill": {
-              "value": []
-            },
-            "onChange": []
-          }
-        },
-        {
-          "id": "charged",
+          "id": "invoiced",
           "type": "staticSingleSelect",
           "config": {
             "required": true,
@@ -619,8 +542,8 @@
             "pdfWidth": 0.3,
             "label": {
               "text": {
-                "en": "Maintenance charged",
-                "de": "Fernwartung berechnet"
+                "en": "Charge fitter's work",
+                "de": "Serviceeinsatz berechnet"
               }
             },
             "value": {
@@ -646,6 +569,136 @@
           }
         },
         {
+          "id": "whitespace4",
+          "type": "headlineDisplay",
+          "config": {
+            "text": {
+              "en": "",
+              "de": ""
+            },
+            "uiHide": true,
+            "type": "H1",
+            "pdfTextSize": 14,
+            "pdfHide": false,
+            "pdfWidth": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "04_additions",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Addtionional Information",
+            "de": "Zusätzliche Informationen"
+          },
+          "pdfHide": false
+        }
+      },
+      "fields": [
+        {
+          "id": "testRun",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b>Test run</b>",
+              "de": "<b>Probelauf</b>"
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "date3",
+          "type": "dateInput",
+          "config": {
+            "disabled": false,
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Date",
+                "de": "Datum"
+              }
+            },
+            "value": {
+              "autofill": "onlyEmpty"
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        },
+        {
+          "id": "duration3",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Duration in h",
+                "de": "Dauer in h"
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        },
+        {
+          "id": "goodParts",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Produced good parts",
+                "de": "Produzierte Gutteile"
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        },
+        {
+          "id": "badParts",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Produced bad parts",
+                "de": "Produzierte Schlechtteile"
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        },
+        {
           "id": "completed",
           "type": "staticSingleSelect",
           "config": {
@@ -656,8 +709,8 @@
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "Remote maintenance completed",
-                "de": "Fernwartung abgeschlossen"
+                "en": "Service order, reclamatation or acceptance run completed",
+                "de": "Inbetriebnahme, Serviceauftrag oder Reklamation abgeschlossen"
               }
             },
             "value": {
@@ -673,11 +726,31 @@
               }
             }
           }
+        },
+        {
+          "id": "upload",
+          "type": "fileUpload",
+          "config": {
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "requiredAmountOfFiles": 0,
+            "maximumSingleFileSize": 50,
+            "maximumAccumulatedFileSize": 150,
+            "acceptedFileTypes": [],
+            "label": {
+              "text": {
+                "en": "Pictures of asset",
+                "de": "Fotos der Anlage"
+              }
+            }
+          }
         }
       ]
     },
     {
-      "id": "04_completedTasks",
+      "id": "05_completedTasks",
       "type": "fieldSection",
       "config": {
         "headline": {
@@ -702,7 +775,6 @@
                 "en": "Completed Tasks",
                 "de": "Durchgeführte Arbeiten"
               },
-              "pdfHide": false,
               "pdfTextSize": 9
             },
             "fields": {
@@ -711,7 +783,7 @@
                 "pdfHide": false
               },
               "titleSingleLineTextInput": {
-                "required": false,
+                "required": true,
                 "pdfHide": false
               },
               "commentMultiLineTextInput": {
@@ -767,7 +839,7 @@
           }
         },
         {
-          "id": "function",
+          "id": "safety",
           "type": "booleanInput",
           "config": {
             "required": true,
@@ -777,8 +849,8 @@
             "pdfWidth": 1,
             "label": {
               "text": {
-                "en": "Function test was performed after remote maintenance and confirmed by customer",
-                "de": "Funktionsprüfung wurde nach Fernwartung durchgeführt und durch Kunde bestätigt"
+                "en": "Safety device re-established and into operation",
+                "de": "Sicherheitseinrichtung durch Kunde mit Unterschrift auf Protokoll wieder hergestellt und in Betrieb genommen!"
               }
             }
           }
@@ -786,13 +858,89 @@
       ]
     },
     {
-      "id": "05_signatureProgrammer",
+      "id": "06_spareParts",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Spare Parts",
+            "de": "Ersatzteile"
+          },
+          "pdfHide": true
+        }
+      },
+      "fields": [
+        {
+          "id": "spareParts",
+          "type": "partListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": true,
+            "pdfWidth": 1,
+            "label": {
+              "text": {
+                "en": "Spare Parts / Delivery note to this Field Service Report",
+                "de": "Ersatzteile / Lieferung zu Montagebericht"
+              },
+              "pdfTextSize": 9
+            },
+            "fields": {
+              "partNumberSingleLineTextInput": {
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Parts Number",
+                  "de": "Teilenummer",
+                  "tr": "",
+                  "fr": "",
+                  "es": "",
+                  "it": ""
+                }
+              },
+              "quantityNumericInput": {
+                "required": false,
+                "pdfHide": false
+              },
+              "descriptionMultiLineTextInput": {
+                "required": false,
+                "pdfHide": false,
+                "placeHolderText": {
+                  "en": "Description",
+                  "de": "Beschreibung",
+                  "tr": "",
+                  "fr": "",
+                  "es": "",
+                  "it": ""
+                },
+                "disabled": false
+              },
+              "deliverToStaticSingleSelect": {
+                "required": false,
+                "pdfHide": true,
+                "disabled": true
+              },
+              "invoiceToStaticSingleSelect": {
+                "required": false,
+                "pdfHide": true,
+                "disabled": true
+              },
+              "warrantyBooleanInput": {
+                "pdfHide": false,
+                "disabled": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "07_signatureServiceTechnician",
       "type": "signatureSection",
       "config": {
         "required": true,
         "headlineText": {
-          "en": "Signature Programmer",
-          "de": "Unterschrift Programmierer"
+          "en": "Signature Service Technician",
+          "de": "Unterschrift Servicetechniker"
         },
         "pdfHide": false,
         "pdfHideIfValueIsEmpty": false,
@@ -860,10 +1008,10 @@
       }
     },
     {
-      "id": "06_signatureCustomer",
+      "id": "08_signatureCustomer",
       "type": "signatureSection",
       "config": {
-        "required": false,
+        "required": true,
         "headlineText": {
           "en": "Signature Customer",
           "de": "Unterschrift Kunde"
@@ -875,20 +1023,20 @@
         "fields": {
           "dateInput": {
             "disable": false,
-            "required": false,
+            "required": true,
             "pdfHide": false,
             "autofill": "onlyEmpty",
             "onChange": []
           },
           "locationSingleLineTextInput": {
             "disable": false,
-            "required": false,
+            "required": true,
             "pdfHide": false,
             "onChange": []
           },
           "nameSingleLineTextInput": {
             "disable": false,
-            "required": false,
+            "required": true,
             "pdfHide": false,
             "capitalizeFirstLetterOfEveryWord": false,
             "onChange": []
@@ -925,12 +1073,12 @@
       }
     },
     {
-      "id": "07_send",
+      "id": "09_send",
       "type": "emailSection",
       "config": {
         "headlineText": {
-          "en": "Send/sent report as email",
-          "de": "Bericht als E-Mail senden/gesendet",
+          "en": "Send/sent report to customer as email",
+          "de": "Bericht als E-Mail an Kunden senden/gesendet",
           "tr": "",
           "fr": "",
           "es": "",
@@ -962,8 +1110,8 @@
             "staticEmails": []
           },
           "subject": {
-            "en": "Remote Maintenance Report",
-            "de": "Fernwartungsbericht",
+            "en": "Service Report",
+            "de": "Servicebericht",
             "tr": "",
             "fr": "",
             "es": "",
@@ -971,7 +1119,249 @@
           },
           "body": {
             "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed report as PDF.\n\nBest regards\nContexo GmbH",
-            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Fernwartungsbericht als PDF.\n\n<u><b>Bitte senden Sie den unterschriebenen Fernwartungsbericht an folgende Mailadresse:</u></b>\n\n<u><b>customersupport@contexo-gmbh.de</u></b>\n\nMit freundlichen Grüßen\nContexo GmbH"
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Servicebericht als PDF.\n\nMit freundlichen Grüßen\nContexo GmbH",
+            "tr": "",
+            "fr": "",
+            "es": "",
+            "it": ""
+          }
+        },
+        "whitelistedDomains": []
+      }
+    },
+    {
+      "id": "10_workOrderInformation2",
+      "type": "fieldSection",
+      "config": {
+        "headline": {
+          "text": {
+            "en": "Order Information 2",
+            "de": "Auftragsinformationen 2"
+          }
+        }
+      },
+      "fields": [
+        {
+          "id": "returnTravel",
+          "type": "timeTrackingListInput",
+          "config": {
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 1,
+            "requiredAmountOfEntries": 1,
+            "label": {
+              "text": {
+                "en": "Return Travel",
+                "de": "Abreise"
+              },
+              "pdfTextSize": 9
+            },
+            "fields": {
+              "timeTrackingTypeStaticSingleSelect": {
+                "pdfHide": true
+              },
+              "startDateTimeInput": {
+                "pdfHide": false
+              },
+              "endDateTimeInput": {
+                "pdfHide": false
+              },
+              "breakNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "durationDisplay": {
+                "disabled": false,
+                "pdfHide": false
+              },
+              "distanceNumericInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              },
+              "technicianUserSingleSelect": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false,
+                "pdfPrintEmailAddress": false
+              },
+              "commentMultiLineTextInput": {
+                "disabled": false,
+                "required": false,
+                "pdfHide": false
+              }
+            }
+          }
+        },
+        {
+          "id": "preparation",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b>Assembly prep</b>",
+              "de": "<b>Montagevorbereitung</b>",
+              "tr": "",
+              "fr": "",
+              "es": "",
+              "it": ""
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "date1",
+          "type": "dateInput",
+          "config": {
+            "disabled": false,
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Date",
+                "de": "Datum"
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        },
+        {
+          "id": "duration1",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Duration in h",
+                "de": "Dauer in h"
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        },
+        {
+          "id": "wrapUp",
+          "type": "htmlDisplay",
+          "config": {
+            "text": {
+              "en": "<b>Assembly wrap-up</b>",
+              "de": "<b>Montagenachbearbeitung</b>"
+            },
+            "uiHide": false,
+            "pdfHide": false,
+            "pdfWidth": 0.3
+          }
+        },
+        {
+          "id": "date2",
+          "type": "dateInput",
+          "config": {
+            "disabled": false,
+            "required": true,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.4,
+            "label": {
+              "text": {
+                "en": "Date",
+                "de": "Datum"
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        },
+        {
+          "id": "duration2",
+          "type": "singleLineTextInput",
+          "config": {
+            "required": true,
+            "disabled": false,
+            "pdfHide": false,
+            "pdfHideIfValueIsEmpty": false,
+            "pdfWidth": 0.3,
+            "label": {
+              "text": {
+                "en": "Duration in h",
+                "de": "Dauer in h"
+              }
+            },
+            "prefill": {
+              "value": []
+            },
+            "onChange": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "11_send",
+      "type": "emailSection",
+      "config": {
+        "headlineText": {
+          "en": "Send/sent report incl. Order information 2 as email",
+          "de": "Bericht als E-Mail inkl. Auftragsinformationen 2 senden/gesendet",
+          "tr": "",
+          "fr": "",
+          "es": "",
+          "it": ""
+        },
+        "requiredAmountOfOutgoingMails": 0,
+        "hidePreviewPdfButton": false,
+        "hideDownloadPdfButton": false,
+        "emailDialogPrefill": {
+          "to": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "fieldIds": [],
+            "staticEmails": []
+          },
+          "cc": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "fieldIds": [],
+            "staticEmails": []
+          },
+          "bcc": {
+            "currentUser": false,
+            "assignee": false,
+            "creator": false,
+            "fieldIds": [],
+            "staticEmails": []
+          },
+          "subject": {
+            "en": "Service Report",
+            "de": "Servicebericht",
+            "tr": "",
+            "fr": "",
+            "es": "",
+            "it": ""
+          },
+          "body": {
+            "en": "This email was generated automatically.\nPlease do not reply to this email.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed report as PDF.\n\nBest regards\nContexo GmbH",
+            "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie den abgeschlossenen Servicebericht als PDF.\n\nMit freundlichen Grüßen\nContexo GmbH",
+            "tr": "",
+            "fr": "",
+            "es": "",
+            "it": ""
           }
         },
         "whitelistedDomains": []
