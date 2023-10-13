@@ -1,0 +1,1628 @@
+{
+    "general": {
+        "timezone": "Europe/Vienna"
+    },
+    "sections": [
+        {
+            "id": "01_workReport",
+            "type": "fieldSection",
+            "config": {
+                "headline": {
+                    "text": {
+                        "en": "General Information",
+                        "de": "Allgemeine Informationen"
+                    },
+                    "pdfHide": true
+                },
+                "pdfWidth": 1
+            },
+            "fields": [
+              {
+                "id": "asset",
+                "type": "assetSingleSelect",
+                "config": {
+                  "required": false,
+                  "disabled": false,
+                  "pdfHide": false,
+                  "pdfHideIfValueIsEmpty": false,
+                  "pdfWidth": 1,
+                  "label": {
+                    "text": {
+                      "en": "Serial Number",
+                      "de": "Seriennummer"
+                    }
+                  },
+                  "prefill": {
+                    "selectedAsset": [
+                      {
+                        "input": "assetId",
+                        "steps": []
+                      }
+                    ]
+                  }
+                }
+              },
+                {
+                    "id": "leistungszeitraum",
+                    "type": "dateInput",
+                    "config": {
+                        "disabled": false,
+                        "required": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Performed on",
+                                "de": "Durchgeführt am"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "customer",
+                    "type": "companySingleSelect",
+                    "config": {
+                        "disabled": false,
+                        "required": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Customer",
+                                "de": "Kunde"
+                            }
+                        },
+                        "useAsFilterForFields": ["asset","contactPerson"],
+                        "prefill": {
+                            "selectedCompany": [
+                                {
+                                    "input": "organizationId",
+                                    "steps": []
+                                }
+                            ]
+                        },
+                        "onChange": []
+                    }
+                },
+                {
+                    "id": "contactPerson",
+                    "type": "userSingleSelect",
+                    "config": {
+                        "required": false,
+                        "disabled": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": true,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Contact Person",
+                                "de": "Ansprechperson"
+                            }
+                        },
+                        "prefill": {
+                            "value": []
+                        }
+                    }
+                },
+                {
+                    "id": "note100",
+                    "type": "htmlDisplay",
+                    "config": {
+                        "text": {
+                            "en": "If contact isn't available in dropdown, please fill out field below:",
+                            "de": "Ist der Kontakt nicht in der Auswahl verfügbar, bitte unten eintragen:",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "pdfHide": true
+                    }
+                },
+                {
+                    "id": "contactPersonAdd",
+                    "type": "singleLineTextInput",
+                    "config": {
+                        "pdfHideIfValueIsEmpty": true,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Contact Person",
+                                "de": "Ansprechperson",
+                                "tr": "",
+                                "fr": "",
+                                "es": "",
+                                "it": ""
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "address",
+                    "type": "addressInput",
+                    "config": {
+                        "disabled": false,
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Address Work Place",
+                                "de": "Anschrift Arbeitsort"
+                            }
+                        },
+                        "value": {
+                            "pdfHide": false,
+                            "pdfStartInNewLine": true,
+                            "pdfAddLineBreaks": true
+                        },
+                        "prefill": {
+                            "value": [
+                                {
+                                    "input": "workOrderId",
+                                    "steps": [
+                                        "workOrderIdToWorkOrder","workOrderToLocationAddress"
+                                    ]
+                                }
+                            ]
+                        },
+                        "onChange": [
+                            {
+                                "steps": [
+                                    "addressToCityString"
+                                ],
+                                "target": {
+                                    "id": "04_signature",
+                                    "propertyName": "location"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "02_tasks",
+            "type": "fieldSection",
+            "config": {
+                "headline": {
+                    "text": {
+                        "en": "Recurring Tasks",
+                        "de": "Wiederkehrende Tätigkeiten"
+                    }
+                },
+                "pdfWidth": 1
+            },
+            "fields": [
+                {
+                    "id": "nr0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Nr</b></h4>",
+                        "en": "<h4><b>No</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Intervall</b></h4>",
+                        "en": "<h4><b>Interval</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "step0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Prüfbeschreibung</b></h4>",
+                        "en": "<h4><b>Description of Inspection</b></h4>"
+                      },
+                      "pdfWidth": 0.4,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "iO0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>in Ordnung</b></h4>",
+                        "en": "<h4><b>OK</b></h4>"
+                      },
+                      "pdfWidth": 0.125,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "defect0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel</b></h4>",
+                        "en": "<h4><b>Defect</b></h4>"
+                      },
+                      "pdfWidth": 0.125,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "rating0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben</b></h4>",
+                        "en": "<h4><b>Defect fixed</b></h4>"
+                      },
+                      "pdfWidth": 0.15,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "line0",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "nr1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>01</b></h4>",
+                        "en": "<h4><b>01</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Täglich</b></h4>",
+                        "en": "<h4><b>Daily</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Visual inspection of optical sensors. Clean if necessary.<br><i>- see cleaning instructions in operation manual<br>- Laser scanner in the lower area left and right<br>- Laser scanner in upper area<br>- Distance sensor on back side</i>",
+                        "en": "Visual inspection of optical sensors. Clean if necessary.<br><i>- see cleaning instructions in operation manual<br>- Laser scanner in the lower area left and right<br>- Laser scanner in upper area<br>- Distance sensor on back side</i>"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io1",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect1",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes1",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no1",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line1",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "nr2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>02</b></h4>",
+                        "en": "<h4><b>02</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Täglich</b></h4>",
+                        "en": "<h4><b>Daily</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Visual check vehicle<br><i>- General condition of vehicle:<br>Check readability of warning labels,<br>Check on scratches, bumps etc. on the outside. Especially in the area where the battery is located.<br>- Condition of fork tips, especially ultrasound sensors<br>- Check condition of charging contacts<br>- Check condition of lifting equipment / scissors",
+                        "en": "Visual check vehicle<br><i>- General condition of vehicle:<br>Check readability of warning labels,<br>Check on scratches, bumps etc. on the outside. Especially in the area where the battery is located.<br>- Condition of fork tips, especially ultrasound sensors<br>- Check condition of charging contacts<br>- Check condition of lifting equipment / scissors"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io2",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect2",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes2",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no2",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line2",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "nr3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>03</b></h4>",
+                        "en": "<h4><b>03</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Täglich</b></h4>",
+                        "en": "<h4><b>Daily</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Visual check condition floor charging unit<br><i>(clean if necessary, check for signs of wear)</i>",
+                        "en": "Visual check condition floor charging unit<br><i>(clean if necessary, check for signs of wear)</i>"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io3",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect3",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes3",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no3",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line3",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "nr4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>04</b></h4>",
+                        "en": "<h4><b>04</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Täglich</b></h4>",
+                        "en": "<h4><b>Daily</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Functional test of speakers",
+                        "en": "Functional test of speakers"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io4",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect4",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes4",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no4",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line4",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "nr5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>05</b></h4>",
+                        "en": "<h4><b>05</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Täglich</b></h4>",
+                        "en": "<h4><b>Daily</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Functional test of lamps",
+                        "en": "Functional test of lamps"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io5",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect5",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes5",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no5",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line5",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "nr6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>06</b></h4>",
+                        "en": "<h4><b>06</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Halb- jährlich</b></h4>",
+                        "en": "<h4><b>Half- yearly</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Maintenance by AGILOX or system partner according to maintenance protocol",
+                        "en": "Maintenance by AGILOX or system partner according to maintenance protocol"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io6",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect6",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes6",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no6",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line6",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "nr7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>07</b></h4>",
+                        "en": "<h4><b>07</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Jährlich</b></h4>",
+                        "en": "<h4><b>Yearly</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Electrical inspection of floor charging device according to national regulations",
+                        "en": "Electrical inspection of floor charging device according to national regulations"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io7",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect7",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes7",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no7",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line7",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "nr8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>08</b></h4>",
+                        "en": "<h4><b>08</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Jährlich</b></h4>",
+                        "en": "<h4><b>Yearly</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Electrical inspection of mobile charging device according to national regulations",
+                        "en": "Electrical inspection of mobile charging device according to national regulations"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io8",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect8",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes8",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no8",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "line8",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<hr>",
+                        "en": "<hr>"
+                      },
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "nr9",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>09</b></h4>",
+                        "en": "<h4><b>09</b></h4>"
+                      },
+                      "pdfWidth": 0.05,
+                      "uiHide": true
+                    }
+                  },
+                  {
+                    "id": "interval9",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Jährlich</b></h4>",
+                        "en": "<h4><b>Yearly</b></h4>"
+                      },
+                      "pdfWidth": 0.1,
+                      "uiHide": false
+                    }
+                  },
+                  {
+                    "id": "step9",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "Periodic inspection according to national regulations (Work Equipment Directive) by another suitable qualified person <u>and</u> at least <b>every 4 years</b> by an accredited inspection body - according to the inspection protocol,<br>Record in inspection booklet",
+                        "en": "Periodic inspection according to national regulations (Work Equipment Directive) by another suitable qualified person <u>and</u> at least <b>every 4 years</b> by an accredited inspection body - according to the inspection protocol,<br>Record in inspection booklet"
+                      },
+                      "pdfWidth": 0.4
+                    }
+                  },
+                  {
+                    "id": "io9",
+                    "type": "booleanInput",
+                    "config": {
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "OK",
+                          "de": "in Ordnung"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "defect9",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.125,
+                      "label": {
+                        "text": {
+                          "en": "Defect",
+                          "de": "Mangel"
+                        },
+                        "pdfHide": true
+                      }
+                    }
+                  },
+                  {
+                    "id": "fixed9",
+                    "type": "htmlDisplay",
+                    "config": {
+                      "text": {
+                        "de": "<h4><b>Mangel behoben?</b></h4>",
+                        "en": "<h4><b>Defect fixed?</b></h4>"
+                      },
+                      "pdfHide": true
+                    }
+                  },
+                  {
+                    "id": "yes9",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "Yes",
+                          "de": "Ja"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "no9",
+                    "type": "booleanInput",
+                    "config": {
+                      "required": false,
+                      "disabled": false,
+                      "pdfHide": false,
+                      "pdfHideIfValueIsEmpty": false,
+                      "pdfWidth": 0.1,
+                      "label": {
+                        "text": {
+                          "en": "No",
+                          "de": "Nein"
+                        }
+                      }
+                    }
+                  }
+            ]
+        },
+        {
+            "id": "04_signature",
+            "type": "signatureSection",
+            "config": {
+                "required": false,
+                "headlineText": {
+                    "en": "Signature",
+                    "de": "Unterschrift"
+                },
+                "pdfHide": false,
+                "pdfHideIfValueIsEmpty": false,
+                "hidePreviewPdfButton": false,
+                "hideDownloadPdfButton": false,
+                "pdfWidth": 0.5,
+                "fields": {
+                    "dateInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "autofill": "always",
+                        "onChange": []
+                    },
+                    "locationSingleLineTextInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "onChange": []
+                    },
+                    "nameSingleLineTextInput": {
+                        "disable": false,
+                        "required": true,
+                        "pdfHide": false,
+                        "capitalizeFirstLetterOfEveryWord": false,
+                        "onChange": []
+                    }
+                },
+                "prefill": {
+                    "location": [
+                        {
+                            "input": "workOrderId",
+                            "steps": [
+                                "workOrderIdToWorkOrder","workOrderToLocationAddress","addressToCityString"
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "07_send",
+            "type": "emailSection",
+            "config": {
+              "headlineText": {
+                "en": "Send/sent report to customer as email",
+                "de": "Bericht als E-Mail an Kunden senden/gesendet"
+              },
+              "requiredAmountOfOutgoingMails": 0,
+              "hidePreviewPdfButton": false,
+              "hideDownloadPdfButton": false,
+              "emailDialogPrefill": {
+                "to": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "cc": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "bcc": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "subject": {
+                  "en": "ONE/NFK Maintenance Protocol Operator",
+                  "de": "ONE/NFK Wartungsproktoll Operator"
+                },
+                "body": {
+                    "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.\n\nDear Sir or Madam,\n\nIn the attachment you will find the completed protocol as PDF.\n\nBest regards",
+                    "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail.\n\nSehr geehrte Damen und Herren,\n\nim Anhang finden Sie das abgeschlossene Protokoll als PDF.\n\nMit freundlichen Grüßen"
+                  }
+              },
+              "whitelistedDomains": []
+            }
+          },
+          {
+            "id": "08_internalAddendum",
+            "type": "fieldSection",
+            "config": {
+                "headline": {
+                    "text": {
+                        "en": "Internal Addendum",
+                        "de": "Interner Nachtrag",
+                        "tr": "",
+                        "fr": "",
+                        "es": "",
+                        "it": ""
+                    }
+                },
+                "pdfWidth": 1
+            },
+            "fields": [
+                {
+                    "id": "returnTravel",
+                    "type": "timeTrackingListInput",
+                    "config": {
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": false,
+                        "pdfWidth": 1,
+                        "requiredAmountOfEntries": 0,
+                        "label": {
+                            "text": {
+                                "en": "Return Travel Time",
+                                "de": "Rückreisezeit",
+                                "tr": "",
+                                "fr": "",
+                                "es": "",
+                                "it": ""
+                            },
+                            "pdfHide": false,
+                            "pdfTextSize": 9
+                        },
+                        "fields": {
+                            "timeTrackingTypeStaticSingleSelect": {
+                                "pdfHide": true
+                            },
+                            "startDateTimeInput": {
+                                "pdfHide": false
+                            },
+                            "endDateTimeInput": {
+                                "pdfHide": false
+                            },
+                            "breakNumericInput": {
+                                "disabled": false,
+                                "required": false,
+                                "pdfHide": false
+                            },
+                            "durationDisplay": {
+                                "disabled": false,
+                                "pdfHide": false
+                            },
+                            "distanceNumericInput": {
+                                "disabled": false,
+                                "required": false,
+                                "pdfHide": false
+                            },
+                            "technicianUserSingleSelect": {
+                                "disabled": false,
+                                "required": false,
+                                "pdfHide": false,
+                                "pdfPrintEmailAddress": false
+                            },
+                            "commentMultiLineTextInput": {
+                                "disabled": false,
+                                "required": false,
+                                "pdfHide": false
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "comment",
+                    "type": "richTextInput",
+                    "config": {
+                        "disabled": false,
+                        "required": false,
+                        "placeHolderText": {
+                            "en": "Type here...",
+                            "de": "Hier tippen...",
+                            "tr": "",
+                            "fr": "",
+                            "es": "",
+                            "it": ""
+                        },
+                        "pdfHide": false,
+                        "pdfHideIfValueIsEmpty": true,
+                        "pdfWidth": 1,
+                        "label": {
+                            "text": {
+                                "en": "Internal comment",
+                                "de": "Interner Kommentar",
+                                "tr": "",
+                                "fr": "",
+                                "es": "",
+                                "it": ""
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "09_send",
+            "type": "emailSection",
+            "config": {
+              "headlineText": {
+                "en": "Send/sent report incl. internal addendum as email",
+                "de": "Bericht als E-Mail inkl. internem Nachtrag senden/gesendet"
+              },
+              "requiredAmountOfOutgoingMails": 0,
+              "hidePreviewPdfButton": false,
+              "hideDownloadPdfButton": false,
+              "emailDialogPrefill": {
+                "to": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "cc": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "bcc": {
+                  "currentUser": false,
+                  "assignee": false,
+                  "creator": false,
+                  "staticEmails": []
+                },
+                "subject": {
+                  "en": "ONE/NFK Maintenance Protocol Operator",
+                  "de": "ONE/NFK Wartungsproktoll Operator"
+                },
+                "body": {
+                    "en": "This e-mail was generated automatically.\nPlease do not reply to this e-mail.",
+                    "de": "Diese E-Mail wurde automatisch generiert.\nBitte antworten Sie nicht auf diese E-Mail."
+                  }
+              },
+              "whitelistedDomains": []
+            }
+        }
+    ]
+}
